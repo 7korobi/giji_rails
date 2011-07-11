@@ -1,0 +1,29 @@
+default: &DEFAULT
+  ride:
+    yahoo:
+      aid: CfGANlKxg67Kz0fLq2SFMSu0puT0cK293hl1gEeWdOlauqNbZLj5jttlaTewTB8b8tfaU2sgy28-
+  provider:
+    twitter:
+      - ph5ONHhBl0yhXzBv35waCQ
+      - APv8SlWIgzXRlXAtyMkckw3VcNb2ZntQpX1p0Qe2b9U
+    openid:
+      - nil
+      - name:       google
+        identifier: https://www.google.com/accounts/o8/id
+    facebook:
+      - 111165305637613
+      - 260af0a224377a6053de3cd045baf986
+      - scope:         publish_stream,offline_access,email,user_about_me,user_birthday
+        client_options:
+          ssl: 
+            ca_path: /etc/ssl/certs
+
+development:
+  <<: *DEFAULT
+
+test:
+  <<: *DEFAULT
+
+production:
+  <<: *DEFAULT
+
