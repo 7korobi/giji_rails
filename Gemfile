@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 # ruby on rails
 gem 'unicorn'
-gem 'rails', '3.1.0.rc4'
+gem 'rails', '3.1.0.rc5'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -11,6 +11,8 @@ gem 'sass'
 gem 'coffee-script'
 gem 'uglifier'
 gem 'jquery-rails'
+gem 'execjs'
+gem 'therubyracer'
 
 gem "decent_exposure"
 gem "simple_form"
@@ -30,7 +32,8 @@ gem "paperclip"
 gem "mongoid"
 gem "bson_ext" 
 gem "json"
-gem "sqlite3"
+gem "sqlite3", '= 1.3.3'
+gem "sqlite3-ruby", '= 1.3.3'
 
 # management
 gem "rubygems-update"

@@ -1,5 +1,6 @@
 class Request
   include Giji
+
   field :http_user_agent
   field :remote_ip
   field :handle
