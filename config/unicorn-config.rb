@@ -1,10 +1,10 @@
 # path info
-#stderr_path "/GijiNG/unicorn/log/unicorn.stderr.log"
-#stdout_path "/GijiNG/unicorn/log/unicorn.stdout.log"
-pid         "/GijiNG/unicorn/pids/unicorn.pid"
+stderr_path "/www/local/logs/giji.unicorn.stderr.log"
+stdout_path "/www/local/logs/giji.unicorn.stdout.log"
+pid         "/www/local/pids/giji.unicorn.pid"
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
-working_directory "/GijiNG/giji" # available in 0.94.0+
+working_directory "/www/giji" # available in 0.94.0+
 
 rails_env = 'development'
 
