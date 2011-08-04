@@ -6,7 +6,6 @@ class Auth
   field :name
   field :handle
   timestamp :at
-  references_many :chats
   referenced_in :user, inverse_of: :auths
 
   def initialize(attributes = {})

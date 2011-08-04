@@ -1,12 +1,9 @@
 class Request
   include Giji
 
-  field :http_user_agent
   field :remote_ip
-  field :handle
+  field :user_agent
   timestamp :at
-  
-  references_many :chats
   
   def initialize(attributes = {})
     super
