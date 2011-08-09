@@ -1,4 +1,6 @@
 Giji::Application.routes.draw do
+  resources :chr_sets
+
   match '/auth/:provider/callback' => 'sessions#callback'
   match 'auth/failure' => 'sessions#destroy', as: :signout
   match '/signout'     => 'sessions#destroy', as: :signout

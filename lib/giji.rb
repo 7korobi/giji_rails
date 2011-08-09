@@ -1,3 +1,4 @@
+require 'ostruct'
 require 'current'
 require 'timestamp'
 require 'with_simple_form'
@@ -25,6 +26,22 @@ module Giji
     def base.key(* keys)
       const_set :KEYS, keys
       super
+    end
+  end
+end
+
+module DecentExposure
+  def expose_embedded(name)
+    list  = name.to_s.pluralize 
+    proxy = name.to_s.classify.constantize
+    expose(name) do
+      if params[:id]
+        send(list).find(params[:id]).tap do |o|
+          o.attributes = params[name]
+        end
+      else
+        proxy.new(params[name])
+      end
     end
   end
 end
