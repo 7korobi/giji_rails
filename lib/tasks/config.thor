@@ -5,7 +5,7 @@ LOG_DIR = '/www/giji_log/'
 class Config < Thor
   desc "create", "create config to other server"
   def create
-    require '/www/giji/config/environment'
+    require '/www/giji/config/initializers/const'
     require 'fileutils'
     require 'net/ftp'
     require 'net/sftp'
@@ -375,7 +375,7 @@ _PERL_
 
       rhtml_info_out = "/www/giji_log/sow/_info.pl"
       @rhtml_content = "/www/giji/app/views/sow/_info.pl.erb"
-      File.open(rhtml_info_out ,'w'){|f| f.write( to_s.encode("sjis", "utf-8") ) }
+      File.open(rhtml_info_out ,'w:sjis:utf-8'){|f| f.write( to_s ) }
       FileUtils.chmod( 0666, rhtml_info_out )
       p ['File', :INFO]
 
@@ -395,9 +395,9 @@ _PERL_
         @saycnt   = saycnt_test   if  chk_braid && chk_all
         @saycnt   = saycnt_game   unless chk_lobby || chk_braid || chk_all
 
-        result[folder] = to_s.encode("sjis", "utf-8")
+        result[folder] = to_s
 
-        File.open(rhtml_config_out ,'w'){|f| f.write( result[folder] ) }
+        File.open(rhtml_config_out ,'w:sjis:utf-8'){|f| f.write( result[folder] ) }
         FileUtils.chmod( 0666, rhtml_config_out )
         p ['File', folder]
       end
@@ -424,24 +424,28 @@ _PERL_
       SOW.each_pair do |folder,cfg|
         ftp    = cfg['ftp']
         next unless ftp
-        conn = Net::FTP.open  ftp['open'], ftp['user'], ftp['pass'] 
-        begin 
-          setting_set(  conn, :puttextfile, rhtml_info_out, ftp['files']['config'], cfg['config'] )
+        begin
+            conn = Net::FTP.open  ftp['open'], ftp['user'], ftp['pass'] 
+            begin 
+              setting_set(  conn, :puttextfile, rhtml_info_out, ftp['files']['config'], cfg['config'] )
 
-          data_path = [ftp['files']['config'], ftp['files']['data']].join('/')
-          list = []
-          conn.ls( data_path ).each do |line| 
-            target = line.split(/ +/) 
-            name    = target[-1]
-            next if %w[. ..].member? name
-            dataname = [data_path,name].join('/')
-            mtime  = conn.mtime( dataname )
-            list.push [name,mtime]
-          end
-          data_vil( conn, :getbinaryfile, ftp['files'], list )
-        ensure
-          conn.close
-          p ['Net::FTP', folder]
+              data_path = [ftp['files']['config'], ftp['files']['data']].join('/')
+              list = []
+              conn.ls( data_path ).each do |line| 
+                target = line.split(/ +/) 
+                name    = target[-1]
+                next if %w[. ..].member? name
+                dataname = [data_path,name].join('/')
+                mtime  = conn.mtime( dataname )
+                list.push [name,mtime]
+              end
+              data_vil( conn, :getbinaryfile, ftp['files'], list )
+            ensure
+              conn.close
+              p ['Net::FTP', folder]
+            end
+        rescue IOError => e
+            p e.message
         end
       end
 

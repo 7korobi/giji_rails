@@ -16,6 +16,6 @@ class ChrSet
     Face.where(:face_id.in => face_ids )
   end
   def face_ids
-    chr_jobs.map{|o| o.face_id}
+    chr_jobs.map(&:face_id)
   end
 end

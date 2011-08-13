@@ -1,0 +1,71 @@
+<%# coding: UTF-8 -%>
+package SWResource_<%= @csid %>;
+
+#----------------------------------------
+# キャラセット
+#----------------------------------------
+
+sub GetRSChr {
+	my $sow = $_[0];
+
+	my $maker = $sow->{'cfg'}->{'CID_MAKER'};
+	my $admin = $sow->{'cfg'}->{'CID_ADMIN'};
+
+	# キャラの表示順
+	my @order = (
+<%	@orders.each do |order|	%>
+		'<%= order.id %>', 	# <%= order.id %>  <%= order.job %> <%= order.name %>	<%= order.comment %> 
+<%	end	%>
+	);
+
+	# キャラの肩書き
+	my %chrjob = (
+<%	@lists.each do |order|	%>
+		'<%= order.id %>' => '<%= order.job %>', 	# <%= order.id %>  <%= order.job %> <%= order.name %>	<%= order.comment %> 
+<%	end	%>
+		$maker => '<%= @chrset.maker %>',
+		$admin => '<%= @chrset.admin %>',
+	);
+
+	# キャラの名前
+	my %chrname = (
+<%	@lists.each do |order|	%>
+		'<%= order.id %>' => '<%= order.name %>', 	# <%= order.id %>  <%= order.job %> <%= order.name %>	<%= order.comment %> 
+<%	end	%>
+		$maker    => '（村建て人）',
+		$admin    => '（管理人）',
+	);
+
+	# ダミーキャラの発言
+	my @npcsay =(
+		'<%= @chrnpc.npc[0] %>',
+		'<%= @chrnpc.npc[1] %>',
+	);
+
+	my @expression = (
+	);
+
+	my %charset = (
+		CAPTION        => '<%= @chrnpc.caption %>',
+		NPCID          => '<%= @chrnpc.id %>',
+		CHRNAME        => \%chrname,
+		CHRJOB         => \%chrjob,
+		ORDER          => \@order,
+		NPCSAY         => \@npcsay,
+		IMGFACEW       => 90,
+		IMGFACEH       => 130,
+		IMGBODYW       => 90,
+		IMGBODYH       => 130,
+		DIR            => "$sow->{'cfg'}->{'DIR_IMG'}/portrate/",
+		EXT            => '.jpg',
+		BODY           => '',
+		FACE           => '',
+		GRAVE          => '',
+		EXPRESSION     => \@expression,
+		LAYOUT_NAME    => 'right',
+	);
+
+	return \%charset;
+}
+
+1;

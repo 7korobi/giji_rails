@@ -110,7 +110,8 @@ _HTML_
 sub OutHTMLStateInfo {
 	my $sow = shift;
 	my $cfg   = $sow->{'cfg'};
-	my $zipfile = $cfg->{'RULE'}.".zip";
+	my $zipfile = 'https://github.com/7korobi/sow-giji';
+	my $license = 'https://github.com/7korobi/sow-giji/blob/master/cabala/license.txt';
 
 	print <<"_HTML_";
 <p class="paragraph">
@@ -137,6 +138,7 @@ _HTML_
 <li>発言ptは無制限です。</a>
 <li>村の説明は4000字まで記述\できます。
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
+<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
 </p>
 _HTML_
@@ -150,6 +152,7 @@ _HTML_
 <li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
 <li>村の説明は4000字まで記述\できます。
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
+<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
 </p>
 _HTML_
@@ -164,6 +167,7 @@ _HTML_
 <li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。
 <li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
+<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
 </p>
 _HTML_
@@ -178,7 +182,7 @@ _HTML_
 <li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。
 <li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
-<li><a href="$zipfile">最新のスナップショット</a>はこちら。<a href="../wolf/resource.zip">css、js</a>はこちら。ライセンスは<a href="license.txt">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
+<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
 </p>
 _HTML_
@@ -189,6 +193,9 @@ _HTML_
 		print <<"_HTML_";
 <h2>アルティメット人狼、始動！？</h2>
 まだまだ、バグは貴方の知らないあんなところに潜んでいるかもしれない。バグっても泣かない。<br>
+<ul style="font-size: smaller;">
+<li><a href="$zipfile">最新のスナップショット</a>はこちら。<a href="../wolf/resource.zip">css、js</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
+</ul>
 _HTML_
 	}
 
