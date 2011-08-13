@@ -4,8 +4,6 @@ class Tag
   key :name
   field :name
   timestamp :at
-  references_many :articles
-  key :name
   
   YAHOO_AID   = GIJI['ride']['yahoo']['aid']
   UNIQ_FILTER = '9|10'

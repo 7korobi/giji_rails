@@ -7,9 +7,9 @@ class User
   field :email,      limit: 30, allow_blank: true, allow_nil: true
   field :is_admin, type: Boolean
   
-  references_many :auths
-  references_many :user_logs
-  references_and_referenced_in_many :requests
+  references_many :auths,    inverse_of: :user
+  references_many :user_logs,inverse_of: :user
+  references_and_referenced_in_many :requests, inverse_of: :users
   
   validates_uniqueness_of :user_id
   validates_uniqueness_of :email

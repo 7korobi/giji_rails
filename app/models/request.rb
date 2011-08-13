@@ -4,6 +4,7 @@ class Request
   field :remote_ip
   field :user_agent
   timestamp :at
+  references_and_referenced_in_many :users, inverse_of: :requests
   
   def initialize(attributes = {})
     super

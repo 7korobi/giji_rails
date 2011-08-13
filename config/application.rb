@@ -45,5 +45,6 @@ module Giji
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.mongoid.preload_models = false #true
   end
 end

@@ -1,11 +1,10 @@
 class Message < Chat
-  include Giji
-
   field :subid
   field :mestype
   field :csid
   field :name
-  referenced_in :face
-  referenced_in :potof
-  embedded_in :event, inverse_of: :event
+  referenced_in :face,  inverse_of: :messages
+  referenced_in :potof, inverse_of: :messages
+  embedded_in :event,   inverse_of: :messages
 end
+

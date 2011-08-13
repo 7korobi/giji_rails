@@ -19,13 +19,14 @@ gem "simple_form"
 gem "haml"
 gem "haml-rails"
 
-# Use unicorn as the web server
-# gem 'unicorn'
-
 # web_service
 gem "omniauth"
 gem "mechanize"
 gem "hpricot"
+
+# giji support
+gem "net-sftp"
+gem "whenever", :require => false
 
 # data_base
 gem "paperclip"

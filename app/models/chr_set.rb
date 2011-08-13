@@ -5,8 +5,8 @@ class ChrSet
   field :maker, limit: 20
   field :admin, limit: 20
 
-  embeds_many  :chr_jobs
-  embeds_many  :chr_npcs
+  embeds_many  :chr_jobs, inverse_of: :chr_set
+  embeds_many  :chr_npcs, inverse_of: :chr_set
   accepts_nested_attributes_for :chr_jobs
   accepts_nested_attributes_for :chr_npcs
 

@@ -9,5 +9,5 @@ class Story
   field :rating
   field :saycnttype
   field :mob
-  references_many :events
+  references_many :events, inverse_of: :story
 end

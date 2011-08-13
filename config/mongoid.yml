@@ -25,3 +25,4 @@ test:
 production:
   <<: *defaults
   database: giji
+  host: 192.168.0.200

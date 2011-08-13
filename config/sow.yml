@@ -47,7 +47,7 @@
 :PERL_GAME:
   config: &config_game
     csid: *csid_giji
-    erb: /var/www/rails/erb/config/giji.pl.erb
+    erb: /www/giji/app/views/sow/giji.pl.erb
     cd_default: 戦
     maxsize: &maxsize_game
       :MAXSIZE_ACTION:     60
@@ -80,7 +80,7 @@
 :PERL_UNION:
   config: &config_all
     <<: *config_game
-    erb: /var/www/rails/erb/config/giji.pl.erb
+    erb: /www/giji/app/views/sow/giji.pl.erb
     saycnt: &saycnt_all
       - weak
       - juna
@@ -118,7 +118,7 @@
 :PERL_BRAID:
   config: &config_braid
     csid: *csid_giji
-    erb: /var/www/rails/erb/config/giji.pl.erb
+    erb: /www/giji/app/views/sow/giji.pl.erb
     cd_default: 演
     maxsize: &maxsize_braid
       :MAXSIZE_ACTION:    120
@@ -198,7 +198,7 @@
       :DIR_RS:   ../testbed/rs
       :DIR_VIL:  ./data/vil
       :DIR_USER: ../sow/data/user
-    pl:  /var/www/testbed/config.pl
+    pl:  /www/giji_log/testbed/config.pl
 
 :PERJURY_OLD: 
   :server: utage.sytes.net
@@ -223,7 +223,7 @@
       :ENABLED_VMAKE:  0
     path: 
       <<: *GIJI_PATH
-    pl:  /var/www/perjury/config.pl
+    pl:  /www/giji_log/perjury/config.pl
 :PRETENSE: 
   :server: utage.sytes.net
   :oldlog:   /pretense/sow.cgi?cmd=oldlog&rowall=on
@@ -265,7 +265,7 @@
     path: 
       <<: *GIJI_PATH
       :DIR_VIL:  ../cafe/data/vil
-    pl:  /var/www/cabala/config.pl
+    pl:  /www/giji_log/cabala/config.pl
 :ALLSTAR_OLD: 
   :server: utage.sytes.net
   :oldlog:   /allstar/sow.cgi?cmd=oldlog&rowall=on
@@ -291,7 +291,7 @@
     path: 
       <<: *GIJI_PATH
       :DIR_VIL:  ../jksy/data/vil
-    pl:  /var/www/allstar/config.pl
+    pl:  /www/giji_log/allstar/config.pl
 :ULTIMATE: 
   :server: utage.sytes.net
   :oldlog:   /ultimate/sow.cgi?cmd=oldlog&rowall=on
@@ -333,7 +333,7 @@
       - tmmi
       - cat
       - bunmei
-    erb: /var/www/rails/erb/config/pan.pl.erb
+    erb: /www/giji/app/views/sow/pan.pl.erb
     enable: 
       <<: *enable
       :ENABLED_PERMIT_DEAD: [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"]
@@ -357,7 +357,7 @@
     path: 
       <<: *GIJI_PATH
       :DIR_RS: ./rs
-    pl:  /var/www/pan/config.pl
+    pl:  /www/giji_log/pan/config.pl
 
 # 外部 人狼議事
 #
@@ -381,15 +381,15 @@
       :BASEDIR_DOC:    /WebRecord
     path: 
       <<: *SIMPLE_PATH
-    pl:  /var/www/vage/config.pl
+    pl:  /www/giji_log/vage/config.pl
   ssh:
     open: vage.sakura.ne.jp
     user: vage
     options:
       :keys:
-        - /home/nanakorobi/.ssh/id_dsa
+        - /home/7korobi/.ssh/id_rsa
     files:
-      ldata:  /var/www/vage
+      ldata:  /www/giji_log/vage
       data:   data/vil
       config: /home/vage/www/perjury
 
@@ -413,16 +413,16 @@
       :BASEDIR_DOC:    /WebRecord
     path: 
       <<: *SIMPLE_PATH
-    pl:  /var/www/xebec/config.pl
+    pl:  /www/giji_log/xebec/config.pl
   ssh:
     open: apollo.sakura.ne.jp
     user: apollo
     pass: coolteam
     options:
       :keys:
-        - /home/nanakorobi/.ssh/id_rsa
+        - /home/7korobi/.ssh/id_rsa
     files:
-      ldata:  /var/www/xebec
+      ldata:  /www/giji_log/xebec
       data:   data/vil
       config: /home/apollo/www/sow/xebec
 
@@ -456,13 +456,13 @@
       :DIR_RS:   ../giji_lobby/lobby/rs
       :DIR_VIL:  ./data/vil
       :DIR_USER: ./data/user
-    pl:  /var/www/crazy/config.pl
+    pl:  /www/giji_log/crazy/config.pl
   ftp:
     open: crazy-crazy.sakura.ne.jp
     user: crazy-crazy
     pass: utage888
     files:
-      ldata:  /var/www/crazy
+      ldata:  /www/giji_log/crazy
       data:   data/vil
       config: /home/crazy-crazy/www/crazy
 
@@ -491,16 +491,16 @@
       :BASEDIR_DOC:    /WebRecord
     path: 
       <<: *SIMPLE_PATH
-    pl:  /var/www/cafe/config.pl
+    pl:  /www/giji_log/cafe/config.pl
   ssh:
     open: aocafe.sakura.ne.jp
     user: aocafe
     pass: minato
     options:
       :keys:
-        - /home/nanakorobi/.ssh/id_rsa
+        - /home/7korobi/.ssh/id_rsa
     files:
-      ldata:  /var/www/cafe
+      ldata:  /www/giji_log/cafe
       data:   data/vil
       config: /home/aocafe/www/noir/cafe
 
@@ -531,16 +531,16 @@
       :BASEDIR_DOC:    /~nanakorobi/WebRecord
     path: 
       <<: *SIMPLE_PATH
-    pl:  /var/www/jksy/config.pl
+    pl:  /www/giji_log/jksy/config.pl
   ssh:
     open: jinro.jksy.org
     user: nanakorobi
     options:
       :keys:
-        - /home/nanakorobi/.ssh/id_rsa
+        - /home/7korobi/.ssh/id_rsa
       :port: 20002
     files:
-      ldata:  /var/www/jksy
+      ldata:  /www/giji_log/jksy
       data:   data/vil
       config: /home/nanakorobi/public_html
 
@@ -584,13 +584,13 @@
       :DIR_RS:   ./rs
       :DIR_VIL:  ./data/vil
       :DIR_USER: ../data/user
-    pl:  /var/www/lobby/config.pl
+    pl:  /www/giji_log/lobby/config.pl
   ftp:
     open: crazy-crazy.sakura.ne.jp
     user: crazy-crazy
     pass: utage888
     files:
-      ldata:  /var/www/lobby
+      ldata:  /www/giji_log/lobby
       data:   data/vil
       config: /home/crazy-crazy/www/giji_lobby/lobby
 :OFFPARTY: 
@@ -607,7 +607,7 @@
     user: party
     pass: TyaboFil20
     files:
-      ldata:  /var/www/kitchen
+      ldata:  /www/giji_log/kitchen
       data:   data/vil
       config: /public_html/kitchen
 

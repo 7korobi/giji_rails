@@ -4,7 +4,7 @@ class Event
   key   :story_id, :turn
   field :turn, type: Integer
 
-  embeds_many :messages
-  references_many :potofs
-  referenced_in :story
+  embeds_many :messages,   inverse_of: :event
+  references_many :potofs, inverse_of: :event
+  referenced_in :story,    inverse_of: :events
 end

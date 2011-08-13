@@ -7,5 +7,5 @@ class Chat
   field :log
   field :style
   timestamp :at
-  referenced_in :potof
+  referenced_in :potof, inverse_of: :chats
 end
