@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 # ruby on rails
 gem 'unicorn'
-gem 'rails', '3.1.0.rc5'
+gem 'rails', '3.1.0.rc6'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

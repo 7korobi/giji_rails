@@ -6,6 +6,11 @@ every 19.minutes do
   thor "config create"
 end
 
+every 1.days do
+  thor "crs create"
+end
+
+
 
 # Use this file to easily define all of your cron jobs.
 #

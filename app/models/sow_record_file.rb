@@ -206,42 +206,47 @@ class SowRecordFile
           potof = story.potofs.where( account_id: o.uid ).first
           potof && potof.delete
           #
+          face = Face.find(o.cid)
+          name = if 0 < o.postfix.to_i 
+                   [%w[IR R O Y G B I V UV][o.clearance], face.name, o.postfix].join('-')
+                 else
+                   face.name
+                 end
+
           potof = SowUser.new( 
-            account_id: o.uid,
-            face_id:    o.cid,
-            csid:       o.csid,
-            jobname:    o.jobname,
-            postfix:    o.postfix,
-            zapcount:   o.zapcount,
-            clearance:  o.clearance,
+            user_id: o.uid,
+            face_id: o.cid,
+            csid:    o.csid.split('_')[0],
+            jobname: o.jobname,
+            name:    name,
+
+            zapcount:  o.zapcount,
+            clearance: o.clearance,
+            selrole:   o.selrole,
 
             rolestate: o.rolestate,
-            rolesubid: o.rolesubid,
-            selrole:   o.selrole,
             live:      o.live,
             deathday:  o.deathday,
 
-            love:        o.love,
-            sheep:       o.sheep,
+            love:  o.love,
+            sheep: o.sheep,
 
-            history:    o.history,
-            actaddpt:   o.actaddpt,
-            role: [o.role, o.role1,o.role2],
+            history:  o.history,
+            role: [o.role, o.role1,o.role2, o.rolesubid],
             gift: [o.gift, o.role1,o.role2],
             
-            said: [o.saidcount, o.saidpoint]
           )
           potof.vote = [
             (o.vote  rescue nil) ,
             (o.vote1 rescue nil) ,
-            (o.vote2 rescue nil)
+            (o.vote2 rescue nil) ,
+            (o.entrust.to_i != 1)
           ]
           potof.overhear = o.overhear.split('/') || [] rescue []
           potof.bonds = o.bonds.split('/') || [] rescue []
-          potof.pseudolove  = o.pseudolove rescue nil
           potof.pseudobonds = o.pseudobonds.split('/') || [] rescue []
+          potof.pseudolove  = o.pseudolove rescue nil
           potof.commit = o.commit.to_i == 1
-          potof.entrust = o.entrust.to_i == 1
 
           say = Hash.new
           dt  = Hash.new
@@ -253,6 +258,11 @@ class SowRecordFile
               dt[key] = o[key]
             end
           end
+          potof.point  = {
+            actaddpt:  o.actaddpt,
+            saidcount: o.saidcount,
+            saidpoint: o.saidpoint
+          }
           potof.say    = say
           potof.timer  = dt
 
