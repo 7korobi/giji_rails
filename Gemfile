@@ -33,8 +33,8 @@ gem "paperclip"
 gem "mongoid"
 gem "bson_ext" 
 gem "json"
-gem "sqlite3", '= 1.3.3'
-gem "sqlite3-ruby", '= 1.3.3'
+gem "sqlite3"
+gem "sqlite3-ruby"
 
 # management
 gem "rubygems-update"
