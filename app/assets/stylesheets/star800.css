@@ -1,0 +1,58 @@
+@charset "Shift_JIS";
+@import url("theme/star.css");
+@import url("size/800baloon.css");
+
+* {
+  font-family: Meiryo UI;
+  font-size: 100%;
+  line-height: 130%;
+}
+
+/* 外枠 ----------*/
+.outframe {
+  border-right: 3px double #1b7;
+  border-left : 3px double #1b7;
+}
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  border-right: 3px double #1b7;
+  border-left : 3px double #1b7;
+}
+
+/* フィルタ（左配置時）----------*/
+.sayfilterleft {
+  border-left : 3px double #1b7;
+}
+
+.contentframe {
+  background-image: url("/assets/bg/star580.png");
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+.contentframe_navileft {
+  background-image: url("/assets/bg/star770.png");
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.ajax{
+}
+
+/* 外枠 ----------*/
+.outframe ,
+.outframe_navimode {
+  background-image: url("/assets/bg/earth.png");
+  background-position: center top;
+}
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+
+/* 発言のキャラ画像 ----------*/
+.action_nom, 
+.action {
+  margin-left: 121px;  padding: 0 7px 0 4px;  border-width: 0 0 1px 4px; border-style: solid solid ;}

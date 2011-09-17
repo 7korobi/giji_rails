@@ -1,0 +1,380 @@
+@charset "Shift_JIS";
+/* GROBAL --------------------*/
+h1 {
+  margin: 2px 0 0 0;
+  padding: 0;
+}
+
+h2 {
+  padding: 2px 0 0 0;
+}
+
+h3 {
+  padding: 2px 8px;
+}
+ul,
+ol{
+  margin: 2px 0 0 0;
+}
+rt,
+sup,
+sub {
+  font-size:x-small;
+}
+
+
+/* BODY FRAME --------------------*/
+body {
+  background-position: center;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.vindex {
+  width: 100%;
+}
+td div {
+  white-space:normal;
+}
+.menu   * ,
+.vindex * {
+  vertical-align: top;
+}
+.vindex .small{
+  font-size: smaller;
+  white-space:nowrap;
+}
+/* 一覧をスマートにする工夫 */
+i {
+  display: none;
+  font-style:  normal;
+}
+
+.ie_hover i,
+div:hover > i ,
+.i_hover:hover   i ,
+.i_active:active i {
+  display: inline;
+}
+/* 計算用 */
+#checklist {
+  text-align: right;
+}
+.calc {
+  text-align: right;
+  white-space:nowrap;
+}
+
+/* 外枠 ----------*/
+.outframe {
+  margin: 0px auto 0px auto;
+  padding: 0px;
+  width:100%;
+  background-position: right;
+}
+
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  margin: 0px auto 0px auto;
+  padding: 0px;
+}
+.ad {
+  text-align : center;
+}
+
+.chrlist {
+}
+
+.drag,
+.ajax {
+  position:absolute;
+}
+/* 内枠 ----------*/
+.contentframe .toppage{
+  margin: 0px;
+  padding: 0px;
+}
+
+.contentframe {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+.contentframe_navileft {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* 内枠の中身（タイトル画像は含まない） ----------*/
+.inframe,
+.inframe .memo {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* SAY FILTER --------------------*/
+/* フィルタ（下配置時）----------*/
+.sayfilter {
+  margin: 0px auto 0px auto;  padding: 0px;  font-size: 100%;
+  line-height: 100%;
+}
+
+/* フィルタ（左配置時）----------*/
+.sayfilterleft {
+  margin: 0px;  padding: 0px;  font-size: 100%;
+  background-position: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* フィルタの中身 ----------*/
+.insayfilter table{
+  margin:  0;
+  padding: 0;
+}
+.insayfilter td {
+  vertical-align: top;
+  margin:  0;
+}
+.insayfilter .users {
+  padding: 0 2px 0 0 ;
+}
+
+#lumpfilter,
+.sayfilter_content {
+  margin:  0;
+  padding: 0;
+}
+
+.sayfilter_button_mestype ,
+.sayfilter_button_lump{
+  width: 100%;
+}
+
+
+/* BLOCK --------------------*/
+
+/* 段落全般 ----------*/
+.paragraph {
+}
+
+/* 日付リンク ----------*/
+.turnnavi {
+  margin: 0px;
+  padding: 0px 16px;
+}
+
+/* ページリンク ----------*/
+.pagenavi {
+  margin: 0px;
+}
+
+/* 非ログイン時注意表示 ----------*/
+.infonologin {
+  margin: 0px;
+  padding: 0px 0px 0px 16px;
+}
+
+/* 全表示リンク ----------*/
+.row_all {
+  margin: 0px;
+}
+
+/* 表示行数・表示順序変更フォーム ----------*/
+.viewform {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* 発言の日付 ----------*/
+.mes_date {
+}
+
+/* FORM PLAYER --------------------*/
+
+/* 発言入力欄の外枠 ----------*/
+.formpl_frame {
+}
+
+/* 発言入力欄の項目 ----------*/
+.formpl_content {
+}
+
+.formpl_content textarea{
+}
+
+
+/* アクション入力欄 ----------*/
+.formpl_action {
+}
+
+/* 発言者名 ----------*/
+.mesname {
+  margin: 0 0 4px 0;
+  padding: 0 0 2px 0;
+  font-size: 100%;
+  font-weight: bold;
+}
+
+/* 村建て人発言 ----------*/
+/* 管理人発言 ----------*/
+.mes_maker .action,
+.mes_maker .guide ,
+.mes_admin .action,
+.mes_admin .guide {
+  margin:  0 0 0 6px;
+  padding: 0; 
+}
+
+.mes_maker ,
+.mes_admin ,
+.info      ,
+.infosp    ,
+.infowolf  ,
+.caution   ,
+.mes_think .action,
+.action_bm {
+  margin: 0 0 6px 0;
+  padding: 4px 16px;
+}
+
+/* アクション ------------*/ 
+.action_nom, 
+.action {
+}
+
+
+/* 発言の文章部分 ----------*/
+.mes_text ,
+.mes_text_report ,
+.mes_text_monospace ,
+.memoleft ,
+.memoright {
+  word-wrap:  break-word !important;
+  word-break: break-all  !important;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+/* メモ ----------*/
+.memo {
+  margin: 0px;
+  padding: 4px 0; 
+  border-width: 0;
+  border-collapse: separate;
+}
+.memoleft {
+  padding: 1px;
+}
+.memoright {
+  padding: 1px;
+}
+/* 発言関係共通 ------*/
+.inframe .message_filter {
+  display:block;
+}
+.message_filter .memo {
+  width:100%;
+}
+
+.say {
+  vertical-align: middle;
+}
+
+.say .img{
+  vertical-align: top;
+}
+.say .field {
+  width:100%;
+}
+.msg p {
+  width:100%;
+}
+
+/* 発言入力欄（共通） ---*/ 
+.formpl_common {
+  width: 100%;
+  margin: 0px;
+  border-style: solid none none none;
+  border-width: 2px 0 0 0;
+}
+.formpl_commit ,
+.formpl_undef  ,
+.formpl_vil      ,
+.formpl_seer     ,
+.formpl_medium   ,
+.formpl_guard    ,
+.formpl_fm       ,
+.formpl_stigma   ,
+.formpl_sympathy ,
+.formpl_love     ,
+.formpl_wolf     ,
+.formpl_possess  ,
+.formpl_fanatic  ,
+.formpl_cpossess ,
+.formpl_cwolf    ,
+.formpl_intwolf  ,
+.formpl_pixi     ,
+.formpl_trickster,
+.formpl_hamster  ,
+.formpl_werebat  ,
+.formpl_gm       ,
+.WIN_NONE    ,
+.WIN_HUMAN   ,
+.WIN_DISH    ,
+.WIN_LONEWOLF,
+.WIN_PIXI    ,
+.WIN_GURU    ,
+.WIN_HATER   ,
+.WIN_LOVER   ,
+.WIN_WOLF    ,
+.WIN_EVIL    {
+  width: 100%;
+  margin: 0px;
+}
+/* 誤爆防止チェック欄 ----------*/
+.form_vmake textarea{
+}
+
+.previewsafety {
+  margin: 0px;
+  padding: 4px;
+}
+
+/* 段組（ラベル） ----------*/
+.multicolumn_label {
+}
+
+/* 段組（左配置） ----------*/
+.multicolumn_left {
+}
+
+/* 段組（右配置） ----------*/
+.multicolumn_right {
+  width: 70%;
+}
+
+/* 段組（役割入力欄） ----------*/
+.multicolumn_role {
+  width: 100%;
+}
+
+/* 段組（改行） ----------*/
+.multicolumn_clear {
+  clear: left;
+}
+
+/* jQuery UI */
+.ui-accordion-header a,
+.ui-accordion-header strong {
+  padding-left: 2.2em;
+}
+.ui-accordion-content {
+  padding-bottom: 1em;
+}

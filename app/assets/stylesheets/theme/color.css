@@ -1,0 +1,148 @@
+@charset "Shift_JIS";
+@import url("jquery-ui-1.8.10.custom.css");
+
+.mes_maker a.res_anchor:link,
+.mes_admin a.res_anchor:link,
+a:link {
+  white-space: nowrap;
+}
+
+th strong{
+  font-size: large;
+}
+.board {
+  margin: 0 0 0 5%;
+  width: 90%;
+  font-size: smaller;
+  border-collapse: collapse; /* CSS2? */
+}
+.board td {
+  vertical-align: top;
+}
+.choice .board {
+  border-bottom: none;
+  border-collapse: collapse; /* CSS2? */
+}
+.choice .board th{
+}
+.choice .board td{
+  vertical-align: bottom;
+  text-align: center;
+  border-top: none;
+  border-collapse: collapse; /* CSS2? */
+}
+.choice .board .link A{
+  display: block;
+}
+
+.chrlist {
+  padding: 0px;
+  text-align: center;
+  background-color: #000;
+}
+
+.chrblank {
+  background-image: url(/assets/portrate/blank.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
+  padding: 6px 0 0 0;
+  height: 60px;
+  width:  90px;
+  font-size: smaller;
+  margin: 0 auto 0 auto;
+  text-align: center;
+}
+.chrM {
+  background-image: url(/assets/portrate/blankM.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
+  padding: 6px 0 0 0;
+  height: 60px;
+  width:  90px;
+  font-size: smaller;
+  margin: 0 auto 0 auto;
+}
+.chrF {
+  background-image: url(/assets/portrate/blankF.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
+  padding: 6px 0 0 0;
+  height: 60px;
+  width:  90px;
+  font-size: smaller;
+  margin: 0 auto 0 auto;
+}
+
+/* フィルタ選択欄（有効時）----------*/
+.sayfilter_content_enable {
+  width: 100%;
+}
+
+/* フィルタ選択欄（無効時）----------*/
+.sayfilter_content_disenable {
+  width: 100%;
+}
+
+.sayfilter_incontent input {
+  display: none;
+}
+
+/* 発言の文章部分 ----------*/
+.mes_text em,
+.mes_text_report em,
+.mes_text_monospace em{
+  opacity: 0.7;
+  font-style:  normal;
+}
+.mes_text span,
+.mes_text_report span,
+.mes_text_monospace span{
+  opacity: 0.5;
+  font-size: x-small;
+}
+
+
+.mes_text{
+  padding: 0px;
+  vertical-align: top;
+}
+.mes_text_report{
+  padding: 0px;
+  vertical-align: top;
+}
+.mes_text_report:first-line{
+  font-weight: bold !important;
+}
+
+.mes_text_monospace ,
+.mes_text_monospace i{
+  padding: 0px;
+  vertical-align: top;
+  layout-grid: both loose 0 0;
+  font-family: monospace !important;
+}
+
+/* 発言の日付 ----------*/
+.mes_date {
+  text-align: right;
+}
+
+
+/* 村建て人発言 ----------*/
+.mes_maker h3{  color: #666;}
+.mes_maker .action,
+.mes_maker .guide {
+  border-style: none;
+  text-align: left;
+  color: #ccf;  background: #000;
+}
+/* 管理人発言 ----------*/
+.mes_admin h3{  color: #844;}
+.mes_admin .action,
+.mes_admin .guide {
+  border-style: none;
+  text-align: left;
+  color: #c99;  background: #000;
+}
+.mes_maker {  color: #ccf;  background: #000;  }
+.mes_admin {  color: #c99;  background: #000;  }

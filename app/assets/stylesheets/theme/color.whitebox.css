@@ -1,0 +1,256 @@
+@charset "Shift_JIS";
+@import url("color.css");
+
+/* GROBAL --------------------*/
+body {
+  color: #ccc;
+}
+
+b{
+  font-weight: thick;
+}
+
+a {
+  text-decoration: none;
+}
+
+.mes_maker a.res_anchor:link,
+.mes_admin a.res_anchor:link,
+a:link {
+  color: #ff4040;
+}
+
+.mes_maker a.res_anchor:visited,
+.mes_admin a.res_anchor:visited,
+a:visited {
+  color: #ace;
+}
+
+.mes_maker a.res_anchor:active,
+.mes_admin a.res_anchor:active,
+a[href]:active {
+  color: #ff0000;
+}
+
+.mes_maker a.res_anchor:hover,
+.mes_admin a.res_anchor:hover,
+a[href]:hover {
+  color: #ffa0a0;
+}
+
+a.res_anchor:link {
+  color: #600000;
+}
+
+a.res_anchor:visited {
+  color: #500000;
+}
+
+a.res_anchor:active {
+  color: #304020;
+}
+
+a.res_anchor:hover {
+  color: #ff4040;
+}
+
+h2 {
+  color: #ccf;
+  border-bottom: 1px solid #ccf;
+}
+
+h3 {
+  color: #ffa;
+}
+
+/* フィルタ小見出し（広げた時）----------*/
+.sayfilter_caption_enable {
+  color: #000;
+}
+
+/* フィルタ小見出し（畳んだ時）----------*/
+.sayfilter_caption_disenable {
+  color: #888;
+}
+
+/* フィルタ選択欄（有効時）----------*/
+.sayfilter_button_lump,
+.sayfilter_content_enable {
+  color: #000;
+}
+
+/* フィルタ選択欄（無効時）----------*/
+.sayfilter_content_disenable {
+  color: #888;
+}
+
+.drag,
+.ajax {
+  border: 0px none;
+  background-color: rgba(  0,  0,  0, 0.1);
+}
+
+.mes_text_monospace{
+  background-image: url("/assets/bg/grid.gif");
+}
+
+/* やんわり注意表示 ----------*/
+.infotext {
+  color: #999;
+}
+
+/* 警告・注意する部分（インライン） ----------*/
+.cautiontext {
+  font-weight: bold;
+  color: #f44;
+}
+
+/* 発言の日付 ----------*/
+.mes_date {
+}
+
+.info      {  color: #000;  background: #debea1; border: 1px dashed #554433; }
+.infosp    {  color: #000;  background: #d1d1d1; border: 1px dashed #554433; }
+.infowolf  {  color: #000;  background: #f98585; border: 1px dashed #554433; }
+.caution   {  color: #000;  background: #d0d0d0; border: 1px dashed #554433; }
+
+/* 削除済み発言 ----------*/
+.mes_del .img{
+  opacity: 0.25;
+}
+.mes_del {
+  color: #000;  background: #adc2be; border: 1px dashed #554433;}
+/* 未確定発言 ----------*/
+.mes_que {
+  color: #000;  background: #e3caa7; border: none; }
+.mes_nom {
+  color: #000;  background: #e3caa7; border: 1px dashed #554433;}
+/* 独り言 ----------*/
+.mes_think {
+  color: #000;  background: #d1d1d1; border: 1px dashed #554433;} /*茶鼠*/
+
+/* 死者のうめき ----------*/
+.mes_grave {
+  color: #000;  background: #bbbbbb; 
+  border-top: 3px solid #eee;
+  border-left: 3px solid #eee;
+  border-bottom: 3px solid #aaa;
+  border-right: 3px solid #aaa;
+} /*空色*/
+
+/* 見物人 ------*/
+.mes_mob {
+  color: #000;  background: #db9;    border: 1px dashed #554433; } /*榛色*/
+/* 囁き ----------*/
+.mes_wolf {
+  color: #000;  background: #f98585; border: 1px dashed #554433; } /*紅海老茶*/
+/* 共鳴 ----------*/
+.mes_sympa {
+  color: #000;  background: #97C9B0; border: 1px dashed #554433; } /*薄柿*/
+/* 念話 ----------*/
+.mes_bat  ,
+.mes_pixi {
+  color: #000;  background: #CBBDE3; border: 1px dashed #554433; }
+
+
+/* 発言入力欄（共通） ---*/ 
+.formpl_common {
+  border-color: #664;
+}
+.formpl_common .msg ,
+.formpl_common textarea ,
+.formpl_commit ,
+.formpl_commit textarea ,
+.formpl_undef  ,
+.formpl_undef  textarea ,
+.formpl_vil      textarea,
+.formpl_seer     textarea,
+.formpl_medium   textarea,
+.formpl_guard    textarea,
+.formpl_fm       textarea,
+.formpl_stigma   textarea,
+.formpl_sympathy textarea{
+  border-color: #664;
+  color: #330;
+  background: #cb8; 
+}
+.formpl_vil      ,
+.formpl_seer     ,
+.formpl_medium   ,
+.formpl_guard    ,
+.formpl_fm       ,
+.formpl_stigma   ,
+.formpl_sympathy ,
+.WIN_NONE        ,
+.WIN_HUMAN       ,
+.WIN_DISH        {
+  border-color: #664;
+  color: #330;
+  background: #a97;
+}
+.WIN_LONEWOLF ,
+.WIN_PIXI     ,
+.WIN_GURU     {
+  border-color: #664;
+  color: #226;
+  background: #a9d;
+}
+.WIN_HATER {
+  border-color: #664;
+  color: #444;
+  background: #aaa;
+}
+.formpl_love ,
+.formpl_love textarea,
+.WIN_LOVER   {
+  border-color: #664;
+  color: #654;
+  background: #dcb;
+}
+.formpl_wolf     ,
+.formpl_wolf     textarea,
+.formpl_possess  ,
+.formpl_possess  textarea,
+.formpl_fanatic  ,
+.formpl_fanatic  textarea,
+.formpl_cpossess ,
+.formpl_cpossess textarea,
+.formpl_cwolf    ,
+.formpl_cwolf    textarea,
+.formpl_intwolf  ,
+.formpl_intwolf  textarea,
+.WIN_WOLF {
+  border-color: #833;
+  color: #600;
+  background: #a55;
+}
+.formpl_pixi,
+.formpl_pixi     textarea,
+.formpl_trickster,
+.formpl_hamster  ,
+.formpl_werebat  ,
+.formpl_werebat  textarea,
+.WIN_EVIL {
+  border-color: #460;
+  color: #130;
+  background: #9a7;
+}
+
+textarea, input, select {
+  color: #000;
+}
+
+.WIN_NONE     a ,
+.WIN_HUMAN    a ,
+.WIN_DISH     a ,
+.WIN_LONEWOLF a ,
+.WIN_PIXI     a ,
+.WIN_GURU     a ,
+.WIN_HATER    a ,
+.WIN_LOVER    a ,
+.WIN_WOLF     a ,
+.WIN_EVIL     a {
+  color: #111;
+}
+
+

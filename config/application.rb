@@ -8,6 +8,12 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Giji
   class Application < Rails::Application
+
+    config.generators do |g|
+      g.view_specs   false
+      g.helper_specs false
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -45,6 +51,7 @@ module Giji
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.assets.version = '1.0'
     config.mongoid.preload_models = true
     config.mongoid.logger = Logger.new($stdout, :warn)
   end

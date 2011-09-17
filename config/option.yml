@@ -1,0 +1,395 @@
+---
+PERMIT:
+  - [読み書き許可           ,A]
+  - [読取のみ（書込み禁止） ,R]
+  - [書込のみ（隠し要素）   ,H]
+
+RATING:
+  - [www笑www, www  ]
+  - [感動ログ, wow  ]
+  - [名勝負  , fight]
+  - [１８禁  , R18  ]
+
+
+roletable:
+  custom:   自由設定
+  default:  標準
+  hamster:  ハムスター
+  random:   ランダム
+  test1st:  人狼審問試験壱型
+  test2nd:  人狼審問試験弐型
+  ultimate: アルティメット
+  wbbs_c:   人狼BBS-C国
+  wbbs_f:   人狼BBS-F国
+
+votetypes:
+  sign:      記名で投票
+  anonymity: 匿名で投票
+
+mes_text:
+  - mes_text
+  - mes_text_monospace
+  - mes_text_report
+
+n_rule_name:
+  - 短期はここではできない。
+  - 情報ページ（ここ）を熟読する。
+  - ルールを守り、つねに心構えに気を配る。
+  - 進行中は、どんな嘘でもＯＫ。
+  - ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。
+  - 突然死をしない。
+
+css_wday:
+  - wa800
+  - cinema800
+  - star800
+  - night800
+  - star800
+  - wa800
+  - cinema800
+
+jp_wday:
+  - 日
+  - 月
+  - 火
+  - 水
+  - 木
+  - 金
+  - 土
+
+live_list:
+  - live
+  - - victim
+    - cursed
+    - droop
+    - suicide
+    - feared
+  - executed
+  - suddendead
+  - mob
+
+live:
+  live:       生存者
+  executed:   処刑死
+  victim:     襲撃死
+  cursed:     呪詛死
+  droop:      衰退死
+  suicide:    後追死
+  feared:     恐怖死
+  suddendead: 突然死
+  mob:        見物人
+
+
+live_caption:
+  live:       生存者
+  executed:   処刑者
+  victim:     犠牲者
+  mob:        見物人
+
+win_list:
+  - :WIN_NONE
+  - :WIN_HUMAN
+  - :WIN_WOLF
+  - :WIN_GURU
+  - :WIN_PIXI
+  - :WIN_PIXI
+  - :WIN_LONEWOLF
+  - :WIN_LOVER
+  - :WIN_HATER
+
+role_win:
+  WIN_NONE:     見物人
+  WIN_HUMAN:    村人陣営
+  WIN_WOLF:     人狼陣営
+  WIN_GURU:     笛吹き
+  WIN_PIXI:     妖精
+  WIN_LONEWOLF: 一匹狼
+  WIN_LOVER:    恋人陣営
+  WIN_HATER:    邪気陣営
+  WIN_EVIL:     破滅陣営
+  WIN_DISH:     据え膳
+
+mob:
+  visiter:
+    CAPTION: 客席
+    HELP:    進行中会話は客席同士のみ
+  grave:
+    CAPTION: 裏方
+    HELP:    進行中会話は墓下と
+  alive:
+    CAPTION: 舞台
+    HELP:    進行中会話は地上、墓下、両方と
+  juror:
+    CAPTION: 陪審
+    HELP:    進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。
+
+game_rule:
+  TABULA:
+    CAPTION: タブラの人狼
+    HELP:    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村勝利。<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。</li>
+  MILLERHOLLOW: 
+    CAPTION: ミラーズホロウ
+    HELP:    <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。<li>狼を全滅させると、村勝利。<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。<li>すべての死者は役職が公開される。</li>
+  LIVE_TABULA:
+    CAPTION: 死んだら負け
+    HELP:    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村側の生存者が勝利。<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。</li>
+  LIVE_MILLERHOLLOW:
+    CAPTION: 死んだら負け(ミラーズホロウ)
+    HELP:    <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。<li>狼を全滅させると、村側の生存者が勝利。<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。</li>
+  TROUBLE:
+    CAPTION: Trouble☆Aliens
+    HELP:    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村側の生存者が勝利（村人は死んだら負ける）。<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。<li>人狼は会話できない。<li>襲撃先は翌日、犠牲候補と人狼に開示される。</li>
+  MISTERY:
+    CAPTION: 深い霧の夜
+    HELP:    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村勝利。<li>役職「村人」を全滅させると、狼勝利。</li><li>役職を持つ村側の生き残りは、勝利に直接は寄与しない。</li><li>村側は自分の役職を自覚しない。</li><li>村側は、能力の結果不審者を見かけることがある。</li><li>人狼の行動対象に選ばれると、不審者を見かける。</li><li>村人ふたりがお互いの処へ外出すると、結社をつくる。</li><li>守護者は、より大人数の人狼からは守りきることができず、身代わりとなる。</li><li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。</li>
+  VOV:
+    CAPTION: 狂犬病の谷
+    HELP:    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村勝利。<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。</li><li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。</li>
+
+trs:
+  all:
+    CAPTION: オール☆スター
+    HELP:    すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。
+  simple: 
+    CAPTION: ラッキー☆スター
+    HELP:    初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。
+  star: 
+    CAPTION: Orbital☆Star
+    HELP:    すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……
+  regend: 
+    CAPTION: 議事☆伝承
+    HELP:    すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。
+  fool: 
+    CAPTION: 適当系
+    HELP:    てきとーな感じ。
+  sow: 
+    CAPTION: 人狼物語
+    HELP:    ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。
+  wbbs: 
+    CAPTION: 人狼BBS
+    HELP:    ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。
+  juna: 
+    CAPTION: 人狼審問
+    HELP:    ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。
+  complex: 
+    CAPTION: PARANOIA
+    HELP:    ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！
+  complexx: 
+    CAPTION: ParanoiA
+    HELP:    ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！
+  cabala: 
+    CAPTION: ギロチン広場
+    HELP:    権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。
+  tabula: 
+    CAPTION: タブラの人狼
+    HELP:    カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。
+  millerhollow: 
+    CAPTION: ミラーズホロウ
+    HELP:    カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。
+  ultimate: 
+    CAPTION: アルティメット
+    HELP:    カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。
+
+rp:
+  folder:
+    - :RP
+    - :PRETENSE
+    - :PERJURY
+    - :CRAZY
+    - :XEBEC
+    - :LOBBY
+    - :LOBBY_OLD
+    - :OFFPARTY
+
+wolf:
+  folder:
+    - :WOLF
+    - :RP
+
+ultimate:
+  folder:
+    - :ULTIMATE
+    - :PRETENSE
+
+wolf2cabala:
+  folder:
+    - WOLF
+    - RP
+    - ULTIMATE
+    - PRETENSE
+    - LOBBY_OLD
+
+  mestype:
+  -  0  # MESTYPE_UNDEF
+  -  7  # MESTYPE_INFONOM
+  -  1  # MESTYPE_INFOSP
+  -  8  # MESTYPE_DELETED
+  -  2  # MESTYPE_DELETEDADMIN
+  -  6  # MESTYPE_QUE
+  -  9  # MESTYPE_SAY
+  - 10  # MESTYPE_TSAY
+  - 11  # MESTYPE_WSAY
+  - 12  # MESTYPE_GSAY
+  -  4  # MESTYPE_MAKER
+  -  5  # MESTYPE_ADMIN
+  - 13  # MESTYPE_SPSAY
+  - 14  # MESTYPE_BSAY
+  -  3  # MESTYPE_CAST
+  - 15  # MESTYPE_VSAY
+
+  logid_0:
+    X: '-' #
+    I:  I  # MESTYPE_DELETE
+    i:  i  # MESTYPE_DELADMIN
+    D:  D  # MESTYPE_DELETE
+    d:  d  # MESTYPE_DELADMIN
+    Q:  q  # MESTYPE_QUEUE
+    C:  c  # MESTYPE_CAST
+    M:  m  # MESTYPE_MAKER
+    A:  a  # MESTYPE_ADMIN
+    B:  X  # MESTYPE_XSAY
+    S:  S  # MESTYPE_SAY
+           # MESTYPE_MSAY
+    T:  T  # MESTYPE_TSAY
+           # MESTYPE_AIM
+    W:  W  # MESTYPE_WSAY
+    G:  G  # MESTYPE_GSAY
+    P:  P  # MESTYPE_SPSAY
+    V:  V  # MESTYPE_VSAY
+  
+
+cabala:
+  folder:
+  - :ALLSTAR
+  - :CABALA
+  - :PERJURY
+  - :CRAZY
+  - :XEBEC
+  
+  logmestypetext:
+  -                # MESTYPE_UNDEF
+  -                # MESTYPE_INFOSP
+  - 【管理人削除】 # MESTYPE_DELETEDADMIN
+  -                # MESTYPE_CAST
+  -                # MESTYPE_MAKER
+  -                # MESTYPE_ADMIN
+  - 【未確】       # MESTYPE_QUEUE
+  -                # MESTYPE_INFONOM
+  - 【削除】       # MESTYPE_DELETED
+  - 【人】         # MESTYPE_SAY
+  - 【独】         # MESTYPE_TSAY
+  - 【赤】         # MESTYPE_WSAY
+  - 【墓】         # MESTYPE_GSAY
+  - 【鳴】         # MESTYPE_SPSAY
+  - 【念】         # MESTYPE_XSAY
+  - 【見】         # MESTYPE_VSAY
+  - 【憑】         # MESTYPE_MSAY
+  -                # MESTYPE_AIM
+  -                # 
+  -                # MESTYPE_INFOWOLF
+
+  logfont:
+  -                # MESTYPE_UNDEF
+  -                # MESTYPE_INFOSP
+  - color="gray"   # MESTYPE_DELETEDADMIN
+  -                # MESTYPE_CAST
+  -                # MESTYPE_MAKER
+  -                # MESTYPE_ADMIN
+  -                # MESTYPE_QUEUE
+  -                # MESTYPE_INFONOM
+  - color="gray"   # MESTYPE_DELETED
+  -                # MESTYPE_SAY
+  - color="gray"   # MESTYPE_TSAY
+  - color="red"    # MESTYPE_WSAY
+  - color="teal"   # MESTYPE_GSAY
+  - color="blue"   # MESTYPE_SPSAY
+  - color="green"  # MESTYPE_XSAY
+  - color="maroon" # MESTYPE_VSAY
+  -                # MESTYPE_MSAY
+  - color="purple" # MESTYPE_AIM
+  -                # 
+  - color="red"    # MESTYPE_INFOWOLF
+
+  messtyle:
+  - mes_undef    # MESTYPE_UNDEF
+  - infosp       # MESTYPE_INFOSP
+  - mes_deladmin # MESTYPE_DELETEDADMIN
+  - mes_undef    # MESTYPE_CAST
+  - mes_maker    # MESTYPE_MAKER
+  - mes_admin    # MESTYPE_ADMIN
+  - mes_queue    # MESTYPE_QUEUE
+  - info         # MESTYPE_INFONOM
+  - mes_del      # MESTYPE_DELETED
+  - mes_nom      # MESTYPE_SAY
+  - mes_think    # MESTYPE_TSAY
+  - mes_wolf     # MESTYPE_WSAY
+  - mes_grave    # MESTYPE_GSAY
+  - mes_sympa    # MESTYPE_AIM
+  - mes_pixi     # MESTYPE_XSAY
+  - mes_mob      # MESTYPE_VSAY
+  - mes_nom      # MESTYPE_MSAY
+  - mes_sympa    # MESTYPE_AIM
+  -              # 
+  - infowolf     # MESTYPE_INFOWOLF
+
+  logmestype:
+  - '-' # MESTYPE_UNDEF
+  -  i   # MESTYPE_INFOSP
+  -  d   # MESTYPE_DELETEDADMIN
+  -  c   # MESTYPE_CAST
+  -  m   # MESTYPE_MAKER
+  -  a   # MESTYPE_ADMIN
+  -  q   # MESTYPE_QUEUE
+  -  I   # MESTYPE_INFONOM
+  -  D   # MESTYPE_DELETED
+  -  S   # MESTYPE_SAY
+  -  T   # MESTYPE_TSAY
+  -  W   # MESTYPE_WSAY
+  -  G   # MESTYPE_GSAY
+  -  P   # MESTYPE_SPSAY
+  -  X   # MESTYPE_XSAY
+  -  V   # MESTYPE_VSAY
+  -  S   # MESTYPE_MSAY
+  -  T   # MESTYPE_AIM
+  -      # 
+  -  w   # MESTYPE_INFOWOLF
+
+  mestype2typeid:
+  - -1 # MESTYPE_UNDEF
+  -  5 # MESTYPE_INFOSP
+  - -1 # MESTYPE_DELETEDADMIN
+  -  6 # MESTYPE_CAST
+  -  5 # MESTYPE_MAKER
+  -  5 # MESTYPE_ADMIN
+  -  0 # MESTYPE_QUEUE
+  -  6 # MESTYPE_INFONOM
+  - -1 # MESTYPE_DELETED
+  -  0 # MESTYPE_SAY
+  -  1 # MESTYPE_TSAY
+  -  2 # MESTYPE_WSAY
+  -  3 # MESTYPE_GSAY
+  -  2 # MESTYPE_SPSAY
+  -  2 # MESTYPE_XSAY
+  -  4 # MESTYPE_VSAY
+  -  0 # MESTYPE_MSAY
+  -  1 # MESTYPE_AIM
+  - -1 # 
+  -  2 # MESTYPE_INFOWOLF
+
+  loganchormark:
+    c: '-CAST-'  # MESTYPE_CAST
+    m: '#'       # MESTYPE_MAKER
+    a: '%'       # MESTYPE_ADMIN
+    S: ''        # MESTYPE_SAY
+                 # MESTYPE_MSAY
+    T: '-'       # MESTYPE_TSAY
+                 # MESTYPE_AIM
+    W: '*'       # MESTYPE_WSAY
+    G: '+'       # MESTYPE_GSAY
+    P: '='       # MESTYPE_SPSAY
+    X: '!'       # MESTYPE_XSAY
+    V: '@'       # MESTYPE_VSAY
+          
+
+
+

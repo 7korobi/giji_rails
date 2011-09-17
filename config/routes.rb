@@ -1,17 +1,12 @@
 Giji::Application.routes.draw do
+  resources :users
   resources :chr_sets
 
   match '/auth/:provider/callback' => 'sessions#callback'
-  match 'auth/failure' => 'sessions#destroy', as: :signout
+  match '/auth/failure' => 'sessions#destroy'
   match '/signout'     => 'sessions#destroy', as: :signout
-  root :to => 'welcomes#landing'
 
-  resource :welcomes do
-    member do
-      get  'landing'
-      get  'thanks'
-    end
-  end
+  root :to => 'chr_sets#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

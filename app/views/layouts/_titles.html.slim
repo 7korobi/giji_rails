@@ -1,0 +1,131 @@
+DIV.login
+  p
+    - if login?
+      = link_to 'Logout', signout_path
+    - if logout?
+      = link_to 'Login', '/auth/twitter'
+  p style="color: green"
+  p style="color: red"
+- if @disable_headline then
+  .choice
+- else
+  = link_to '人狼物語専用wiki',"http://melon-cirrus.sakura.ne.jp/wiki/"
+  | ｜
+  = link_to '人狼物語Server一覧',"http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8"
+  |（melonkoさん管理）
+  - max_wolf    = 2
+  - max_allstar = cfg(:ALLSTAR_OLD)[:MAX_VILLAGES]
+  - max_jksy    = cfg(:ALLSTAR)[:MAX_VILLAGES]
+  - max_perjury = cfg(:PERJURY_OLD)[:MAX_VILLAGES]
+  - max_vage    = cfg(:PERJURY)[:MAX_VILLAGES]
+  - max_crazy   = cfg(:CRAZY)[:MAX_VILLAGES]
+  - max_xebec   = cfg(:XEBEC)[:MAX_VILLAGES]
+  - max_cafe    = cfg(:CABALA)[:MAX_VILLAGES]
+  - max_cabala  = cfg(:CABALA_OLD)[:MAX_VILLAGES]
+  - max_pan     = cfg(:PAN)[:MAX_VILLAGES]
+  - max_all     = ( max_wolf )
+  - max_all    += ( max_allstar + max_jksy   )
+  - max_all    += ( max_perjury + max_vage   + max_crazy + max_xebec )
+  - max_all    += ( max_cafe    + max_cabala )
+  .choice
+    table.board
+      tr
+        th colspan="5"
+          | 総合トップページはこちら
+          strong= link_to_lobby '人狼議事'
+          | 合計#{max_all}村を上限としています
+        td.no_choice.link rowspan="2"
+          = link_to_cgi "似顔絵<br>人狼<br>　".html_safe, cfg(:PAN)[:URL_SW] + "/sow.cgi?"
+      tr.link
+        td.no_choice
+          = link_to_cgi "ロビー<br>　".html_safe      ,"wolf/redirect.cgi?LOBBY"
+        td.no_choice
+          = link_to_cgi   "標準<br>　".html_safe      ,"wolf/sow.cgi"
+        td.no_choice
+          | 陰謀
+          br
+          | 　
+        td.no_choice
+          | 大乱闘
+          br
+          | 　
+        td.no_choice
+          | ＲＰ　
+          br
+          | :Braid
+        tr
+          td.no_choice
+          td.no_choice
+            = max_wolf
+            | 村
+          td.no_choice style="text-align:left;"
+            = max_cabala
+            | 村#{link_to '旧地', cfg(:CABALA_OLD)[:URL_SW] + "/sow.cgi?"}
+            br
+            = max_cafe
+            | 村#{link_to :cafe, cfg(:CABALA)[:URL_SW] + "/sow.cgi?"}
+            br
+            | 　
+            br
+            | 　
+          td.no_choice style="text-align:left;"
+            = max_allstar
+            | 村#{link_to '旧地', cfg(:ALLSTAR_OLD)[:URL_SW] + "/sow.cgi?"}
+            br
+            = max_jksy
+            | 村#{link_to :allstar, cfg(:ALLSTAR)[:URL_SW] + "/sow.cgi?"}
+            br
+            | 　
+            br
+            | 　
+          td.no_choice style="text-align:left;"
+            = max_perjury
+            | 村#{link_to '旧地', cfg(:PERJURY_OLD)[:URL_SW] + "/sow.cgi?"}
+            br
+            = max_vage
+            | 村#{link_to :perjury, cfg(:PERJURY)[:URL_SW] + "/sow.cgi?"}
+            br
+            = max_xebec
+            | 村#{link_to :xebec, cfg(:XEBEC)[:URL_SW] + "/sow.cgi?"}
+            br
+            = max_crazy
+            | 村#{link_to :crazy, cfg(:CRAZY)[:URL_SW] + "/sow.cgi?"}
+          td.no_choice
+            = max_pan
+            | 村
+        tr
+          td.no_choice
+            = link_to_list "終了した村",:LOBBY
+          td.no_choice
+            = link_to_list "終了した村",:WOLF
+          td.no_choice
+            = link_to_list "終了した村",:CABALA
+          td.no_choice
+            = link_to_list "終了した村",:ALLSTAR
+          td.no_choice
+            = link_to_list "終了した村",:RP
+          td.no_choice
+
+form#cse-search-box action="http://www.google.co.jp/cse"
+  div
+    input name="cx" type="hidden" value="partner-pub-5734536664385414:5yoeu8-m6ic"
+    input name="ie" type="hidden" value="UTF-8"
+    input#q autocomplete="off" name="q" size="38" type="text"
+    input name="sa" type="submit" value="検索"
+script src="http://www.google.co.jp/cse/brand?form=cse-search-box&lang=ja" type="text/javascript"
+
+p style="text-align:right; font-size: 100%;"
+  = link_to_css "漆黒",:ririnra
+  | ｜
+  = link_to_css "煉瓦",:cinema800
+  = link_to_css "480",:cinema480
+  | ｜
+  = link_to_css "月夜",:night800
+  = link_to_css "480",:night480
+  | ｜
+  = link_to_css "蒼穹",:star800
+  = link_to_css "480",:star480
+  | ｜
+  = link_to_css "和の国",:wa800
+  = link_to_css "480",:wa480
+  

@@ -1,0 +1,81 @@
+#sayfilter.sayfilter
+  img#button_mvfilterleft.sayfilter_button alt="←" height="16" src="/WebRecord/images/icon/mvfilter_left.png" title="フィルタを左に配置" width="16"
+  img#button_mvfilterbottom.sayfilter_button alt="↓" height="16" src="/WebRecord/images/icon/mvfilter_bottom.png" title="フィルタを下に配置" width="16"
+  img#button_fixfilter.sayfilter_button alt="■" height="16" src="/WebRecord/images/icon/mvfilter_fix.png" title="フィルタを固定" width="16"
+  img#button_unfixfilter.sayfilter_button alt="□" height="16" src="/WebRecord/images/icon/mvfilter_unfix.png" title="フィルタの固定を解除" width="16"
+
+  - if @filter
+    h3#filter_header.sayfilter_heading
+      | フィルタ
+    #filter.insayfilter
+      .paragraph
+        - if @attention
+          h4.sayfilter_caption_enable
+            | 注目：#{@attention}
+            | \#{link_to_log}
+        table
+          tbody
+            tr
+              td.users
+                - lives.each_with_index do |live,livetype|
+                  - users_in_live = @users.select do |user| live.include? user.live  end
+                  - next  if  users_in_live.size == 0
+                  - livename = live_caption(live)
+                  - livename = mob_caption(@vil) if live.include? 'mob'
+                  h4.sayfilter_caption_enable id="livetypecaption_#{livetype}"
+                  .sayfilter_content id="livetype#i{livetype}"
+                    - users_in_live.each_with_index do |user,listno|
+                      div id="livetype#{livetype}_#{listno}"
+                        .sayfilter_content_enable id="pnofilter_#{ @pno[ user.uid ] }"
+                          .sayfilter_incontent
+                            = chr_shortname(user)
+                        i
+                          .sayfilter_content_enable.sayfilter_incontent.calc
+                            = if 0 < user.deathday then "(%dd)"%[user.deathday] end
+                            = link_to_chr "注目",user
+              td.types
+                h4#mestypefiltercaption title="発言種別欄の表示／非表示"
+                #mestypefilter.sayfilter_content
+                  - @mestypes.each do |index|
+                    .sayfilter_button_mestype
+                      div id="typefilter_#{index}"
+                      i
+                        .sayfilter_content_enable.sayfilter_incontent.calc= link_to_typeid "注目",index
+                h4#lumpfiltercaption title="一括操作欄の表示／非表示"
+                #lumpfilter
+                  #sayfilter_button_lump_0.sayfilter_button_lump 全示
+                  #sayfilter_button_lump_1.sayfilter_button_lump 全断
+                  #sayfilter_button_lump_2.sayfilter_button_lump 反転
+
+  h3#notepad_header.sayfilter_heading
+    | ツール
+  #notepad.insayfilter
+    .paragraph
+      .sayfilter_incontent
+        #user_agent
+          .sayfilter_caption_enable style="text-align: right;"
+            | 表示行数を変える
+            i
+              br
+              = link_to_lines
+          h4#textnotepadcaption title="クリップボードの表示／非表示"
+          #textnotepad
+            textarea#clipboard name="clipboard" rows="6" style="width: 100%;"
+              preserve:
+                
+          h4#itempickercaption title="ピックアップの表示／非表示"
+          #itempicker
+            #checklist.sayfilter_content
+              span#clipbm.sayfilter_incontent 栞
+              span#clipanchor.sayfilter_incontent >>
+              span#clipseer.sayfilter_incontent ●
+              span#clipexecute.sayfilter_incontent ▼
+              span#clipagenda.sayfilter_incontent ■
+              span#cliptopix.sayfilter_incontent 【】
+              input#cliptext name="cliptext" size="5" type="text"
+            #itemlist.sayfilter_content
+          h4#adcaption title="広告の表示／非表示"
+          #ad
+            #adsense.sayfilter_content
+              script src="http://pagead2.googlesyndication.com/pagead/show_ads.js" type="text/javascript"
+

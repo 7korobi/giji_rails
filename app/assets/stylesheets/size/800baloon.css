@@ -1,0 +1,53 @@
+@charset "Shift_JIS";
+@import url("800.css");
+
+/* BODY FRAME --------------------*/
+.vindex {
+  margin: 6px 0;
+  width: 100%;
+}
+/* 村建て人発言 ----------*/
+/* 管理人発言 ----------*/
+.mes_maker ,
+.mes_admin ,
+.info      ,
+.infosp    ,
+.infowolf  ,
+.caution   ,
+.mes_think .action,
+.action_bm {
+  margin: 0 0 6px 0;
+  padding: 4px 16px;
+}
+
+/* アクション ------------*/ 
+.action_nom, 
+.action {
+  padding: 4px 12px 4px 10px; 
+}
+/* メモ ----------*/
+.memo {
+  margin: 0px;
+  padding: 4px 0; 
+}
+/* 発言関係共通 ------*/
+.message_filter {
+}
+.say .chrblank {
+  width: 90px;
+}
+.say .img{
+  width:110px
+}
+.say .msg{
+  margin: 0 4px 6px 12px;
+  padding: 0 4px;
+}
+/* 発言入力欄（共通） ---*/ 
+.formpl_common {
+  width: 100%;
+  margin: 0px;
+  padding: 4px 0px;
+  border-style: solid none none none;
+  border-width: 2px 0 0 0;
+}

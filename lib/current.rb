@@ -51,7 +51,7 @@ module CurrentAuthenticated
         auth.save!
       # 新規ユーザー登録をする場合。
       else
-        redirect_to controller: 'accounts', action: 'new'
+        redirect_to controller: 'users', action: 'new'
       end
     end
     session[:current] = current(auth, auth.user)

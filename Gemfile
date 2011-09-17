@@ -2,22 +2,33 @@ source 'http://rubygems.org'
 
 # ruby on rails
 gem 'unicorn'
-gem 'rails', '3.1.0.rc6'
+gem 'rails', '3.1.0'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
-# Asset template engines
-gem 'sass'
-gem 'coffee-script'
-gem 'uglifier'
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails', "  ~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
+  gem 'uglifier'
+
+  #gem 'sass'
+  #gem 'coffee-script'
+  #gem 'uglifier'
+  #gem 'jquery-rails'
+  #gem 'execjs'
+  #gem 'therubyracer'
+end
+
 gem 'jquery-rails'
-gem 'execjs'
-gem 'therubyracer'
 
 gem "decent_exposure"
 gem "simple_form"
-gem "haml"
-gem "haml-rails"
+gem "slim"
+gem "typus"
+gem "web-app-theme"
 
 # web_service
 gem "omniauth"
@@ -33,7 +44,7 @@ gem "paperclip"
 gem "mongoid"
 gem "bson_ext" 
 gem "json"
-gem "sqlite3"
+gem 'sqlite3'
 gem "sqlite3-ruby"
 
 # management

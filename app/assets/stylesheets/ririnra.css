@@ -1,0 +1,106 @@
+@charset "Shift_JIS";
+@import url("theme/cinema.css");
+@import url("size/800.css");
+
+* {
+  font-size: 100%;
+  line-height: 130%;
+}
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  width: 764px;
+}
+
+/* GROBAL --------------------*/
+h1 {
+  padding: 0px;
+}
+
+/* フィルタの中身 ----------*/
+.insayfilter .paragraph {
+  margin: 6px 0 0 0;
+
+}
+
+/* フィルタ（下配置時）----------*/
+.sayfilter {
+  border-width: 0;
+}
+
+/* フィルタの見出し ----------*/
+.sayfilter_heading {
+  margin: 0px 8px;
+  padding: 2px;
+  background: #bb9;
+
+}
+
+.sayfilter_caption_enable    ,
+.sayfilter_caption_disenable {
+  border-width: 1px 0 0 0 ; border-style: solid ; border-color: #000;
+  background: #bb9;
+}
+
+/* フィルタ選択欄枠----------*/
+.sayfilter_content ,#lumpfilter ,#lumpfilter input {
+  border-width: 1px 0 0 0 ; border-style: dotted ; border-color: #000;
+  background: #cb9;
+}
+
+/* フィルタ選択欄（有効時）----------*/
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable {
+  border-width: 0;
+}
+
+
+
+.turnnavi    ,
+.pagenavi    ,
+.infonologin ,
+.row_all     {
+  background-color: #002;
+}
+
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+
+/* 発言のキャラ画像 ----------*/
+.say img {
+  margin: 0 0 0 15px;
+}
+
+/* 発言入力欄のキャラ画像 ----------*/
+/* 発言の文章部分（等幅）----------*/
+.mes_text_monospace {
+  layout-grid: both loose 0 0;
+  font-family: monospace;
+  padding: 0;
+  vertical-align: top;
+  overflow: auto;
+}
+
+#clipboard,
+#cliptext,
+.action_type {
+}
+
+#contentframe div,
+#contentframe form,
+#contentframe p,
+#contentframe table,
+.msg
+{
+  border-style: none;
+}
+
+.action_nom, 
+.action    {
+  border-style: none;
+  margin: 5px 0 5px 0;  padding: 4px 16px;}
+}
+
+
+
+

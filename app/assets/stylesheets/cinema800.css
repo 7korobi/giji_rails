@@ -1,0 +1,71 @@
+@charset "Shift_JIS";
+@import url("theme/cinema.css");
+@import url("size/800baloon.css");
+
+* {
+  font-family: Meiryo UI;
+  font-size: 100%;
+  line-height: 130%;
+}
+
+/* 外枠 ----------*/
+.outframe {
+  border-right: 3px double #863;
+  border-left : 3px double #863;
+  background-image: url("/assets/bg/background580.png");
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  border-right: 3px double #863;
+  border-left : 3px double #863;
+  background-image: url("/assets/bg/background770.png");
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* フィルタ（左配置時）----------*/
+.sayfilterleft {
+  border-left : 3px double #863;
+}
+
+.sayfilter_heading {
+          border-top-right-radius : 2em;
+       -o-border-top-right-radius : 2em;
+     -moz-border-radius-topright  : 2em;
+  -webkit-border-top-right-radius : 2em;
+}
+
+.insayfilter .paragraph {
+          border-radius : 0.5em;
+       -o-border-radius : 0.5em;
+     -moz-border-radius : 0.5em;
+  -webkit-border-radius : 0.5em;
+          border-top-right-radius : 0;
+       -o-border-top-right-radius : 0;
+     -moz-border-radius-topright  : 0;
+  -webkit-border-top-right-radius : 0;
+}
+
+.contentframe {
+  background: transparent;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+.contentframe_navileft {
+  background: transparent;
+}
+
+.ajax{
+}
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+
+/* 発言のキャラ画像 ----------*/
+.action_nom, 
+.action {
+  margin-left:  107px; }

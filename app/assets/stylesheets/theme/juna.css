@@ -1,0 +1,603 @@
+@charset "Shift_JIS";
+@import url("color.whitebox.css");
+
+/* GROBAL --------------------*/
+.handler,
+body {
+  margin: 0px;
+  padding: 0px;
+  color: #fff;
+  background: #543;
+}
+
+th {
+  padding: 4px;
+  font-weight: normal;
+  text-align: left;
+}
+
+td {
+  padding: 4px;
+}
+
+img {
+  border-style: none;
+}
+
+p {
+  margin: 0px;
+  padding: 0px;
+}
+div, form, td {
+  margin: 0px;
+  padding: 0px;
+}
+
+textarea {
+  font-family: monospace;
+}
+
+textarea, input, select {
+  color: #000;
+  line-height: 115%;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+h1 {
+  margin: 0px 0px 10px 0px;
+  padding: 0px;
+  text-align: center;
+}
+
+h2 {
+  margin: 0px 0px 10px 0px;
+  padding: 2px 8px 2px 8px;
+  font-size: 100%;
+  font-weight: normal;
+
+  color: #000000;
+  background: #bbbbbb;
+  border-top: 3px solid #eee;
+  border-left: 3px solid #eee;
+  border-bottom: 3px solid #aaa;
+  border-right: 3px solid #aaa;
+}
+
+h3 {
+  margin: 0px 0px 10px 0px;
+  padding: 2px 8px 2px 8px;
+  font-size: 100%;
+  font-weight: normal;
+  
+  color: #000000;
+  background: #bbbbbb;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
+  border-bottom: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+}
+
+address {
+  margin: 0px;
+  padding: 0px;
+  text-align: right;
+  font-size: smaller;
+  clear: both;
+}
+
+strong { }
+
+.board{
+  background-color: #000;
+  border: 1px solid #ffc;
+}
+.choice .board{
+  background-color: #000;
+  border-top: 3px double #ffc;
+}
+.choice .board th{
+  border-bottom: 1px dashed #ffc;
+}
+.choice .board td{
+  border-top:  1px dashed #ffc;
+  border-left: 1px solid  #ffc;
+}
+.choice {
+  background-color: #444;
+  border-bottom: 1px solid #444 !important;
+}
+.no_choice {
+  border-bottom:1px dashed #ffc;
+}
+
+/* OTHERS --------------------*/
+/* 村開始・更新ボタン ----------*/
+.commitbutton {
+  text-align: center;
+}
+
+/* 発言撤回欄 ----------*/
+.saycancelframe {
+  text-align: center;
+}
+
+/* 発言撤回ボタン ----------*/
+.saycancelbutton {
+  font-size: smaller;
+}
+
+/* 「戻る」リンク ----------*/
+.return {
+  margin: 0px;
+  padding: 0px 0px 8px 0px;
+  text-align: right;
+}
+
+
+
+/* ヒント・説明書 ----------*/
+.tips{
+  padding: 0px 8px;
+  font-size: 90%;
+  line-height: 100%;
+}
+
+/* 村一覧 ----------*/
+.chrblank {
+  background-image: url(/assets/portrate/blank.jpg);
+}
+.chrM {
+  background-image: url(/assets/portrate/blankM.jpg);
+}
+.chrF {
+  background-image: url(/assets/portrate/blankF.jpg);
+}
+
+.vindex {
+  background-color: #000;
+  border: 1px solid #ffc;
+  border-collapse: collapse; /* CSS2? */
+}
+
+.vindex td,.vindex th{
+  margin: 0px;
+  padding: 1px;
+  border: 1px solid #ffc;
+  border-left: 1px dashed #ffc;
+  border-right: 1px dashed #ffc;
+
+}
+
+/* 村作成画面 ----------*/
+.form_vmake {
+  margin: 0px;
+  padding: 4px 0px;
+
+  color: #000000;
+  background: #cb8;
+  border-top: 3px double #664;
+  border-bottom: 3px double #664;
+}
+
+/* 村作成・編集ボタン ----------*/
+.exevmake {
+  text-align: center;
+}
+
+/* 段組（ラベル） ----------*/
+.multicolumn_label {
+  display: block;
+  float: left;
+  text-align: right;
+}
+
+/* 段組（左配置） ----------*/
+.multicolumn_left {
+  display: block;
+  float: left;
+}
+
+/* 段組（右配置） ----------*/
+.multicolumn_right {
+  display: block;
+  float: left;
+}
+
+/* 段組（役割入力欄） ----------*/
+.multicolumn_role {
+  width: 100%;
+  color: #000;
+  font-size: smaller;
+}
+
+/* 段組（改行） ----------*/
+.multicolumn_clear {
+  clear: left;
+}
+
+
+/* BODY FRAME --------------------*/
+
+/* 外枠 ----------*/
+.outframe {
+  color: #fff;
+  background: #543;
+}
+
+/* 誤爆防止チェック欄 ----------*/
+.previewsafety {
+  color: #000000;
+  background: #a55;
+}
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  color: #fff;
+  background: #543;
+}
+
+/* 内枠 ----------*/
+.contentframe .toppage{
+  background: #543;
+  text-align: left;
+}
+
+.contentframe {
+  text-align: left;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+.contentframe_navileft {
+  text-align: left;
+  float: right;
+}
+
+/* 内枠の中身（タイトル画像は含まない） ----------*/
+.inframe,
+.inframe .memo {
+}
+
+.drag,
+.ajax {
+}
+
+/* SAY FILTER --------------------*/
+
+/* フィルタ（下配置時）----------*/
+.sayfilter {
+  color: #000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+  text-align: center;
+}
+/* フィルタ（左配置時）----------*/
+.sayfilterleft {
+  font-size: smaller;
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+  text-align: left;
+  float: left;
+}
+
+/* フィルタの中身 ----------*/
+.insayfilter {
+  text-align: left;
+  border-width: 0 ;
+}
+.insayfilter .paragraph {
+  border-width: 0 ;
+}
+/* フィルタの見出し ----------*/
+.sayfilter_heading {
+  border: none;
+  font-weight: bold;
+  color: #000000;
+  background: #e3caa7;
+
+  margin: 3px 0 0 0 ;
+}
+
+/* フィルタ固定・配置ボタン ----------*/
+.sayfilter_button {
+  float: right;
+  display: none;
+}
+
+
+/* フィルタ小見出し（広げた時）----------*/
+.sayfilter_caption_enable {
+  border: 1px solid #000;
+
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+}
+
+/* フィルタ小見出し（畳んだ時）----------*/
+/* フィルタ選択欄（有効時）----------*/
+.sayfilter_content_enable {
+  color: #000;
+  border-top: 0px none #000;
+  border-right: 1px none #000;
+  border-bottom: 1px dotted #000;
+  border-left: 1px none #000;
+  border-collapse: collapse; /* CSS2? */
+  width: 100%;
+}
+
+/* フィルタ選択欄（無効時）----------*/
+.sayfilter_content_disenable {
+  color: #888;
+  border-top: 0px none #000;
+  border-right: 1px none #000;
+  border-bottom: 1px dotted #000;
+  border-left: 1px none #000;
+  border-collapse: collapse; /* CSS2? */
+  width: 100%;
+
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+}
+/* フィルタ一括操作用ボタン ----------*/
+.sayfilter_button_lump {
+  color: #000;
+  border-top: 0px none #000;
+  border-right: 1px none #000;
+  border-bottom: 1px dotted #000;
+  border-left: 1px none #000;
+  border-collapse: collapse; /* CSS2? */
+  width: 100%;
+  margin: 1px 0 0 0 ;
+}
+
+
+/* フィルタ選択欄枠----------*/
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable ,
+.sayfilter_content           ,
+#lumpfilter ,
+#lumpfilter input {
+  margin: 1px 0 0 0 ;
+  font-weight: normal;
+}
+
+.sayfilter_incontent input {
+  display: none;
+}
+
+/* ログイン欄 ----------*/
+.login {
+  margin: 0px;
+  text-align: right;
+}
+/* 日付リンク ----------*/
+/* ページリンク ----------*/
+/* 全表示リンク ----------*/
+.turnnavi    ,
+.pagenavi    ,
+.row_all     {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 非ログイン時注意表示 ----------*/
+.infonologin {
+  color: #fff;
+}
+
+
+/* 表示行数・表示順序変更フォーム ----------*/
+.viewform {
+  text-align: right;
+}
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+
+/* 発言のキャラ画像 ----------*/
+.mes_chrimg {
+  padding: 1px;
+  text-align: center;
+  border: 1px solid #554433
+  vertical-align: middle;
+}
+
+.say img {
+  vertical-align: middle;
+}
+
+/* 発言入力欄のキャラ画像 ----------*/
+
+/* 水平線（通常は非表示）----------*/
+.invisible_hr {
+  display: none;
+}
+
+/* SAY --------------------*/
+.say {
+  border-width: 1px; border-style: solid;
+  width:100%;
+}
+
+img {
+  border-style: none; 
+} 
+
+.field, .say img {
+  margin:  0;
+  padding: 12px 8px 12px 10px; 
+}
+.action {
+  margin:  0px;
+  padding: 4px; 
+}
+
+/* 回り込み禁止 ----------*/
+.clearboth {
+  clear:both;
+}
+
+#clipboard,
+#cliptext,
+.action_type {
+  font-size: smaller;
+}
+
+
+.formpl_content textarea{
+  width: 100%;
+}
+
+/* アクション自由入力欄 ----------*/
+.formpl_actiontext {
+  width: 80%;
+}
+
+.mes_que   ,
+.mes_del   ,
+.mes_nom   ,
+.mes_mob   ,
+.mes_think ,
+.mes_sympa ,
+.mes_bat   ,
+.mes_pixi  ,
+.mes_wolf  ,
+.mes_grave {
+  margin: 0px 8px 16px 8px;
+  padding: 1px;
+}
+/* 未確定発言 ----------*/
+.mes_que {
+  border: 1px solid #442;
+}
+
+.mes_maker .action *,
+.mes_maker .action,
+.mes_maker .guide *,
+.mes_maker .guide {
+  background: #e3caa7;
+  color: #000;
+}
+.mes_maker {
+  border: 2px dashed #554433;
+  color: #000;
+  background: #e3caa7;
+}
+
+/* 管理人発言 ----------*/
+.mes_admin .action *,
+.mes_admin .action,
+.mes_admin .guide *,
+.mes_admin .guide {
+  background: #d1d1d1;
+  color: #000;
+}
+.mes_admin {
+  border: 2px dashed #554433;
+  color: #000;
+  background: #d1d1d1;
+}
+
+
+/* やんわり注意表示 ----------*/
+.infotext {
+  color: #aaa;
+}
+
+/* 警告・注意する部分（インライン） ----------*/
+.cautiontext {
+  font-weight: bold;
+  color: #f44;
+}
+
+/* アクション ------------*/ 
+.action_nom, 
+.action {
+  border-width: 1px; border-style: solid;
+  border-color: #663;
+}
+/* しおり ----------------*/ 
+.mes_think .action,
+.action_bm {
+  border-width: 1px; border-style: solid;
+  border-color: #663;
+}
+.mes_think .action .mes_date {
+  display: none;
+}
+
+/* メモ ----------*/
+.memo {
+  margin: 0px 0px 10px 0px;
+  padding: 4px;
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+}
+/* メモの左側 ----------*/
+.memoleft {
+  border-style: none dashed solid none;
+  border-width: 0px 1px 1px 0px;
+  border-color: #000;
+  border-collapse: collapse; /* CSS2? */
+}
+/* メモの右側 ----------*/
+.memoright {
+  border-style: none none solid none;
+  border-width: 0px 0px 1px 0px;
+  border-color: #000;
+  border-collapse: collapse; /* CSS2? */
+}
+/* 発言者名 ----------*/
+.mesname {
+  margin: 0px;
+  padding: 1px;
+  font-size: 100%;
+  font-weight: bold;
+  border-style: none;
+
+  color: #000000;
+  background: transparent;
+}
+
+/* 発言関係共通 ------*/
+.msg{
+  border-width: 0px; border-style: none;
+  margin:  2px;
+  padding: 4px; 
+}
+
+
+/* 発言入力欄（共通） ----------*/
+.formpl_common {
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+}
+
+/* 発言入力欄（コミット） ----------*/
+.formpl_commit {
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+}
+
+/* 発言入力欄のキャラ画像 ----------*/
+.formpl_chrimg {
+  text-align: center;
+  border: 1px solid #554433
+  vertical-align: middle;
+}
+
+/* 通常発言 ------*/
+.formpl_gm ,
+.formpl_gm  textarea{
+  border-color: #660;
+  color: #ffa;
+  background-color: #000;
+}
+

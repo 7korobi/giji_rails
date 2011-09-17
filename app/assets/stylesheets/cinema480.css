@@ -1,0 +1,27 @@
+@charset "Shift_JIS";
+@import url("size/480baloon.css");
+@import url("theme/cinema.css");
+
+* {
+  font-family: Meiryo UI;
+  font-size: 100%;
+  line-height: 130%;
+}
+
+/*
+	.contentframe,
+	.contentframe_navileft {
+ */
+.outframe,
+.outframe_navimode {
+  background-image: url("/assets/bg/background460.png");
+  background-repeat: repeat-y;
+  background-position: right;
+}
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+
+.say .chrblank,
+.say img {
+  margin-left: 7px;
+}

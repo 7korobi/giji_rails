@@ -1,0 +1,17 @@
+h1 Listing chr_sets
+
+table
+  tr
+    th
+    th
+    th
+
+  - chr_sets.each do |chr_set|
+    tr
+      td= link_to 'Show', chr_set
+      td= link_to 'Edit', edit_chr_set_path(chr_set)
+      td= link_to 'Destroy', chr_set, :confirm => 'Are you sure?', :method => :delete
+
+br
+
+= link_to 'New Chr set', new_chr_set_path
