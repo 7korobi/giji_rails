@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 # ruby on rails
+gem 'pjax-rails'
 gem 'unicorn'
 gem 'rails', '3.1.0'
 
@@ -25,6 +26,7 @@ end
 gem 'jquery-rails'
 
 gem "decent_exposure"
+gem "kaminari"
 gem "simple_form"
 gem "slim"
 gem "typus"
