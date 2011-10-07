@@ -1,16 +1,15 @@
 h1 Listing chr_sets
 
 table
-  tr
-    th
-    th
-    th
-
   - chr_sets.each do |chr_set|
     tr
-      td= link_to 'Show', chr_set
-      td= link_to 'Edit', edit_chr_set_path(chr_set)
-      td= link_to 'Destroy', chr_set, :confirm => 'Are you sure?', :method => :delete
+      td.id= link_to chr_set.id, chr_set
+      td
+        .maker= chr_set.maker
+        .admin= chr_set.admin
+      td
+        .command= link_to 'Edit', edit_chr_set_path(chr_set)
+        .command= link_to 'Destroy', chr_set, :confirm => 'Are you sure?', :method => :delete
 
 br
 

@@ -1,10 +1,25 @@
-= simple_form_for chr_set do |f|
+
+=simple_form_for chr_set do |f|
   -if chr_set.errors.any?
-    #error_explanation
-      h2= "# pluralize(chr_set.errors.count, "error")
-      ul
-        - chr_set.errors.full_messages.each do |msg|
-          li= msg
+    ul#errors
+      - f.object.errors.full_messages.each do |msg|
+        li= msg
+  =f.object.id
+  =f.input :maker
+  =f.input :admin
+
+  =f.field_for :chr_npcs do |nf|
+    =nf.object.id
+    =nf.input :csid
+    =nf.input :caption
+    =nf.input "npc[0]"
+    =nf.input "npc[1]"
+  p.command= link_to 'NPCを追加する'
+
+  =f.field_for :chr_jobs do |jf|
+    =jf.object.id
+    =jf.input :job
+  p.command= link_to '肩書きとキャラクターを追加する'
 
   .actions
     = f.submit 'Save'

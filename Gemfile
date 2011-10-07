@@ -1,5 +1,8 @@
 source 'http://rubygems.org'
 
+# documentation
+gem 'railroad'
+
 # ruby on rails
 gem 'pjax-rails'
 gem 'unicorn'
@@ -44,7 +47,7 @@ gem "whenever", :require => false
 # data_base
 gem "paperclip"
 gem "mongoid"
-gem "bson_ext" 
+gem "bson_ext"
 gem "json"
 gem 'sqlite3'
 gem "sqlite3-ruby"
@@ -58,7 +61,7 @@ gem "rubygems-update"
 group :development do
 # To use debugger
   gem 'ruby-debug19'
-  gem "factory_girl_rails", :require => nil 
+  gem "factory_girl_rails", :require => nil
   gem 'rspec-rails', '>= 2.6.1'
 end
 

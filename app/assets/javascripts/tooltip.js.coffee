@@ -1,11 +1,11 @@
 [headbanner, navimode, navimode_fullwidth, pagenavi_fullwidth, sayfilter, stylesheet, viewport] = []
 [filter, toggle, cookie, cookie_in_use] = [[],[],[],[]]
 
-google.load "search", "1"
+google.load "search", "2"
 google.setOnLoadCallback ->
   google.search.CustomSearchControl.attachAutoCompletion(
-    "partner-pub-5734536664385414:5yoeu8-m6ic", 
-    document.getElementById("q"), 
+    "partner-pub-5734536664385414:5yoeu8-m6ic",
+    document.getElementById("q"),
     "cse-search-box"
   )
 
@@ -19,14 +19,13 @@ google_ad_height = 90
 _gaq = _gaq or []
 _gaq.push [ "_setAccount", "UA-16547346-1" ]
 _gaq.push [ "_trackPageview" ]
-(->
+do ->
   ga = document.createElement("script")
   ga.type = "text/javascript"
   ga.async = true
   ga.src = (if "https:" == document.location.protocol then "https://ssl" else "http://www") + ".google-analytics.com/ga.js"
   s = document.getElementsByTagName("script")[0]
   s.parentNode.insertBefore ga, s
-)()
 
 getClientHeight = ->
   objheight = $(window).height()  unless objheight
@@ -43,32 +42,30 @@ getClientWidth = ->
     270: 800
 getDocumentObject = (id) ->
   if document.getElementById
-    obj = document.getElementById(id)
+    document.getElementById(id)
   else if document.all
-    obj = document.all(id)
+    document.all(id)
   else
-    obj = null
-  obj
+    null
 
 changeClass = (id, classname) ->
-  obj = getDocumentObject(id)
-  obj.className = classname  if obj
+  getDocumentObject(id)?.className = classname
 
 moveFilterLeft = ->
-	return if cookie.layoutfilter > 0
-  changeClass "outframe", "outframe_navimode"
-  changeClass "contentframe", "contentframe_navileft"
-  changeClass "sayfilter", "sayfilterleft"
-  obj = getDocumentObject("button_mvfilterleft")
-  obj.style.display = "none"  if obj
-  obj = getDocumentObject("button_mvfilterbottom")
-  obj.style.display = "inline"  if obj
-  changeFilterCheckBoxPlList 0
-  changeFilterCheckBoxTypes 0
-  cookie.layoutfilter = 1
-  eventFixFilter()
-  writeCookieFilter()
-  
+  unless cookie.layoutfilter > 0
+    changeClass "outframe", "outframe_navimode"
+    changeClass "contentframe", "contentframe_navileft"
+    changeClass "sayfilter", "sayfilterleft"
+    obj = getDocumentObject("button_mvfilterleft")
+    obj.style.display = "none"  if obj
+    obj = getDocumentObject("button_mvfilterbottom")
+    obj.style.display = "inline"  if obj
+    changeFilterCheckBoxPlList 0
+    changeFilterCheckBoxTypes 0
+    cookie.layoutfilter = 1
+    eventFixFilter()
+    writeCookieFilter()
+
 moveFilterBottom = ->
   return  if cookie.layoutfilter == 0
   changeClass "outframe", "outframe"
@@ -107,13 +104,13 @@ unfixFilter = ->
   obj.style.position = "static"
   obj = getDocumentObject("button_fixfilter")
   if cookie.layoutfilter == 0
-    obj.style.display = "none"  if obj
+    obj?.style.display = "none"
   else
-    obj.style.display = "inline"  if obj
+    obj?.style.display = "inline"
   obj = getDocumentObject("button_unfixfilter")
-  obj.style.display = "none"  if obj
+  obj?.style.display = "none"
   obj = getDocumentObject("sayfilter")
-  obj.style.height = "auto"  if obj
+  obj?.style.height = "auto"
   cookie.fixedfilter = 0
   writeCookieFilter()
 
@@ -156,18 +153,18 @@ fixWidth = ->
     dst_padding = 110
     dst_pagenavi = 120
   if width_full < width
-    headbanner.css 
+    headbanner.css
       width: 580
       height: 161
-    
+
     dst_style = src_style.replace("480", "800")
     dst_banner = src_banner.replace("458", "580")
     dst_sayfilter_width = width_l_filter
   else
-    headbanner.css 
+    headbanner.css
       width: 458
       height: 112
-    
+
     dst_style = src_style.replace("800", "480")
     dst_banner = src_banner.replace("580", "458")
     if cookie.layoutfilter
@@ -227,7 +224,7 @@ getSowFeedUrl = ->
 
 getSowFeed = (url, title, newDateInt, newFeeds, oldFeeds) ->
   maxDateInt = 0
-  $.ajax 
+  $.ajax
     url: url
     dataType: "xml"
     success: (xml) ->
@@ -242,7 +239,7 @@ getSowFeed = (url, title, newDateInt, newFeeds, oldFeeds) ->
         else
           newDateInt = maxDateInt
           false
-      
+
       if newFeeds > oldFeeds
         newFeeds -= oldFeeds  if $(document).find("#newinfo").size() > 1
         $("title").text "(" + newFeeds + ") " + title
@@ -252,9 +249,9 @@ getSowFeed = (url, title, newDateInt, newFeeds, oldFeeds) ->
           $("#newinfo:last > img").hide()
           $("#newinfo:last").show()
         oldFeeds = newFeeds
-    
+
     error: (xhr, status, e) ->
-    
+
     complete: (xhr, status) ->
       setTimeout "getSowFeed('" + url + "', '" + title + "', '" + newDateInt + "', " + newFeeds + ", " + oldFeeds + ")", 5 * 60 * 1000
 
@@ -280,16 +277,16 @@ getNewLog = (link) ->
     setAjaxEvent mes
     base.hide()
     base.before mes
-    $("title").text $("title").text().replace(/// 
+    $("title").text $("title").text().replace(///
       (\d+)
-    ///, "")  
+    ///, "")
   false
 
 unpack = (key, filter) ->
   if cookie[key]
     ary = cookie[key].split(",")
     i = 0
-    
+
     while i < ary.length
       filter[key + "_" + i] = ary[i]
       i++
@@ -311,7 +308,7 @@ initFilter = ->
   doc_cookie = document.cookie + "; "
   cookies = doc_cookie.split("; ")
   i = 0
-  
+
   while i < cookies.length
     data = cookies[i].split("=")
     data[1] = ""  unless data[1]
@@ -322,7 +319,7 @@ initFilter = ->
   if cookie.toggle
     ary = cookie.toggle.split(",")
     i = 0
-    
+
     while i < ary.length
       toggle[ary[i]] = 1
       i++
@@ -339,10 +336,10 @@ writeCookieFilter = ->
   deletes = "; expires=Thu, 1-Jan-1970 00:00:00 GMT"
   $("#clipboard").each ->
     cookie.clipboard = escape($(this).val())
-  
+
   $("#cliptext").each ->
     cookie.cliptext = escape($(this).val())
-  
+
   list = []
   for key of filter
     fhead = key.split("_")
@@ -426,7 +423,7 @@ summary = ->
     if cliptext
       clipary = cliptext.split(" ")
       i = 0
-      
+
       while i < clipary.length
         item += " " + clipary[i]  if -1 < text.indexOf(clipary[i])
         i++
@@ -446,9 +443,9 @@ summary = ->
       link = @name
       name_ary = $(this).text().split(" ")
       name = name_ary[name_ary.length - 1]
-    
+
     result_list.push "<div class=\"sayfilter_content_enable\"><div class=\"sayfilter_incontent\"><a class=\"res_anchor\" href=\"#" + link + "\">" + name + "</a>" + item + "</div></div> "
-  
+
   $("#itemlist").append result_list.join("")
 tribind_click = (selecter, ary, enable, disable) ->
   button = $(selecter)
@@ -502,7 +499,7 @@ filterbind_click = (selecter, ary, enable, disable) ->
     @set_function button, this, ary[name]
 while_bind_click = (head, ary, enable, disable, bind_click) ->
   i = 0
-  
+
   while i < 99
     id = head + i
     selecter = "#" + id
@@ -531,7 +528,7 @@ changeButton = ->
 change_pnofilter_all = ->
   id_ary = $(this).attr("id").split("_")
   enabled = id_ary[id_ary.length - 1]
-  
+
   moveFilterTopZeroIE()
   $(".sayfilter_content div").each ->
     id = @id
@@ -541,7 +538,7 @@ change_pnofilter_all = ->
       setItem button, this, (if (@target_var[@target_name] == 1) then (0) else (1))
     else
       setItem button, this, enabled
-  
+
   changeSayDisplays()
   fixFilterLeftIE()
   fixWidth()
@@ -557,6 +554,7 @@ setHeader = (button, field, value) ->
     field.target.addClass "ie_hover"
   else
     field.target.removeClass "ie_hover"
+
 setItem = (button, field, value) ->
   button.removeClass field.style_enable + " " + field.style_disable
   cookie_in_use[field.target_name] = true
@@ -565,22 +563,24 @@ setItem = (button, field, value) ->
     button.addClass field.style_disable
   else
     button.addClass field.style_enable
+
 pumpNumber = ->
   parseInt new Date().getTime() / 1000
+
 closeWindow = ->
   $(".close").toggle (->
     ank = $(this)
     base = ank.parents(".ajax")
     base.fadeOut "nomal", ->
       base.remove()
-    
+
     false
   ), ->
     ank = $(this)
     base = ank.parents(".ajax")
     base.fadeOut "nomal", ->
       base.remove()
-    
+
     false
 
 setAjaxEvent = (target) ->
@@ -589,7 +589,7 @@ setAjaxEvent = (target) ->
     $(@).html( html.replace(///
       (/*)(.*?)(*/|$)
     ///g,'<em>$1$2$3</em>') )
-  
+
   target.find(".img img").mouseup ->
     name = "？"
     link = ""
@@ -599,40 +599,43 @@ setAjaxEvent = (target) ->
       link = @name
       name_ary = $(@).text().split(" ")
       name = name_ary[name_ary.length - 1]
-    
+
     message.find(".mes_date").each ->
       ank = $(@).text().match(/¥((.?¥d+)¥)/)[1]
       turn = $(@).attr("turn")
       text = "¥n(>>" + turn + ":" + ank + " " + name + ")"
-    
+
     $("#clipboard").val $("#clipboard").val() + text
-  
+
   drag_switch = $("<span> o </span>").addClass("drag_switch")
+
   target.filter(->
     base = $(@)
     not base.hasClass("ajax")
   ).find(".mes_date").append drag_switch
-  target.find(".drag_switch").toggle (->
-    drag_switch = $(@)
-    base = drag_switch.parents(".message_filter")
-    base.css zIndex: pumpNumber()
-    $(base).clone(true).css("display", "none").addClass("origin").insertAfter base
-    $(base).addClass "drag"
-    handlerId = "handler" + pumpNumber()
-    handler = $("<h3 id=\"" + handlerId + "\">.</h3>").addClass("handler")
-    $(base).prepend handler
-    $(base).easydrag()
-    $(base).setHandler handlerId
-    false
-  ), ->
-    name = $(@)
-    base = name.parents(".message_filter")
-    base.nextAll(".origin").fadeIn()
-    base.fadeOut "nomal", ->
-      base.remove()
-    
-    false
-  
+
+  target.find(".drag_switch").toggle(->
+      drag_switch = $(@)
+      base = drag_switch.parents(".message_filter")
+      base.css zIndex: pumpNumber()
+      $(base).clone(true).css("display", "none").addClass("origin").insertAfter base
+      $(base).addClass "drag"
+      handlerId = "handler" + pumpNumber()
+      handler = $("<h3 id=\"" + handlerId + "\">.</h3>").addClass("handler")
+      $(base).prepend handler
+      $(base).easydrag()
+      $(base).setHandler handlerId
+      false
+  ,->
+      name = $(@)
+      base = name.parents(".message_filter")
+      base.nextAll(".origin").fadeIn()
+      base.fadeOut "nomal", ->
+        base.remove()
+
+      false
+  )
+
   target.find(".res_anchor").toggle ((mouse) ->
     ank = $(this)
     base = ank.parents(".message_filter")
@@ -650,11 +653,11 @@ setAjaxEvent = (target) ->
           leftm = mouse.pageX - 100
           leftend = $("body").width() - mes.width() - 8
           leftm = leftend  if leftend < leftm
-          mes.css 
+          mes.css
             top: topm
             left: leftm
             zIndex: pumpNumber()
-          
+
           mes.addClass("ajax").css "display", "none"
           $(mes).fadeIn()
           handlerId = "handler" + pumpNumber()
@@ -678,7 +681,7 @@ setAjaxEvent = (target) ->
     base = ank.parents(".message_filter")
     base.nextAll(".ajax").fadeOut "nomal", ->
       base.nextAll(".ajax").remove()
-    
+
     false
 
 deploySayFilter = ->
@@ -708,7 +711,7 @@ deploySayFilter = ->
   $("#cliptext").change summary
   $("#cliptext").keyup (code) ->
     summary()  if code == 13
-  
+
   $("#cliptext").show()
   $("#button_mvfilterleft").click moveFilterLeft
   $("#button_mvfilterleft").click fixFilter
