@@ -1,6 +1,5 @@
 module WithSimpleForm
   def self.included(base)
-
     def base.field(name, options = {})
       min =   1
 
@@ -20,13 +19,14 @@ module WithSimpleForm
         name:    name.to_s,
         type:    options[:type] || String,
         limit:   nil,
-        null:    null_ok ,
+        null:    null_ok,
+        primary: key?(name),
         scale:   nil
       }
 
       if validates[:in].present?
         validates_length_of name, validates
-        validates[:limit] = validates[:in].max
+        form_attributes[:limit] = validates[:in].max
         form_attributes.merge!(validates)
       end
 
@@ -34,13 +34,13 @@ module WithSimpleForm
     end
 
     def base.relation_form_set(name, options = {})
-      form_attributes = {
-        owner:   self,
-        name:    name.to_s,
-        options: options
-      }
+      relation_attributes = {
+        owner:    self,
+        name:     name.to_s,
+        options:  options
+      }.tap{|o| o[:data] = o.dup }
       relation = relations[name.to_s]
-      relation.form = OpenStruct.new(form_attributes)
+      relation.form = OpenStruct.new(relation_attributes)
     end
 
     def base.referenced_in(name, options = {})
