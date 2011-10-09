@@ -1,5 +1,6 @@
 require 'ostruct'
 require 'current'
+require 'rails_defs'
 require 'timestamp'
 require 'with_simple_form'
 require 'mongoid_as_active_record'
