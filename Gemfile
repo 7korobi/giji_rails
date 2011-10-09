@@ -1,7 +1,5 @@
 source 'http://rubygems.org'
 
-# documentation
-gem 'railroad'
 
 # ruby on rails
 gem 'pjax-rails'
@@ -59,6 +57,9 @@ gem "rubygems-update"
 # gem 'capistrano'
 
 group :development do
+# documentation
+  gem 'rails-erd'
+
 # To use debugger
   gem 'ruby-debug19'
   gem "factory_girl_rails", :require => nil
