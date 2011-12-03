@@ -13,7 +13,7 @@ default: &DEFAULT
     facebook:
       - 248678558500780
       - 88673d9c706a6c17d10b832eaafa3071
-      - scope:         publish_stream,offline_access,email,user_about_me,user_birthday
+      - scope:      publish_stream,offline_access,email,user_about_me,user_birthday
         client_options:
           ssl: 
             ca_path: /etc/ssl/certs

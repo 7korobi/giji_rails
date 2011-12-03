@@ -1,0 +1,84 @@
+DEFAULT:
+  ssh:
+    options: &DEFAULT_SSH_OPTIONS
+      keys:
+        - /home/7korobi/.ssh/id_rsa
+
+
+PERJURY:
+  ssh:
+    open: vage.sakura.ne.jp
+    user: vage
+    options:
+      <<: *DEFAULT_SSH_OPTIONS
+    files:
+      ldata:  /www/giji_log/vage
+      data:   data/vil
+      config: /home/vage/www/perjury
+
+XEBEC: 
+  ssh:
+    open: apollo.sakura.ne.jp
+    user: apollo
+    pass: coolteam
+    options:
+      <<: *DEFAULT_SSH_OPTIONS
+    files:
+      ldata:  /www/giji_log/xebec
+      data:   data/vil
+      config: /home/apollo/www/sow/xebec
+
+CRAZY: 
+  ftp:
+    open: crazy-crazy.sakura.ne.jp
+    user: crazy-crazy
+    pass: utage888
+    files:
+      ldata:  /www/giji_log/crazy
+      data:   data/vil
+      config: /home/crazy-crazy/www/crazy
+
+CABALA: 
+  ssh:
+    open: aocafe.sakura.ne.jp
+    user: aocafe
+    pass: minato
+    options:
+      <<: *DEFAULT_SSH_OPTIONS
+    files:
+      ldata:  /www/giji_log/cafe
+      data:   data/vil
+      config: /home/aocafe/www/noir/cafe
+
+ALLSTAR: 
+  ssh:
+    open: jinro.jksy.org
+    user: nanakorobi
+    options:
+      <<: *DEFAULT_SSH_OPTIONS
+      port: 20002
+    files:
+      ldata:  /www/giji_log/jksy
+      data:   data/vil
+      config: /home/nanakorobi/public_html
+
+LOBBY: 
+  ftp:
+    open: crazy-crazy.sakura.ne.jp
+    user: crazy-crazy
+    pass: utage888
+    files:
+      ldata:  /www/giji_log/lobby
+      data:   data/vil
+      config: /home/crazy-crazy/www/giji_lobby/lobby
+
+OFFPARTY: 
+  ftp:
+    open: party.ps.land.to
+    user: party
+    pass: TyaboFil20
+    files:
+      ldata:  /www/giji_log/kitchen
+      data:   data/vil
+      config: /public_html/kitchen
+

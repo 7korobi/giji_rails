@@ -1,17 +1,20 @@
 require 'ostruct'
 require 'current'
-require 'rails_defs'
 require 'timestamp'
-require 'with_simple_form'
-require 'mongoid_as_active_record'
 
-class Mongoid::Relations::Metadata
-  attr_accessor :form
+Rails.application.config.middleware.use OmniAuth::Builder  do
+  [:twitter, :facebook].each do |site|
+    open_key, private_key, options = OMNI_AUTH[:provider][site]
+    provider site, open_key, private_key
+  end
 end
+
+Time::DATE_FORMATS[:default] = "%Y-%m-%d %H:%M"
+I18n.default_locale = :ja
 
 module DecentExposure
   def expose_embedded(name)
-    list  = name.to_s.pluralize 
+    list  = name.to_s.pluralize
     proxy = name.to_s.classify.constantize
     expose(name) do
       if params[:id]
@@ -30,27 +33,7 @@ module Giji
     base.class_eval do
       include Mongoid::Document
       include Timestamp
-      include WithSimpleForm
-      include MongoidAsActiveRecord::Base
     end
-
-    def base.forms
-      const_get(:FORMS)
-    end
-
-    def base.key?(key)
-      const_get(:KEYS).member? key.to_s
-    rescue
-      const_set :KEYS, []
-      false
-    end
-    def base.key(* keys)
-      const_set :KEYS, keys.map(&:to_s)
-      super
-    end
-
-    forms_field = base.superclass.forms.dup rescue {}.with_indifferent_access
-    base.const_set :FORMS, forms_field
   end
 end
 

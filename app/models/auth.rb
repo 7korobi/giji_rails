@@ -3,20 +3,23 @@ class Auth
   key :provider, :uid
   field :provider
   field :uid
-  field :name
   field :handle
   timestamp :at
   referenced_in :user, inverse_of: :auths
+
+  field :name
+  field :screen_name
+  field :image
 
   def initialize(attributes = {})
     super
     self.save!
   end
-  
+
   def login?
     uid.present?
   end
-  
+
   def self.by_current(session)
     self.find(session[:auth_id]) rescue nil
   end
@@ -27,8 +30,9 @@ class Auth
   def self.authenticate(auth)
     o = self.find_or_new(["provider","uid"], auth)
     o.attributes = {
-      name:        auth["user_info"]["name"],
-      screen_name: auth["user_info"]["nickname"]
+      name:        auth["info"]["name"],
+      screen_name: auth["info"]["nickname"],
+      image:       auth["info"]["image"]
     }
     o.save
     o

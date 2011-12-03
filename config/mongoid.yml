@@ -5,6 +5,7 @@ defaults: &defaults
   username: 7korobi
   password: kotatsu3
   autocreate_indexes: true
+
   # slaves:
   #   - host: slave1.local
   #     port: 27018
@@ -14,15 +15,15 @@ defaults: &defaults
 development:
   <<: *defaults
   database: giji
-  host: 192.168.0.200
+#  host: 192.168.0.200
 
 test:
   <<: *defaults
   database: giji_test
-  host: 192.168.0.200
+#  host: 192.168.0.200
 
 # set these environment variables on your prod server
 production:
   <<: *defaults
   database: giji
-  host: 192.168.0.200
+#  host: 192.168.0.200
