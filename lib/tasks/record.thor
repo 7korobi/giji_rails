@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-LOG_DIR = '/www/giji_log/'
-
 WATCH = {
   cgi: { file: '/www/etc/clock/record_cgi_clock.txt'     },
   vil: { file: '/www/etc/clock/record_vil_cgi_clock.txt' }
@@ -13,6 +11,23 @@ end
 
 
 class Record < Thor
+  desc "rsync", "rsync from servers"
+  def rsync
+    require 'active_support/all'
+    require 'yaml'
+    require '/www/giji/lib/rsync'
+
+    sh = []
+
+    rsync = Giji::RSync.new
+    rsync.each do |folder, protocol, set|
+      rsync.get(protocol, set)
+    end
+
+    rsync.exec
+    puts %Q|\n\n O.K|
+  end
+
   desc "cgi", "cgi collection from other server"
   def cgi
     require '/www/giji/config/environment'

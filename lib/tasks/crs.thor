@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-LOG_DIR = '/www/giji_log/'
-
 class Crs < Thor
   desc "create", "create config to other server"
   def create

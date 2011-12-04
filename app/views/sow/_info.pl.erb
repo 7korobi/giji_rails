@@ -9,7 +9,7 @@ sub OutHTMLAdminInfo {
 	my $net = $sow->{'html'}->{'net'}; # Null End Tag
 	my $atr_id = $sow->{'html'}->{'atr_id'};
 
-	my $urlsow  = $cfg->{'BASEDIR_CGI'}.'/'.$cfg->{'FILE_SOW'};
+	my $urlsow  = $cfg->{'BASEDIR_CGI'}.'/'.$cfg->{'FILE_GAME'};
 	my $urlwiki = $cfg->{'URL_CONST'};
 	my $urlimg  = $cfg->{'DIR_IMG'};
 
@@ -26,18 +26,18 @@ sub OutHTMLAdminInfo {
 	my $topcss  = &SWBase::GetLinkValues($sow, $reqvals);
 
 	my $max_wolf     =  <%= 1 %>;
-	my $max_allstar  =  <%= SOW[:ALLSTAR_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
-	my $max_jksy     =  <%= SOW[:ALLSTAR]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_allstar  =  <%= GAME[:ALLSTAR_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_jksy     =  <%= GAME[:ALLSTAR]['config']['cfg'][:MAX_VILLAGES] %>;
 
-	my $max_perjury  =  <%= SOW[:PERJURY_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
-	my $max_vage     =  <%= SOW[:PERJURY]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_perjury  =  <%= GAME[:PERJURY_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_vage     =  <%= GAME[:PERJURY]['config']['cfg'][:MAX_VILLAGES] %>;
 
-	my $max_crazy    =  <%= SOW[:CRAZY  ]['config']['cfg'][:MAX_VILLAGES] %>;
-	my $max_xebec    =  <%= SOW[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
-	my $max_cafe     =  <%= SOW[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_crazy    =  <%= GAME[:CRAZY  ]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_xebec    =  <%= GAME[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_cafe     =  <%= GAME[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
 
-	my $max_cabala   =  <%= SOW[:CABALA_OLD ]['config']['cfg'][:MAX_VILLAGES] %>;
-	my $max_pan      =  <%= SOW[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_cabala   =  <%= GAME[:CABALA_OLD ]['config']['cfg'][:MAX_VILLAGES] %>;
+	my $max_pan      =  <%= GAME[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
 	my $max_all      = ( $max_wolf ) 
 	                 + ( $max_allstar + $max_jksy   ) 
 	                 + ( $max_perjury + $max_vage   + $max_crazy + $max_xebec )
@@ -64,7 +64,7 @@ sub OutHTMLAdminInfo {
 <table class="board">
 <tr>
 <th colspan=5>総合トップページはこちら <a href="http://utage.sytes.net/WebRecord/lobby?$topcss"><strong>人狼議事</strong></a> 合計$max_all村を上限としています
-<td rowspan=2 class="no_choice link"><a href="<%= SOW[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi">似顔絵<br>人狼<br>　</a>
+<td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi">似顔絵<br>人狼<br>　</a>
 <tr class="link">
 <td class="$choice_lobby">   <a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">ロビー<br>　</a>
 <td class="$choice_wolf">    <a href="http://utage.sytes.net/wolf/sow.cgi?$topcss">標準<br>　</a>
@@ -75,20 +75,20 @@ sub OutHTMLAdminInfo {
 <td class="$choice_lobby">
 <td class="$choice_wolf">$max_wolf村
 <td class="$choice_cabala" style="text-align:left;">
-$max_cabala村<a href="<%= SOW[:CABALA_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧地</a><br>
-$max_cafe村<a href="<%= SOW[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:cafe</a><br>
+$max_cabala村<a href="<%= GAME[:CABALA_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧地</a><br>
+$max_cafe村<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:cafe</a><br>
 　<br>
 　
 <td class="$choice_allstar" style="text-align:left;">
-$max_allstar村<a href="<%= SOW[:ALLSTAR_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧地</a><br>
-$max_jksy村<a href="<%= SOW[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:allstar</a><br>
+$max_allstar村<a href="<%= GAME[:ALLSTAR_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧地</a><br>
+$max_jksy村<a href="<%= GAME[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:allstar</a><br>
 　<br>
 　
 <td class="$choice_braid" style="text-align:left;">
-$max_perjury村<a href="<%= SOW[:PERJURY_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧RPbp</a><br>
-$max_vage村<a href="<%= SOW[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:perjury</a><br>
-$max_xebec村<a href="<%= SOW[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:xebec</a><br>
-$max_crazy村<a href="<%= SOW[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:crazy</a>
+$max_perjury村<a href="<%= GAME[:PERJURY_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧RPbp</a><br>
+$max_vage村<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:perjury</a><br>
+$max_xebec村<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:xebec</a><br>
+$max_crazy村<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:crazy</a>
 <td class="no_choice">$max_pan村
 <tr>
 <td class="$choice_lobby">  <a href="http://utage.sytes.net/WebRecord/vil/LOBBY?$topcss">終了した村</a>

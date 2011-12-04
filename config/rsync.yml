@@ -1,6 +1,4 @@
-DEFAULT:
-  ssh:
-    options: &DEFAULT_SSH_OPTIONS
+DEFAULT_SSH: &DEFAULT_SSH_OPTIONS
       keys:
         - /home/7korobi/.ssh/id_rsa
 
@@ -28,16 +26,6 @@ XEBEC:
       data:   data/vil
       config: /home/apollo/www/sow/xebec
 
-CRAZY: 
-  ftp:
-    open: crazy-crazy.sakura.ne.jp
-    user: crazy-crazy
-    pass: utage888
-    files:
-      ldata:  /www/giji_log/crazy
-      data:   data/vil
-      config: /home/crazy-crazy/www/crazy
-
 CABALA: 
   ssh:
     open: aocafe.sakura.ne.jp
@@ -54,6 +42,7 @@ ALLSTAR:
   ssh:
     open: jinro.jksy.org
     user: nanakorobi
+    pass: 7korobi
     options:
       <<: *DEFAULT_SSH_OPTIONS
       port: 20002
@@ -62,11 +51,21 @@ ALLSTAR:
       data:   data/vil
       config: /home/nanakorobi/public_html
 
+CRAZY: 
+  ftp:
+    open: crazy-crazy.sakura.ne.jp
+    user: crazy-crazy
+    pass: yhvxa3vwh6
+    files:
+      ldata:  /www/giji_log/crazy
+      data:   data/vil
+      config: /home/crazy-crazy/www/crazy
+
 LOBBY: 
   ftp:
     open: crazy-crazy.sakura.ne.jp
     user: crazy-crazy
-    pass: utage888
+    pass: yhvxa3vwh6
     files:
       ldata:  /www/giji_log/lobby
       data:   data/vil

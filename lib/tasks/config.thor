@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
-LOG_DIR = '/www/giji_log/'
-
 class Config < Thor
   desc "create", "create config to other server"
   def create
-    require '/www/giji/config/initializers/const'
+    require 'active_support/all'
     require 'fileutils'
-    require 'net/ftp'
-    require 'net/sftp'
     require 'yaml'
     require 'erubis'
+    require '/www/giji/lib/rsync'
 
     ConfigCreate.new.activate
   end
@@ -377,13 +374,10 @@ _PERL_
       @rhtml_content = "/www/giji/app/views/sow/_info.pl.erb"
       File.open(rhtml_info_out ,'w:sjis:utf-8'){|f| f.write( to_s ) }
       FileUtils.chmod( 0666, rhtml_info_out )
-      p ['File', :INFO]
 
-      SOW.each_pair do |folder,cfg|
-        config    = cfg['config']
-        next unless config
-        rhtml_config_out = config['pl']
-        next unless rhtml_config_out
+      GAME.each_pair do |folder,cfg|
+        config           = cfg['config'] || next
+        rhtml_config_out = config['pl']  || next
 
         @rhtml_content,@cd_default,@maxsize,@saycnt_lists,@saycnt_orders,@games,@csids,@trsids,@path,@cfg,@enable = [config['erb'], config['cd_default'], config['maxsize'], config['saycnt'], config['saycnt'], config['game'], config['csid'], config['trsid'], config['path'], config['cfg'], config['enable']]
         chk_braid = 0 < (@saycnt_lists & ['vulcan','infinity'] ).size 
@@ -399,82 +393,21 @@ _PERL_
 
         File.open(rhtml_config_out ,'w:sjis:utf-8'){|f| f.write( result[folder] ) }
         FileUtils.chmod( 0666, rhtml_config_out )
-        p ['File', folder]
       end
 
-      SOW.each_pair do |folder,cfg|
-        ftp    = cfg['ssh']
-        next unless ftp
-        Net::SFTP.start  ftp['open'], ftp['user'], ftp['options'] do |conn|
-          setting_set(  conn, :upload!, rhtml_info_out, ftp['files']['config'], cfg['config'] )
-
-          data_path = [ftp['files']['config'], ftp['files']['data']].join('/')
-          list = []
-          conn.dir.entries( data_path ).each do |entry| 
-            name = entry.name
-            next unless entry.file?
-            mtime  = Time.at( entry.attributes.mtime )
-            list.push [name,mtime]
-          end
-          data_vil( conn, :download!,  ftp['files'], list )
-        end
-        p ['Net::SFTP', folder]
+      rsync = Giji::RSync.new
+      rsync.each do |folder, protocol, set|
+        rsync.put(protocol, set, rhtml_info_out)
       end
 
-      SOW.each_pair do |folder,cfg|
-        ftp    = cfg['ftp']
-        next unless ftp
-        begin
-            conn = Net::FTP.open  ftp['open'], ftp['user'], ftp['pass'] 
-            begin 
-              setting_set(  conn, :puttextfile, rhtml_info_out, ftp['files']['config'], cfg['config'] )
-
-              data_path = [ftp['files']['config'], ftp['files']['data']].join('/')
-              list = []
-              conn.ls( data_path ).each do |line| 
-                target = line.split(/ +/) 
-                name    = target[-1]
-                next if %w[. ..].member? name
-                dataname = [data_path,name].join('/')
-                mtime  = conn.mtime( dataname )
-                list.push [name,mtime]
-              end
-              data_vil( conn, :getbinaryfile, ftp['files'], list )
-            ensure
-              conn.close
-              p ['Net::FTP', folder]
-            end
-        rescue IOError => e
-            p e.message
-        end
+      rsync.each do |folder, protocol, set|
+        next unless GAME[folder][:config]
+        rhtml_config_out = GAME[folder][:config][:pl]
+        rsync.put(protocol, set, rhtml_config_out)
       end
 
-    end
-
-    
-    def setting_set( conn, cmd, rhtml_info_out, ftp_config, config)
-      conn.send(cmd, rhtml_info_out,   ftp_config + '/_info.pl')
-      if config
-        rhtml_config_out = config['pl']
-        conn.send(cmd,  rhtml_config_out, ftp_config + '/config.pl')
-      end
-    end
-    def data_vil( conn, cmd, files, list )
-      data_path = [files['config'], files['data']].join('/')
-      local_path = [files['ldata'], files['data']].join('/')
-      having = Dir.entries(local_path).inject(Hash.new(Time.at(0))){|hash, name| 
-        hash[name] = File.mtime([local_path,name].join('/')) 
-        hash
-      }
-      list.each do |ary| name,mtime = ary
-        dataname = [data_path,name].join('/')
-        localname = [local_path,name].join('/')
-        if  mtime > having[name]
-          p [cmd, dataname, localname] if cmd == :gettextfile
-          conn.send(cmd, dataname, localname)
-          p "dl! " + name
-        end
-      end
+      rsync.exec
+      puts %Q|\n\n O.K|
     end
   end
 end

@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
-LOG_DIR = '/www/giji_log/'
-
 class PerlCgi < Thor
   desc "push", "push files to other server"
   def push
-    require '/www/giji/config/initializers/const'
+    require 'active_support/all'
     require 'fileutils'
     require 'net/ftp'
     require 'net/sftp'
     require 'yaml'
     require 'erubis'
+    require '/www/giji/config/initializers/const'
 
-    SOW.each_pair do |folder,cfg|
+    RSYNC.each_pair do |folder,cfg|
         ftp    = cfg['ssh']
         next unless ftp
         next unless cfg['config']
@@ -24,7 +23,7 @@ class PerlCgi < Thor
         p ['Net::SFTP', folder]
     end
 
-    SOW.each_pair do |folder,cfg|
+    RSYNC.each_pair do |folder,cfg|
         ftp    = cfg['ftp']
         next unless ftp
         next unless cfg['config']
@@ -42,7 +41,7 @@ class PerlCgi < Thor
   class PerlDir
       def self.push(cfg, ftp, conn, dir, upload_cmd, remove_cmd )
         path_src = '/www/giji_log/cabala/'
-        src = SOW[:CABALA_OLD]['config']['path']
+        src = GAME[:CABALA_OLD]['config']['path']
         dst = cfg['config']['path'][dir]
         Dir.glob( path_src + src[dir] + '/*.pl' ) do |outfile|
             infile = [ftp['files']['config'], dst, outfile.split('/').last].join('/')
