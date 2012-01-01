@@ -15,8 +15,8 @@ class Record < Thor
   def rsync
     require 'active_support/all'
     require 'yaml'
-    require '/www/giji/lib/const'
-    require '/www/giji/lib/rsync'
+    require '/www/giji_rails/lib/const'
+    require '/www/giji_rails/lib/rsync'
 
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
@@ -28,7 +28,7 @@ class Record < Thor
 
   desc "cgi", "cgi collection from other server"
   def cgi
-    require '/www/giji/config/environment'
+    require '/www/giji_rails/config/environment'
     return
     RecordFile.class_eval do
         cgi_scan_by_folder( LOG_DIR + 'pan/data/vil'        ,'PAN'      , 60*10  ,[] )
@@ -49,13 +49,13 @@ class Record < Thor
         cgi_scan_by_folder( LOG_DIR + 'pretense/data/vil'   ,'PRETENSE' , 60*10  ,[] )
     end
 #    cgi_scan_by_account( LOG_DIR + 'sow/data/user'       , 60*10  )
-  
+
     open( WATCH[:cgi][:file], "w" ).puts "TimeStamp set."
   end
 
   desc "cgi_vil", "cgi collection from other server villages"
   def cgi_vil
-    require '/www/giji/config/environment'
+    require '/www/giji_rails/config/environment'
     RecordFile.class_eval do
         cgi_scan_by_folder_active( LOG_DIR + 'pan/data/vil'        ,'PAN'      , 60*10  ,[] )
         cgi_scan_by_folder_active( LOG_DIR + 'wolf/data/vil'       ,'WOLF'     , 60*10  ,[] )
@@ -75,7 +75,7 @@ class Record < Thor
 
   desc "web", "web collection from other service"
   def web
-    require '/www/giji/config/environment'
+    require '/www/giji_rails/config/environment'
   end
 end
 
