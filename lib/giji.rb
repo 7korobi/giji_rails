@@ -1,3 +1,4 @@
+require 'const'
 require 'ostruct'
 require 'current'
 require 'timestamp'
@@ -9,7 +10,6 @@ Rails.application.config.middleware.use OmniAuth::Builder  do
   end
 end
 
-Time::DATE_FORMATS[:default] = "%Y-%m-%d %H:%M"
 I18n.default_locale = :ja
 
 module DecentExposure

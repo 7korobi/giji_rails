@@ -15,17 +15,15 @@ class Record < Thor
   def rsync
     require 'active_support/all'
     require 'yaml'
+    require '/www/giji/lib/const'
     require '/www/giji/lib/rsync'
-
-    sh = []
 
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
-      rsync.get(protocol, set)
+      rsync.get(protocol, set, :config)
     end
 
     rsync.exec
-    puts %Q|\n\n O.K|
   end
 
   desc "cgi", "cgi collection from other server"

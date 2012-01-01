@@ -40,9 +40,6 @@ gem "kaminari"
 gem "moji"
 gem "jpmobile"
 
-# model support
-gem "model_manage"
-
 # omniauth
 gem "omniauth"
 gem 'omniauth-twitter'
@@ -75,6 +72,9 @@ gem "paperclip"
 gem "mongoid"
 gem 'sqlite3'
 gem "sqlite3-ruby"
+
+# model support
+gem "model_manage"
 
 # management
 #gem "rubygems-update"

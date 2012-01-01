@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-module LinkHelper
 
-    def head_img
-        if css_name['480']
-        then
-            image = 'title458c' 
-        else
-            image = 'title580c'
-        end
-        link_to_lobby( image_tag 'banner/%s.jpg'%[image],  alt: "人狼議事" )
-    end
+
+module LinkHelper
+  def head_img
+    size = 458 if params[:css]['480']
+    size = 580 if params[:css]['800']
+    link_to_lobby image_tag("/images/banner/title#{size}r.jpg")
+  end
+
     def img_cd(rating)
         case rating
         when nil,"view","r15","r18","gro","0"

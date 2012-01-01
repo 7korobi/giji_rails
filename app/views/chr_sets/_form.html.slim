@@ -1,24 +1,20 @@
 
-=simple_form_for chr_set do |f|
-  -if chr_set.errors.any?
-    ul#errors
-      - f.object.errors.full_messages.each do |msg|
-        li= msg
+=semantic_form_for chr_set do |f|
   =f.object.id
-  =f.input :maker
-  =f.input :admin
+  =f.inputs
 
-  =f.field_for :chr_npcs do |nf|
+  =f.semantic_fields_for :chr_npcs do |nf|
+    =nf.object_name
     =nf.object.id
-    =nf.input :csid
-    =nf.input :caption
-    =nf.input "npc[0]"
-    =nf.input "npc[1]"
+    =nf.inputs
+    -nf.object.npc.each do |value|
+      ul
+        li=text_field_tag "#{nf.object_name}[npc][]", value
   p.command= link_to 'NPCを追加する'
 
-  =f.field_for :chr_jobs do |jf|
+  =f.semantic_fields_for :chr_jobs do |jf|
     =jf.object.id
-    =jf.input :job
+    =jf.inputs
   p.command= link_to '肩書きとキャラクターを追加する'
 
   .actions

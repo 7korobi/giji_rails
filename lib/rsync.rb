@@ -1,4 +1,3 @@
-require '/www/giji/config/initializers/const'
 
 module Giji
   class RSync
@@ -13,7 +12,10 @@ module Giji
     end
 
     def exec
+      puts to_s
+      return 
       %x|#{to_s}|
+      puts %Q|\n\n O.K|
     end
 
     def each
@@ -25,9 +27,9 @@ module Giji
       end
     end
 
-    def get protocol, set
-      rpath = set[:files][:config]
-      lpath = set[:files][:ldata]
+    def get protocol, set, rtype, ltype = :ldata
+      rpath = set[:files][rtype]  ||  return
+      lpath = set[:files][ltype]  ||  return
       open, user, pass = set.values_at( * %w[open user pass] )
 
       puts %Q|#{open}:#{rpath}\tsync to #{lpath}\n|
@@ -53,19 +55,30 @@ module Giji
       end
     end
 
-    def put protocol, set, file_out
-      rpath = set[:files][:config]
+    def put protocol, set, name, ltype, rtype
+      lpath = set[:files][ltype]  ||  return
+      rpath = set[:files][rtype]  ||  return
+      lpath += "/#{name}"
+      rpath += "/#{name}"
       open, user, pass = set.values_at( * %w[open user pass] )
 
-      puts %Q|#{file_out}\tput to #{open}:#{rpath}\n|
+      puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
 
       case protocol
       when 'ftp'
-        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off;cd #{rpath}/; put #{file_out}; exit' &|
+        option = '-R --only-newer'
+        excludes = %w[.svn-base .svn .bak].map do|name|
+          %Q|-X #{name}|
+        end.join(' ')
+        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{lpath} #{rpath}; exit' &|
 
       when 'ssh'
+        option = '--stats'
         port  = set[:options][:port] || 22
-        @sh << %Q|scp -P #{port} #{file_out} #{user}@#{open}:#{rpath}/ &|
+        excludes = %w[.svn-base .svn .bak].map do|name|
+          %Q|--exclude='*#{name}'|
+        end.join(' ')
+        @sh << %Q|rsync -e 'ssh -p #{port}' -r #{lpath} #{user}@#{open}:#{rpath} #{excludes} #{option} &|
 
       end
     end

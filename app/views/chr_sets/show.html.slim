@@ -1,2 +1,11 @@
-= link_to 'Edit', edit_chr_set_path(chr_set)
-= link_to 'Back', chr_sets_path
+- content_for :head do
+  h3.sayfilter_heading view chr_sets
+
+- content_for :info do
+  .sayfilter_caption_enable
+    = link_to 'Edit', edit_chr_set_path(chr_set)
+  .sayfilter_caption_enable
+    = link_to 'Back', chr_sets_path
+
+
+

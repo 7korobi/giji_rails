@@ -1,6 +1,6 @@
 DEFAULT_SSH: &DEFAULT_SSH_OPTIONS
-      keys:
-        - /home/7korobi/.ssh/id_rsa
+  keys:
+    - /home/7korobi/.ssh/id_rsa
 
 
 PERJURY:
@@ -10,9 +10,14 @@ PERJURY:
     options:
       <<: *DEFAULT_SSH_OPTIONS
     files:
+      lsow:   /www/giji_log/sow
+      lapp:   /www/sow-giji/cabala
       ldata:  /www/giji_log/vage
+      lasset: /www
       data:   data/vil
+      app:    /home/vage/www/perjury
       config: /home/vage/www/perjury
+      asset:  /home/vage/www/perjury
 
 XEBEC: 
   ssh:
@@ -22,9 +27,14 @@ XEBEC:
     options:
       <<: *DEFAULT_SSH_OPTIONS
     files:
+      lsow:   /www/giji_log/sow
+      lapp:   /www/sow-giji/cabala
       ldata:  /www/giji_log/xebec
+      lasset: /www
       data:   data/vil
+      app:    /home/apollo/www/sow/xebec
       config: /home/apollo/www/sow/xebec
+      asset:  /home/apollo/www/sow
 
 CABALA: 
   ssh:
@@ -34,9 +44,14 @@ CABALA:
     options:
       <<: *DEFAULT_SSH_OPTIONS
     files:
+      lsow:   /www/giji_log/sow
+      lapp:   /www/sow-giji/cabala
       ldata:  /www/giji_log/cafe
+      lasset: /www
       data:   data/vil
+      app:    /home/aocafe/www/noir/cafe
       config: /home/aocafe/www/noir/cafe
+      asset:  /home/aocafe/www/noir
 
 ALLSTAR: 
   ssh:
@@ -47,9 +62,14 @@ ALLSTAR:
       <<: *DEFAULT_SSH_OPTIONS
       port: 20002
     files:
+      lsow:   /www/giji_log/sow
+      lapp:   /www/sow-giji/cabala
       ldata:  /www/giji_log/jksy
+      lasset: /www
       data:   data/vil
+      app:    /home/nanakorobi/public_html
       config: /home/nanakorobi/public_html
+      asset:  /home/nanakorobi/public_html
 
 CRAZY: 
   ftp:
@@ -67,9 +87,14 @@ LOBBY:
     user: crazy-crazy
     pass: yhvxa3vwh6
     files:
+      lsow:   /www/giji_log/sow
+      lapp:   /www/sow-giji/cabala
       ldata:  /www/giji_log/lobby
+      lasset: /www
       data:   data/vil
+      app:    /home/crazy-crazy/www/giji_lobby/lobby
       config: /home/crazy-crazy/www/giji_lobby/lobby
+      asset:  /home/crazy-crazy/www
 
 OFFPARTY: 
   ftp:
@@ -77,7 +102,9 @@ OFFPARTY:
     user: party
     pass: TyaboFil20
     files:
+      lapp:   /www/sow-giji/cabala
       ldata:  /www/giji_log/kitchen
       data:   data/vil
+      app:    /public_html/lobby
       config: /public_html/kitchen
 

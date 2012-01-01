@@ -3,45 +3,49 @@ html lang="ja"
   head
     =render partial: 'layouts/head'
     title#flashes
-      = if flash[:error] then flash[:error] else "人狼議事" end
+      = if flash[:error]  then flash[:error]  else "人狼議事" end
       = if flash[:notice] then flash[:notice] end
   body
     #outframe.outframe
       #contentframe.contentframe
         h1= head_img
         =render partial: 'layouts/titles'
-      .inframe
-        hr.invisible_hr
-          - if @disable_headline then
-            .turnnavi id=(params[:turn])
-              = links_to_turn(@turns) if @turns
-          .pagenavi
-            = will_paginate(@items, :prev_label => '前', :next_label => '次', :container => false) if @items
-            = link_to_memo  if params[:turn]
+        .inframe
+          hr.invisible_hr
+          = yield :navi
+          = yield :log
+          = yield :navi
+          address
+            | 人狼議事キャラセット by りりんら
             br
-          = yield
-          .pagenavi
-            = will_paginate(@items, :prev_label => '前', :next_label => '次', :container => false) if @items
-            = link_to_memo  if params[:turn]
-            br
-          - if @disable_headline then
-            .turnnavi id=(params[:turn])
-              = links_to_turn(@turns) if @turns
-    = "render partial: 'layouts/sayfilter'"
-    .inframe
-      address
-        | 人狼議事キャラセット by りりんら
-        br
-          | 管理
-          a href="mailto:7korobi@gmail.com"
-          br
-
-
-  body
-    .content
-      #header
+              | 管理
+              a href="mailto:7korobi@gmail.com"
+              br
       #footer
         #follow
           = image_tag  'twitter.png', class: 'twit'
           = image_tag 'facebook.png'
+      #sayfilter.sayfilter
+        ul
+          li#filter_header.sayfilter_heading
+            a(href='#info')
+              | 操作
+          li#filter_header.sayfilter_heading
+            a(href='#link')
+              | 移動
+          li#filter_header.sayfilter_heading
+            a(href='#calc')
+              | 計算
+        #link.insayfilter
+          = yield :head
+          .paragraph
+            = yield :link
+        #info.insayfilter
+          = yield :head
+          .paragraph
+            = yield :info
+        #calc.insayfilter
+          = yield :head
+          .paragraph
+            = yield :calc
 

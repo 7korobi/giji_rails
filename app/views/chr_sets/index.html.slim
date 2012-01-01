@@ -1,16 +1,19 @@
-h1 Listing chr_sets
+- content_for :head do
+  h3.sayfilter_heading Listing chr_sets
 
-table
-  - chr_sets.each do |chr_set|
-    tr
-      td.id= link_to chr_set.id, chr_set
-      td
-        .maker= chr_set.maker
-        .admin= chr_set.admin
-      td
-        .command= link_to 'Edit', edit_chr_set_path(chr_set)
-        .command= link_to 'Destroy', chr_set, :confirm => 'Are you sure?', :method => :delete
+- content_for :info do
+  table
+    - chr_sets.each do |chr_set|
+      tr
+        td.id= link_to chr_set.id, chr_set
+        td
+          .maker= chr_set.maker
+          .admin= chr_set.admin
+        td
+          .command= link_to 'Edit', edit_chr_set_path(chr_set)
+          .command= link_to 'Destroy', chr_set, confirm: 'Are you sure?', method:'delete'
 
-br
+  .sayfilter_caption_enable
+    br
+    = link_to 'New Chr set', new_chr_set_path
 
-= link_to 'New Chr set', new_chr_set_path

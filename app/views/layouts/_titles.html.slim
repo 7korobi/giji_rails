@@ -3,7 +3,7 @@ DIV.login
     - if login?
       = link_to 'Logout', signout_path
     - if logout?
-      = link_to 'Login', '/auth/twitter'
+      = link_to image_tag('twitter.png', class: 'twit'), '/auth/twitter'
   p style="color: green"
   p style="color: red"
 - if @disable_headline then
@@ -118,14 +118,18 @@ p style="text-align:right; font-size: 100%;"
   = link_to_css "漆黒",:ririnra
   | ｜
   = link_to_css "煉瓦",:cinema800
+  = ' '
   = link_to_css "480",:cinema480
   | ｜
   = link_to_css "月夜",:night800
+  = ' '
   = link_to_css "480",:night480
   | ｜
   = link_to_css "蒼穹",:star800
+  = ' '
   = link_to_css "480",:star480
   | ｜
   = link_to_css "和の国",:wa800
+  = ' '
   = link_to_css "480",:wa480
   

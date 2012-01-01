@@ -3,7 +3,23 @@
 require 'yaml'
 
 module ApplicationHelper
-   include LinkHelper
+  include LinkHelper
+
+  def css_name
+    params[:css] ||= OPTION[:css_wday][Time.now.wday]
+    "/stylesheets/#{params[:css]}"
+  end
+
+  def cfg( folder )
+    GAME[folder]['config']['cfg']
+  end
+
+  def folder ( folder,key )
+    if folder
+    then GAME[folder][key] 
+    else ""
+    end
+  end
 
 q_oldlog  = '?cmd=oldlog'
 q_oldlog  = '?cmd=oldlog&rowall=on'
@@ -16,31 +32,17 @@ q_info    = '?ua=mb&vid=%s&cmd=vinfo'
     end
 
     def url_toppage(folder)
-        toppage = SOW[folder.to_sym][:livelog]
+        toppage = SOW[folder][:livelog]
         toppage.gsub!("cmd=rss","")
-        "http://" + SOW[folder.to_sym][:server ] + toppage
+        "http://" + SOW[folder][:server ] + toppage
     end
 
-    def cfg( folder )
-      SOW[folder.to_sym]['config']['cfg']
-    end
-    def folder ( folder,key )
-        if folder
-        then SOW[folder.to_sym][key] 
-        else ""
-        end
-    end
 
     def view_width
         css_name
         width = 480
         width = 800 if css_name["800"]
         width
-    end
-
-    def css_name
-        params[:css] ||= OPTION[:css_wday][Time.now.wday]
-        params[:css]
     end
 
     def datetime_to_str(date)
