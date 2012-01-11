@@ -495,6 +495,7 @@ ALLSTAR:
       TIMEOUT_ENTRY:  3
       TIMEOUT_SCRAP: 10
       BASEDIR_DOC:    /~nanakorobi/WebRecord
+      ENABLED_VMAKE:  0
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/jksy/config.pl
