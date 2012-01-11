@@ -1,16 +1,14 @@
 # path info
-stderr_path "/utage/log/giji.unicorn.stderr.log"
-stdout_path "/utage/log/giji.unicorn.stdout.log"
-pid         "/utage/pids/giji.unicorn.pid"
+stderr_path "/utage/log/giji_rails.unicorn.stderr.log"
+stdout_path "/utage/log/giji_rails.unicorn.stdout.log"
+pid         "/utage/pids/giji_rails.unicorn.pid"
 
 
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
 working_directory "/www/giji_rails" # available in 0.94.0+
 
-rails_env = 'development'
-
-case rails_env
+case ENV['RAILS_ENV']
 when 'development'
   # performance
   worker_processes 1
@@ -23,8 +21,8 @@ when 'production'
   timeout 30
 end
 
-listen /utage/socket/giji.unicorn.sock, ENV['RAILS_ROOT']
-#listen 3000, :backlog => 512, :tcp_nopush => true
+#listen /utage/socket/giji.unicorn.sock, ENV['RAILS_ROOT']
+listen 2519, :backlog => 512, :tcp_nopush => true
 
 # Since Unicorn is never exposed to outside clients, it does not need to
 # run on the standard HTTP port (80), there is no reason to start Unicorn

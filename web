@@ -1,0 +1,30 @@
+APP=giji_rails
+cd /www/$APP
+
+case "$1" in
+status)
+  echo
+  ls /utage/pids/*
+  ;;
+start)
+  ~/.rbenv/bin/rbenv exec unicorn_rails -c config/unicorn.rb -E production -D
+  ;;
+stop)
+  cat /utage/pids/$APP.unicorn.pid | xargs kill -KILL -s QUIT
+  ;;
+restart|reload)
+  cat /utage/pids/$APP.unicorn.pid | xargs kill -KILL -s USR2
+  ;;
+deploy)
+  rm -rf public/assets/*
+  ~/.rbenv/bin/rbenv exec rake assets:precompile
+  cat public/assets/manifest.yml
+  rsync -e "ssh -p 2500" -r /www/$APP/public 7korobi@192.168.0.250:/www/$APP/public --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats --verbose
+  ;;
+*)
+  echo
+  echo $"Usage: $0 command"
+  echo
+  echo  "  command : status start stop restart reload  deploy "
+  echo  "  rails   : $APP"
+esac
