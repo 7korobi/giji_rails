@@ -15,16 +15,10 @@ stop)
 restart|reload)
   cat /utage/pids/$APP.unicorn.pid | xargs kill -KILL -s USR2
   ;;
-deploy)
-  rm -rf public/assets/*
-  ~/.rbenv/bin/rbenv exec rake assets:precompile
-  cat public/assets/manifest.yml
-  rsync -e "ssh -p 2500" -r /www/$APP/public 7korobi@192.168.0.250:/www/$APP/public --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats --verbose
-  ;;
 *)
   echo
   echo $"Usage: $0 command"
   echo
-  echo  "  command : status start stop restart reload  deploy "
-  echo  "  rails   : $APP"
+  echo  "  command : status start stop restart reload "
+  echo  "  product : $APP"
 esac
