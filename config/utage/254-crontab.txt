@@ -1,7 +1,0 @@
-# Begin Whenever generated tasks for: /www/giji_rails/config/schedule.rb
-19,38,57 * * * * /bin/bash -l -c 'cd /www/giji_rails && RAILS_ENV=production thor config create >> /utage/log/cron.log 2>&1'
-
-0 0 * * * /bin/bash -l -c 'cd /www/giji_rails && RAILS_ENV=production thor crs create >> /utage/log/cron.log 2>&1'
-
-
-# End Whenever generated tasks for: /www/giji_rails/config/schedule.rb
