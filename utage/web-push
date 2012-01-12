@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "no: $1  to: $2  option: $3"
+
+NO=$1
+TO=$2
+OPTION=$3
+
+rsync -e "ssh -p ${NO}0" -r ${TO}/ 7korobi@utage.sytes.net:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats  $OPTION
+
+# rsync -e "ssh -p ${NO}0" -r ${TO}/ 7korobi@192.168.0.${NO}:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats  $OPTION
+
