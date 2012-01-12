@@ -1,0 +1,8 @@
+echo "no: $1  cmd: $2 $3 $4 $5 $6 $7 $8 $9 "
+
+NO=$1
+CMD="$2 $3 $4 $5 $6 $7 $8 $9"
+
+#ssh -p ${NO}0 7korobi@192.168.0.${NO} $CMD
+ssh -p ${NO}0 7korobi@utage.sytes.net $CMD
+
