@@ -70,6 +70,7 @@ gem "rdropbox"
 # data_base
 gem "paperclip"
 gem "mongoid"
+gem "mongoid_session_store"
 gem 'sqlite3'
 gem "sqlite3-ruby"
 

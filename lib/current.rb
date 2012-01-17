@@ -54,7 +54,8 @@ module CurrentAuthenticated
         redirect_to controller: 'users', action: 'new'
       end
     end
-    session[:current] = current(auth, auth.user)
+    current.auth = auth
+    current.user = auth.user
   end
 
   def logout
@@ -67,8 +68,8 @@ module CurrentAuthenticated
     current.request.save if current.request
   end
 
-  def current(auth = nil, user = nil, request = nil)
-    session[:current] ||= Current.new(auth, user, request)
+  def current
+    session[:current] ||= Current.new(nil, nil, Request.find_or_new(request))
   end
 end
 

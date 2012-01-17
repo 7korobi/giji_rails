@@ -1,0 +1,5 @@
+- content_for :head do
+  h3.sayfilter_heading show user
+
+- content_for :log do
+  =link_to user.name, edit_user_path(user)

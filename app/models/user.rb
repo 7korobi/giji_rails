@@ -1,7 +1,7 @@
 class User
   include Giji
   
-  key :user_id
+  key   :user_id
   field :user_id,    limit: 30
   field :name,       limit: 30
   field :email,      limit: 30, allow_blank: true, allow_nil: true

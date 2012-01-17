@@ -1,83 +1,46 @@
+
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.json
+  expose(:users){ User.all }
+  expose(:user)
+
+  respond_to :html, :json
+
+  before_filter :auth_require, only:%w[new  create]
+  before_filter :self_require, only:%w[edit update]
+
   def index
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
-    end
   end
 
-  # GET /users/1
-  # GET /users/1.json
   def show
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user }
-    end
   end
 
-  # GET /users/new
-  # GET /users/new.json
   def new
-    @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @user }
-    end
+    user.user_id = current.auth.try(:screen_name)
+    user.name    = current.auth.try(:name)
+    render 'form'
   end
 
-  # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    render 'form'
   end
 
-  # POST /users
-  # POST /users.json
   def create
-    @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    current.auth.user = user
+    if user.save && current.auth.save
+      flash[:notice] = "successfully #{action_name}d."
     end
+    respond_with user
   end
 
-  # PUT /users/1
-  # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if user.save
+      flash[:notice] = "successfully #{action_name}d."
     end
+    respond_with user
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :ok }
-    end
+  protected
+  def self?
+    user.id == current.user.id
   end
 end
