@@ -1,10 +1,10 @@
 class Auth
   include Giji
+  include Mongoid::Timestamps
   key :provider, :uid
   field :provider
   field :uid
   field :handle
-  timestamp :at
   referenced_in :user, inverse_of: :auths
 
   field :name

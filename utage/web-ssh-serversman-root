@@ -1,0 +1,4 @@
+echo "no: ServersMan  cmd: $*"
+
+ssh -p 3843 root@183.181.24.203 $*
+

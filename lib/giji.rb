@@ -17,9 +17,9 @@ module DecentExposure
     list  = name.to_s.pluralize
     proxy = name.to_s.classify.constantize
     expose(name) do
-      if params[:id]
-        send(list).find(params[:id]).tap do |o|
-          o.attributes = params[name]
+      if id = params["#{name}_id"] || params[:id]
+        send(list).find(id).tap do |o|
+          o.attributes = params[name] unless request.get?
         end
       else
         proxy.new(params[name])

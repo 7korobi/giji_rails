@@ -1,6 +1,7 @@
 Giji::Application.routes.draw do
   resources :users
   resources :chr_sets
+  resources :chr_votes
 
   match '/auth/:provider/callback' => 'sessions#callback'
   match '/auth/failure' => 'sessions#destroy'

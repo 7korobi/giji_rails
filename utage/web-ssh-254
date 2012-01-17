@@ -1,0 +1,2 @@
+echo "no: 254  cmd: $* "
+ssh -p 2540 7korobi@utage.sytes.net $*

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "no: ServersMan  to: $2  option: $3"
+
+TO=$1
+OPTION=$2
+
+rsync -e "ssh -p 3843" -r ${TO}/ 7korobi@183.181.24.203:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats  $OPTION
+
+

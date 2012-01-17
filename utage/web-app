@@ -1,19 +1,24 @@
+#!/bin/sh
+
 APP=giji_rails
+PID=$APP.unicorn
+
 cd /www/$APP
 
 case "$1" in
 status)
   echo
+  ps -ef | grep $PID | grep master
   ls /utage/pids/*
   ;;
 start)
-  ~/.rbenv/bin/rbenv exec unicorn_rails -c /utage/$APP.unicorn.rb -E production -D
+  ~/.rbenv/bin/rbenv exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
   ;;
 stop)
-  cat /utage/pids/$APP.unicorn.pid | xargs kill -KILL -s QUIT
+  cat /utage/pids/$PID.pid | xargs kill -KILL -s QUIT
   ;;
 restart|reload)
-  cat /utage/pids/$APP.unicorn.pid | xargs kill -KILL -s USR2
+  touch /www/$APP/tmp/restart.txt
   ;;
 *)
   echo

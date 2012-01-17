@@ -1,0 +1,10 @@
+- content_for :head do
+  h3.sayfilter_heading Listing chr_votes
+
+- content_for :info do
+  ul
+    - chr_votes.each do |chr_vote|
+      li= chr_vote.face.name
+
+= render 'form'
+

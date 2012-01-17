@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 class Tag
   include Giji
+  include Mongoid::Timestamps::Created
+
   key :name
   field :name
-  timestamp :at
 
   YAHOO_AID   = OMNI_AUTH['ride']['yahoo']['aid']
   UNIQ_FILTER = '8|9'

@@ -5,6 +5,7 @@ module Giji
 
     def initialize
       @sh = []
+      @sh_file = '/utage/giji_log_rsync'
     end
 
     def to_s
@@ -12,10 +13,10 @@ module Giji
     end
 
     def exec
-      puts to_s
-      return 
-      %x|#{to_s}|
-      puts %Q|\n\n O.K|
+      open(@sh_file,'w') do |f|
+        f.puts to_s
+      end
+      puts %Q|#{@sh_file}\n O.K|
     end
 
     def each

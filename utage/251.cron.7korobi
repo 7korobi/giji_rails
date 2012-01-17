@@ -1,0 +1,2 @@
+00,20,40 * * * * /utage/giji_log_rsync  > /utage/log/giji_log_rsync.log
+

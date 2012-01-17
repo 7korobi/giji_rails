@@ -31,7 +31,7 @@ class ChrSetsController < ApplicationController
   end
 
   def destroy
-    chr_set.destroy
+    # chr_set.destroy
     respond_with chr_set
   end
 end

@@ -1,0 +1,5 @@
+echo "no: 251  to: $1  option: $2"
+TO=$1
+OPTION=$2
+
+rsync -e "ssh -p 2510" -r ${TO}/ 7korobi@utage.sytes.net:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats  $OPTION

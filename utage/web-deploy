@@ -5,13 +5,15 @@ cd $APP
 rm -rf log/*
 rm -rf tmp/*
 # rake  assets:precompile
-/utage/web-push 251 $APP         --delete
-/utage/web-push 254 $APP         --delete
-/utage/web-push 250 $APP/public  --delete
+/utage/web-push-251        $APP         --delete
+/utage/web-push-254        $APP         --delete
+/utage/web-push-250        $APP/public  --delete
+/utage/web-push-serversman $APP/public  --delete
 
-/utage/web-push 251 /utage  --delete
-/utage/web-push 252 /utage  --delete
-/utage/web-push 253 /utage  --delete
-/utage/web-push 254 /utage  --delete
+/utage/web-push-251 /utage  --delete
+# /utage/web-push-252 /utage  --delete
+# /utage/web-push-253 /utage  --delete
+/utage/web-push-254 /utage  --delete
 
-/utage/web-push 250 /utage
+/utage/web-push-250        /utage
+/utage/web-push-serversman /utage
