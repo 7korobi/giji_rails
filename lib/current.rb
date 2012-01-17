@@ -22,13 +22,13 @@ module CurrentAuthenticated
   end
 
   def admin?
-    login? && current.user.admin? rescue nil
+    login? && current.user.try(:admin?)
   end
   def self?
     false
   end
   def auth?
-    current.auth.login? rescue nil
+    current.auth.try(:login?)
   end
   def login?
     auth?
@@ -42,11 +42,11 @@ module CurrentAuthenticated
   end
 
   def login(auth)
-    if (auth.user.login? rescue nil)
+    if  auth.user.try(:login?)
       redirect_to root_url
     else
       # 既存ユーザーの認証方法を追加する場合。
-      if (current.user.login? rescue nil)
+      if  current.user.try(:login?)
         auth.user = current.user
         auth.save!
       # 新規ユーザー登録をする場合。

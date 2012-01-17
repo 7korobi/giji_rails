@@ -4,6 +4,8 @@ class ChrSetsController < ApplicationController
 
   respond_to :html, :json
 
+  before_filter :admin_require, only:%w[new create edit update destroy]
+
   def index
   end
 
@@ -31,7 +33,7 @@ class ChrSetsController < ApplicationController
   end
 
   def destroy
-    # chr_set.destroy
+    chr_set.destroy
     respond_with chr_set
   end
 end

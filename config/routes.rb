@@ -7,7 +7,7 @@ Giji::Application.routes.draw do
   match '/auth/failure' => 'sessions#destroy'
   match '/signout'     => 'sessions#destroy', as: :signout
 
-  root :to => 'chr_sets#index'
+  root :to => 'users#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

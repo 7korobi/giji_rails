@@ -5,8 +5,6 @@
   table
     tr
       th
-      th
     - users.each do |user|
       tr
         td=link_to user.name, user
-        td=link_to "[x]", confirm: 'Are you sure?', method: :delete

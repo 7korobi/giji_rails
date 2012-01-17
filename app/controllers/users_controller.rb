@@ -41,6 +41,6 @@ class UsersController < ApplicationController
 
   protected
   def self?
-    user.id == current.user.id
+    user.id == current.user.try(:id)
   end
 end
