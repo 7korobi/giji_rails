@@ -4,14 +4,14 @@ source 'http://rubygems.org'
 # ruby on rails
 gem 'pjax-rails'
 gem 'unicorn'
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.0'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', "  ~> 3.1.1"
-  gem 'coffee-rails', "~> 3.1.1"
-  gem 'uglifier'
+  gem 'sass-rails', "  ~> 3.2.3"
+  gem 'coffee-rails', "~> 3.2.1"
+  gem 'uglifier',     ">= 1.0.3"
 
   #gem 'sass'
   #gem 'coffee-script'
@@ -32,7 +32,7 @@ gem "typus"
 # input support
 gem "formtastic"
 #gem "simple_form"
-gem "mercury-rails"
+# gem "mercury-rails"
 
 # control support
 gem "decent_exposure"
@@ -70,7 +70,7 @@ gem "rdropbox"
 # data_base
 gem "paperclip"
 gem "mongoid"
-gem "mongoid_session_store"
+gem "redis-store"
 gem 'sqlite3'
 gem "sqlite3-ruby"
 

@@ -39,13 +39,16 @@ html lang="ja"
         #link.insayfilter
           = yield :head
           .paragraph
-            = yield :link
+            .sayfilter_content
+              = yield :link
         #info.insayfilter
           = yield :head
           .paragraph
-            = yield :info
+            .sayfilter_content
+              = yield :info
         #calc.insayfilter
           = yield :head
           .paragraph
-            = yield :calc
+            .sayfilter_content
+              = yield :calc
 

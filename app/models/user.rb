@@ -1,16 +1,16 @@
 class User
   include Giji
-  
+
   key   :user_id
   field :user_id,    limit: 30
   field :name,       limit: 30
   field :email,      limit: 30, allow_blank: true, allow_nil: true
-  field :is_admin, type: Boolean
-  
+  field :is_admin, type: Boolean, hidden: true
+
   references_many :auths,    inverse_of: :user
   references_many :user_logs,inverse_of: :user
   references_and_referenced_in_many :requests, inverse_of: :users
-  
+
   validates_uniqueness_of :user_id
   validates_uniqueness_of :email
 

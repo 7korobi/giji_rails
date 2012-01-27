@@ -1,5 +1,6 @@
 Giji::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
+  config.cache_store = :redis_store, "redis://utage.sytes.net:6379/0"
 
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development

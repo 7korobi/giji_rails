@@ -7,6 +7,7 @@ rm -rf tmp/*
 # rake  assets:precompile
 /utage/web-push-251        $APP         --delete
 /utage/web-push-254        $APP         --delete
+/utage/web-ssh-254  touch  $APP/tmp/restart.txt
 /utage/web-push-250        $APP/public  --delete
 /utage/web-push-serversman $APP/public  --delete
 

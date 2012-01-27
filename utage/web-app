@@ -15,7 +15,7 @@ start)
   ~/.rbenv/bin/rbenv exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
   ;;
 stop)
-  cat /utage/pids/$PID.pid | xargs kill -KILL -s QUIT
+  killall unicorn_rails
   ;;
 restart|reload)
   touch /www/$APP/tmp/restart.txt

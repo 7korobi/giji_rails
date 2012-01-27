@@ -1,38 +1,28 @@
 class ChrVotesController < ApplicationController
   expose(:faces){ Face.all }
+  expose(:face_groups){ faces.group_by{|o| o.face_id[/[a-z]+/] } }
+  expose(:face_titles){ OPTION[:face_titles] }
+
+  expose(:chr_vote_phases){ ChrVote.only(:phase).group.map{|o| o['phase'] } }
   expose(:chr_votes){ ChrVote.all }
   expose(:chr_vote)
 
   respond_to :html, :json
 
-  def index
-  end
-
-  def show
-  end
+  before_filter :login_require, only:%w[new create update destroy]
 
   def new
-  end
-
-  def edit
   end
 
   def create
     if chr_vote.save
       flash[:notice] = "successfully #{action_name}d."
     end
-    respond_with chr_vote
-  end
-
-  def update
-    if chr_vote.update_attributes(params[:chr_vote])
-      flash[:notice] = "successfully #{action_name}d."
-    end
-    respond_with chr_vote
+    redirect_to action:'new'
   end
 
   def destroy
     chr_vote.destroy
-    respond_with chr_vote
+    redirect_to action:'new'
   end
 end

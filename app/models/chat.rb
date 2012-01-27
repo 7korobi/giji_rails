@@ -4,7 +4,7 @@ class Chat
 
   key   :logid
   field :logid
-  field :target
+  field :to
   field :log
   field :style
   referenced_in :potof, inverse_of: :chats
