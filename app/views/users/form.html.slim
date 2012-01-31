@@ -6,3 +6,25 @@
     = f.inputs
     .actions
       = f.submit
+
+- content_for :log do
+  h2= "#{user.name} さんの情報"
+  - user.auths.each do |auth|
+    .message_filter
+      table.mes_think
+        tbody
+          tr.say
+            td.img= image_tag auth.image, size:'90x130'
+            td.field
+              .msg
+                h3.mesname= auth.provider
+                p.mes_text
+                  table
+                    tbody
+                      tr
+                        th screen_name
+                        td=auth.screen_name
+                      tr
+                        th name
+                        td=auth.name
+                p.mes_date(turn='0')= datetime_to_str auth.updated_at

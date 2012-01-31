@@ -77,27 +77,5 @@ q_info    = '?ua=mb&vid=%s&cmd=vinfo'
       [job, name ].join(' ')
     end
   end
-
-    
-    def form_login( options = {}, *parameters_for_url, &block) 
-        result = params.dup
-        result[:action] = :login
-        result[:action_org] = params[:action]
-        
-        form_tag(result, options, *parameters_for_url) do
-            if @user 
-            then 
-                account = link_to_route session[:uid],{:controller=>:user,:action=>:show,:user=>session[:uid]}
-<<_HTML_ %[account]
-%s <input type="submit" value="ログアウト">
-_HTML_
-            else <<_HTML_ 
-<label> user id: <input type="text"     size="10" name="login[uid]"></label> 
-<label>password: <input type="password" size="10" name="login[pwd]"></label> 
-<input type="submit" value="ログイン"> 
-_HTML_
-            end
-        end.html_safe
-    end
 end
 

@@ -1,5 +1,19 @@
 - content_for :head do
   h3.sayfilter_heading show user
 
+- content_for :info do
+  h4.sayfilter_caption_enable click to login!
+  table#follow
+    tr
+      td= link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/auth/twitter'
+      td= link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/auth/facebook'
+    tr
+      td  Twitter
+      td Facebook
+  - if login?
+    h4.sayfilter_caption_enable= link_to 'click to logout', signout_path
+
 - content_for :log do
-  =link_to user.name, edit_user_path(user)
+  h2= "#{user.name} さんの情報"
+  =link_to '登録を編集', edit_user_path(user)
+

@@ -174,8 +174,8 @@ module LinkHelper
     # リンク：トップへ移る
     def link_to_lobby(title)
         link_params = params.slice(:css).merge({
-#            :controller => :lobby,
-#            :action     => :index,
+            controller: :users,
+            action:     :index,
         })
         link_to_unless_current(title,link_params)
     end

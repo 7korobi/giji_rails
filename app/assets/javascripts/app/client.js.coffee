@@ -5,20 +5,23 @@ class Client
     window.onorientationchange = =>
       $(window).trigger('resize')
 
-    $(window).resize =>
-      $(window).trigger('scroll')
     $(window).scroll =>
       Client.outframe.height( Client.info.contentframe.height() )
+
+    $(window).resize =>
+      $(window).trigger('scroll')
+
 
     $(document).ready =>
       Client.outframe = $("#outframe")
       Client.navi = new Navi()
       Client.info = new Info()
       Client.info.float()
-      $(window).trigger('resize')
-      $(window).trigger('scroll')
 
       (new SowFeed).check()
+
+      $(window).trigger('resize')
+
 
     document.client = Client
 

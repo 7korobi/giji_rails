@@ -42,16 +42,17 @@ module CurrentAuthenticated
   end
 
   def login(auth)
-    if  auth.user.try(:login?)
-      redirect_to root_url
+    if auth.user.try(:login?)
+        redirect_to controller:'users', action:'show', id: auth.user.id
     else
       # 既存ユーザーの認証方法を追加する場合。
       if  current.user.try(:login?)
         auth.user = current.user
         auth.save!
+        redirect_to controller:'users', action:'show', id: auth.user.id
       # 新規ユーザー登録をする場合。
       else
-        redirect_to controller: 'users', action: 'new'
+        redirect_to controller:'users', action:'new'
       end
     end
     current.auth = auth

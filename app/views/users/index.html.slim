@@ -2,19 +2,17 @@
   h3.sayfilter_heading Listing users
 
 - content_for :info do
-  #follow
-  -if logout?
-    = link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/auth/twitter'
-  -if logout?
-    = link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/auth/facebook'
+  h4.sayfilter_caption_enable click to login!
+  table#follow
+    tr
+      td= link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/auth/twitter'
+      td= link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/auth/facebook'
+    tr
+      td  Twitter
+      td Facebook
   - if login?
-    = link_to 'Logout', signout_path
-
+    h4.sayfilter_caption_enable= link_to 'click to logout', signout_path
 
 - content_for :log do
-  table
-    tr
-      th
-    - users.each do |user|
-      tr
-        td=link_to user.name, user
+  - users.each do |user|
+    h3=link_to user.name, user

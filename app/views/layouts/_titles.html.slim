@@ -28,12 +28,12 @@ DIV.login
         th colspan="5"
           | 総合トップページはこちら
           strong= link_to_lobby '人狼議事'
-          | 合計#{max_all}村を上限としています
+          | 合計#{max_all}村:を上限としています
         td.no_choice.link rowspan="2"
           = link_to_cgi "似顔絵<br>人狼<br>　".html_safe, cfg(:PAN)[:URL_SW] + "/sow.cgi?"
       tr.link
         td.no_choice
-          = link_to_cgi "ロビー<br>　".html_safe      ,"wolf/redirect.cgi?LOBBY"
+          = link_to "ロビー<br>　".html_safe      , cfg(:LOBBY)[:URL_SW] + "/sow.cgi?"
         td.no_choice
           = link_to_cgi   "標準<br>　".html_safe      ,"wolf/sow.cgi"
         td.no_choice
@@ -51,43 +51,41 @@ DIV.login
         tr
           td.no_choice
           td.no_choice
-            = max_wolf
-            | 村
+            = "#{max_wolf}村:"
           td.no_choice style="text-align:left;"
-            = max_cabala
-            | 村#{link_to '旧地', cfg(:CABALA_OLD)[:URL_SW] + "/sow.cgi?"}
+            = "#{max_cabala}村:"
+            =link_to '旧地', cfg(:CABALA_OLD)[:URL_SW] + "/sow.cgi?"
             br
-            = max_cafe
-            | 村#{link_to :cafe, cfg(:CABALA)[:URL_SW] + "/sow.cgi?"}
-            br
-            | 　
-            br
-            | 　
-          td.no_choice style="text-align:left;"
-            = max_allstar
-            | 村#{link_to '旧地', cfg(:ALLSTAR_OLD)[:URL_SW] + "/sow.cgi?"}
-            br
-            = max_jksy
-            | 村#{link_to :allstar, cfg(:ALLSTAR)[:URL_SW] + "/sow.cgi?"}
+            = "#{max_cafe}村:"
+            =link_to :cafe, cfg(:CABALA)[:URL_SW] + "/sow.cgi?"
             br
             | 　
             br
             | 　
           td.no_choice style="text-align:left;"
-            = max_perjury
-            | 村#{link_to '旧地', cfg(:PERJURY_OLD)[:URL_SW] + "/sow.cgi?"}
+            = "#{max_allstar}村:"
+            =link_to '旧地', cfg(:ALLSTAR_OLD)[:URL_SW] + "/sow.cgi?"
             br
-            = max_vage
-            | 村#{link_to :perjury, cfg(:PERJURY)[:URL_SW] + "/sow.cgi?"}
+            = "#{max_jksy}村:"
+            =link_to :allstar, cfg(:ALLSTAR)[:URL_SW] + "/sow.cgi?"
             br
-            = max_xebec
-            | 村#{link_to :xebec, cfg(:XEBEC)[:URL_SW] + "/sow.cgi?"}
+            | 　
             br
-            = max_crazy
-            | 村#{link_to :crazy, cfg(:CRAZY)[:URL_SW] + "/sow.cgi?"}
+            | 　
+          td.no_choice style="text-align:left;"
+            = "#{max_perjury}村:"
+            =link_to '旧地', cfg(:PERJURY_OLD)[:URL_SW] + "/sow.cgi?"
+            br
+            = "#{max_vage}村:"
+            =link_to :perjury, cfg(:PERJURY)[:URL_SW] + "/sow.cgi?"
+            br
+            = "#{max_xebec}村:"
+            =link_to :xebec, cfg(:XEBEC)[:URL_SW] + "/sow.cgi?"
+            br
+            = "#{max_crazy}村:"
+            =link_to :crazy, cfg(:CRAZY)[:URL_SW] + "/sow.cgi?"
           td.no_choice
-            = max_pan
-            | 村
+            = "#{max_pan}村:"
         tr
           td.no_choice
             = link_to_list "終了した村",:LOBBY
