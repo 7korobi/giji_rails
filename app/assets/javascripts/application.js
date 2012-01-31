@@ -7,4 +7,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require knockout
-//= require_tree .
+//= require_tree ./base
+//= require_tree ./app
+
+Client.deploy();

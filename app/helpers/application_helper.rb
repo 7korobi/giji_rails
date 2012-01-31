@@ -39,9 +39,8 @@ q_info    = '?ua=mb&vid=%s&cmd=vinfo'
 
 
     def view_width
-        css_name
-        width = 480
-        width = 800 if css_name["800"]
+        width = 480 if css_name["480"]
+        width = 800 
         width
     end
 

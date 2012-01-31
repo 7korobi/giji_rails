@@ -7,5 +7,13 @@ class Face
   field :order,   limit:  3, type: Integer
   
   default_scope order_by(:face_id.asc)
+
+  def self.group_by_type
+  	all.group_by{|o| o.face_id[/[a-z]+/] }
+  end
+
+  def self.titles
+    OPTION[:face_titles]
+  end
 end
 

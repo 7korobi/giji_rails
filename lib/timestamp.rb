@@ -20,6 +20,19 @@ module Timestamp
       end
     end
   end
+  def self.timeslice( gap = 1.days, from = false )
+    last = maximum(:created_at)
+
+    now  = from || minimum(:created_at)
+    now  = now.getutc + now.utc_offset unless now.utc?
+
+    ceil = now.to_i % gap
+    now -= ceil 
+    begin 
+      yield (now - gap .. now)
+      now += gap
+    end while now < last
+  end
 end
 
 # todo : Hash value, Range exp, Array exp

@@ -7,7 +7,6 @@ rm -rf tmp/*
 # rake  assets:precompile
 /utage/web-push-251        $APP         --delete
 /utage/web-push-254        $APP         --delete
-/utage/web-ssh-254  touch  $APP/tmp/restart.txt
 /utage/web-push-250        $APP/public  --delete
 /utage/web-push-serversman $APP/public  --delete
 
@@ -18,3 +17,11 @@ rm -rf tmp/*
 
 /utage/web-push-250        /utage
 /utage/web-push-serversman /utage
+
+/utage/web-ssh-254  touch  $APP/tmp/restart.txt
+/utage/web-ssh-254  /utage/web-app  stop   giji_rails
+/utage/web-ssh-254  /utage/web-app  start  giji_rails
+/utage/web-ssh-serversman-root  /utage/web-infra-serversman restart
+#/utage/web-ssh-serversman-root  /utage/web-infra-serversman stop
+#/utage/web-ssh-serversman-root  /utage/web-infra-serversman start
+

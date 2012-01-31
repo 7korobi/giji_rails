@@ -32,7 +32,6 @@ module Giji
   def self.included(base)
     base.class_eval do
       include Mongoid::Document
-      include Timestamp
     end
   end
 end

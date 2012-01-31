@@ -1,11 +1,11 @@
 css_wday:
-  - cinema480
-  - cinema480
-  - star480
-  - cinema480
-  - cinema480
-  - star480
-  - wa480
+  - cinema800
+  - cinema800
+  - star800
+  - cinema800
+  - cinema800
+  - star800
+  - wa800
 
 jp_wday:
   - 日
@@ -18,8 +18,8 @@ jp_wday:
 
 face_titles:
   c:  煩悩の村人達
-  r:  
   m:  とのさま広場
-  b:  
+  r:
+  b:
   sf: 明後日の道標
   w:  和の国てやんでえ

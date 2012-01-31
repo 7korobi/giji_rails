@@ -7,6 +7,10 @@ class ChrVote
 
   referenced_in :user, inverse_of: :chr_votes
   referenced_in :face, inverse_of: :chr_votes
+
+  def self.phases
+    only(:phase).group.map{|o| o['phase'] }
+  end
 end
 
 # no use.  use .only.group

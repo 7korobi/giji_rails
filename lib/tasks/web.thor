@@ -23,11 +23,10 @@ ssh -p #{no}0 7korobi@#{server} $*
 _SHELL_
 
   PUSH = <<'_SHELL_'
-echo "no: #{no}  to: $1  option: $2"
+echo "no: #{no}  to: $1  option: $2 $3 $4 $5"
 TO=$1
-OPTION=$2
 
-rsync -e "ssh -p #{no}0" -r ${TO}/ 7korobi@#{server}:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak' --stats  $OPTION
+rsync -e "ssh -p #{no}0" -r ${TO}/ 7korobi@#{server}:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak'  $2 $3 $4 $5
 _SHELL_
 
   def each_servers

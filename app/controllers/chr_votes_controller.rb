@@ -1,7 +1,7 @@
 class ChrVotesController < ApplicationController
   expose(:faces){ Face.all }
-  expose(:face_groups){ faces.group_by{|o| o.face_id[/[a-z]+/] } }
-  expose(:face_titles){ OPTION[:face_titles] }
+  expose(:face_groups){ faces.group_by_type }
+  expose(:face_titles){ Face.titles }
 
   expose(:chr_vote_phases){ ChrVote.only(:phase).group.map{|o| o['phase'] } }
   expose(:chr_votes){ ChrVote.all }
@@ -9,7 +9,7 @@ class ChrVotesController < ApplicationController
 
   respond_to :html, :json
 
-  before_filter :login_require, only:%w[new create update destroy]
+#  before_filter :login_require, only:%w[new create update destroy]
 
   def new
   end

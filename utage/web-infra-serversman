@@ -11,14 +11,14 @@ status)
   ls /utage/pids/*
   ;;
 start)
-  sudo $nginx -c $conf
+  $nginx -c $conf
   ls -l $pid
   ;;
 stop)
-  cat $pid | xargs sudo kill -QUIT
+  cat $pid | xargs  kill -QUIT
   ;;
 restart|reload)
-  cat $pid | xargs sudo kill -HUP
+  cat $pid | xargs  kill -HUP
   ;;
 configtest)
   sudo $nginx -t -c $conf
