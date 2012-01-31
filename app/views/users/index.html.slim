@@ -1,6 +1,16 @@
 - content_for :head do
   h3.sayfilter_heading Listing users
 
+- content_for :info do
+  #follow
+  -if logout?
+    = link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/auth/twitter'
+  -if logout?
+    = link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/auth/facebook'
+  - if login?
+    = link_to 'Logout', signout_path
+
+
 - content_for :log do
   table
     tr

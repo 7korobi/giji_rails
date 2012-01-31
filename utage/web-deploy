@@ -5,23 +5,27 @@ cd $APP
 rm -rf log/*
 rm -rf tmp/*
 # rake  assets:precompile
-/utage/web-push-251        $APP         --delete
-/utage/web-push-254        $APP         --delete
+
 /utage/web-push-250        $APP/public  --delete
-/utage/web-push-serversman $APP/public  --delete
-
-/utage/web-push-251 /utage  --delete
-# /utage/web-push-252 /utage  --delete
-# /utage/web-push-253 /utage  --delete
-/utage/web-push-254 /utage  --delete
-
 /utage/web-push-250        /utage
-/utage/web-push-serversman /utage
 
-/utage/web-ssh-254  touch  $APP/tmp/restart.txt
-/utage/web-ssh-254  /utage/web-app  stop   giji_rails
-/utage/web-ssh-254  /utage/web-app  start  giji_rails
+/utage/web-push-251 $APP    --delete
+/utage/web-push-251 /utage  --delete
+/utage/web-ssh-251  cp /utage/251/* /utage/
+
+# /utage/web-push-252 /utage  --delete
+
+/utage/web-push-253 $APP    --delete
+/utage/web-push-253 /utage  --delete
+/utage/web-ssh-253  cp /utage/253/* /utage/
+/utage/web-ssh-253  /utage/web-app  reload
+
+/utage/web-push-254 $APP    --delete
+/utage/web-push-254 /utage  --delete
+/utage/web-ssh-254  cp /utage/254/* /utage/
+/utage/web-ssh-254  /utage/web-app  reload
+
+/utage/web-push-serversman $APP/public  --delete
+/utage/web-push-serversman /utage
 /utage/web-ssh-serversman-root  /utage/web-infra-serversman restart
-#/utage/web-ssh-serversman-root  /utage/web-infra-serversman stop
-#/utage/web-ssh-serversman-root  /utage/web-infra-serversman start
 

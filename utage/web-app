@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. /utage/web-env
+
 APP=giji_rails
 PID=$APP.unicorn
 
@@ -17,8 +19,13 @@ start)
 stop)
   killall unicorn_rails
   ;;
-restart|reload)
+restart)
   touch /www/$APP/tmp/restart.txt
+  ;;
+reload)
+  $0 stop
+  touch /www/$APP/tmp/restart.txt
+  $0 start
   ;;
 *)
   echo

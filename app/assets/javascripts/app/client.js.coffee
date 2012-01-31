@@ -16,6 +16,7 @@ class Client
       Client.info = new Info()
       Client.info.float()
       $(window).trigger('resize')
+      $(window).trigger('scroll')
 
       (new SowFeed).check()
 

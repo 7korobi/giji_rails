@@ -22,7 +22,7 @@ when 'production'
 end
 
 #listen /utage/socket/giji.unicorn.sock, ENV['RAILS_ROOT']
-listen 2549, :backlog => 512, :tcp_nopush => true
+listen ENV['WEB_PORT'], :backlog => 512, :tcp_nopush => true
 
 # Since Unicorn is never exposed to outside clients, it does not need to
 # run on the standard HTTP port (80), there is no reason to start Unicorn

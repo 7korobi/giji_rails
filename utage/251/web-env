@@ -1,0 +1,11 @@
+echo "no: 251  environment set."
+
+PATH=/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/rvm/bin:/home/7korobi/bin
+UTAGE=251
+SSH_PORT=2510
+WEB_PORT=2519
+
+export PATH
+export SSH_PORT
+export WEB_PORT
+eval "$(rbenv init -)"

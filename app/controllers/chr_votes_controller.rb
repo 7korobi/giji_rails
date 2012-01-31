@@ -3,7 +3,7 @@ class ChrVotesController < ApplicationController
   expose(:face_groups){ faces.group_by_type }
   expose(:face_titles){ Face.titles }
 
-  expose(:chr_vote_phases){ ChrVote.only(:phase).group.map{|o| o['phase'] } }
+  expose(:chr_vote_phases){ ChrVote.phases }
   expose(:chr_votes){ ChrVote.all }
   expose(:chr_vote)
 
