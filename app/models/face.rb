@@ -6,7 +6,7 @@ class Face
   field :comment, limit: 30, allow_blank: true
   field :order,   limit:  3, type: Integer
   
-  default_scope order_by(:face_id.asc)
+  default_scope order_by(:order.asc)
 
   def self.group_by_type
   	all.group_by{|o| o.face_id[/[a-z]+/] }
