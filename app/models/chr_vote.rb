@@ -1,15 +1,17 @@
 class ChrVote
   include Giji
   include Mongoid::Timestamps::Created
-  key   :face_id, :user_id
-  field :phase
-  field :comment
+  key   :face_id, :user_id, :phase
+  field :phase,   allow_blank: false
+  field :comment, allow_blank:  true
 
   referenced_in :user, inverse_of: :chr_votes
   referenced_in :face, inverse_of: :chr_votes
 
+  default_scope order_by(:created_at.desc)
+
   def self.phases
-    only(:phase).group.map{|o| o['phase'] }
+    only(:phase).group.map{|o| o['phase'] }.sort_by{|phase| where(phase: phase).max(:created_at) }
   end
 end
 

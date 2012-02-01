@@ -1,19 +1,13 @@
 - content_for :log do
-  =semantic_form_for chr_vote do |f|
-    =f.input :phase, as: :hidden
-    =f.input :comment
-
-  
-    -face_titles.each do |group, title| faces = face_groups[group]
-      - if title.present?
-        h2=title
-      .chrlist
-        hr
-        -faces.each do |face|
-          .chrbox
-            img(src="/images/portrate/#{face.face_id}.jpg")
-            .chrblank
-              =face.name
-              br
-              =button_to_function "投票する！", "alert('#{face.face_id}')", disable_with: 'wait...'
-        hr
+  -face_titles.each do |group, title| faces = face_groups[group]
+    - if title.present?
+      h2=title
+    .chrlist
+      hr
+      -faces.each do |face|
+        .chrbox
+          =link_to_function image_tag("/images/portrate/#{face.face_id}.jpg"), "Form.submit_chr_vote('#{face.face_id}')", disable_with: 'wait...'
+          .chrblank
+            =face.name
+            br
+      hr

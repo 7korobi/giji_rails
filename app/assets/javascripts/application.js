@@ -11,3 +11,4 @@
 //= require_tree ./app
 
 Client.deploy();
+Form.deploy();

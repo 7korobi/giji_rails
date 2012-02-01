@@ -4,7 +4,9 @@ class ChrVotesController < ApplicationController
   expose(:face_titles){ Face.titles }
 
   expose(:chr_vote_phases){ ChrVote.phases }
-  expose(:chr_votes){ ChrVote.all }
+
+  expose(:chr_votes_in_phase){ chr_votes.group_by(&:phase) }
+  expose(:chr_votes){ ChrVote.where(user_id: current.user.id) }
   expose(:chr_vote)
 
   respond_to :html, :json
@@ -15,8 +17,14 @@ class ChrVotesController < ApplicationController
   end
 
   def create
+    chr_vote.user = current.user
+    chr_vote.phase = params[:phase_input]  if  params[:phase_input].presence
+
     if chr_vote.save
       flash[:notice] = "successfully #{action_name}d."
+
+      chr_list = chr_votes_in_phase[chr_vote.phase]
+      chr_list.last.delete  if  3 < chr_list.count
     end
     redirect_to action:'new'
   end
