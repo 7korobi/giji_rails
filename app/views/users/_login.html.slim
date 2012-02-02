@@ -1,0 +1,17 @@
+- content_for :info do
+  h4.sayfilter_caption_enable click to login!
+  table#follow
+    tr
+      td= link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/auth/twitter'
+      td= link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/auth/facebook'
+    tr
+      td  Twitter
+      td Facebook
+    tr
+      td(colspan='2')= link_to 'mixi',   '/auth/mixi'
+    tr
+      td(colspan='2')= link_to 'google', '/auth/google'
+    tr
+      td(colspan='2')= link_to 'yahoo',  '/auth/yahoo'
+  - if login?
+    h4.sayfilter_caption_enable= link_to 'click to logout', signout_path

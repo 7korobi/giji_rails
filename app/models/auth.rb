@@ -2,14 +2,18 @@ class Auth
   include Giji
   include Mongoid::Timestamps
   key :provider, :uid
-  field :provider
-  field :uid
-  field :handle
+  field :provider,     hidden: true
+  field :uid,          hidden: true
+
+  field :oauth_token,  hidden: true
+  field :oauth_secret, hidden: true
+
+  field :name,         hidden: true
+  field :nickname,     hidden: true
+  field :image,        hidden: true
+
   referenced_in :user, inverse_of: :auths
 
-  field :name
-  field :screen_name
-  field :image
 
   def initialize(attributes = {})
     super
@@ -30,10 +34,19 @@ class Auth
   def self.authenticate(auth)
     o = self.find_or_new(["provider","uid"], auth)
     o.attributes = {
-      name:        auth["info"]["name"],
-      screen_name: auth["info"]["nickname"],
-      image:       auth["info"]["image"]
+      oauth_token:  auth["credentials"]["token"],
+      oauth_secret: auth["credentials"]["secret"],
+      name:       auth["info"]["name"],
+      first_name: auth["info"]["first_name"],
+      last_name:  auth["info"]["last_name"],
+      nickname:   auth["info"]["nickname"],
+      image:      auth["info"]["image"]
     }
+
+    o.nickname = o.nickname.presence || "#{o.first_name} #{o.last_name}".presence
+    o.name     = o.name.presence     || o.nickname
+    o.nickname.force_encoding('utf-8')
+    o.name    .force_encoding('utf-8')
     o.save
     o
   end

@@ -11,7 +11,7 @@ class ChrVote
   default_scope order_by(:created_at.desc)
 
   def self.phases
-    only(:phase).group.map{|o| o['phase'] }.sort_by{|phase| where(phase: phase).max(:created_at) }
+    only(:phase).group.map{|o| o['phase'] }.sort_by{|phase| 0 - where(phase: phase).max(:created_at).to_i }
   end
 end
 

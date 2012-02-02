@@ -27,10 +27,13 @@ reload)
   touch /www/$APP/tmp/restart.txt
   $0 start
   ;;
+tail-log)
+  tail -f /utage/log/* /www/$APP/log/*
+  ;;
 *)
   echo
   echo $"Usage: $0 command"
   echo
-  echo  "  command : status start stop restart reload "
+  echo  "  command : status start stop restart reload tail-log"
   echo  "  product : $APP"
 esac

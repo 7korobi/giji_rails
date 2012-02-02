@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 # ruby on rails
 gem 'pjax-rails'
 gem 'unicorn'
-gem 'rails', '3.2.0'
+gem 'rails', '3.2.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -40,14 +40,14 @@ gem "kaminari"
 gem "moji"
 gem "jpmobile"
 
-# omniauth
+# authenticate
+gem "devise"
 gem "omniauth"
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
-gem 'omniauth-github'
+# gem 'omniauth-github'
 # gem 'omniauth-google'
-gem 'omniauth-ldap'
-gem 'omniauth-openid'
+# gem 'omniauth-ldap'
 gem 'omniauth-openid'
 
 # web_service

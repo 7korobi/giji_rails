@@ -2,11 +2,35 @@ require 'const'
 require 'ostruct'
 require 'current'
 require 'timestamp'
+require 'omniauth-openid'
+require 'openid/fetchers'
+require 'openid/store/filesystem'
+require "redis-store"
+
+module RedisStore
+  module Rack
+    module Session
+      module Rails
+        private
+        def destroy_session(env, sid, options)
+          raise RuntimeError.new rescue ::Rails.logger.debug($!.backtrace.join(', '))
+          ::Rails.logger.debug "- deny destroy_session -------------"
+          ::Rails.logger.debug [:env, sid, options].inspect
+          ::Rails.logger.debug "------------------------------------"
+          # destroy(env)
+        end
+      end
+    end
+  end
+end
 
 Rails.application.config.middleware.use OmniAuth::Builder  do
-  [:twitter, :facebook].each do |site|
-    open_key, private_key, options = OMNI_AUTH[:provider][site]
+  OMNI_AUTH[:provider_secure].each do |site, values|
+    open_key, private_key, options = values
     provider site, open_key, private_key
+  end
+  OMNI_AUTH[:provider_open].each do |site, options|
+    provider :openid, options.merge(store: OpenID::Store::Filesystem.new('/tmp') )
   end
 end
 
@@ -27,6 +51,7 @@ module DecentExposure
     end
   end
 end
+
 
 module Giji
   def self.included(base)

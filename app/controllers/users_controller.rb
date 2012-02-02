@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def new
-    user.user_id = current.auth.try(:screen_name)
+    user.user_id = current.auth.try(:nickname)
     user.name    = current.auth.try(:name)
     render 'form'
   end

@@ -6,7 +6,7 @@
       hr
       -faces.each do |face|
         .chrbox
-          =link_to_function image_tag("/images/portrate/#{face.face_id}.jpg"), "Form.submit_chr_vote('#{face.face_id}')", disable_with: 'wait...'
+          img(src="/images/portrate/#{face.face_id}.jpg" onclick="Form.submit_chr_vote('#{face.face_id}')")
           .chrblank
             =face.name
             br

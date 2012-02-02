@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  protect_from_forgery :except => %w[callback]
+
   def failer
     flash[:error] = t 'omniauth.ng'
     logout

@@ -14,7 +14,7 @@ rm -rf tmp/*
 /utage/web-push-253 $APP    --delete
 /utage/web-push-253 /utage  --delete
 /utage/web-ssh-253  cp /utage/253/* /utage/
-/utage/web-ssh-253  /utage/web-app  $1
+# /utage/web-ssh-253  /utage/web-app  $1
 
 /utage/web-push-serversman $APP/public  --delete
 /utage/web-push-serversman /utage

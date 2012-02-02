@@ -1,0 +1,10 @@
+#!/bin/sh
+
+APP=/www/giji_rails
+cd $APP
+
+cd $APP && bundle update
+/utage/web-ssh-254 cd $APP && bundle update
+/utage/web-ssh-253 cd $APP && bundle update
+/utage/web-ssh-251 cd $APP && bundle update
+

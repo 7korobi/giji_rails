@@ -1,4 +1,10 @@
 ja:
+  dictionary:
+    label: &LABELS
+      user_id:  識別ID
+      name:     名前
+      email:    e-mail
+
   date:
     formats:
       default: "%Y/%m/%d"
@@ -182,6 +188,9 @@ ja:
   errors:
     format: "%{attribute}%{message}"
 
+    attribute:
+      <<: *LABELS
+
     messages: &errors_messages
       inclusion: "は一覧にありません。"
       exclusion: "は予約されています。"
@@ -218,3 +227,14 @@ ja:
         <<: *errors_template
       full_messages:
         format: "%{attribute}%{message}"
+  
+  formtastic:
+    titles: {}
+    labels:
+      users:
+        <<: *LABELS
+      chr_vote:
+        <<: *LABELS
+    hints: {}
+    placeholders: {}
+    actions: {}
