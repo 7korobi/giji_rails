@@ -12,8 +12,6 @@ class Auth
   field :nickname,     hidden: true
   field :image,        hidden: true
 
-  devise :trackable, :omniauthable
-
   referenced_in :user, inverse_of: :auths
 
 

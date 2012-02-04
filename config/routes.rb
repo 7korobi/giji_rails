@@ -1,9 +1,7 @@
 Giji::Application.routes.draw do
-  devise_for :auths, controllers: { sessions: 'sessions', authentications: 'sessions' } do
-    get '/signout',      to: 'sessions#destroy'
-    get '/auth/failure', to: 'sessions#destroy'
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } do
+    get '/users/sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
-  match '/auth/:provider/callback' => 'sessions#callback'
 
   resources :users
   resources :chr_sets

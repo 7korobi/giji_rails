@@ -24,16 +24,6 @@ module RedisStore
   end
 end
 
-Rails.application.config.middleware.use OmniAuth::Builder  do
-  OMNI_AUTH[:provider_secure].each do |site, values|
-    open_key, private_key, options = values
-    provider site, open_key, private_key
-  end
-  OMNI_AUTH[:provider_open].each do |site, options|
-    provider :openid, options.merge(store: OpenID::Store::Filesystem.new('/tmp') )
-  end
-end
-
 I18n.default_locale = :ja
 
 module DecentExposure

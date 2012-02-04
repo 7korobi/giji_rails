@@ -7,6 +7,8 @@ class User
   field :email,      limit: 30, allow_blank: true, allow_nil: true
   field :is_admin, type: Boolean, hidden: true
 
+  devise :trackable, :omniauthable
+
   references_many :auths,    inverse_of: :user
   references_many :user_logs,inverse_of: :user
   references_and_referenced_in_many :requests, inverse_of: :users

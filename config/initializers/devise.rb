@@ -1,8 +1,15 @@
 
 Devise.setup do |config|
-  config.mailer_sender = '7korobi@gmail.com'
-
   require 'devise/orm/mongoid'
+  OMNI_AUTH[:provider_secure].each do |site, values|
+    open_key, private_key, options = values
+    config.omniauth site, open_key, private_key
+  end
+  OMNI_AUTH[:provider_open].each do |site, options|
+    config.omniauth :openid, options.merge(store: OpenID::Store::Filesystem.new('/tmp') )
+  end
+
+  config.mailer_sender = '7korobi@gmail.com'
   config.case_insensitive_keys = [ :email ]
 
   # Configure the class responsible to send e-mails.
@@ -213,4 +220,6 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
+
+
 end
