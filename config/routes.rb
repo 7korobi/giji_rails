@@ -1,11 +1,13 @@
 Giji::Application.routes.draw do
+  devise_for :auths, controllers: { sessions: 'sessions', authentications: 'sessions' } do
+    get '/signout',      to: 'sessions#destroy'
+    get '/auth/failure', to: 'sessions#destroy'
+  end
+  match '/auth/:provider/callback' => 'sessions#callback'
+
   resources :users
   resources :chr_sets
   resources :chr_votes
-
-  match '/auth/:provider/callback' => 'sessions#callback'
-  match '/auth/failure' => 'sessions#destroy'
-  match '/signout'     => 'sessions#destroy', as: :signout
 
   root :to => 'users#index'
 

@@ -1,0 +1,36 @@
+/www/giji_rails/log/*.log {
+    daily
+    rotate 10
+    missingok
+    notifempty
+    delaycompress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /utage/pids/giji_rails.unicorn.pid`
+    endscript
+}
+
+/utage/logs/giji_rails*.log {
+    daily
+    rotate 10
+    missingok
+    notifempty
+    delaycompress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /utage/pids/giji_rails.unicorn.pid`
+    endscript
+}
+
+/utage/logs/nginx*.log {
+    daily
+    rotate 10
+    missingok
+    notifempty
+    delaycompress
+    sharedscripts
+    postrotate
+        /usr/local/nginx/sbin/nginx -s reopen
+    endscript
+}
+

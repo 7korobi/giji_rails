@@ -3,3 +3,7 @@
 //
 //= require formtastic_ie6
 //= require formtastic_ie7
+
+.formatastic .stringish input {
+  width: 70%;
+}

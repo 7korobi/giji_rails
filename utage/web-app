@@ -30,6 +30,9 @@ reload)
 tail-log)
   tail -f /utage/log/* /www/$APP/log/*
   ;;
+exec)
+  ~/.rbenv/bin/rbenv exec $*
+  ;;
 *)
   echo
   echo $"Usage: $0 command"

@@ -1,0 +1,5 @@
+web-ssh-250 du -h /var/log /utage/log/ /www/*/log/
+web-ssh-251 du -h /var/log /utage/log/ /www/*/log/
+web-ssh-253 du -h /var/log /utage/log/ /www/*/log/
+web-ssh-254 du -h /var/log /utage/log/ /www/*/log/
+

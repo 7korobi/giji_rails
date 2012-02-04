@@ -1,0 +1,26 @@
+#!/bin/sh
+
+TARGET=254
+APP=/www/giji_rails
+cd $APP
+rm -rf log/*
+rm -rf tmp/*
+# rake  assets:precompile
+
+/utage/web-push-$TARGET $APP    --delete
+/utage/web-push-$TARGET /utage  --delete
+/utage/web-ssh-$TARGET  cp /utage/$TARGET/* /utage/
+/utage/web-ssh-$TARGET  /utage/web-app  $1
+
+/utage/web-push-serversman $APP/public  --delete
+/utage/web-push-serversman /utage
+/utage/web-ssh-serversman-root  /utage/web-infra-serversman restart
+
+/utage/web-push-250        $APP/public  --delete
+/utage/web-push-250        /utage
+
+/utage/web-push-251 $APP    --delete
+/utage/web-push-251 /utage  --delete
+/utage/web-ssh-251  cp /utage/251/* /utage/
+
+
