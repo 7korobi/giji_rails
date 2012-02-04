@@ -1,13 +1,12 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  protect_from_forgery :except => %w[twitter facebook mixi google yahoo]
+  PROVIDERS = OMNI_AUTH[:provider_secure].keys | OMNI_AUTH[:provider_open]
+  protect_from_forgery :except => PROVIDERS
 
   def callback
     login Auth.authenticate( request.env["omniauth.auth"] )
   end
 
-  alias twitter  callback
-  alias facebook callback
-  alias mixi     callback
-  alias google   callback
-  alias yahoo    callback
+  PROVIDERS.each do |provider|
+  	alias_method provider :callback
+  end
 end
