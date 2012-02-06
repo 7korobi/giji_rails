@@ -1,9 +1,9 @@
 class ChrVotesController < ApplicationController
-  expose(:faces){ Face.all }
   expose(:face_groups){ faces.group_by_type }
-  expose(:face_titles){ Face.titles }
-
   expose(:chr_vote_phases){ ChrVote.phases }
+
+  expose(:faces){ Face.all }
+  expose(:face_titles){ Face.titles }
 
   expose(:chr_votes_in_phase){ chr_votes.group_by(&:phase) }
   expose(:chr_votes){ ChrVote.where(user_id: current.user.id) }
@@ -14,6 +14,7 @@ class ChrVotesController < ApplicationController
   before_filter :login_require, only:%w[new create update destroy]
 
   def new
+    chr_vote.vote = chr_votes.max(:vote).to_i + 1
   end
 
   def create

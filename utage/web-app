@@ -30,12 +30,17 @@ reload)
 tail-log)
   tail -f /utage/log/* /www/$APP/log/*
   ;;
+test)
+  $0 stop
+  rails s -p $WEB_PORT
+  ;;
 exec)
+  shift
   ~/.rbenv/bin/rbenv exec $*
   ;;
 *)
   echo
-  echo $"Usage: $0 command"
+  echo  "Usage: $0 command"
   echo
   echo  "  command : status start stop restart reload tail-log"
   echo  "  product : $APP"

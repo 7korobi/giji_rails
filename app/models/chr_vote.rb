@@ -1,7 +1,8 @@
 class ChrVote
   include Giji
   include Mongoid::Timestamps::Created
-  key   :face_id, :user_id, :phase
+  key   :user_id, :vote
+  field :vote,    type: Integer, hidden: true
   field :phase,   allow_blank: false
   field :comment, allow_blank:  true
 

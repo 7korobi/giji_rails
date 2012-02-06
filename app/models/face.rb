@@ -9,7 +9,7 @@ class Face
   default_scope order_by(:order.asc)
 
   def self.group_by_type
-  	all.group_by{|o| o.face_id[/[a-z]+/] }
+    Face.all.group_by{|o| o.face_id[/[a-z]+/] }
   end
 
   def self.titles

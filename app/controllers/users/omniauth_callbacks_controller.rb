@@ -1,5 +1,5 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  PROVIDERS = OMNI_AUTH[:provider_secure].keys | OMNI_AUTH[:provider_open]
+  PROVIDERS = OMNI_AUTH[:provider_secure].keys | OMNI_AUTH[:provider_open].keys
   protect_from_forgery :except => PROVIDERS
 
   def callback
@@ -7,6 +7,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   PROVIDERS.each do |provider|
-  	alias_method provider :callback
+  	alias_method provider, :callback
   end
 end

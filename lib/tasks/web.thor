@@ -18,7 +18,7 @@ class Web < Thor
   ENV = <<'_SHELL_'
 echo "no: #{no}  environment set."
 
-PATH=/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/rvm/bin:/home/7korobi/bin
+PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/rvm/bin:/home/7korobi/bin
 UTAGE=#{no}
 SSH_PORT=#{no}0
 WEB_PORT=#{no}9

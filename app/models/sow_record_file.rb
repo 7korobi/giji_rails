@@ -198,55 +198,70 @@ class SowRecordFile
     when /vil.cgi/
       return if out? vid, force, count_folder, timeout, old
       p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid})
+      village_to_mongo path, fname, folder, vid
+    when /logcnt.cgi/
+    when /log.cgi/
+      return if out? vid, force, count_folder, timeout, old
+      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
+      source = log( path, fname, folder, vid, turn )
+      get_from_file( fname, source, folder, vid, turn )
+    when /memo.cgi/
+      return if out? vid, force, count_folder, timeout, old
+      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
+      source = memo( path, fname, folder, vid, turn )
+      get_from_file( fname, source, folder, vid, turn )
+    when /memoidx.cgi/
+    when /logidx.cgi/
+    else
+    end
+  end
+
+  def self.village_to_mongo path, fname, folder, vid
       village( path, fname, folder, vid ).each do |o|
-        case o.members[2]
-        when :uid
+        case o.class.name
+        when 'Struct::SowRecordFileUser'
           story = SowVillage.where( folder: o.folder, vid: o.vid ).first
           next unless story
-          potof = story.potofs.where( account_id: o.uid ).first
+          turn  = story.events.last
+          potof = turn.potofs.where( account_id: o.uid ).first
           potof && potof.delete
           #
           face = Face.find(o.cid)
-          name = if 0 < o.postfix.to_i 
+          name = if (0 < o.postfix.to_i  rescue  false)
                    [%w[IR R O Y G B I V UV][o.clearance], face.name, o.postfix].join('-')
                  else
                    face.name
                  end
-
           potof = SowUser.new( 
-            user_id: o.uid,
+            sow_auth_id: o.uid,
             face_id: o.cid,
             csid:    o.csid.split('_')[0],
             jobname: o.jobname,
             name:    name,
 
-            zapcount:  o.zapcount,
-            clearance: o.clearance,
-            selrole:   o.selrole,
+            history:  o.history,
 
-            rolestate: o.rolestate,
+            select:   SOW_RECORD[folder][:roles][ o.selrole ],
+
             live:      o.live,
             deathday:  o.deathday,
 
-            love:  o.love,
-            sheep: o.sheep,
-
-            history:  o.history,
-            role: [o.role, o.role1,o.role2, o.rolesubid],
-            gift: [o.gift, o.role1,o.role2],
-            
+            role: [ SOW_RECORD[folder][:roles][o.role] ]
           )
-          potof.vote = [
-            (o.vote  rescue nil) ,
-            (o.vote1 rescue nil) ,
-            (o.vote2 rescue nil) ,
-            (o.entrust.to_i != 1)
-          ]
-          potof.overhear = o.overhear.split('/') || [] rescue []
-          potof.bonds = o.bonds.split('/') || [] rescue []
-          potof.pseudobonds = o.pseudobonds.split('/') || [] rescue []
-          potof.pseudolove  = o.pseudolove rescue nil
-          potof.commit = o.commit.to_i == 1
+          potof.zapcount   = o.zapcount    rescue  nil
+          potof.pseudolove = o.pseudolove  rescue  nil
+          potof.clearance  = o.clearance   rescue  nil
+          potof.rolestate  = o.rolestate   rescue  nil
+
+          potof.love  = o.love   rescue  nil
+          potof.sheep = o.sheep  rescue  nil
+            
+          gift = SOW_RECORD[folder][:gifts][o.gift]  rescue  nil
+          potof.role.push( gift )  if  gift
+          
+          potof.overhear    = o.overhear.split('/')    || []  rescue  []
+          potof.bonds       = o.bonds.split('/')       || []  rescue  []
+          potof.pseudobonds = o.pseudobonds.split('/') || []  rescue  []
 
           say = Hash.new
           dt  = Hash.new
@@ -266,83 +281,85 @@ class SowRecordFile
           potof.say    = say
           potof.timer  = dt
 
-          story.potofs << potof
-          p [o.folder, o.vid, potof.account_id]
+          turn.potofs << potof
           story.save
-        when :makeruid
+          potof.save
+        when 'Struct::SowRecordFileVil'
           sow = SowVillage.where( folder: o.folder, vid: o.vid ).first
           sow && sow.delete
           #
           sow = SowVillage.new( 
-            folder: o.folder,
+            folder: o.folder.to_s,
             vid:    o.vid, 
             
-            vname:    o.vname, 
-            vcomment: o.vcomment, 
-            rating:   o.rating, 
+            name:    o.vname, 
+            comment: o.vcomment, 
             
-            winner:     o.winner, 
-            game:       o.game, 
-            saycnttype: o.saycnttype,
+            sow_auth_id: o.makeruid,
+            type: {
+              say:  o.saycnttype,
+              vote: o.votetype,
+              roletable: o.roletable,
+            },
 
-            account_id: o.makeruid,
-            mob:        o.mob,
-
-            entry: [o.entrylimit, o.entrypwd],
-            noselrole:    (o.noselrole    == '1'),
-            randomtarget: (o.randomtarget == '1'),
-            undead:       (o.undead       == '1'),
-            roletable: o.roletable,
-            votetype:  o.votetype,
+            password: o.entrypwd,
             vpl:  [ o.vplcnt.to_i, o.vplcntstart.to_i ],
-            next: [ o.updinterval.to_i, o.updhour.to_i, o.updminite.to_i ]
+            upd: {
+              interval: o.updinterval.to_i,
+              hour:     o.updhour.to_i, 
+              minute:   o.updminite.to_i
+            },
           )
-          sow.rolediscard = o.rolediscard.split('/') || [] rescue []
-          sow.eventcard = o.eventcard.split('/') || [] rescue []
-          sow.eclipse = o.eclipse.split('/') || [] rescue []
-          sow.seance = o.seance.split('/') || [] rescue []
-          sow.turn = {
-            event:     o.event,
-            grudge:    o.grudge,
-            riot:      o.riot,
-            scapegoat: o.scapegoat,
-            epilogue:  o.epilogue
-          }
-          cnt = Hash.new
+          turn = SowTurn.new(
+            turn:   o.turn.to_i,
+
+            winner: SOW_RECORD[folder][:winners][o.winner.to_i], 
+            epilogue:  o.epilogue.to_i,
+          )
+          sow.events << turn
+          sow.rating = o.rating  rescue  nil 
+          sow.type[:mob] = o.mob  rescue  nil
+          sow.type[:game] = o.game  rescue  nil 
+
+          sow.options = []
+          sow.options.push "select-role"   if  (o.noselrole    != '1'  rescue  false)
+          sow.options.push "random-target" if  (o.randomtarget == '1'  rescue  false)
+          sow.options.push "undead-talk"   if  (o.undead       == '1'  rescue  false)
+
+          turn.event = SOW_RECORD[folder][:events][o.event.to_i]  rescue  nil
+          turn.grudge = o.grudge.to_i  rescue  nil
+          turn.riot = o.riot.to_i  rescue  nil
+          turn.scapegoat = o.scapegoat.to_i  rescue  nil
+          turn.eclipse = o.eclipse.split('/') || []  rescue  []
+          turn.seance = o.seance.split('/') || []  rescue  []
+
+          cnt = []
           say = Hash.new
           dt  = Hash.new
           o.members.each do |key|
             case key
             when /^cnt/
-              cnt[key] = o[key]
+              o[key].to_i.times{|i| cnt.push key[3..-1] }
             when /^modified/
               say[key] = o[key]
             when /dt$/
               dt[key] = o[key]
             end
           end
-          sow.config = cnt
-          sow.say    = say
+
+          sow.card = {}
+          sow.card[:discard] = o.rolediscard.split('/').map{|c| SOW_RECORD[folder][:roles][c.to_i] } || [] rescue []
+          sow.card[:event]   = o.eventcard.split('/').map{|c| SOW_RECORD[folder][:events][c.to_i] } || [] rescue []
+          sow.card[:config] = cnt
           sow.timer  = dt
-          p [sow.folder, sow.vid]
+          turn.say   = say
+
+          p sow
           sow.save
+          turn.save
         end
       end
-    when /logcnt.cgi/
-    when /log.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
-      source = log( path, fname, folder, vid, turn )
-      get_from_file( fname, source, folder, vid, turn )
-    when /memo.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
-      source = memo( path, fname, folder, vid, turn )
-      get_from_file( fname, source, folder, vid, turn )
-    when /memoidx.cgi/
-    when /logidx.cgi/
-    else
-    end
+      true
   end
 
   def self.cgi_scan_by_folder_mysql(path,folder,fname, timeout, force)
@@ -428,7 +445,7 @@ class SowRecordFile
       # message embedded in 
       message = Message.new( logid: logid, account_id: o.uid, date: o.date, log: o.log )
       event.messages << message
-      message.style = ["", "mono", "head"][o.monospace]
+      message.style = SOW_RECORD[folder][:monospace][o.monospace.to_i]
       message.subid = subid
       message.mestype = o.mestype
       message.face_id = o.cid
@@ -440,7 +457,7 @@ class SowRecordFile
     requests.keys.each do |key| request_key, account_key = key
       request = Request.where( request_key ).first || Request.new( request_key ) 
       request.save
-      account = Account.where( account_key ).first || Account.new( account_key ) 
+      account = SowAuth.where( account_key ).first || SowAuth.new( account_key ) 
       account.save
     end
     p [folder, vid, turn]
