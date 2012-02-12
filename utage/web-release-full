@@ -4,5 +4,5 @@ rm -rf log/*
 rm -rf tmp/*
 
 rake  assets:precompile
-/utage/web-deploy
+/utage/web-release $*
 

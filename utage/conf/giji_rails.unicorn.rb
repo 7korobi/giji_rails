@@ -49,6 +49,17 @@ GC.respond_to?(:copy_on_write_friendly=) and
   GC.copy_on_write_friendly = true
 
 before_fork do |server, worker|
+  old_pid = "#{server.config[:pid]}.oldbin"
+  if File.exists?(old_pid) && server.pid != old_pid
+    begin
+      Process.kill("WINCH", File.read(old_pid).to_i)
+      Thread.new do
+        sleep 30
+        Process.kill("KILL", File.read(old_pid).to_i)
+      end
+    rescue Errno::ENOENT, Errno::ESRCH
+    end
+  end
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
 #  defined?(ActiveRecord::Base) and

@@ -171,6 +171,28 @@ CABALA: &CABALA
     - WIN_LOVER
     - WIN_HATER
 
+  mestypes:
+    - 
+    - INFOSP
+    - DELETEDADMIN
+    - CAST
+    - MAKER
+    - ADMIN
+    - QUEUE
+    - INFONOM
+    - DELETED
+    - SAY
+    - TSAY
+    - WSAY
+    - GSAY
+    - SPSAY
+    - XSAY
+    - VSAY
+    - MSAY
+    - AIM
+    - ANONYMOUS
+    - INFOWOLF
+
 PERJURY:
   <<: *CABALA
 
@@ -316,6 +338,24 @@ ULTIMATE: &ULTIMATE
     - WIN_LOVER
     - WIN_HATER
 
+  mestypes:
+    -
+    - INFONOM
+    - INFOSP
+    - DELETED
+    - DELETEDADMIN
+    - QUE
+    - SAY
+    - TSAY
+    - WSAY
+    - GSAY
+    - MAKER
+    - ADMIN
+    - SPSAY
+    - BSAY
+    - CAST
+    - GSAY
+
 PRETENSE:
   <<: *ULTIMATE
 
@@ -356,6 +396,23 @@ WOLF: &WOLF
     - WIN_WOLF
     - WIN_PIXI
     - WIN_PIXI
+
+  mestypes:
+    -
+    - INFONOM
+    - INFOSP
+    - DELETED
+    - DELETEDADMIN
+    - QUE
+    - SAY
+    - TSAY
+    - WSAY
+    - GSAY
+    - MAKER
+    - ADMIN
+    - SPSAY
+    - BSAY
+    - CAST
 
 RP:
   <<: *WOLF

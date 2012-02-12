@@ -6,7 +6,7 @@ class Client
       $(window).trigger('resize')
 
     $(window).scroll =>
-      Client.outframe.height( Client.info.contentframe.height() )
+      Client.outframe.height( Client.height() )
 
     $(window).resize =>
       $(window).trigger('scroll')
@@ -27,10 +27,11 @@ class Client
 
 
   @height: ->
-    $(window).height() |
-    window.innerHeight |
-    document.documentElement.clientHeight |
-    document.body.clientHeight
+    height = $(window).height() |
+      window.innerHeight |
+      document.documentElement.clientHeight |
+      document.body.clientHeight
+    Math.max [height, Client.info.contentframe.height()]...
 
   @width: ->
     phone =

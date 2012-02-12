@@ -1,0 +1,29 @@
+- content_for :head do
+  h3.sayfilter_heading 好きなキャラクターに投票しよう
+
+- content_for :info do
+  =link_to "あなたの投票は？", new_chr_vote_path
+
+- content_for :log do
+  h2 みんなのコメント
+  =messages_for_votes_group(chr_votes_comments) do |votes|
+    -votes.each do |vote|
+      ul
+        li= vote.comment
+
+- if admin?
+  - content_for :log do
+    -chr_vote_phases.each do |phase|
+      - groups = chr_vote_phases_faces[phase]
+      h2=phase
+      .chrlist
+        hr(style="border-color:black;")
+        -groups.each do |group|
+          .chrbox
+            img(src="/images/portrate/#{group['face_id']}.jpg")
+            .chrblank
+              =group['group'].size
+              | 票
+              br
+        hr(style="border-color:black;")
+  

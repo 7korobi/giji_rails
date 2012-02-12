@@ -4,8 +4,8 @@
   h3.sayfilter_heading show user
 
 - content_for :log do
-  h2= "#{user.name} さんの情報"
+  h2= "ようこそ #{user.name} さん"
   ul
-    li=link_to '詳しく見る', edit_user_path(user)
-    li=link_to '人気投票', new_chr_vote_path
+    li=link_to 'キャラクターに投票！', new_chr_vote_path
+    li=link_to '自分のアカウントを詳しく見る', edit_user_path(user)
 

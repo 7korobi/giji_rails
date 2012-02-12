@@ -4,6 +4,7 @@ require 'yaml'
 
 module ApplicationHelper
   include LinkHelper
+  include GijiHelper
 
   def css_name
     params[:css] ||= OPTION[:css_wday][Time.now.wday]

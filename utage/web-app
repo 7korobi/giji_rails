@@ -23,7 +23,7 @@ restart)
   touch /www/$APP/tmp/restart.txt
   ;;
 reload)
-  $0 stop
+  killall -s USR2 unicorn_rails
   touch /www/$APP/tmp/restart.txt
   $0 start
   ;;

@@ -3,11 +3,11 @@
     - if title.present?
       h2=title
     .chrlist
-      hr
+      hr(style="border-color:black;")
       -faces.each do |face|
         .chrbox
           img(src="/images/portrate/#{face.face_id}.jpg" onclick="Form.submit_chr_vote('#{face.face_id}')")
           .chrblank
             =face.name
             br
-      hr
+      hr(style="border-color:black;")

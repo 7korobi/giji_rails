@@ -67,9 +67,13 @@ class SowRecordFile
       line.chomp!
       yield line
     end
+  rescue Encoding::UndefinedConversionError => e
+    STDERR.puts e.inspect
+  rescue Encoding::InvalidByteSequenceError => e
+    STDERR.puts e.inspect
   end
 
-  def self.out?(vid,force, count_folder, timeout,old)
+  def self.out?(vid,force, timeout,old)
     return false if force.include? vid 
     return false if old < timeout
     return true
@@ -85,8 +89,8 @@ class SowRecordFile
         end
       end
     rescue Exception => err
-      p line
-      p err
+      STDERR.puts line.inspect
+      STDERR.puts err.inspect
       ary = []
     end
     if keyword.index( ary[0] )
@@ -150,66 +154,58 @@ class SowRecordFile
           item[key_sym] = val.to_i
           item[key_sym] = val.to_i - 0x10000000000000000  if  0xffffffff00000000 < val.to_i 
         else
-          item[key_sym] = val.to_s.encode('UTF-8',{:invalid => :replace, :undef => :replace})
+          item[key_sym] = (val.to_s.encode('UTF-8')  rescue  '- invisible text -')
         end
       end
       begin
         yield item
       rescue Exception => err
-        p item
-        p err
+        STDERR.puts item.inspect
+        STDERR.puts err.inspect
       end
     else
-      logger.debug line
     end
   end
 
 
   def self.cgi_scan_by_folder(path,folder, timeout =  60*60*24*365*2009, force=[])
-    logger.debug path
     Dir.new(path).each do | fname |
       next  if  0 == File.size(path+'/'+fname) 
+      next  if  /vil.cgi/ === fname
       cgi_scan_by_folder_mongo(path,folder,fname, timeout, force)
-#      cgi_scan_by_folder_mysql(path,folder,fname, timeout, force)
     end
   end
 
   def self.cgi_scan_by_folder_active(path,folder, timeout =  60*60*24*365*2009, force=[])
-    logger.debug path
     Dir.new(path).each do | fname |
       next  if  0 == File.size(path+'/'+fname) 
       next  unless  /vil.cgi/ === fname
       cgi_scan_by_folder_mongo(path,folder,fname, timeout, force)
-#      cgi_scan_by_folder_mysql(path,folder,fname, timeout, force)
     end
   end
 
   def self.cgi_scan_by_folder_mongo(path,folder,fname, timeout, force)
     vid  = fname[0..3].to_i
     turn = fname[5..6].to_i
-    old  = WATCH_TIME - File.mtime(path+'/'+fname)
+    old  = WATCH[:time] - File.mtime(path+'/'+fname)
 
     village      = {:folder => folder,:vid => vid}
     village_turn = {:folder => folder,:vid => vid,:turn => turn}
-    count_folder = CgiFolder.filter(village).count
+    return if out? vid, force, timeout, old
+
+    p village_turn.merge(:old => old/60/60, :file => fname)
 
     @keys = nil
     case fname
     when /vil.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid})
       village_to_mongo path, fname, folder, vid
     when /logcnt.cgi/
     when /log.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
       source = log( path, fname, folder, vid, turn )
-      get_from_file( fname, source, folder, vid, turn )
+      message_to_mongo( fname, source, folder, vid, turn )
     when /memo.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
       source = memo( path, fname, folder, vid, turn )
-      get_from_file( fname, source, folder, vid, turn )
+      message_to_mongo( fname, source, folder, vid, turn )
     when /memoidx.cgi/
     when /logidx.cgi/
     else
@@ -222,17 +218,13 @@ class SowRecordFile
         when 'Struct::SowRecordFileUser'
           story = SowVillage.where( folder: o.folder, vid: o.vid ).first
           next unless story
-          turn  = story.events.last
-          potof = turn.potofs.where( account_id: o.uid ).first
-          potof && potof.delete
-          #
-          face = Face.find(o.cid)
-          name = if (0 < o.postfix.to_i  rescue  false)
-                   [%w[IR R O Y G B I V UV][o.clearance], face.name, o.postfix].join('-')
-                 else
-                   face.name
-                 end
-          potof = SowUser.new( 
+          event = story.events.sort_by(&:turn).last
+          next unless event
+
+          STDERR.puts [:debug, o].inspect  if  o.role == nil
+
+          potof = event.potofs.where( sow_auth_id: o.uid ).first
+          potof ||= SowUser.new( 
             sow_auth_id: o.uid,
             face_id: o.cid,
             csid:    o.csid.split('_')[0],
@@ -246,8 +238,14 @@ class SowRecordFile
             live:      o.live,
             deathday:  o.deathday,
 
-            role: [ SOW_RECORD[folder][:roles][o.role] ]
+            role: [ SOW_RECORD[folder][:roles][o.role.to_i] ]
           )
+          face_name = Face.find(o.cid).name  rescue  '***'
+          name = if (0 < o.postfix.to_i  rescue  false)
+                   [%w[IR R O Y G B I V UV][o.clearance], face_name, o.postfix].join('-')
+                 else
+                   face_name
+                 end
           potof.zapcount   = o.zapcount    rescue  nil
           potof.pseudolove = o.pseudolove  rescue  nil
           potof.clearance  = o.clearance   rescue  nil
@@ -280,15 +278,11 @@ class SowRecordFile
           }
           potof.say    = say
           potof.timer  = dt
-
-          turn.potofs << potof
-          story.save
+          potof.event = event
           potof.save
         when 'Struct::SowRecordFileVil'
           sow = SowVillage.where( folder: o.folder, vid: o.vid ).first
-          sow && sow.delete
-          #
-          sow = SowVillage.new( 
+          sow ||= SowVillage.new( 
             folder: o.folder.to_s,
             vid:    o.vid, 
             
@@ -310,13 +304,6 @@ class SowRecordFile
               minute:   o.updminite.to_i
             },
           )
-          turn = SowTurn.new(
-            turn:   o.turn.to_i,
-
-            winner: SOW_RECORD[folder][:winners][o.winner.to_i], 
-            epilogue:  o.epilogue.to_i,
-          )
-          sow.events << turn
           sow.rating = o.rating  rescue  nil 
           sow.type[:mob] = o.mob  rescue  nil
           sow.type[:game] = o.game  rescue  nil 
@@ -325,13 +312,6 @@ class SowRecordFile
           sow.options.push "select-role"   if  (o.noselrole    != '1'  rescue  false)
           sow.options.push "random-target" if  (o.randomtarget == '1'  rescue  false)
           sow.options.push "undead-talk"   if  (o.undead       == '1'  rescue  false)
-
-          turn.event = SOW_RECORD[folder][:events][o.event.to_i]  rescue  nil
-          turn.grudge = o.grudge.to_i  rescue  nil
-          turn.riot = o.riot.to_i  rescue  nil
-          turn.scapegoat = o.scapegoat.to_i  rescue  nil
-          turn.eclipse = o.eclipse.split('/') || []  rescue  []
-          turn.seance = o.seance.split('/') || []  rescue  []
 
           cnt = []
           say = Hash.new
@@ -352,88 +332,41 @@ class SowRecordFile
           sow.card[:event]   = o.eventcard.split('/').map{|c| SOW_RECORD[folder][:events][c.to_i] } || [] rescue []
           sow.card[:config] = cnt
           sow.timer  = dt
-          turn.say   = say
-
-          p sow
           sow.save
-          turn.save
+          
+          o.turn.to_i.times do |turn_no|
+            event = sow.events.where(turn: turn_no).first
+            event ||= SowTurn.new(
+              turn: turn_no,
+              winner: SOW_RECORD[folder][:winners][o.winner.to_i], 
+            )
+            if o.turn.to_i - 1 == turn_no
+              event.epilogue = o.epilogue.to_i,
+              event.event = SOW_RECORD[folder][:events][o.event.to_i]  rescue  nil
+              event.grudge = o.grudge.to_i  rescue  nil
+              event.riot = o.riot.to_i  rescue  nil
+              event.scapegoat = o.scapegoat.to_i  rescue  nil
+              event.eclipse = o.eclipse.split('/') || []  rescue  []
+              event.seance = o.seance.split('/') || []  rescue  []
+              event.say = say
+            end
+            event.story = sow
+            event.save
+          end
         end
       end
       true
   end
 
-  def self.cgi_scan_by_folder_mysql(path,folder,fname, timeout, force)
-    vid  = fname[0..3].to_i
-    turn = fname[5..6].to_i
-    old  = WATCH_TIME - File.mtime(path+'/'+fname)
+  def self.message_to_mongo( fname, source, folder, vid, turn)
+    story = SowVillage.where( folder: folder, vid: vid ).first
+    return unless story
 
-    village      = {:folder => folder,:vid => vid}
-    village_turn = {:folder => folder,:vid => vid,:turn => turn}
-    count_folder = CgiFolder.filter(village).count
+    event = story.events.where( turn: turn ).first
+    return unless event
 
-    @keys = nil
-    case fname
-    when /vil.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid})
-      SOW.transaction do
-        CgiVil .filter(village).delete
-        CgiUser.filter(village).delete
-        village( path, fname, folder, vid ).each do |o|
-          case o.members[2]
-          when :uid
-            db_item = CgiUser.new 
-            o.each_pair{|key,value| db_item[key] = value }
-            db_item.save
-          when :makeruid
-            db_item = CgiVil.new 
-            o.each_pair{|key,value| db_item[key] = value }
-            db_item.save
-          end
-        end
-      end
-    when /logcnt.cgi/
-    when /log.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
-      source = log( path, fname, folder, vid, turn )
-      SOW.transaction do
-        CgiLog.filter(village_turn).delete
-        source.each do |item|
-          db_item = CgiLog.new 
-          item.each_pair{|key,value| db_item[key] = value }
-          db_item.save
-        end
-      end
-    when /memo.cgi/
-      return if out? vid, force, count_folder, timeout, old
-      p ({:old => old/60/60, :folder=> folder, :file => fname, :vid => vid, :turn => turn })
-      source = memo( path, fname, folder, vid, turn )
-      SOW.transaction do
-        CgiMemo.filter(village_turn).delete
-        source.each do |item|
-          db_item = CgiMemo.new 
-          item.each_pair{|key,value| db_item[key] = value }
-          db_item.save
-        end
-      end
-    when /memoidx.cgi/
-    when /logidx.cgi/
-    else
-    end
-  end
+    ids = event.messages.map{|o| [o.logid, o.subid]}
 
-  def self.get_from_file( fname, source, folder, vid, turn)
-    sow = SowVillage.where( folder: folder, vid: vid ).first
-    return unless sow
-    return if ['LOBBY_OLD',1] == [folder, vid]
-    return if ['ULTIMATE',1]  == [folder, vid]
-    event = SowEvent.where( folder: folder, vid: vid, turn: turn ).first
-    event && event.delete
-    #
-    event = SowEvent.new( folder: folder, vid: vid, turn: turn )
-    sow.events << event
-    sow.save
     requests = Hash.new
     source.each do |o|
       logid, subid  = case fname
@@ -442,46 +375,39 @@ class SowRecordFile
                       when /log.cgi/
                       [o.logid, o.logsubid]
                       end
+      next if ids.member? [logid, subid]
+
       # message embedded in 
-      message = Message.new( logid: logid, account_id: o.uid, date: o.date, log: o.log )
+      message = Message.new( logid: logid, sow_auth_id: o.uid, date: o.date, log: o.log )
       event.messages << message
-      message.style = SOW_RECORD[folder][:monospace][o.monospace.to_i]
       message.subid = subid
-      message.mestype = o.mestype
       message.face_id = o.cid
       message.csid = o.csid
-      message.name = o.chrname
-      key = [{ remoteaddr: o.remoteaddr, fowardedfor: o.fowardedfor, agent: o.agent },{ account_id: o.uid }]
+      message.style = SOW_RECORD[folder][:monospace][o.monospace.to_i]
+      message.mestype = SOW_RECORD[folder][:mestypes][o.mestype.to_i]
+      fix_dic = {
+        'へクター' => 'ヘクター'
+      }.each do |src, dst|
+        o.chrname.gsub!(src, dst)  if  o.chrname[src]
+      end
+
+      case message.mestype
+      when 'AIM'
+        message.name, message.to = o.chrname.split(' → ')
+      else
+        message.name = o.chrname
+      end
+      key = [{ remoteaddr: o.remoteaddr, fowardedfor: o.fowardedfor, agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true
     end
-    requests.keys.each do |key| request_key, account_key = key
-      request = Request.where( request_key ).first || Request.new( request_key ) 
-      request.save
-      account = SowAuth.where( account_key ).first || SowAuth.new( account_key ) 
+    requests.keys.each do |key| request_key, sow_auth_id = key
+      account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
       account.save
+      request = Request.where( request_key ).first || Request.new( request_key )
+      request.sow_auths << account  unless  request.sow_auth_ids.member? account.id
+      request.save
     end
-    p [folder, vid, turn]
     event.save
-  end
-
-  def self.cgi_scan_by_account(path, timeout = 60*60*24*365*2009)
-    Dir.new(path).each do | fname |
-      case fname
-      when /.cgi/
-        old = Time.now - File.mtime(path+'/'+fname)
-        next if  timeout < old
-        account( path, fname ).each do |item|
-          user = {:uid => item.uid}
-          CgiAccount.filter( user ).delete
-          account = CgiAccount.new
-          item.each_pair{|key,value| account[key] = value }
-          account.save
-          account = Account.where( account_id: item.uid ).first || Account.new( account_id: item.uid ) 
-          account.save
-          logger.debug ({:old => old/60/60, :uid => item.uid})
-        end
-      end
-    end
   end
 end
 

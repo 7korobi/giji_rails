@@ -4,7 +4,8 @@ class Request
 
   field :remote_ip
   field :user_agent
-  references_and_referenced_in_many :users, inverse_of: :requests
+  references_and_referenced_in_many :sow_auths, inverse_of: :requests
+  references_and_referenced_in_many :users,     inverse_of: :requests
 
   def initialize(attributes = {})
     super

@@ -3,9 +3,21 @@
 
 module LinkHelper
   def head_img
-    size = 458 if params[:css]['480']
-    size = 580 if params[:css]['800']
-    link_to_lobby image_tag("/images/banner/title#{size}r.jpg")
+    size = 458 if css_name['480']
+    size = 580 if css_name['800']
+
+    style = {
+      cinema800: %w[r c],
+      cinema480: %w[r c],
+      star800:   %w[r c],
+      star480:   %w[r c],
+      wa800:     %w[b w],
+      wa480:     %w[b w],
+      night800:  %w[b w],
+      night480:  %w[b w]
+    }
+    img = style[params[:css].to_sym][(Time.now.to_i / 12.hours)%2]
+    link_to_lobby image_tag("/images/banner/title#{size}#{img}.jpg")
   end
 
     def img_cd(rating)
@@ -30,7 +42,7 @@ module LinkHelper
     # リンク：外部も含む、人狼の国へ
     def link_to_folder( title, vil )
         if @giji_folder.member? vil.folder
-        then 
+        then
             link_to_info( title,vil.folder,vil.vid)
         else
             url = vil.info_link
@@ -51,8 +63,8 @@ module LinkHelper
         prefix = ""
         prefix = '/../' unless cgi_url['://']
         if   cgi_url["?"]
-        then cgi_url += "&" 
-        else cgi_url += "?" 
+        then cgi_url += "&"
+        else cgi_url += "?"
         end
         link_to(title,prefix + cgi_url + suffix)
     end

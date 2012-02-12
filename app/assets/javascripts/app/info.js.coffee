@@ -25,7 +25,6 @@ class Info
       @sayfilter.tabs()
 
   resize: =>
-    # @sayfilter.height Client.height()
     width = Client.width()
     small = 122 + 80
     fold = false

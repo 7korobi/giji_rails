@@ -1,4 +1,5 @@
 class Message < Chat
+  key :subid, :logid
   field :subid
   field :mestype
   field :csid

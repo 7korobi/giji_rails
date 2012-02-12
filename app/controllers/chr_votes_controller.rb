@@ -1,6 +1,7 @@
 class ChrVotesController < ApplicationController
   expose(:face_groups){ faces.group_by_type }
   expose(:chr_vote_phases){ ChrVote.phases }
+  expose(:chr_vote_phases_faces){ ChrVote.only(:phase,:face_id).group.group_by{|h|h['phase']} }
 
   expose(:faces){ Face.all }
   expose(:face_titles){ Face.titles }
@@ -8,6 +9,8 @@ class ChrVotesController < ApplicationController
   expose(:chr_votes_in_phase){ chr_votes.group_by(&:phase) }
   expose(:chr_votes){ ChrVote.where(user_id: current.user.id) }
   expose(:chr_vote)
+
+  expose(:chr_votes_comments){ ChrVote.excludes(comment:"").group_by(&:face_id) }
 
   respond_to :html, :json
 

@@ -1,29 +1,50 @@
 
 module Giji
   class RSync
-    PROTOCOLS = %w[ftp ssh]
-
     def initialize
       @sh = []
       @sh_file = '/utage/giji_log_rsync'
     end
 
     def to_s
-      @sh.join("\n")
+      @sh.join(" &\n")
     end
 
-    def exec
+    def to_file
       open(@sh_file,'w') do |f|
         f.puts to_s
       end
       puts %Q|#{@sh_file}\n O.K|
     end
 
-    def each
+    def exec
+      @sh.map do |cmd|
+        Thread.start(cmd){|command| system command }
+      end.each do |th|
+        th.join
+      end
+    end
+
+    def each_with_servers &block
+      each 'none', &block
+    end
+
+    def each_locals &block
+      each &block
+    end
+
+    def each(*deny_protocols)
       RSYNC.each do |folder, set|
-        next if ( set.keys - PROTOCOLS ).size > 0
         set.each do |protocol, set|
-          yield(folder, protocol, set)
+          next if protocol == 'keys'
+          next if deny_protocols.member? protocol
+          begin
+            yield(folder, protocol, set)
+          rescue => e
+            p [folder, protocol, e]
+            puts e.backtrace
+            throw e
+          end
         end
       end
     end
@@ -43,15 +64,15 @@ module Giji
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|-X #{name}|
         end.join(' ')
-        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{rpath}/ #{lpath}/; exit' &|
+        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{rpath}/ #{lpath}/; exit'|
 
       when 'ssh'
-        option = '--stats'
+        option = '-t'
         port  = set[:options][:port] || 22
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|
         end.join(' ')
-        @sh << %Q|rsync -e 'ssh -p #{port}' -r #{user}@#{open}:#{rpath}/ #{lpath}/ #{excludes} #{option} &|
+        @sh << %Q|rsync -e 'ssh -p #{port}' -r #{user}@#{open}:#{rpath}/ #{lpath}/ #{excludes} #{option}|
 
       end
     end
@@ -71,7 +92,7 @@ module Giji
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|-X #{name}|
         end.join(' ')
-        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{lpath} #{rpath}; exit' &|
+        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{lpath} #{rpath}; exit'|
 
       when 'ssh'
         option = '--stats'
@@ -79,7 +100,7 @@ module Giji
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|
         end.join(' ')
-        @sh << %Q|rsync -e 'ssh -p #{port}' -r #{lpath} #{user}@#{open}:#{rpath} #{excludes} #{option} &|
+        @sh << %Q|rsync -e 'ssh -p #{port}' -r #{lpath} #{user}@#{open}:#{rpath} #{excludes} #{option}|
 
       end
     end
