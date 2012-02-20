@@ -25,7 +25,7 @@ DIV.login
   .choice
     table.board
       tr
-        th colspan="5"
+        th.no_choice colspan="5"
           | 総合トップページはこちら
           strong= link_to_lobby '人狼議事'
           | 合計#{max_all}村:を上限としています
@@ -100,8 +100,6 @@ DIV.login
           td.no_choice
 
 p style="text-align:right; font-size: 100%;"
-  = link_to_css "漆黒",:ririnra
-  | ｜
   = link_to_css "煉瓦",:cinema800
   = ' '
   = link_to_css "480",:cinema480

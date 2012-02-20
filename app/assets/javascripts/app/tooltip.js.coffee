@@ -311,7 +311,7 @@ setAjaxEvent = (target) ->
   target.find("p:not(.multicolumn_label):not(.mes_date)").each ->
     html = $(@).html()
     $(@).html( html.replace(///
-      (/*)(.*?)(*/|$)
+      (/\*)(.*?)(\*/|$)
     ///g,'<em>$1$2$3</em>') )
 
   target.find(".img img").mouseup ->

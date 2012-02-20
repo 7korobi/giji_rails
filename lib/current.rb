@@ -1,21 +1,7 @@
 
 module CurrentAuthenticated
   ROLES = %w[admin self login auth]
-
   protected
-  Current = Struct.new(:auth,:user,:request)
-  def self.included(controller)
-    controller.helper_method ROLES.map{|role| :"#{role}?"}
-    controller.helper_method :current
-    controller.after_filter  :current_save
-  end
-
-  ROLES.each do |role|
-    define_method("#{role}_require") do
-      authenticate_deny unless send("#{role}?")
-    end
-  end
-
   def admin?
     login? && current.user.try(:admin?)
   end
@@ -33,8 +19,21 @@ module CurrentAuthenticated
     ! login?
   end
 
+  Current = Struct.new(:auth,:user,:request)
+  def self.included(controller)
+    controller.helper_method ROLES.map{|role| :"#{role}?"}
+    controller.helper_method :current
+    controller.after_filter  :current_save
+  end
+
+  ROLES.each do |role|
+    define_method("#{role}_require") do
+      authenticate_deny unless send("#{role}?")
+    end
+  end
+
   def authenticate_deny
-    logout
+    redirect_to root_url
   end
 
   def login(auth)

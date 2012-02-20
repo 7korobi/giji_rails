@@ -24,7 +24,7 @@ class ChrVotesController < ApplicationController
     chr_vote.user = current.user
     chr_vote.phase = params[:phase_input]  if  params[:phase_input].presence
 
-    if chr_vote.save
+    if chr_vote.face_id && chr_vote.save
       flash[:notice] = "successfully #{action_name}d."
 
       chr_list = chr_votes_in_phase[chr_vote.phase]

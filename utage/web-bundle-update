@@ -4,7 +4,9 @@ APP=/www/giji_rails
 cd $APP
 
 cd $APP && bundle update
-/utage/web-ssh-254 cd $APP && bundle update
-/utage/web-ssh-253 cd $APP && bundle update
-/utage/web-ssh-251 cd $APP && bundle update
+/utage/web-staging &
+/utage/web-release
+/utage/web-ssh-254 /utage/web-app exec bundle update
+/utage/web-ssh-253 /utage/web-app exec bundle update
+/utage/web-ssh-251 /utage/web-app exec bundle update
 

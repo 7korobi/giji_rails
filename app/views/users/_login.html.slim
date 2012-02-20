@@ -13,5 +13,5 @@
       td(colspan='2')= link_to 'google', '/users/auth/google'
     tr
       td(colspan='2')= link_to 'yahoo',  '/users/auth/yahoo'
-  - if login?
+  -if login?
     h4.sayfilter_caption_enable= link_to 'click to logout', destroy_user_session_path

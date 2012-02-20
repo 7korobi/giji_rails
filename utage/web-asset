@@ -1,0 +1,9 @@
+APP=/www/giji_rails
+cd $APP
+rm -rf log/*
+rm -rf tmp/*
+
+/utage/web-push-serversman $APP/public  --delete
+/utage/web-push-serversman /utage
+/utage/web-ssh-serversman-root  /utage/web-infra-serversman restart
+

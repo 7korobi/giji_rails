@@ -24,6 +24,8 @@ end
 gem 'jquery-rails'
 gem "slim"
 gem 'spreadsheet'
+# gem 'rabl'
+gem 'gon'
 
 # menus
 gem "typus"
@@ -70,7 +72,7 @@ gem "rdropbox"
 # data_base
 gem "paperclip"
 gem "mongoid"
-gem "redis-store"
+gem "redis-store", '1.0.0.1'
 gem 'sqlite3'
 gem "sqlite3-ruby"
 

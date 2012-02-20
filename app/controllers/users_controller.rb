@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   before_filter :auth_require, only:%w[new  create]
-  before_filter :self_require, only:%w[edit update]
+  before_filter :self_require, only:%w[edit update show]
 
   def index
   end

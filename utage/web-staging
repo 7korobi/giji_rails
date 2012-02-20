@@ -10,5 +10,6 @@ rm -rf tmp/*
 /utage/web-push-$TARGET $APP    --delete
 /utage/web-push-$TARGET /utage  --delete
 /utage/web-ssh-$TARGET  cp /utage/$TARGET/* /utage/
+/utage/web-ssh-$TARGET  cp /utage/.bash_profile /home/7korobi/.bash_profile
 /utage/web-ssh-$TARGET  /utage/web-app  $1
 

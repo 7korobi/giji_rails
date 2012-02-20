@@ -12,16 +12,16 @@
     =f.input :vote,    as: :hidden
     =f.input :comment
     =f.input :phase, collection: chr_vote_phases, include_blank: false
-    - if admin?
+    -if admin?
       label 自由入力
       input#phase_input(name='phase_input')
 
   - chr_vote_phases.each do |phase| chr_votes = chr_votes_in_phase[phase]
     h3= phase
-    - chr_votes.each do |chr_vote|
+    - (chr_votes || []).each do |chr_vote|
       img(src="/images/portrate/#{chr_vote.face_id}.jpg")
     ul.comments
-    - chr_votes.each do |chr_vote|
+    - (chr_votes || []).each do |chr_vote|
       li= chr_vote.comment
 
 

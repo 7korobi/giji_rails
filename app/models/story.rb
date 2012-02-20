@@ -8,4 +8,5 @@ class Story
   field :comment
   field :rating
   references_many :events, inverse_of: :story
+  references_many :potofs, inverse_of: :story
 end

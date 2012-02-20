@@ -1,6 +1,7 @@
 require 'const'
 require 'ostruct'
 require 'current'
+require 'rsync'
 require 'timestamp'
 require 'omniauth-openid'
 require 'openid/fetchers'

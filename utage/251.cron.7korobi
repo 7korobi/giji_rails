@@ -1,2 +1,4 @@
-00,20,40 * * * * /utage/giji_log_rsync  > /utage/log/giji_log_rsync.log
+@reboot          /bin/ping 183.181.24.203 >  /dev/null
+00,20,40 * * * * /utage/web-app exec thor record:cgi  > /utage/log/giji_log_rsync.log
+
 

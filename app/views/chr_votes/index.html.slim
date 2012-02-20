@@ -11,10 +11,10 @@
       ul
         li= vote.comment
 
-- if admin?
-  - content_for :log do
+- content_for :log do
+  - if admin?
     -chr_vote_phases.each do |phase|
-      - groups = chr_vote_phases_faces[phase]
+      - groups = chr_vote_phases_faces[phase].sort_by{|o| - o['group'].size }
       h2=phase
       .chrlist
         hr(style="border-color:black;")
@@ -26,4 +26,4 @@
               | 票
               br
         hr(style="border-color:black;")
-  
+

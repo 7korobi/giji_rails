@@ -33,19 +33,23 @@ module Giji
       each &block
     end
 
-    def each(*deny_protocols)
-      RSYNC.each do |folder, set|
-        set.each do |protocol, set|
-          next if protocol == 'keys'
-          next if deny_protocols.member? protocol
-          begin
-            yield(folder, protocol, set)
-          rescue => e
-            p [folder, protocol, e]
-            puts e.backtrace
-            throw e
-          end
+    def in_folder(folder, *deny_protocols)
+      RSYNC[folder].each do |protocol, set|
+        next if protocol == 'keys'
+        next if deny_protocols.member? protocol
+        begin
+          yield(folder, protocol, set)
+        rescue => e
+          STDERR.puts [folder, protocol, e].inspect
+          STDERR.puts e.backtrace
+          throw e
         end
+      end
+    end
+
+    def each(*deny_protocols, &block)
+      RSYNC.each do |folder, set|
+        in_folder(folder, *deny_protocols, &block)
       end
     end
 

@@ -3,6 +3,7 @@ CABALA: &CABALA
     - 
     - mono
     - head
+    -
 
   roles:
     - 
@@ -115,6 +116,7 @@ CABALA: &CABALA
     - 107
     - 108
     - 109
+    -
 
   gifts:
     - 
@@ -137,6 +139,7 @@ CABALA: &CABALA
     - 17
     - 18
     - 19
+    -
 
   events:
     - 
@@ -159,6 +162,7 @@ CABALA: &CABALA
     - 17
     - 18
     - 19
+    -
 
   winners:
     - WIN_NONE
@@ -170,6 +174,7 @@ CABALA: &CABALA
     - WIN_LONEWOLF
     - WIN_LOVER
     - WIN_HATER
+    -
 
   mestypes:
     - 
@@ -192,6 +197,7 @@ CABALA: &CABALA
     - AIM
     - ANONYMOUS
     - INFOWOLF
+    -
 
 PERJURY:
   <<: *CABALA
@@ -219,6 +225,7 @@ ULTIMATE: &ULTIMATE
     - 
     - mono
     - head
+    -
 
   roles:
     - 
@@ -291,6 +298,7 @@ ULTIMATE: &ULTIMATE
     - dish
     - 68
     - 69
+    -
 
 
   gifts:
@@ -304,6 +312,7 @@ ULTIMATE: &ULTIMATE
     - ogre
     - fairy
     - 9
+    -
 
   events:
     - 
@@ -326,6 +335,7 @@ ULTIMATE: &ULTIMATE
     - 17
     - 18
     - 19
+    -
 
   winners:
     - WIN_NONE
@@ -337,6 +347,7 @@ ULTIMATE: &ULTIMATE
     - WIN_LONEWOLF
     - WIN_LOVER
     - WIN_HATER
+    -
 
   mestypes:
     -
@@ -355,6 +366,7 @@ ULTIMATE: &ULTIMATE
     - BSAY
     - CAST
     - GSAY
+    -
 
 PRETENSE:
   <<: *ULTIMATE
@@ -367,6 +379,7 @@ WOLF: &WOLF
     - 
     - mono
     - head
+    -
 
   roles:
     - 
@@ -387,15 +400,19 @@ WOLF: &WOLF
     - cwolf
     - intwolf
     - trickster
+    -
 
-  gifts: []
-  events: []
+  gifts:
+    -
+  events:
+    -
   winners:
     - WIN_NONE
     - WIN_HUMAN
     - WIN_WOLF
     - WIN_PIXI
     - WIN_PIXI
+    -
 
   mestypes:
     -
@@ -413,6 +430,7 @@ WOLF: &WOLF
     - SPSAY
     - BSAY
     - CAST
+    -
 
 RP:
   <<: *WOLF

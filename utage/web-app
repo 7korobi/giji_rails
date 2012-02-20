@@ -25,7 +25,6 @@ restart)
 reload)
   killall -s USR2 unicorn_rails
   touch /www/$APP/tmp/restart.txt
-  $0 start
   ;;
 tail-log)
   tail -f /utage/log/* /www/$APP/log/*
@@ -33,6 +32,10 @@ tail-log)
 test)
   $0 stop
   rails s -p $WEB_PORT
+  ;;
+c|console)
+  shift
+  ~/.rbenv/bin/rbenv exec rails c $*
   ;;
 exec)
   shift

@@ -64,13 +64,15 @@ class SowRecordFile
   
   def self.sow_each(path)
     open(path, 'r:windows-31j').each do | line |
-      line.chomp!
-      yield line
+      begin
+        line.chomp!
+        yield line
+      rescue Encoding::UndefinedConversionError => e
+        STDERR.puts e.inspect
+      rescue Encoding::InvalidByteSequenceError => e
+        STDERR.puts e.inspect
+      end
     end
-  rescue Encoding::UndefinedConversionError => e
-    STDERR.puts e.inspect
-  rescue Encoding::InvalidByteSequenceError => e
-    STDERR.puts e.inspect
   end
 
   def self.out?(vid,force, timeout,old)
@@ -213,18 +215,27 @@ class SowRecordFile
   end
 
   def self.village_to_mongo path, fname, folder, vid
+      sow = SowVillage.where( folder: folder, vid: vid ).first || SowVillage.new
+      events = sow.events.group_by(&:turn)
+      event_now = events[ events.keys.max ].try(:first)
+
       village( path, fname, folder, vid ).each do |o|
         case o.class.name
         when 'Struct::SowRecordFileUser'
-          story = SowVillage.where( folder: o.folder, vid: o.vid ).first
-          next unless story
-          event = story.events.sort_by(&:turn).last
-          next unless event
-
+          story = sow
           STDERR.puts [:debug, o].inspect  if  o.role == nil
 
-          potof = event.potofs.where( sow_auth_id: o.uid ).first
-          potof ||= SowUser.new( 
+          face_name = Face.find(o.cid).name  rescue  '***'
+          name = if (0 < o.postfix.to_i  rescue  false)
+                   [%w[IR R O Y G B I V UV][o.clearance], face_name, o.postfix].join('-')
+                 else
+                   face_name
+                 end
+
+          potof   = story.potofs.where( sow_auth_id: o.uid ).first     rescue nil
+          potof ||= event_now.potofs.where( sow_auth_id: o.uid ).first rescue nil
+          potof ||= SowUser.new
+          potof.update_attributes( 
             sow_auth_id: o.uid,
             face_id: o.cid,
             csid:    o.csid.split('_')[0],
@@ -233,19 +244,13 @@ class SowRecordFile
 
             history:  o.history,
 
-            select:   SOW_RECORD[folder][:roles][ o.selrole ],
+            select:   SOW_RECORD[folder][:roles][ o.selrole.to_i ],
 
             live:      o.live,
             deathday:  o.deathday,
 
             role: [ SOW_RECORD[folder][:roles][o.role.to_i] ]
           )
-          face_name = Face.find(o.cid).name  rescue  '***'
-          name = if (0 < o.postfix.to_i  rescue  false)
-                   [%w[IR R O Y G B I V UV][o.clearance], face_name, o.postfix].join('-')
-                 else
-                   face_name
-                 end
           potof.zapcount   = o.zapcount    rescue  nil
           potof.pseudolove = o.pseudolove  rescue  nil
           potof.clearance  = o.clearance   rescue  nil
@@ -276,13 +281,13 @@ class SowRecordFile
             saidcount: o.saidcount,
             saidpoint: o.saidpoint
           }
-          potof.say    = say
-          potof.timer  = dt
-          potof.event = event
+          potof.say   = say
+          potof.timer = dt
+          potof.story = story
+          potof.event = event_now
           potof.save
         when 'Struct::SowRecordFileVil'
-          sow = SowVillage.where( folder: o.folder, vid: o.vid ).first
-          sow ||= SowVillage.new( 
+          sow.update_attributes(
             folder: o.folder.to_s,
             vid:    o.vid, 
             
@@ -335,12 +340,12 @@ class SowRecordFile
           sow.save
           
           o.turn.to_i.times do |turn_no|
-            event = sow.events.where(turn: turn_no).first
-            event ||= SowTurn.new(
+            event = events[turn_no].try(:first) || SowTurn.new
+            event.update_attributes(
               turn: turn_no,
               winner: SOW_RECORD[folder][:winners][o.winner.to_i], 
             )
-            if o.turn.to_i - 1 == turn_no
+            if o.turn.to_i == turn_no || o.epilogue.to_i == turn_no
               event.epilogue = o.epilogue.to_i,
               event.event = SOW_RECORD[folder][:events][o.event.to_i]  rescue  nil
               event.grudge = o.grudge.to_i  rescue  nil
@@ -353,6 +358,9 @@ class SowRecordFile
             event.story = sow
             event.save
           end
+          
+          events = sow.events.group_by(&:turn)
+          event_now = events[ events.keys.max ].try(:first)
         end
       end
       true
@@ -365,7 +373,7 @@ class SowRecordFile
     event = story.events.where( turn: turn ).first
     return unless event
 
-    ids = event.messages.map{|o| [o.logid, o.subid]}
+    ids = event.messages.only(:logid,:subid).map{|o| [o.logid, o.subid]}
 
     requests = Hash.new
     source.each do |o|
@@ -408,6 +416,8 @@ class SowRecordFile
       request.save
     end
     event.save
+  rescue 
+    open('/utage/log/message.txt','a').puts [fname,folder,vid,turn].inspect
   end
 end
 

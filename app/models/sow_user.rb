@@ -27,5 +27,4 @@ class SowUser < Potof
   field :point, type: Hash
   field :say,   type: Hash
   field :timer, type: Hash
-
 end

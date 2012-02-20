@@ -1,6 +1,6 @@
 #!/bin/sh
 
-nginx=/usr/local/bin/nginx
+nginx=/usr/local/nginx/sbin/nginx
 conf=/utage/conf/nginx.conf
 pid=/utage/pids/nginx.pid
 
