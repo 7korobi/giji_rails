@@ -1,0 +1,13 @@
+giji_vil_scanner:
+  every: 
+    - 10m
+  class: GijiScheduler
+  queue: giji_schedule
+  description: giji rsync and vils get for 10 min.
+
+giji_log_scanner:
+  every:
+    - 11h
+  class: GijiLogScheduler
+  queue: giji_schedule
+  description: giji logs get for 11 hours.

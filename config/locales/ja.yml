@@ -5,6 +5,11 @@ ja:
       name:     名前
       email:    e-mail
 
+  views:
+    pagination:
+      previous: "<<"
+      next: ">>"
+      truncate: "…"
   date:
     formats:
       default: "%Y/%m/%d"
@@ -227,7 +232,7 @@ ja:
         <<: *errors_template
       full_messages:
         format: "%{attribute}%{message}"
-  
+
   formtastic:
     titles: {}
     labels:

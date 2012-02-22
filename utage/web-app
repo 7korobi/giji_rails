@@ -14,37 +14,63 @@ status)
   ls /utage/pids/*
   ;;
 start)
-  ~/.rbenv/bin/rbenv exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
+  ~/.rbenv/shims/bundle exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
   ;;
 stop)
-  killall unicorn_rails
+  $0 kill QUIT "unicorn_rails master"
   ;;
 restart)
   touch /www/$APP/tmp/restart.txt
   ;;
 reload)
-  killall -s USR2 unicorn_rails
+  $0 kill USR2 "unicorn_rails master"
   touch /www/$APP/tmp/restart.txt
   ;;
-tail-log)
-  tail -f /utage/log/* /www/$APP/log/*
+
+
+bundle-update)
+  ~/.rbenv/shims/bundle update
   ;;
-test)
+
+QUEUE)
+  shift
+  $0 kill QUIT "resque.*Forked"
+  ~/.rbenv/shims/bundle exec rake resque:work QUEUE=giji_rsyncs,giji_schedules,giji_vils &
+  ;;
+
+kill)
+  shift
+  SIG=$1
+  shift
+  PROCESS_ID=`ps -ef | grep "$*" | head -1 | cut -c 8-15`
+  kill -s $SIG $PROCESS_ID
+  ;;
+
+exec)
+  shift
+  ~/.rbenv/shims/bundle exec $*
+  ;;
+
+s|server|test)
   $0 stop
-  rails s -p $WEB_PORT
+  ~/.rbenv/shims/bundle exec rails s -p $WEB_PORT  1> /www/$APP/log/test-stdout.log  2> /www/$APP/log/test-stderr.log &
+  $0 tail-log
   ;;
 c|console)
   shift
-  ~/.rbenv/bin/rbenv exec rails c $*
+  ~/.rbenv/shims/bundle exec rails c $*
   ;;
-exec)
-  shift
-  ~/.rbenv/bin/rbenv exec $*
+
+tail-log)
+  tail -f /utage/log/* /www/$APP/log/*
   ;;
+
 *)
   echo
   echo  "Usage: $0 command"
   echo
-  echo  "  command : status start stop restart reload tail-log"
+  echo  "  command : status start stop restart reload"
+  echo  "          : bundle-update QUEUE "
+  echo  "          : kill exec  s server test  c console  tail-log"
   echo  "  product : $APP"
 esac

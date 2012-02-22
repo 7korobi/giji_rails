@@ -27,6 +27,10 @@ gem 'spreadsheet'
 # gem 'rabl'
 gem 'gon'
 
+# queue
+gem 'resque'
+gem 'resque-scheduler'
+
 # menus
 gem "typus"
 #gem "web-app-theme"
@@ -62,9 +66,10 @@ gem "net-sftp"
 gem "whenever", :require => false
 
 # javascript
-#gem "therubyracer"
+gem "therubyracer"
 gem "bson_ext"
 gem "json"
+gem 'yajl-ruby'
 
 # storage
 gem "rdropbox"

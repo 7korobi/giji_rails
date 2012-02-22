@@ -1,0 +1,4 @@
+APP=/www/giji_rails
+
+cd $APP
+~/.rbenv/shims/resque-web -r utage.sytes.net:6379 -e production

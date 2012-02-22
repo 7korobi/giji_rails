@@ -1,0 +1,30 @@
+- content_for :log do
+
+  hr.invisible_hr
+  h2= params[:folder]
+
+  table.vindex(border="1" summary="村の一覧")
+    thead
+      tr
+        th(scope="col") id
+        th(scope="col") 村の名前
+        th(scope="col") 人数
+        th(scope="col") ルール
+        th(scope="col") 制限
+    tbody
+      - stories.each do |story|
+        tr.i_hover
+          td= story.vid
+          td
+            = link_to story.name.html_safe, events_path(story.id)
+            i
+              br
+            = image_tag "/images/icon/cd_#{story.rating}.png"
+            i.small
+              br= "更新 : #{"%02d:%02d"%[story.upd['hour'], story.upd['minute']]} #{24 * story.upd['interval']}h毎"
+          td.small= "%02d人"%[story.vpl.last]
+          td.small= story.type['game']
+          td.small= story.type['say']
+
+- content_for :info do
+  = paginate stories, window:2

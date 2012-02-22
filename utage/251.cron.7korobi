@@ -1,4 +1,6 @@
-@reboot          /bin/ping 183.181.24.203 >  /dev/null
-00,20,40 * * * * /utage/web-app exec thor record:cgi  > /utage/log/giji_log_rsync.log
+@reboot          /utage/web-app queue QUEUE=giji_vils > /dev/null
+@reboot          /bin/ping 183.181.24.203             > /dev/null
+00,20,40 * * * * /utage/web-app exec thor record:cgi  > /dev/null
+
 
 

@@ -3,11 +3,20 @@ Giji::Application.routes.draw do
     get '/users/sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  resources :users
+  scope ':folder' do
+    resources :stories, only:%w[index]
+  end
+
+  scope ':story_id' do
+    resources :events, only:%w[index]
+  end
+
   resources :chr_sets
   resources :chr_votes
 
+  resources :users
   root :to => 'users#index'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -66,3 +75,5 @@ Giji::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
 end
+
+
