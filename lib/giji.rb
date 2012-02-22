@@ -1,3 +1,5 @@
+require 'yajl/json_gem'
+
 require 'const'
 require 'ostruct'
 require 'current'

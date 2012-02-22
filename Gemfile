@@ -68,7 +68,6 @@ gem "whenever", :require => false
 # javascript
 gem "therubyracer"
 gem "bson_ext"
-gem "json"
 gem 'yajl-ruby'
 
 # storage
