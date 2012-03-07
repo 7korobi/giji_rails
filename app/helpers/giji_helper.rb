@@ -1,4 +1,12 @@
 module GijiHelper
+  def link_to_folder(title, folder)
+    link_to title, GAME[folder][:config][:cfg][:URL_SW] + "/sow.cgi?css=#{css}"
+  end
+
+  def link_to_css(title,css)
+    link_to_unless_current(title, css: css)
+  end
+
   def head_img
     size = 458 if css_name['480']
     size = 580 if css_name['800']
@@ -15,14 +23,6 @@ module GijiHelper
     }
     img = style[css.to_sym][(Time.now.to_i / 12.hours)%2]
     link_to_lobby image_tag("/images/banner/title#{size}#{img}.jpg")
-  end
-
-  def link_to_folder(title, folder)
-    link_to title, GAME[folder][:config][:cfg][:URL_SW] + "/sow.cgi?css=#{css}"
-  end
-
-  def link_to_css(title,css)
-    link_to_unless_current(title, css: css)
   end
 
   def messages_for_auth(auths)
