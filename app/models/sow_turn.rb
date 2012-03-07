@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 class SowTurn < Event
   include Giji
+  cache
 
   field :winner
   field :event
@@ -12,4 +15,22 @@ class SowTurn < Event
   field :seance,    type:Array
 
   field :say, type:Hash
+
+  def name
+    self[:name] || "#{turn}日目"
+  end
+
+  def update_from_file
+    Giji::RSync.new.in_folder(story.folder) do |folder, protocol, set|
+      vid  = story.vid
+      path = set[:files][:ldata] + "/data/vil"
+      turn = self.turn
+
+      self.messages = []
+      %w[log memo].each do |type|
+        fname = "%04d_%02d%s.cgi"%[vid, turn, type]
+        GijiLogScanner.new(path, folder, Time.at(0), 60, [vid], fname).save
+      end
+    end
+  end
 end

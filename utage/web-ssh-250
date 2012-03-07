@@ -1,2 +1,2 @@
-echo "no: 250  cmd: $* "
+echo "= 250:$* "
 ssh -p 2500 7korobi@utage.sytes.net $*

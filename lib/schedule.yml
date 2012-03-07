@@ -1,13 +1,11 @@
 giji_vil_scanner:
-  every: 
-    - 10m
+  cron: '*/6  *  *  *  *'
   class: GijiScheduler
-  queue: giji_schedule
-  description: giji rsync and vils get for 10 min.
+  queue: giji_schedules
+  description: giji rsync and vils get.
 
 giji_log_scanner:
-  every:
-    - 11h
+  cron: '59  */2  *  *  *'
   class: GijiLogScheduler
-  queue: giji_schedule
-  description: giji logs get for 11 hours.
+  queue: giji_schedules
+  description: giji logs get.

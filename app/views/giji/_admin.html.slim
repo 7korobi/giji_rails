@@ -1,0 +1,8 @@
+div(class=color)
+  .guide
+    h3.mesname
+      a(name=logid) = name
+    p(class=style)
+      =text.html_safe
+    p.mes_date= "(#{logid}) #{datetime_to_str time}"
+    hr.invisible_hr

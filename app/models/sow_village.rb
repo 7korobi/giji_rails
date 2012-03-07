@@ -1,5 +1,6 @@
 class SowVillage < Story
   include Giji
+  cache
 
   field :sow_auth_id
   field :password
@@ -31,7 +32,7 @@ class SowVillage < Story
       vid   = self.vid
       path  = set[:files][:ldata] + "/data/vil"
       fname = "%04d_vil.cgi"%[vid]
-      SowRecordFile.village_to_mongo path, fname, folder, vid
+      GijiVilScanner.new(path, folder, Time.at(0), 60, [vid], fname).save
       yield(folder,vid,path) if block_given?
     end
   end
@@ -42,10 +43,17 @@ class SowVillage < Story
         %w[log memo].each do |type|
           turn = event.turn
           fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-          source = SowRecordFile.try(type, path, fname, folder, vid, turn ) rescue next
-          SowRecordFile.message_to_mongo(fname, source, folder, vid, turn)
+          GijiLogScanner.new(path, folder, Time.at(0), 60, [vid], fname).save
         end
       end
+    end
+  end
+  def source
+    Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
+      vid   = self.vid
+      path  = set[:files][:ldata] + "/data/vil"
+      fname = "%04d_vil.cgi"%[vid]
+      return SowRecordFile.village( path, fname, folder, vid )
     end
   end
 end

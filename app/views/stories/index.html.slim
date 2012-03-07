@@ -1,3 +1,9 @@
+- content_for :head do
+  | ページをめくる
+
+- content_for :info do
+  = paginate stories, window:2
+
 - content_for :log do
 
   hr.invisible_hr
@@ -25,6 +31,3 @@
           td.small= "%02d人"%[story.vpl.last]
           td.small= story.type['game']
           td.small= story.type['say']
-
-- content_for :info do
-  = paginate stories, window:2

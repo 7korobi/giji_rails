@@ -3,15 +3,22 @@
 require 'yaml'
 
 module ApplicationHelper
-  include LinkHelper
   include GijiHelper
 
-  def css_name
-    params[:css] ||= OPTION[:css_wday][Time.now.wday]
-    "/stylesheets/#{params[:css]}"
+  def url_for(options=nil)
+    super(options).tap do |url|
+      if Hash === options && ! url[/css=\w+/]
+        gap = if url['?'] then '&' else '?' end
+        url << "#{gap}css=#{css}" 
+      end
+    end
   end
 
-  def cfg( folder )
+  def css_name
+    "/stylesheets/#{css}"
+  end
+
+  def cfg( folder )    
     GAME[folder]['config']['cfg']
   end
 

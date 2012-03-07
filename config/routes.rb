@@ -9,6 +9,9 @@ Giji::Application.routes.draw do
 
   scope ':story_id' do
     resources :events, only:%w[index]
+    scope ':turn' do
+      resources :messages, only:%w[index show]
+    end
   end
 
   resources :chr_sets

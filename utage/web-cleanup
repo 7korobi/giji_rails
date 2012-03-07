@@ -1,0 +1,8 @@
+#!/bin/sh
+
+APP=/www/giji_rails
+cd $APP
+rm -rf log/*
+rm -rf tmp/*
+
+

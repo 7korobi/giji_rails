@@ -5,5 +5,11 @@
 
 
 - content_for :log do
+
+  h2 ログインの仕方
+  p 左のどれかのボタンをクリックして、ログインしよう！
+
+  h2 アカウント一覧
+
   - users.each do |user|
     h3=link_to user.name, user

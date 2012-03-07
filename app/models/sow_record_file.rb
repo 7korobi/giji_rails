@@ -63,14 +63,13 @@ class SowRecordFile
   end
   
   def self.sow_each(path)
-    open(path, 'r:windows-31j').each do | line |
+    open(path, 'r:ascii-8bit').each do | line |
+      line.force_encoding('windows-31j')
       begin
         line.chomp!
         yield line
-      rescue Encoding::UndefinedConversionError => e
-        STDERR.puts e.inspect
-      rescue Encoding::InvalidByteSequenceError => e
-        STDERR.puts e.inspect
+      rescue ArgumentError, Encoding::UndefinedConversionError, Encoding::InvalidByteSequenceError => e
+        open('/utage/log/sow_record_file_error.txt','a:ascii-8bit').puts [e.inspect, path, line, "\n"].map{|s| s.force_encoding('ascii-8bit') }
       end
     end
   end
@@ -80,14 +79,10 @@ class SowRecordFile
     begin
       ary = line.split('<>').map! do |exp|
         if convert_val.has_key?(exp)
-          then convert_val[exp]
+        then convert_val[exp]
         else exp
         end
       end
-    rescue Exception => err
-      STDERR.puts line.inspect
-      STDERR.puts err.inspect
-      ary = []
     end
     if keyword.index( ary[0] )
       @keys = ary.map(&:to_sym).map{|key|
@@ -155,11 +150,7 @@ class SowRecordFile
       end
       begin
         yield item
-      rescue Exception => err
-        STDERR.puts item.inspect
-        STDERR.puts err.inspect
       end
-    else
     end
   end
 end

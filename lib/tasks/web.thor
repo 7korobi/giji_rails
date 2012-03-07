@@ -30,7 +30,7 @@ eval "$(rbenv init -)"
 _SHELL_
 
   SSH = <<'_SHELL_'
-echo "no: #{no}  cmd: $* "
+echo "= #{no}:$* "
 ssh -p #{no}0 7korobi@#{server} $*
 _SHELL_
 

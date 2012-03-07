@@ -1,0 +1,14 @@
+#!/bin/sh
+
+TARGET=$1
+APP=/www/giji_rails
+shift
+
+/utage/web-push-$TARGET $APP    --delete &
+
+/utage/web-push-$TARGET /utage  --delete
+
+/utage/web-ssh-$TARGET  /utage/web-deploy $TARGET
+/utage/web-ssh-$TARGET  /utage/web-app $1 &
+
+

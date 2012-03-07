@@ -1,5 +1,6 @@
 class SowUser < Potof
   include Giji
+  cache
   
   field :sow_auth_id
   field :csid

@@ -18,10 +18,12 @@ html lang="ja"
           address
             | 人狼議事キャラセット by りりんら
             br
-              | 管理 sol・la     
-              a(href="mailto:7korobi@gmail.com")
-                | ななころび
-              br
+            | 管理 sol・la     
+            a(href="mailto:7korobi@gmail.com")
+              | ななころび
+            br
+            | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。ご了承ください。
+
       #footer
       #sayfilter.sayfilter
         ul
@@ -35,18 +37,23 @@ html lang="ja"
             a(href='#calc')
               | 計算
         #link.insayfilter
-          = yield :head
+          h3.sayfilter_heading 
+            = yield :head
           .paragraph
             .sayfilter_content
+              = text_area_tag :code
               = yield :link
         #info.insayfilter
-          = yield :head
+          h3.sayfilter_heading 
+            = yield :head
           .paragraph
             .sayfilter_content
               = yield :info
         #calc.insayfilter
-          = yield :head
+          h3.sayfilter_heading 
+            = yield :head
           .paragraph
             .sayfilter_content
+              = link_to 'Chat Forum', 'http://qikpad.co.uk/p/JinroGiji'
               = yield :calc
 

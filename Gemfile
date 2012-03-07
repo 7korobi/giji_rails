@@ -20,12 +20,17 @@ group :assets do
   #gem 'therubyracer'
 end
 
+# client side data
+gem 'gon'
+gem 'faye'
+
 # view environment
-gem 'jquery-rails'
 gem "slim"
+gem 'jquery-rails'
+gem 'twitter-bootstrap-rails'
 gem 'spreadsheet'
 # gem 'rabl'
-gem 'gon'
+gem 'codemirror-rails'
 
 # queue
 gem 'resque'

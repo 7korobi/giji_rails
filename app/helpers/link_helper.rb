@@ -2,24 +2,6 @@
 
 
 module LinkHelper
-  def head_img
-    size = 458 if css_name['480']
-    size = 580 if css_name['800']
-
-    style = {
-      cinema800: %w[r c],
-      cinema480: %w[r c],
-      star800:   %w[r c],
-      star480:   %w[r c],
-      wa800:     %w[b w],
-      wa480:     %w[b w],
-      night800:  %w[b w],
-      night480:  %w[b w]
-    }
-    img = style[params[:css].to_sym][(Time.now.to_i / 12.hours)%2]
-    link_to_lobby image_tag("/images/banner/title#{size}#{img}.jpg")
-  end
-
     def img_cd(rating)
         case rating
         when nil,"view","r15","r18","gro","0"
@@ -40,7 +22,7 @@ module LinkHelper
     end
 
     # リンク：外部も含む、人狼の国へ
-    def link_to_folder( title, vil )
+    def link_to_folder_vil( title, vil )
         if @giji_folder.member? vil.folder
         then
             link_to_info( title,vil.folder,vil.vid)
@@ -59,7 +41,7 @@ module LinkHelper
     # リンク：人狼議事で持ってるCGI（スタイル共通）
     def link_to_cgi(title,cgi_url)
         suffix = ""
-        suffix = "css=" + params[:css] if params[:css]
+        suffix = "css=" + css
         prefix = ""
         prefix = '/../' unless cgi_url['://']
         if   cgi_url["?"]
@@ -71,59 +53,64 @@ module LinkHelper
 
     def link_to_route(title,arg_params)
         link_params = arg_params.merge({
-            :css        => params[:css],
+            :css        => css,
         })
         link_to_unless_current(title,link_params)
     end
 
     # リンク：キャラ別ログ
     def link_to_chr(title,log)
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
 #            :action     => :log,
             :csid       => log.csid,
             :cid        => log.cid,
             :page       => 1,
-        })
+        }
         link_to_unless_current(title,link_params)
     end
     def link_to_typeid(title,typeid)
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
 #            :action     => :log,
             :typeid     => typeid,
             :page       => 1,
-        })
+        }
         link_to_unless_current(title,link_params)
     end
     def link_to_logid(title,folder,vid,turn,logid, html_hash = {})
-        link_params = {}.merge({
+        link_params = {
+            :css        => css,
 #            :action => "log",
             :folder => folder,
             :vid    => vid,
             :turn   => turn,
             :logid  => logid,
             :page   => 1,
-        })
+        }
         link_to_unless_current(title, link_params, html_hash)
     end
 
     # リンク：ログへ
     def link_to_log(title="解除する")
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
 #            :action     => :log,
             :page       => 1,
-        })
+        }
         link_to_unless_current(title,link_params)
     end
 
     # リンク：村の中の特定の日の頭
     def links_to_turn(turns)
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
             :page       => 1,
-        })
+        }
 
         ret = []
         ret.push  link_to_info("情報",params[:folder],params[:vid])
@@ -137,10 +124,11 @@ module LinkHelper
 
     # リンク：村の中の特定の日のメモ
     def link_to_memo()
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
             :page       => 1,
-        })
+        }
 
         ret = []
         link_params[:action] = :memo_recent
@@ -154,68 +142,65 @@ module LinkHelper
 
     # リンク：村の情報欄
     def link_to_info(title,folder,vid)
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
 #            :action     => :info,
             :folder     => folder,
             :vid        => vid,
-        })
+        }
         link_to_unless_current(title,link_params)
     end
 
     # リンク：終了した村一覧
     def link_to_list_reset(title)
         folder = params[:folder]
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
 #            :action     => :list,
             :folder     => folder,
-        })
+        }
         link_to(title,link_params)
     end
 
     def link_to_list(title, folder = params[:folder] )
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :cgi,
 #            :action     => :list,
             :folder     => folder,
-        })
+        }
         link_to_unless_current(title,link_params)
     end
 
     # リンク：トップへ移る
     def link_to_lobby(title)
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
             controller: :users,
             action:     :index,
-        })
+        }
         link_to_unless_current(title,link_params)
     end
 
     # リンク：戦跡ビュアーへ移る
     def link_to_uid( uid )
-        link_params = params.slice(:css).merge({
+        link_params = {
+            :css        => css,
 #            :controller => :user,
 #            :action     => :show,
             :user       => uid,
-        })
+        }
         link_to_unless_current(uid,link_params)
     end
 
 
     # リンク：スタイルのみ変更する
-    def link_to_css(title,css)
-        link_params = params.merge({
-            :css        => css,
-        })
-        link_to_unless_current(title,link_params)
-    end
-
-    # リンク：スタイルのみ変更する
     def link_to_lines
         link_params = params.merge({
+            :css        => css,
             :page       =>  1,
-            :css        => params[:css],
         })
         ret = []
         [30,50,100,200,500].each do |row|

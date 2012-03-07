@@ -1,3 +1,5 @@
+require 'yaml'
+require 'active_support/all'
 
 LOG_DIR = '/www/giji_log/'
 

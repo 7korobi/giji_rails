@@ -54,7 +54,6 @@ class GijiLogScanner < GijiScanner
 
       # message embedded in 
       message = Message.new( logid: logid, sow_auth_id: o.uid, date: o.date, log: o.log )
-      event.messages << message
       message.subid = subid
       message.face_id = o.cid
       message.csid = o.csid
@@ -72,6 +71,7 @@ class GijiLogScanner < GijiScanner
       else
         message.name = o.chrname
       end
+      event.messages << message
       key = [{ remoteaddr: o.remoteaddr, fowardedfor: o.fowardedfor, agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true
     end

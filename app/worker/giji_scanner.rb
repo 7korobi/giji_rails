@@ -11,7 +11,7 @@ class GijiScanner
   end
 
   def initialize(path, folder, watch, timeout =  60*60*24*365*2009, force=[], fname)
-    @old  = watch - File.mtime(path+'/'+fname)
+    @old  = watch - File.mtime(path+'/'+fname) rescue 0
     @timeout = timeout
     @force = force
 

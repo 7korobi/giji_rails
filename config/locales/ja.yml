@@ -7,9 +7,12 @@ ja:
 
   views:
     pagination:
-      previous: "<<"
-      next: ">>"
-      truncate: "…"
+      first: "<<"
+      last:  ">>"
+      previous: 前
+      next:     後
+      truncate: …
+      separator: ' '
   date:
     formats:
       default: "%Y/%m/%d"

@@ -1,26 +1,7 @@
 #!/bin/sh
 
-TARGET=254
-APP=/www/giji_rails
-cd $APP
-rm -rf log/*
-rm -rf tmp/*
-# rake  assets:precompile
-
-/utage/web-push-$TARGET $APP    --delete
-/utage/web-push-$TARGET /utage  --delete
-/utage/web-ssh-$TARGET  cp /utage/$TARGET/* /utage/
-/utage/web-ssh-$TARGET  cp /utage/.bash_profile /home/7korobi/.bash_profile
-/utage/web-ssh-$TARGET  /utage/web-app  $1
-
-/utage/web-asset
-
-#/utage/web-push-250        $APP/public  --delete
-#/utage/web-push-250        /utage
-
-/utage/web-push-251 $APP    --delete
-/utage/web-push-251 /utage  --delete
-/utage/web-ssh-251  cp /utage/251/* /utage/
-/utage/web-ssh-251  cp /utage/.bash_profile /home/7korobi/.bash_profile
+/utage/web-cleanup
+/utage/web-release-front reload &
+/utage/web-release-worker QUEUE &
 
 

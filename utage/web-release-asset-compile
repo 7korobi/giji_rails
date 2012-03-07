@@ -1,0 +1,9 @@
+APP=/www/giji_rails
+cd $APP
+
+rake  assets:precompile
+
+/utage/web-push-serversman /utage &
+/utage/web-push-serversman $APP/public  --delete
+/utage/web-ssh-serversman-root  /utage/web-infra-serversman restart
+

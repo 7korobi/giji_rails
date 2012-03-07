@@ -1,4 +1,4 @@
 APP=/www/giji_rails
-
 cd $APP
-~/.rbenv/shims/resque-web -r utage.sytes.net:6379 -e production
+
+~/.rbenv/shims/resque-web -p $WEB_PORT config/initializers/resque.rb

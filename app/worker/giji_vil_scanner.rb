@@ -21,7 +21,6 @@ class GijiVilScanner < GijiScanner
     end
 
     open( WATCH[:cgi][:file], "w" ).puts SowVillage.gaps.inspect
-    STDERR.puts SowVillage.gaps.inspect
   end
 
   def enqueue
@@ -42,7 +41,6 @@ class GijiVilScanner < GijiScanner
       case o.class.name
       when 'Struct::SowRecordFileUser'
         story = sow
-        STDERR.puts [:debug, o].inspect  if  o.role == nil
 
         face_name = Face.find(o.cid).name  rescue  '***'
         name = if (0 < o.postfix.to_i  rescue  false)

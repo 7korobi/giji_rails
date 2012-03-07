@@ -8,7 +8,7 @@ DIV.login
   | ｜
   = link_to '人狼物語Server一覧',"http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8"
   |（melonkoさん管理）
-  - max_wolf    = 2
+  - max_wolf    = 0
   - max_allstar = cfg(:ALLSTAR_OLD)[:MAX_VILLAGES]
   - max_jksy    = cfg(:ALLSTAR)[:MAX_VILLAGES]
   - max_perjury = cfg(:PERJURY_OLD)[:MAX_VILLAGES]
@@ -25,17 +25,17 @@ DIV.login
   .choice
     table.board
       tr
-        th.no_choice colspan="5"
+        th.no_choice colspan="4" style="text-align:center;"
           | 総合トップページはこちら
           strong= link_to_lobby '人狼議事'
           | 合計#{max_all}村:を上限としています
         td.no_choice.link rowspan="2"
-          = link_to_cgi "似顔絵<br>人狼<br>　".html_safe, cfg(:PAN)[:URL_SW] + "/sow.cgi?"
+          = link_to "似顔絵<br>人狼<br>　".html_safe, cfg(:PAN)[:URL_SW] + "/sow.cgi?"
       tr.link
         td.no_choice
-          = link_to "ロビー<br>　".html_safe      , cfg(:LOBBY)[:URL_SW] + "/sow.cgi?"
-        td.no_choice
-          = link_to_cgi   "標準<br>　".html_safe      ,"wolf/sow.cgi"
+          | ロビー
+          br
+          | 　
         td.no_choice
           | 陰謀
           br
@@ -48,56 +48,69 @@ DIV.login
           | ＲＰ　
           br
           | :Braid
-        tr
-          td.no_choice
-          td.no_choice
-            = "#{max_wolf}村:"
-          td.no_choice style="text-align:left;"
-            = "#{max_cabala}村:"
-            =link_to '旧地', cfg(:CABALA_OLD)[:URL_SW] + "/sow.cgi?"
-            br
-            = "#{max_cafe}村:"
-            =link_to :cafe, cfg(:CABALA)[:URL_SW] + "/sow.cgi?"
-            br
-            | 　
-            br
-            | 　
-          td.no_choice style="text-align:left;"
-            = "#{max_allstar}村:"
-            =link_to '旧地', cfg(:ALLSTAR_OLD)[:URL_SW] + "/sow.cgi?"
-            br
-            = "#{max_jksy}村:"
-            =link_to :allstar, cfg(:ALLSTAR)[:URL_SW] + "/sow.cgi?"
-            br
-            | 　
-            br
-            | 　
-          td.no_choice style="text-align:left;"
-            = "#{max_perjury}村:"
-            =link_to '旧地', cfg(:PERJURY_OLD)[:URL_SW] + "/sow.cgi?"
-            br
-            = "#{max_vage}村:"
-            =link_to :perjury, cfg(:PERJURY)[:URL_SW] + "/sow.cgi?"
-            br
-            = "#{max_xebec}村:"
-            =link_to :xebec, cfg(:XEBEC)[:URL_SW] + "/sow.cgi?"
-            br
-            = "#{max_crazy}村:"
-            =link_to :crazy, cfg(:CRAZY)[:URL_SW] + "/sow.cgi?"
-          td.no_choice
-            = "#{max_pan}村:"
-        tr
-          td.no_choice
-            = link_to_list "終了した村",:LOBBY
-          td.no_choice
-            = link_to_list "終了した村",:WOLF
-          td.no_choice
-            = link_to_list "終了した村",:CABALA
-          td.no_choice
-            = link_to_list "終了した村",:ALLSTAR
-          td.no_choice
-            = link_to_list "終了した村",:RP
-          td.no_choice
+      tr
+        td.no_choice style="text-align:left;"
+          = link_to "終", stories_url(:LOBBY)
+          = ":"
+          = link_to_folder "lobby", :LOBBY
+          br
+          = link_to "終:offparty", stories_url(:OFFPARTY)
+          br
+          | 　
+          br
+          | 　
+          br
+          | 　
+        td.no_choice style="text-align:left;"
+          = link_to "終", stories_url(:CABALA)
+          = ":#{max_cafe}村:"
+          = link_to_folder :cafe, :CABALA
+          br
+          | 　
+          br
+          | 　
+          br
+          | 　
+          br
+          | 　
+        td.no_choice style="text-align:left;"
+          = link_to "終:wolf", stories_url(:WOLF)
+          br
+          = link_to "終:ultimate", stories_url(:ALLSTAR)
+          br
+          = link_to "終", stories_url(:ULTIMATE)
+          = ":#{max_jksy}村:"
+          = link_to_folder :allstar, :ALLSTAR
+          br
+          | 　　
+          br
+          | 　
+        td.no_choice style="text-align:left;"
+          = link_to "終:role-play", stories_url(:RP)
+          br
+          = link_to "終:RP-advance", stories_url(:PRETENSE)
+          br
+          = link_to "終", stories_url(:PERJURY)
+          = ":#{max_vage}村:"
+          = link_to_folder :perjury, :PERJURY
+          br
+          = link_to "終", stories_url(:XEBEC)
+          = ":#{max_xebec}村:"
+          = link_to_folder :xebec, :XEBEC
+          br
+          = link_to "終", stories_url(:CRAZY)
+          = ":#{max_crazy}村:"
+          = link_to_folder :crazy, :CRAZY
+        td.no_choice style="text-align:left;"
+          = ":#{max_pan}村:"
+          br
+          | 　
+          br
+          | 　
+          br
+          | 　
+          br
+          | 　
 
 p style="text-align:right; font-size: 100%;"
   = link_to_css "煉瓦",:cinema800
