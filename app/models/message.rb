@@ -6,8 +6,8 @@ class Message < Chat
   field :mestype
   field :csid
   field :name
-  referenced_in :face,  inverse_of: :messages
-  referenced_in :potof, inverse_of: :messages
+  belongs_to :face,  inverse_of: :messages
+  belongs_to :potof, inverse_of: :messages
   embedded_in :event,   inverse_of: :messages
 
   scope  :summary, order_by(:date.asc)

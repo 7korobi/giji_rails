@@ -1,11 +1,12 @@
 class Request
   include Giji
   include Mongoid::Timestamps::Created
+  cache
 
   field :remote_ip
   field :user_agent
-  references_and_referenced_in_many :sow_auths, inverse_of: :requests
-  references_and_referenced_in_many :users,     inverse_of: :requests
+  has_and_belongs_to_many :sow_auths, inverse_of: nil
+  has_and_belongs_to_many :users,     inverse_of: nil
 
   def initialize(attributes = {})
     super

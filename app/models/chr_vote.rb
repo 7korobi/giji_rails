@@ -6,8 +6,8 @@ class ChrVote
   field :phase,   allow_blank: false
   field :comment, allow_blank:  true
 
-  referenced_in :user, inverse_of: :chr_votes
-  referenced_in :face, inverse_of: :chr_votes
+  belongs_to :user, inverse_of: :chr_votes
+  belongs_to :face, inverse_of: :chr_votes
 
   default_scope order_by(:created_at.desc)
 

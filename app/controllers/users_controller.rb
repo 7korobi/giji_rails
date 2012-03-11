@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  expose(:users){ User.all }
+  expose(:users){ User.order_by(:name.asc) }
   expose(:user)
 
   respond_to :html, :json
@@ -16,19 +16,18 @@ class UsersController < ApplicationController
   def new
     user.user_id = current.auth.try(:nickname)
     user.name    = current.auth.try(:name)
-    render 'form'
   end
 
   def edit
-    render 'form'
   end
 
   def create
     current.auth.user = user
     if user.save && current.auth.save
+      current.user = user
       flash[:notice] = "successfully #{action_name}d."
     end
-    respond_with user
+    respond_with user, location:user_path(user.id)
   end
 
   def update

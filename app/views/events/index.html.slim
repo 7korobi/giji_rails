@@ -17,8 +17,8 @@
     p.multicolumn_left= image_tag "/images/icon/cd_#{story.rating}.png"
     br.multicolumn_clear
 
-    dl.mes_text_report
-    dd= story.comment.html_safe
+    dl.head
+    dd= to_fair( story.comment )
 
   .mes_maker
     =yield :info

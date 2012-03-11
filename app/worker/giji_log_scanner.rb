@@ -79,9 +79,10 @@ class GijiLogScanner < GijiScanner
       account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
       account.save
       request = Request.where( request_key ).first || Request.new( request_key )
-      request.sow_auths << account  unless  request.sow_auth_ids.member? account.id
+      request.sow_auth_ids |= [account.id]
       request.save
     end
+    event.sort_by!(&:date)
     event.save
 
     sleep 25

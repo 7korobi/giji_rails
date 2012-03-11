@@ -12,7 +12,7 @@ class Auth
   field :nickname,     hidden: true
   field :image,        hidden: true
 
-  referenced_in :user, inverse_of: :auths
+  belongs_to :user, inverse_of: :auths
 
 
   def initialize(attributes = {})

@@ -10,6 +10,8 @@
   p 左のどれかのボタンをクリックして、ログインしよう！
 
   h2 アカウント一覧
-
-  - users.each do |user|
-    h3=link_to user.name, user
+  .mes_maker
+    = ' / '
+    - users.each do |user|
+      = link_to user.name, user
+      = ' / '

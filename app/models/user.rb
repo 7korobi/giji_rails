@@ -9,12 +9,12 @@ class User
 
   devise :trackable, :omniauthable
 
-  references_many :auths,    inverse_of: :user
-  references_many :user_logs,inverse_of: :user
-  references_and_referenced_in_many :requests, inverse_of: :users
+  has_many :auths,    inverse_of: :user
+  has_many :user_logs,inverse_of: :user
+  has_and_belongs_to_many :requests, inverse_of: :users
 
   validates_uniqueness_of :user_id
-  validates_uniqueness_of :email
+  validates_uniqueness_of :email, allow_blank:true
 
   def admin?
     is_admin

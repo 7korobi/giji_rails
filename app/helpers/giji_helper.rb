@@ -37,7 +37,7 @@ module GijiHelper
           time:auth.updated_at,
           text: capture{yield auth},
         }
-        items << capture{render 'giji/message', options}
+        items << capture{render 'giji/say', options}
       end
     end.html_safe
   end
@@ -54,7 +54,7 @@ module GijiHelper
           time: votes.last.created_at, 
           text: capture{yield votes},
         }
-        items << capture{render 'giji/message', options}
+        items << capture{render 'giji/say', options}
       end
     end.html_safe
   end
@@ -62,20 +62,24 @@ module GijiHelper
   SUBID_RENDERS = GIJI[:message][:mestype]
   def render_message(message)
     if message.template
-      text = message.log.gsub(/<mw (\w+),(\d+),(\d+)>/) do
-        link_to ">>#{$1}", message_path(event.story_id, $2, $1.downcase), class:'res_anchor'
-      end.gsub(URI.regexp) do
-        uri = Regexp.last_match[0]
-        if $1.present? && $4.present?
-          link_to "<<#{$4}>>", uri, class:'res_anchor'
-        else
-          uri
-        end
-      end
+      text = to_fair( message.log )
       options = message.slice %w[logid color style img name to time]
       render message.template, options.merge(text:text)
     else
       message.attributes.inspect
     end
+  end
+
+  def to_fair(text)
+    text.gsub(/<mw (\w+),(\d+),(\d+)>/) do
+      link_to ">>#{$1}", message_path(event.story_id, $2, $1.downcase), class:'res_anchor'
+    end.gsub(URI.regexp) do
+      uri = Regexp.last_match[0]
+      if $1.present? && $4.present?
+        link_to "<<#{$4}>>", uri, class:'res_anchor'
+      else
+        uri
+      end
+    end.html_safe
   end
 end

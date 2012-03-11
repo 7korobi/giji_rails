@@ -8,7 +8,7 @@ class ChrNpc
   field :say_1,   limit: 140
 
   embedded_in :chr_set, inverse_of: :chr_npcs
-  referenced_in :face
+  belongs_to :face
 
   default_scope order_by(:face_id.asc)
 

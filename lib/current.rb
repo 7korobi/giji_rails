@@ -60,7 +60,10 @@ module CurrentAuthenticated
   end
 
   def current_save
-    current.user.save    if current.user
+    if current.user
+      current.user.save
+      current.request.user_ids |= [current.user.id]
+    end
     current.request.save if current.request
   end
 
