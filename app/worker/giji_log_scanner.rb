@@ -82,7 +82,7 @@ class GijiLogScanner < GijiScanner
       request.sow_auth_ids |= [account.id]
       request.save
     end
-    event.sort_by!(&:date)
+    event.messages.sort_by!(&:date)
     event.save
 
     sleep 25

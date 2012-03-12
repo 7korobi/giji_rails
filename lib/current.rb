@@ -19,7 +19,6 @@ module CurrentAuthenticated
     ! login?
   end
 
-  Current = Struct.new(:auth,:user,:request)
   def self.included(controller)
     controller.helper_method ROLES.map{|role| :"#{role}?"}
     controller.helper_method :current
@@ -54,21 +53,24 @@ module CurrentAuthenticated
     current.user = auth.user
   end
 
+  def current_save
+    current.auth.try :save
+    if current.user
+      current.user.save
+      current.request.user_ids |= [current.user.id]
+    end
+    current.request.save
+    p current
+  end
+
+  Current = Struct.new(:auth,:user,:request)
   def logout
     session[:current] = nil
     redirect_to root_url
   end
 
-  def current_save
-    if current.user
-      current.user.save
-      current.request.user_ids |= [current.user.id]
-    end
-    current.request.save if current.request
-  end
-
   def current
-    session[:current] ||= Current.new(nil, nil, Request.find_or_new(request))
+    session[:current] ||= Current.new(nil, nil, Request.find_or_initialize_by(request))
   end
 end
 

@@ -22,10 +22,11 @@ class UsersController < ApplicationController
   end
 
   def create
-    current.auth.user = user
-    if user.save && current.auth.save
-      current.user = user
+    if user.save
       flash[:notice] = "successfully #{action_name}d."
+      current.auth.user = user
+      current.auth.save
+      current.user = user
     end
     respond_with user, location:user_path(user.id)
   end

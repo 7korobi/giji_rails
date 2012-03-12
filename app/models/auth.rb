@@ -1,6 +1,7 @@
 class Auth
   include Giji
   include Mongoid::Timestamps
+  
   key :provider, :uid
   field :provider,     hidden: true
   field :uid,          hidden: true
@@ -14,25 +15,15 @@ class Auth
 
   belongs_to :user, inverse_of: :auths
 
-
-  def initialize(attributes = {})
-    super
-    self.save!
-  end
-
   def login?
     uid.present?
-  end
-
-  def self.by_current(session)
-    self.find(session[:auth_id]) rescue nil
   end
 end
 
 # for omniauth
 class Auth
   def self.authenticate(auth)
-    o = self.find_or_new(["provider","uid"], auth)
+    o = self.find_or_initialize_by(auth)
     o.attributes = {
       oauth_token:  auth["credentials"]["token"],
       oauth_secret: auth["credentials"]["secret"],
@@ -51,8 +42,8 @@ class Auth
     o
   end
 
-  def self.find_or_new(only,params)
-    key = params.slice(* only)
-    self.where(key).first || self.new(key)
+  def self.find_or_initialize_by(params)
+    key = params.slice("provider", "uid")
+    super(key)
   end
 end

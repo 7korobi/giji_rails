@@ -1,14 +1,10 @@
-class EventsController < ApplicationController
-  expose(:story)
-  expose(:potofs){ story.potofs }
+class EventsController < BasePastLogController
+  expose(:potofs){ story.potofs.cache }
 
-  expose(:events){ story.events.summary }
+  expose(:events){ story.events.summary.cache }
   expose(:event)
 
   respond_to :html, :json
-
-  before_filter :login_require
-
   def index
   end
 end

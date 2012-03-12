@@ -1,0 +1,2 @@
+class TrpgPotof < Potof
+end

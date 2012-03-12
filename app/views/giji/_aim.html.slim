@@ -6,6 +6,5 @@ table(class=color)
         .msg
           h3.mesname
             a(name=logid) = "#{name} → #{to}"
-          p(class=style)
-            =text.html_safe
+          = simple_format(text, class: style)
           p.mes_date= "(#{logid}) #{datetime_to_str time}"

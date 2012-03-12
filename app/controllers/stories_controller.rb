@@ -1,6 +1,5 @@
 class StoriesController < ApplicationController
-  expose(:stories){ Story.summary(params[:folder]).page params[:page] }
-  expose(:story)
+  expose(:stories){ Story.finished.summary(params[:folder]).page params[:page] }
 
   respond_to :html, :json
 
