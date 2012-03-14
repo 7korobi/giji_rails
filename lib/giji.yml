@@ -18,6 +18,7 @@ message:
 
       DELETED: 'giji/say'
       QUE:   'giji/say'
+      QUEUE: 'giji/say'
       SAY:   'giji/say'
       TSAY:  'giji/say'
       WSAY:  'giji/say'

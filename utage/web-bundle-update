@@ -5,7 +5,8 @@ cd $APP
 
 bundle update | grep -v Using
 /utage/web-staging &
-/utage/web-release
+/utage/web-release-front &
+/utage/web-release-worker &
 /utage/web-ssh-254 /utage/web-app bundle-update | grep -v Using &
 /utage/web-ssh-253 /utage/web-app bundle-update | grep -v Using &
 /utage/web-ssh-251 /utage/web-app bundle-update | grep -v Using &

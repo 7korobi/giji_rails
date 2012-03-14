@@ -33,7 +33,5 @@ class Message < Chat
       o[key] = send(key)
     end
   end
-
-  paginates_per 100
 end
 

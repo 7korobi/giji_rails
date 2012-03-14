@@ -3,7 +3,7 @@ class MessagesController < BasePastLogController
   expose(:events){ story.events.summary.cache }
 
   expose(:event){ story.events.where(turn: params[:turn]).cache.first }
-  expose(:messages){ event.messages.summary.cache.page params[:page] }
+  expose(:messages){ event.messages.summary.cache.page(params[:page]).per(params[:page_per] || 50) }
   expose(:message)
   
   respond_to :html, :json

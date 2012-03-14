@@ -1,0 +1,2 @@
+echo "= 241:$* "
+ssh -p 2410 root@utage.sytes.net $*
