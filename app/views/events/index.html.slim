@@ -1,10 +1,14 @@
 - content_for :head do
   | ページをめくる
 
+- content_for :info_caption do
+  | 他の章へ
+
 - content_for :info do
   - events.each do |event|
     ul
       li= link_to event.name.html_safe, messages_path(story, event.turn)
+  br
 
 - content_for :log do
   h2 村の情報

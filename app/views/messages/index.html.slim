@@ -1,13 +1,19 @@
 - content_for :head do
   | ページをめくる
 
-- content_for :info do
+- content_for :link_caption do
+  | 他の章へ
+
+- content_for :link do
   - events.each do |event|
     ul
       li= link_to event.name.html_safe, messages_path(story, event.turn)  
+  br
 
-  h3.sayfilter_heading
-    | 他の場面へ
+- content_for :info_caption do
+  | 他の場面へ
+
+- content_for :info do
   = paginate messages, window:2, outer_window:2
 
 - content_for :log do

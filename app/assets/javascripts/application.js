@@ -6,17 +6,18 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require knockout
-//= require_tree ./base
 //= require_tree ./app
-//= require codemirror
-//= require codemirror/modes/ruby
-//= require codemirror/keymaps/vim
 
 Client.deploy();
 Form.deploy();
 
-var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+/*
+//= require codemirror
+//= require codemirror/modes/ruby
+//= require codemirror/keymaps/vim
+editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     mode: "text/ruby",
     theme: "default",
     indentUnit: 2,
@@ -30,3 +31,4 @@ var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     fixedGutter:false,
     matchBrackets: true
 });)
+*/

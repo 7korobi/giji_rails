@@ -1,6 +1,9 @@
 - content_for :head do
   | ページをめくる
 
+- content_for :info_caption do
+  | 他の物語へ
+
 - content_for :info do
   = paginate stories, window:2
 
@@ -9,7 +12,7 @@
   hr.invisible_hr
   h2= params[:folder]
 
-  table.vindex(border="1" summary="村の一覧")
+  table.vindex(border="1" summary="物語の一覧")
     thead
       tr
         th(scope="col") id

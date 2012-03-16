@@ -6,6 +6,11 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+#console do
+#  require 'pry'
+#  config.console = Pry
+#end
+
 module Giji
   class Application < Rails::Application
 
@@ -34,14 +39,7 @@ module Giji
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-
-    # Please note that JavaScript expansions are *ignored altogether* if the asset
-    # pipeline is enabled (see config.assets.enabled below). Put your defaults in
-    # app/assets/javascripts/application.js in that case.
-    #
-    # JavaScript files you want as :defaults (application.js is always included).
-    # config.action_view.javascript_expansions[:defaults] = %w(prototype prototype_ujs)
+    config.i18n.default_locale = :ja
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -52,7 +50,7 @@ module Giji
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.version = '1.0'
-    config.mongoid.preload_models = true
+    config.mongoid.preload_models = false
     config.mongoid.logger = Logger.new($stdout, :warn)
   end
 end

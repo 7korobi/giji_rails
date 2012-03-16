@@ -26,34 +26,45 @@ html lang="ja"
 
       #footer
       #sayfilter.sayfilter
-        ul
-          li#filter_header.sayfilter_heading
-            a(href='#info')
+        ul.nav.nav-pills
+          li#filter_header.sayfilter_heading.active
+            a(href='#info' data-toggle="tab")
               | 操作
           li#filter_header.sayfilter_heading
-            a(href='#link')
+            a(href='#link' data-toggle="tab")
               | 移動
           li#filter_header.sayfilter_heading
-            a(href='#calc')
+            a(href='#calc' data-toggle="tab")
               | 計算
-        #link.insayfilter
-          h3.sayfilter_heading 
-            = yield :head
-          .paragraph
-            .sayfilter_content
-              = text_area_tag :code
-              = yield :link
-        #info.insayfilter
-          h3.sayfilter_heading 
-            = yield :head
-          .paragraph
-            .sayfilter_content
-              = yield :info
-        #calc.insayfilter
-          h3.sayfilter_heading 
-            = yield :head
-          .paragraph
-            .sayfilter_content
-              = link_to 'Chat Forum', 'http://qikpad.co.uk/p/JinroGiji'
-              = yield :calc
+        .tab-content
+          #link.tab-pane
+            h3.sayfilter_heading 
+              = yield :head
+            .insayfilter
+              .paragraph
+                h4.sayfilter_caption_enable 
+                  = yield :link_caption
+                .sayfilter_content
+                  = yield :link
+          #info.tab-pane.active
+            h3.sayfilter_heading 
+              = yield :head
+            .insayfilter
+              .paragraph
+                h4.sayfilter_caption_enable 
+                  = yield :info_caption
+                .sayfilter_content
+                  = yield :info
+          #calc.tab-pane
+            h3.sayfilter_heading 
+              = yield :head
+            .insayfilter
+              .paragraph
+                h4.sayfilter_caption_enable 
+                  = yield :calc_caption
+                .sayfilter_content
+                  = yield :calc
+                  = text_area_tag :code
+                  br
+                  = link_to 'Chat Forum', 'http://qikpad.co.uk/p/JinroGiji'
 

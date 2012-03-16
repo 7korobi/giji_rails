@@ -1,6 +1,9 @@
 - content_for :head do
   | ページをめくる
 
+- content_for :info_caption do
+  | GameMaster
+
 - content_for :info do
   br
   p= link_to '物語を書き換える', edit_trpg_story_path(trpg_story)

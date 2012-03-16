@@ -1,7 +1,7 @@
 =render 'login'
 
 - content_for :head do
-  h3.sayfilter_heading show user
+  | show user
 
 - content_for :log do
   h2= "ようこそ #{user.name} さん"

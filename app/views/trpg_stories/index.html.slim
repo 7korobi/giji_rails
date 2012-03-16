@@ -1,6 +1,9 @@
 - content_for :head do
   | ページをめくる
 
+- content_for :info_caption do
+  | 他の物語へ
+
 - content_for :info do
   = paginate stories, window:2
 

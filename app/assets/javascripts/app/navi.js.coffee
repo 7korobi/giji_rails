@@ -1,10 +1,17 @@
 class Navi
   constructor: ->
     @viewport = $("head meta[name=\"viewport\"]")
-    @stylesheet = $('head link[rel="stylesheet"]');
+    @stylesheet = $('head link[app]');
 
     @pagenavi_fullwidth = Client.outframe.find(".pagenavi")
-    @navimode_fullwidth = Client.outframe.find("h2,.turnnavi,.row_all,.mes_admin,.mes_maker,.info,.infosp,.infowolf,.caution,.action_bm")
+    @navimode_fullwidth = Client.outframe.find("""
+      h2,.turnnavi,
+      .row_all,
+      .ADMIN,     .MAKER,     .INFONOM, .INFOSP, .INFOWOLF,
+      .mes_admin, .mes_maker, .info,    .infosp, .infowolf,
+      .caution,
+      .action_bm
+    """)
   
     if @stylesheet.attr("href").match /480.css/ 
       @mode = 480 

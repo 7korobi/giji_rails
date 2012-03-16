@@ -1,10 +1,8 @@
-//
-//= require codemirror/theme/default
 //= require formtastic
-//
 //= require formtastic_ie6
 //= require formtastic_ie7
-
-.formatastic .stringish input {
-  width: 70%;
-}
+//
+//= require_tree ./app
+/*
+ require codemirror/theme/default
+*/

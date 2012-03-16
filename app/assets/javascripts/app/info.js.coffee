@@ -22,7 +22,6 @@ class Info
       changeFilterCheckBoxPlList 0
       changeFilterCheckBoxTypes 0
       ###
-      @sayfilter.tabs()
 
   resize: =>
     width = Client.width()
@@ -44,7 +43,6 @@ class Info
           info_width  = 190 + (width - 770)/2
         else
           info_width  = 190
-          fold = true
 
     @sayfilter.width info_width
     Client.navi.resize(fold)
