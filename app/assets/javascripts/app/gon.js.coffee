@@ -8,13 +8,13 @@ $ ->
         gon.turns = []
         gon.turns[gon.turn] = gon.messages
 
-        params_logid = new Params 'logid', (val, obj)-> val == obj.logid
         mode_btn = new ModeBtn(Client)
         page_btn = new PageBtn(Client)
+        params_logid = new Params 'logid', (val, obj)-> val == obj.logid
 
-        page =
+        page_btn.link_local 
           per:    50
-          target: "#messages"
+          target: $("#messages")
           data:   gon.messages
           render: (message)->
             $.tmpl(gon.templates[message.template], message)
@@ -24,7 +24,6 @@ $ ->
             mode_btn.params
           ]
 
-        mode_btn.link_local page
-        page_btn.link_local page
+        mode_btn.link_local page_btn
 
 

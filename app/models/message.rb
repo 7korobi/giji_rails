@@ -27,7 +27,13 @@ class Message < Chat
   end
 
   def text
-    self.class.to_fair(log)
+    if  /^INFO/ === mestype
+      self.class.to_fair( log, nil )
+    else
+      self.class.to_fair( log, true )
+    end
+  rescue
+    ""
   end
 
   def img
@@ -48,10 +54,10 @@ class Message < Chat
     all.map &:gon
   end
 
-  def self.to_fair(log = '')
+  def self.to_fair(log, parse_uri = true)
     log.gsub(URI.regexp) do
       uri = Regexp.last_match[0]
-      if $1.present? && $4.present?
+      if parse_uri && $1.present? && $4.present?
         <<-_HTML_
           =<a class="res_anchor" rel=​"tooltip" href="#{uri}" title=​"#{uri}">
           #{$4}

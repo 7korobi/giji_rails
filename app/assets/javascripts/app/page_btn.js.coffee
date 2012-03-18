@@ -20,23 +20,22 @@ class PageBtn
   link: (type)->
     @params.on = type
     params.on = type  for params in @page.search
-    @data_finder()
+    @select()
     @reload()
-
+  
   link_local: (page)->
     @page = page
-    @target = $(@page.target)
-    @link('hash')
+    @link 'hash'
 
   link_remote: (page)->
-    @data_finder = -> true
     @data_render = -> true
+    @select = =>
+      @data =
+        length: page.length
     @page =
       per: 1
       search: []
-    @data =
-      length: page.length
-    @link('search')
+    @link 'search'
 
   append_gap:  (name)->
     @pages.append """
@@ -56,8 +55,6 @@ class PageBtn
     btn =  span.find("a.btn")
     link.paginate = @  for link in btn
     btn.click ->
-      $(window).scrollTop( $(".inframe").offset().top )
-
       href = $(@).attr('data_href')
       @paginate.params.change(href)
       @paginate.reload()
@@ -65,7 +62,14 @@ class PageBtn
 
     span
 
+  select: ->
+    data = @page.data
+    data = params.select(data) for params in @page.search
+    @data = data
+
   reload: ->
+    $(window).scrollTop( $(".inframe").offset().top - 20 )
+
     @move()
     @render()
 
@@ -80,14 +84,6 @@ class PageBtn
     @second = 2
     @first  = 1
 
-  limit_if: (bool, obj, text)->
-    if bool
-      if text?
-        obj.find("a").html(" #{text} ").attr('data_href', text)
-      obj.show()
-    else
-      obj.hide()
-
   render: ->
     @limit_if  0 < @last             , @first_doc,   1,
     @limit_if  1 < @last             , @second_doc,  2
@@ -100,16 +96,19 @@ class PageBtn
     @limit_if  2 < @prev     < @penu , @prev_doc,    @prev
     @limit_if  2 < @prev - 1 < @penu , @prev_gap
 
-    from = @page.per * @prev
-    to   = @page.per * @current - 1
-    @data_render(from, to)
+    @page.from = @page.per * @prev
+    @page.to   = @page.per * @current - 1
+    @data_render()
 
-  data_finder: ->
-    data = @page.data
-    data = params.select(data) for params in @page.search
-    @data = data
+  limit_if: (bool, obj, text)->
+    if bool
+      if text?
+        obj.find("a").html(" #{text} ").attr('data_href', text)
+      obj.show()
+    else
+      obj.hide()
 
-  data_render: (from, to)->
+  data_render: ->
     drag_on  = (mouse)->
       unless @base?
         drag_switch = $(@)
@@ -140,18 +139,18 @@ class PageBtn
         position: 'static'
 
     rewrite = =>
-      @target.html('')
-      for index in [from..to]
+      @page.target.html('')
+      for index in [@page.from..@page.to]
         create @data[index]
 
     bind = =>
-      q_text   = @target.find("p.text")
-      q_pick   = @target.find(".mes_date")
-      q_anchor = @target.find(".res_anchor")
+      q_text   = @page.target.find("p.text")
+      q_pick   = @page.target.find(".mes_date")
+      q_anchor = @page.target.find(".res_anchor")
       drag_switch = $("<span> o </span>").addClass("drag_switch")
       q_pick.append drag_switch
 
-      q_drag = @target.find(".drag_switch")
+      q_drag = @page.target.find(".drag_switch")
 
       q_text.each ->
         html = $(@).html()
@@ -206,7 +205,7 @@ class PageBtn
     create = (obj)=>
       if obj
         html = @page.render(obj)
-        html.appendTo(@target)
+        html.appendTo(@page.target)
 
     show = (mes)=>
       date = $(mes).find(".mes_date")
