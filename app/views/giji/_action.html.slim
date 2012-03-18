@@ -1,7 +1,7 @@
 div(class=color)
   .action
-    p
+    p.text
       a(name=logid) = name
       = "は、#{text}".html_safe
-    p.mes_date= "(#{logid}) #{datetime_to_str time}"
+    p.mes_date= "(#{logid}) #{time}"
     hr.invisible_hr

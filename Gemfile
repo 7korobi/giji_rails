@@ -25,6 +25,7 @@ gem 'faye'
 
 # view environment
 gem "slim"
+gem "knockout-rails"
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 gem 'spreadsheet'

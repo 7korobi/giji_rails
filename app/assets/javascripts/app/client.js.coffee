@@ -12,26 +12,24 @@ class Client
       $(window).trigger('scroll')
 
 
-    $(document).ready =>
+    $ =>
       Client.outframe = $("#outframe")
-      Client.navi = new Navi()
-      Client.info = new Info()
+      new Navi(Client)
+      new Info(Client)
+      new CSS(Client)
+
       Client.info.float()
 
       (new SowFeed).check()
 
       $(window).trigger('resize')
 
-
-    document.client = Client
-
-
   @height: ->
     height = $(window).height() |
       window.innerHeight |
       document.documentElement.clientHeight |
       document.body.clientHeight
-    Math.max [height, Client.info.contentframe.height()]...
+    Client.info?.contentframe.height()
 
   @width: ->
     phone =
@@ -48,3 +46,4 @@ class Client
       document.all
     command?(id)
 
+window.Client = Client

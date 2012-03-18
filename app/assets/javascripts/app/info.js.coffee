@@ -1,5 +1,6 @@
 class Info
-  constructor: ->
+  constructor: (base)->
+    base.info = @
     @outframe = Client.outframe
     @contentframe = $('#contentframe')
     @sayfilter = $("#sayfilter")
@@ -28,7 +29,7 @@ class Info
     small = 122 + 80
     fold = false
 
-    switch Client.navi.mode
+    switch Client.css.width
       when 480
         if      small < width - 462
           info_width  = width - 462

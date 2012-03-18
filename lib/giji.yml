@@ -1,32 +1,32 @@
 message:
   template:
     subid:
-      I: 'giji/info'
-      A: 'giji/action'
+      I: info
+      A: action
 
     mestype:
-      INFOSP:    'giji/info'
-      INFONOM:   'giji/info'
-      INFOWOLF:  'giji/info'
-      ANONYMOUS: 'giji/info'
+      INFOSP:    info
+      INFONOM:   info
+      INFOWOLF:  info
+      ANONYMOUS: info
 
-      DELETEDADMIN: 'giji/admin'
-      MAKER: 'giji/admin'
-      ADMIN: 'giji/admin'
+      DELETEDADMIN: admin
+      MAKER: admin
+      ADMIN: admin
 
-      AIM: 'giji/aim'
+      AIM: aim
 
-      DELETED: 'giji/say'
-      QUE:   'giji/say'
-      QUEUE: 'giji/say'
-      SAY:   'giji/say'
-      TSAY:  'giji/say'
-      WSAY:  'giji/say'
-      GSAY:  'giji/say'
-      SPSAY: 'giji/say'
-      BSAY:  'giji/say'
-      XSAY:  'giji/say'
-      VSAY:  'giji/say'
-      MSAY:  'giji/say'
+      DELETED: say
+      QUE:   say
+      QUEUE: say
+      SAY:   say
+      TSAY:  say
+      WSAY:  say
+      GSAY:  say
+      SPSAY: say
+      BSAY:  say
+      XSAY:  say
+      VSAY:  say
+      MSAY:  say
 
-      CAST:  'giji/cast'
+      CAST:  cast

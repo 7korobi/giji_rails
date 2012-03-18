@@ -174,16 +174,6 @@ module LinkHelper
         link_to_unless_current(title,link_params)
     end
 
-    # リンク：トップへ移る
-    def link_to_lobby(title)
-        link_params = {
-            :css        => css,
-            controller: :users,
-            action:     :index,
-        }
-        link_to_unless_current(title,link_params)
-    end
-
     # リンク：戦跡ビュアーへ移る
     def link_to_uid( uid )
         link_params = {

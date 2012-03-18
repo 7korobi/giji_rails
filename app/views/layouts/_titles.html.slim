@@ -27,7 +27,7 @@ DIV.login
       tr
         th.no_choice colspan="4" style="text-align:center;"
           | 総合トップページはこちら
-          strong= link_to_lobby '人狼議事'
+          strong= link_to '人狼議事', root_path
           | 合計#{max_all}村:を上限としています
         td.no_choice.link rowspan="2"
           = link_to "似顔絵<br>人狼<br>　".html_safe, cfg(:PAN)[:URL_SW] + "/sow.cgi?"
@@ -112,22 +112,4 @@ DIV.login
           br
           | 　
 
-p style="text-align:right; font-size: 100%;"
-  = link_to_css "煉瓦",:cinema800
-  = ' '
-  = link_to_css "480",:cinema480
-  | ｜
-  = link_to_css "月夜",:night800
-  = ' '
-  = link_to_css "480",:night480
-  | ｜
-  = link_to_css "蒼穹",:star800
-  = ' '
-  = link_to_css "480",:star480
-  | ｜
-  = link_to_css "和の国",:wa800
-  = ' '
-  = link_to_css "480",:wa480
-
-  embed src="/images/banner/title0214.swf" type="application/x-shockwave-flash" width="580" height="162" bgcolor="#ffffff"
-
+p.css_changer

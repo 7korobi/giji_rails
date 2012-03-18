@@ -22,7 +22,7 @@
     br.multicolumn_clear
 
     dl.head
-    dd= to_fair( story.comment )
+    dd= Message.to_fair( story.comment )
 
   .mes_maker
     =yield :info

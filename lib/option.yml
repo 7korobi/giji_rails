@@ -7,6 +7,16 @@ css_wday:
   - star800
   - wa800
 
+head_img:
+  cinema800: [r, c]
+  cinema480: [r, c]
+  star800:   [r, c]
+  star480:   [r, c]
+  wa800:     [b, w]
+  wa480:     [b, w]
+  night800:  [b, w]
+  night480:  [b, w]
+
 jp_wday:
   - 日
   - 月

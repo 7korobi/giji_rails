@@ -21,9 +21,17 @@ hr {
   clear: both;
 }
 
+.css_changer {
+  text-align:right;
+}
+
 .pagination {
-  padding: 0 4px;
   line-height: 5ex;
+  padding: 0 4px;
+  .page .btn {
+    width: 4ex;
+    padding: 4px 0;
+  }
 }
 
 .board {
@@ -122,12 +130,14 @@ hr {
 }
 
 /* ”­Œ¾‚Ì•¶Í•”•ª ----------*/
+.text em,
 .mes_text em,
 .mes_text_report em,
 .mes_text_monospace em{
   opacity: 0.7;
   font-style:  normal;
 }
+.text span,
 .mes_text span,
 .mes_text_report span,
 .mes_text_monospace span{
@@ -136,10 +146,8 @@ hr {
 }
 
 
-.mes_text{
-  padding: 0px;
-  vertical-align: top;
-}
+.text,
+.mes_text,
 .mes_text_report{
   padding: 0px;
   vertical-align: top;

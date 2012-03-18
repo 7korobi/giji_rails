@@ -14,10 +14,11 @@
   | 他の場面へ
 
 - content_for :info do
-  = paginate messages, window:2, outer_window:2
+  nav.pagination
 
 - content_for :log do
-  - messages.each do |message|
+  #messages
+  - gon_templates do |view, options|
     .message_filter
-      = render_message message
+      = render "giji/#{view}", options
 

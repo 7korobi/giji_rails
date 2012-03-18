@@ -6,5 +6,6 @@ class StoriesController < ApplicationController
   before_filter :login_require
   
   def index
+    gon.page = { length: stories.num_pages }
   end
 end

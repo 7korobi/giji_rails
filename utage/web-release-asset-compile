@@ -7,3 +7,5 @@ rake  assets:precompile
 /utage/web-push-serversman $APP/public  --delete
 /utage/web-ssh-serversman-root  /utage/web-infra-serversman restart
 
+rm $APP/public/assets/*
+

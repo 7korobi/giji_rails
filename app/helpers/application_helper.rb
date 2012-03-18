@@ -5,19 +5,6 @@ require 'yaml'
 module ApplicationHelper
   include GijiHelper
 
-  def url_for(options=nil)
-    super(options).tap do |url|
-      if Hash === options && ! url[/css=\w+/]
-        gap = if url['?'] then '&' else '?' end
-        url << "#{gap}css=#{css}" 
-      end
-    end
-  end
-
-  def css_name
-    "/stylesheets/#{css}"
-  end
-
   def cfg( folder )    
     GAME[folder]['config']['cfg']
   end
@@ -50,27 +37,6 @@ q_info    = '?ua=mb&vid=%s&cmd=vinfo'
         width = 480 if css_name["480"]
         width = 800 
         width
-    end
-
-    def datetime_to_str(date)
-        now = date + 15*60
-        "%s年%02s月%02s日(%s) %02s時%s頃"%[
-            now.year,
-            now.month,
-            now.day,
-            OPTION[:jp_wday][now.wday],
-            now.hour,
-            ["","半"][(now.min + 15)/30],
-        ]
-    end
-    def date_to_str(date)
-        now = date + 15*60
-        "%s年%02s月%02s日(%s)"%[
-            now.year,
-            now.month,
-            now.day,
-            OPTION[:jp_wday][now.wday],
-        ]
     end
 
   def chr_name( user )

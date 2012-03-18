@@ -1,0 +1,8 @@
+.message_filter
+  div(class="${color}")
+    .guide
+      h3.mesname
+        a(name="${logid}")   ${name}
+      = simple_format(text, class: "${style}")
+      p.mes_date  (${logid}) ${time}
+      hr.invisible_hr

@@ -1,7 +1,13 @@
+# -*- coding: utf-8 -*-
+
 class Time
   DateFormat = '%Y-%m-%d'
   TimeFormat = '%H:%M'
+  LaxDateFormat = "%s年%02s月%02s日(%s)"
+  LaxTimeFormat = "%s年%02s月%02s日(%s) %02s時%s頃"
   DATE_FORMATS[:default] = '#{Time::DateFormat} #{Time::TimeFormat}'
+  DATE_FORMATS[:lax_date] = ->(o){now = o + 15.minute; LaxDateFormat%[now.year,now.month,now.day,OPTION[:jp_wday][now.wday]]}
+  DATE_FORMATS[:lax_time] = ->(o){now = o + 15.minute; LaxTimeFormat%[now.year,now.month,now.day,OPTION[:jp_wday][now.wday],now.hour,["","半"][(now.min + 15)/30]]}
 end
 
 module Timestamp

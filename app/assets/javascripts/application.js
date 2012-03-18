@@ -8,6 +8,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require knockout
+//= require_tree ./base
 //= require_tree ./app
 
 Client.deploy();

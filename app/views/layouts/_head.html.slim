@@ -4,8 +4,9 @@ meta content="7korobi@gmail.com" name="Author"
 meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0"
 
 link href="mailto:7korobi@gmail.com" rev="Made"
-link href="#{ css_name.html_safe }.css" app="navi.js" media="screen" rel="stylesheet" type="text/css" 
 
 - javascript_include_tag 'http://www.google.com/jsapi'
 = javascript_include_tag 'application'
 = csrf_meta_tag
+
+= include_gon

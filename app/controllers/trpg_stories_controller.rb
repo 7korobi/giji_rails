@@ -10,6 +10,7 @@ class TrpgStoriesController < ApplicationController
   before_filter :sign, only:%w[create, update]
   
   def index
+    gon.page = { length: trpg_stories.num_pages }
   end
 
   def show

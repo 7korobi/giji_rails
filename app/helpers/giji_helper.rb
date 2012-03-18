@@ -1,28 +1,6 @@
 module GijiHelper
   def link_to_folder(title, folder)
-    link_to title, GAME[folder][:config][:cfg][:URL_SW] + "/sow.cgi?css=#{css}"
-  end
-
-  def link_to_css(title,css)
-    link_to_unless_current(title, css: css)
-  end
-
-  def head_img
-    size = 458 if css_name['480']
-    size = 580 if css_name['800']
-
-    style = {
-      cinema800: %w[r c],
-      cinema480: %w[r c],
-      star800:   %w[r c],
-      star480:   %w[r c],
-      wa800:     %w[b w],
-      wa480:     %w[b w],
-      night800:  %w[b w],
-      night480:  %w[b w]
-    }
-    img = style[css.to_sym][(Time.now.to_i / 12.hours)%2]
-    link_to_lobby image_tag("/images/banner/title#{size}#{img}.jpg")
+    link_to title, GAME[folder][:config][:cfg][:URL_SW] + "/sow.cgi"
   end
 
   def messages_for_auth(auths)
@@ -60,26 +38,23 @@ module GijiHelper
   end
 
   SUBID_RENDERS = GIJI[:message][:mestype]
-  def render_message(message)
-    if message.template
-      text = to_fair( message.log )
-      options = message.slice %w[logid color style img name to time]
-      render message.template, options.merge(text:text)
-    else
-      message.attributes.inspect
+  def gon_templates
+    options = %w[logid color style img name to time].each_with_object({}) do |item, hash|
+      hash[item.to_sym] = "${#{item}}"
+    end.merge(text:"{{html text}}")
+
+    gon.templates = {}
+    %w[action admin info say aim cast].map do |view|
+      gon.templates[view] = capture{ yield(view, options) }
     end
   end
 
-  def to_fair(text)
-    text.gsub(/<mw (\w+),(\d+),(\d+)>/) do
-      link_to ">>#{$1}", message_path(event.story_id, $2, $1.downcase), class:'res_anchor'
-    end.gsub(URI.regexp) do
-      uri = Regexp.last_match[0]
-      if $1.present? && $4.present?
-        link_to "<<#{$4}>>", uri, class:'res_anchor'
-      else
-        uri
-      end
-    end.html_safe
+  def render_message(message)
+    if message.template
+      options = message.slice %w[logid color style img name to time text]
+      render 'giji/' + message.template, options
+    else
+      message.attributes.inspect
+    end
   end
 end

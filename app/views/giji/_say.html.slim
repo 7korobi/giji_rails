@@ -1,10 +1,11 @@
 table(class=color)
   tbody
     tr.say
-      td.img= image_tag img, size:'90x130'
+      td.img
+        img(src=img)
       td.field
         .msg
           h3.mesname
             a(name=logid) = name
-          = simple_format(text, class: style)
-          p.mes_date= "(#{logid}) #{datetime_to_str time}"
+          = simple_format(text, class: "#{style} text")
+          p.mes_date= "(#{logid}) #{time}"

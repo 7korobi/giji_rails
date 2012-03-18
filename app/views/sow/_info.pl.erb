@@ -25,7 +25,7 @@ sub OutHTMLAdminInfo {
   my $reqvals = &SWBase::GetRequestValues($sow);
   my $topcss  = &SWBase::GetLinkValues($sow, $reqvals);
 
-  my $max_wolf     =  <%= 1 %>;
+  my $max_wolf     =  <%= 0 %>;
   my $max_allstar  =  <%= GAME[:ALLSTAR_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
   my $max_jksy     =  <%= GAME[:ALLSTAR]['config']['cfg'][:MAX_VILLAGES] %>;
 
@@ -103,8 +103,6 @@ $max_crazy村<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$top
 <p style="text-align:right; font-size: 100%;">
 $css_select
 </p>
-<p>今日からバレンタインデー！</p>
-<embed src="/WebRecord/images/banner/title0214.swf" type="application/x-shockwave-flash" width="580" height="162" bgcolor="#ffffff" /></embed>
 </div>
 _HTML_
 }

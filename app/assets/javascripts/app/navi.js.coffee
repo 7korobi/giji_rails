@@ -1,7 +1,7 @@
 class Navi
-  constructor: ->
+  constructor: (base)->
+    base.navi = @
     @viewport = $("head meta[name=\"viewport\"]")
-    @stylesheet = $('head link[app]');
 
     @pagenavi_fullwidth = Client.outframe.find(".pagenavi")
     @navimode_fullwidth = Client.outframe.find("""
@@ -13,10 +13,6 @@ class Navi
       .action_bm
     """)
   
-    if @stylesheet.attr("href").match /480.css/ 
-      @mode = 480 
-    if @stylesheet.attr("href").match /800.css/
-      @mode = 800 
 
 
   resize: (fold)->
