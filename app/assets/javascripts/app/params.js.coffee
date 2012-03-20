@@ -10,7 +10,10 @@ class Params
     document.location[@on] = "#{uri}&#{@word}=#{to}"
 
   cookie_save: (to)->
-    document.cookie = "&#{@word}=#{to};"  if  @is_cookie 
+    span = 1000 * 3600 * 24
+    now = new Date()
+    now.setTime( now.getTime() + 3600 * 1000 );
+    document.cookie = "&#{@word}=#{to}; expires=#{now.toGMTString()}"  if  @is_cookie 
     to
 
   val: ->
@@ -35,3 +38,29 @@ class Params
       dst
     else
       src
+
+  join_gui: (box, style, key, call)->
+    buttons = box.find('a')
+    @gui = 
+      box:    box
+      style:  style
+      key:    key
+      render: call
+
+    for link in buttons
+      link.base = @  
+
+    buttons.click ->
+      target = $(@)
+      href = target.attr(@base.gui.key)
+      @base.change href
+      @base.render()
+      false
+
+  render: ->
+    if @gui?
+      target = @gui.box.find("a[#{@gui.key}=#{@val()}]")
+      @gui.box.find("a").removeClass(@gui.style)
+      @gui.render()
+      target.addClass(@gui.style)
+

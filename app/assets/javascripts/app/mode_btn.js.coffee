@@ -2,15 +2,6 @@ class ModeBtn
   constructor: (base)->
     base.modinate = @
 
-    @params = new Params 'mode', (val, obj)->
-      logid_types =
-        memo: /^(.M)|([AM]S)/
-        all:  /^.[^M]/
-        mob:  /^[AMSIiGV][^M]/
-        clan: /^[AMSIiWPX][^M]/
-        open: /^[AMSIi][^M]/
-      obj.logid.match logid_types[val]
-    @params.current = 'all'
     @pages = $(".modination")
     @pages.html('')
 
@@ -20,8 +11,23 @@ class ModeBtn
     @append_link 'clan', '仲間'
     @append_link 'open', '議事'
 
+    @params = new Params 'mode', (val, obj)->
+      logid_types =
+        memo: /^(.M)|([AM]S)/
+        all:  /^.[^M]/
+        mob:  /^[AMSIiGV][^M]/
+        clan: /^[AMSIiWPX][^M]/
+        open: /^[AMSIi][^M]/
+      obj.logid.match logid_types[val]
+    @params.current = 'all'
+    @params.is_cookie = true
+
   link_local: (pager)->
     @pager = pager
+    @params.join_gui @pages, 'btn-success', 'data-href', =>
+      @pager.select()
+      @pager.reload()
+    @params.render()
 
   append_link: (name, text)->
     @pages.append """
@@ -29,12 +35,3 @@ class ModeBtn
         <a class="btn" data-href="#{name}">#{text}</a>
       </span>
     """
-    span = @pages.find(".#{name}")
-    btn =  span.find("a.btn")
-    link.modinate = @  for link in btn
-    btn.click -> 
-      href = $(@).attr('data-href')
-      @modinate.params.change(href)
-      @modinate.pager.select()
-      @modinate.pager.reload()
-      false

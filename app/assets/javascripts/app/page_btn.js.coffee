@@ -2,8 +2,6 @@ class PageBtn
   constructor: (base)->
     base.paginate = @
 
-    @params = new Params('page')
-    @params.current = '1'
     @pages = $(".pagination")
     @pages.html('')
 
@@ -17,6 +15,9 @@ class PageBtn
     @penu_doc = @append_link('penu')
     @last_doc = @append_link('last')
 
+    @params = new Params('page')
+    @params.current = '1'
+
   link: (type)->
     @params.on = type
     params.on = type  for params in @page.search
@@ -26,6 +27,9 @@ class PageBtn
   link_local: (page)->
     @page = page
     @link 'hash'
+    @params.join_gui @pages, 'btn-success', 'data-href', =>
+      @reload()
+    @params.render()
 
   link_remote: (page)->
     @data_render = -> true
@@ -51,16 +55,7 @@ class PageBtn
         <a class="btn"></a>
       </span>
     """
-    span = @pages.find(".#{name}")
-    btn =  span.find("a.btn")
-    link.paginate = @  for link in btn
-    btn.click ->
-      href = $(@).attr('data_href')
-      @paginate.params.change(href)
-      @paginate.reload()
-      false
-
-    span
+    @pages.find(".#{name}")
 
   select: ->
     data = @page.data
@@ -103,7 +98,7 @@ class PageBtn
   limit_if: (bool, obj, text)->
     if bool
       if text?
-        obj.find("a").html(" #{text} ").attr('data_href', text)
+        obj.find("a").html(" #{text} ").attr('data-href', text)
       obj.show()
     else
       obj.hide()

@@ -64,6 +64,7 @@ module CurrentAuthenticated
     end
     current.request.save
 
+    p cookies
     p
     p
   end

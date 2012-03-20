@@ -1,36 +1,32 @@
 class CSS
   constructor: (base)->
     base.css = @
-    @params = new Params 'css'
-    @params.is_cookie = true
-    @params.on = 'hash'
 
     @h1 = $("#contentframe h1 img")
     @head = $('head')
-
     @changer = $(".css_changer")
+
     @changer.html('')
     @changer.append """
-      <a data_href="cinema800">煉瓦</a>
-      <a data_href="cinema480">480</a>
+      <a data-href="cinema800">煉瓦</a>
+      <a data-href="cinema480">480</a>
       ｜
-      <a data_href="night800">月夜</a>
-      <a data_href="night480">480</a>
+      <a data-href="night800">月夜</a>
+      <a data-href="night480">480</a>
       ｜
-      <a data_href="star800">蒼穹</a>
-      <a data_href="star480">480</a>
+      <a data-href="star800">蒼穹</a>
+      <a data-href="star480">480</a>
       ｜
-      <a data_href="wa800">和の国</a>
-      <a data_href="wa480">480</a>
+      <a data-href="wa800">和の国</a>
+      <a data-href="wa480">480</a>
     """
-    btn = @changer.find("a")
-    link.css = @  for link in btn
-    btn.click ->
-      href = $(@).attr('data_href')
-      @css.params.change(href)
-      @css.reload()
-      false
-    @reload()
+
+    @params = new Params 'css'
+    @params.is_cookie = true
+    @params.on = 'hash'
+    @params.join_gui @changer, 'btn-success', 'data-href', =>
+      @reload()
+    @params.render()
 
   reload: ->
     @date = new Date()
