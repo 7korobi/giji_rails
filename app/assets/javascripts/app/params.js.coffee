@@ -59,8 +59,6 @@ class Params
 
   render: ->
     if @gui?
-      target = @gui.box.find("a[#{@gui.key}=#{@val()}]")
       @gui.box.find("a").removeClass(@gui.style)
       @gui.render()
-      target.addClass(@gui.style)
-
+      @gui.box.find("a[#{@gui.key}=#{@val()}]").addClass(@gui.style)

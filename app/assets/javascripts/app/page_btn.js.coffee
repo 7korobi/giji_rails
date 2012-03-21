@@ -22,14 +22,13 @@ class PageBtn
     @params.on = type
     params.on = type  for params in @page.search
     @select()
-    @reload()
+    @params.join_gui @pages, 'btn-success', 'data-href', =>
+      @reload()
+    @params.render()
   
   link_local: (page)->
     @page = page
     @link 'hash'
-    @params.join_gui @pages, 'btn-success', 'data-href', =>
-      @reload()
-    @params.render()
 
   link_remote: (page)->
     @data_render = -> true
