@@ -59,9 +59,7 @@ class Message < Chat
       uri = Regexp.last_match[0]
       if parse_uri && $1.present? && $4.present?
         <<-_HTML_
-          =<a class="res_anchor" rel=​"tooltip" href="#{uri}" title=​"#{uri}">
-          #{$4}
-          </a>=
+          =<a class="res_anchor" rel=​"tooltip" href="#{uri}" title=​"#{uri}">#{$4}</a>=
         _HTML_
       else
         uri
@@ -69,9 +67,7 @@ class Message < Chat
     end.gsub(/<mw (\w+),(\d+),(\d+)>/) do
       uri  = "../#{$2}/messages#&logid=#{$1}"
       <<-_HTML_
-        <a class="res_anchor" rel=​"tooltip" href="#{uri}" turn="#{$2}" logid="#{$1}">
-        &gt;&gt;#{$1}
-        </a>
+        <a class="res_anchor" rel=​"tooltip" href="#{uri}" turn="#{$2}" logid="#{$1}">&gt;&gt;#{$1}</a>
       _HTML_
     end.html_safe
   end

@@ -11,7 +11,7 @@ class Story
   has_many :events, inverse_of: :story
   has_many :potofs, inverse_of: :story
 
-  scope :summary, ->(folder) { where(folder:folder).order_by(:vid.asc) }
+  scope :summary, ->(folder) { where(folder:folder).order_by(:vid.desc) }
   scope :finished,  where(is_finish: true)
   paginates_per 50
 end

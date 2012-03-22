@@ -103,128 +103,141 @@ class PageBtn
       obj.hide()
 
   data_render: ->
+    drag_show = (mouse, obj)=>
+      base = $(obj)
+      drag_create base
+      drag_start  base
+      drag_moveto base, mouse
+
+      drag_markup base, 'x'
+      q_drag = base.find(".drag_switch")
+      q_drag.click =>
+        base.fadeOut 'fast', =>
+          base.dragOff()
+          base.slideDown('fast')
+          base.remove()
+
+    drag_markup = (base, mark)->
+      q_pick   = base.find(".mes_date")
+      drag_switch = $("<span class='drag_switch'> #{mark} </span>")
+      q_pick.append drag_switch
+
+    drag_moveto = (base, mouse)->
+      topm = mouse.pageY + 16
+      leftm = mouse.pageX - 100
+      leftend = $("body").width() - base.width() - 8
+      leftm = leftend  if leftend < leftm
+      base.css
+        top:  topm
+        left: leftm
+
+    drag_start = (base)->
+      base.slideUp 'fast', =>
+        base.find('.handler').replaceWith("<h3 class='handler'>.</h3>")
+        base.dragOn()
+        base.addClass('drag')
+        base.css
+          cursor:   'move'
+          position: 'absolute'
+        base.fadeIn('fast')
+
+    drag_create = (base)->
+      base.easydrag()
+
+      pump_number = parseInt new Date().getTime()
+      base.css
+        zIndex: pump_number
+      handle_id = "handler#{pump_number}"
+      base.setHandler handle_id
+      base.prepend $("<hr class='handler invisible_hr' />")
+
     drag_on  = (mouse)->
       unless @base?
-        drag_switch = $(@)
-        @base = drag_switch.parents(".message_filter")
-        @base.easydrag()
-
-        pump_number = parseInt new Date().getTime()
-        @base.css
-          zIndex: pump_number
-        @handle_id = "handler#{pump_number}"
-        @base.setHandler @handle_id
-
-        @base.prepend $("<h3 class='handler'>.</h3>")
-
-      @base.find('.handler').replaceWith("<h3 class='handler'>.</h3>")
-      @base.dragOn()
-      @base.addClass('drag')
-      @base.css
-        cursor:   'move'
-        position: 'absolute'
+        @base = $(@).parents(".message_filter")
+        drag_create @base
+      drag_start @base
 
     drag_off = (mouse)->
-      @base.find('.handler').replaceWith("<hr class='handler invisible_hr' />")
-      @base.dragOff()
-      @base.removeClass('drag')
-      @base.css
-        cursor:   'auto'
-        position: 'static'
+      @base.fadeOut 'fast', =>
+        @base.find('.handler').replaceWith("<hr class='handler invisible_hr' />")
+        @base.dragOff()
+        @base.removeClass('drag')
+        @base.css
+          cursor:   'auto'
+          position: 'static'
+        @base.slideDown('fast')
 
     rewrite = =>
       @page.target.html('')
       for index in [@page.from..@page.to]
         create @data[index]
 
-    bind = =>
-      q_text   = @page.target.find("p.text")
-      q_pick   = @page.target.find(".mes_date")
-      q_anchor = @page.target.find(".res_anchor")
-      drag_switch = $("<span> o </span>").addClass("drag_switch")
-      q_pick.append drag_switch
-
+      drag_markup @page.target, 'o'
       q_drag = @page.target.find(".drag_switch")
+      q_drag.toggle drag_on, drag_off
 
+
+    bind = (base)=>
+      q_text = base.find("p.text")
       q_text.each ->
         html = $(@).html()
         $(@).html( html.replace(///
           (/\*)(.*?)(\*/|$)
         ///g,'<em>$1$2$3</em>') )
 
+      q_anchor = base.find(".res_anchor")
       q_anchor.toggle (mouse)->
+        ank = $(@)
         unless @base?
-          ank = $(this)
           @base = ank.parents(".message_filter")
 
-        text = ank.text()
+        turn  = ank.attr('turn') - 0
+        logid = ank.attr('logid')
         title = ank.attr("title")
+        href  = @href
+        text  = ank.text()
         if 0 == text.indexOf(">>")
-          if @turn? && @logid?
-            if gon.turns[@turn]?
-              $.get @href, {}, (data) =>
+          if turn? && logid?
+            if gon.turns[turn]?
+              drag_show mouse, create scan turn, logid
+            else
+              $.get href, {}, (data) =>
                 code = $(data).find('head script').text()
-                gon.turns[@turn] = eval """
+                gon.turns[turn] = eval """
                   (function(){
                     var gon={},window={gon: gon};
                     #{code}
                     return(gon.messages);
                   })()
                 """
-                show create scan @turn, @logid
-            else
-              show create scan @turn, @logid
+                console.log "show anker #{[turn, logid]}"
+                drag_show mouse, create scan turn, logid
 
-          if "" == title
-            href = @href.replace("#", "&logid=").replace("&move=page", "")
+          else if "" == title
+            href = href.replace("#", "&logid=").replace("&move=page", "")
             $.get href, {}, (data) =>
-              show $(data).find(".message_filter")
+              drag_show mouse, $(data).find(".message_filter")
           else
-            window.open @href, "_blank"
+            window.open href, "_blank"
         else
-          window.open @href, "_blank"
+          window.open href, "_blank"
 
-      ,(mouse)->
-        ank = $(this)
-        base = ank.parents(".message_filter")
-        base.nextAll(".ajax").fadeOut "nomal", ->
-          base.nextAll(".ajax").remove()
+      ,=>
+        item = @page.target.find(".drag")
+        item.fadeOut "fast", =>
+          item.remove()
 
-      q_drag.toggle drag_on, drag_off
 
     scan = (turn, logid)=>
-      for obj in gon.turns[turn]
-        return obj  if  logid == obj.logid
+      if gon.turns[turn]
+        for obj in gon.turns[turn]
+          return obj  if  logid == obj.logid
 
     create = (obj)=>
       if obj
         html = @page.render(obj)
-        html.appendTo(@page.target)
-
-    show = (mes)=>
-      date = $(mes).find(".mes_date")
-      base.after mes
-      topm = mouse.pageY + 16
-      leftm = mouse.pageX - 100
-      leftend = $("body").width() - mes.width() - 8
-      leftm = leftend  if leftend < leftm
-      mes.css
-        top: topm
-        left: leftm
-        zIndex: pumpNumber()
-
-      mes.addClass("ajax").css "display", "none"
-      $(mes).fadeIn()
-      handlerId = "handler" + pumpNumber()
-      handler = $("<div id=\"" + handlerId + "\">.</div>").addClass("handler")
-      $(mes).prepend handler
-      $(mes).easydrag()
-      $(mes).setHandler handlerId
-      close = $("<span> x </span>").addClass("close")
-      date.append close
-      closeWindow()
-      setAjaxEvent mes
-
+        tag = html.appendTo(@page.target)
+        bind tag
+        tag
     rewrite()
-    bind()
 

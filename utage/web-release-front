@@ -4,5 +4,4 @@ TARGET=254
 
 /utage/web-cleanup
 /utage/web-release-to $TARGET $1 &
-/utage/web-release-asset &
 
