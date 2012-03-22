@@ -15,9 +15,9 @@ class ModeBtn
       logid_types =
         memo: /^(.M)|([AM]S)/
         all:  /^.[^M]/
-        mob:  /^[AMSIiGV][^M]/
-        clan: /^[AMSIiWPX][^M]/
-        open: /^[AMSIi][^M]/
+        mob:  /^[AmSIiVG][^M]/
+        clan: /^[AmSIiWPX][^M]/
+        open: /^[AmSIi][^M]/
       obj.logid.match logid_types[val]
     @params.current = 'all'
     @params.is_cookie = true
