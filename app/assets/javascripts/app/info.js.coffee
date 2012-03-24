@@ -19,31 +19,31 @@ class Info
       @sayfilter[0].style.position = "absolute"
       @sayfilter[0].style.height = "auto"
 
-      ###
-      changeFilterCheckBoxPlList 0
-      changeFilterCheckBoxTypes 0
-      ###
-
   resize: =>
     width = Client.width()
-    small = 122 + 80
     fold = false
+
+    $('.drag').css(left: @contentframe.offset().left)
+    @sayfilter.to_z_front()
 
     switch Client.css.width
       when 480
+        small = 122 + 80 + 20
         if      small < width - 462
           info_width  = width - 462
-        else if small < width - 350
-          info_width  = width - 350
-          fold = true
+        else if small < width - 462 + 110
+          info_width  = width - 462 + 110
+          fold = 110
         else
           info_width  = width
       when 800
-        gap = 10
-        if   gap < width - 770
-          info_width  = 190 + (width - 770)/2
+        if       200  <  width - 770
+          info_width  = (width - 770)/2 + 190
+        else if  -10  <  width - 770
+          info_width  = (width - 770)/2 + 190 + 116
+          fold = 120
         else
-          info_width  = 190
+          info_width  = width
 
     @sayfilter.width info_width
     Client.navi.resize(fold)

@@ -106,15 +106,14 @@ class PageBtn
     drag_show = (mouse, obj)=>
       base = $(obj)
       drag_create base
-      drag_start  base
       drag_moveto base, mouse
-
       drag_markup base, 'x'
+      drag_start  base
+
       q_drag = base.find(".drag_switch")
       q_drag.click =>
         base.fadeOut 'fast', =>
           base.dragOff()
-          base.slideDown('fast')
           base.remove()
 
     drag_markup = (base, mark)->
@@ -124,29 +123,25 @@ class PageBtn
 
     drag_moveto = (base, mouse)->
       topm = mouse.pageY + 16
-      leftm = mouse.pageX - 100
-      leftend = $("body").width() - base.width() - 8
-      leftm = leftend  if leftend < leftm
+      leftm = $('#contentframe').offset().left
       base.css
         top:  topm
         left: leftm
 
     drag_start = (base)->
-      base.slideUp 'fast', =>
-        base.find('.handler').replaceWith("<h3 class='handler'>.</h3>")
-        base.dragOn()
-        base.addClass('drag')
-        base.css
-          cursor:   'move'
-          position: 'absolute'
-        base.fadeIn('fast')
+      base.find('.handler').replaceWith("<h3 class='handler'>.</h3>")
+      base.dragOnY()
+      base.addClass('drag')
+      base.css
+        cursor:   'move'
+        position: 'absolute'
+        display:  'none'
+      base.fadeIn('fast')
 
     drag_create = (base)->
       base.easydrag()
 
-      pump_number = parseInt new Date().getTime()
-      base.css
-        zIndex: pump_number
+      pump_number = base.to_z_front()
       handle_id = "handler#{pump_number}"
       base.setHandler handle_id
       base.prepend $("<hr class='handler invisible_hr' />")
@@ -155,13 +150,14 @@ class PageBtn
       unless @base?
         @base = $(@).parents(".message_filter")
         drag_create @base
-      drag_start @base
+      @base.slideUp 'fast', =>
+        drag_start @base
 
     drag_off = (mouse)->
       @base.fadeOut 'fast', =>
         @base.find('.handler').replaceWith("<hr class='handler invisible_hr' />")
-        @base.dragOff()
         @base.removeClass('drag')
+        @base.dragOff()
         @base.css
           cursor:   'auto'
           position: 'static'
@@ -198,19 +194,20 @@ class PageBtn
         text  = ank.text()
         if 0 == text.indexOf(">>")
           if turn? && logid?
-            if gon.turns[turn]?
-              drag_show mouse, create scan turn, logid
-            else
+            message = scan turn, logid
+            if message?
+              drag_show mouse, create message
+            else 
+              if gon.turns[turn]?
+                href = href.replace("/#{turn}/messages","/#{turn - 1}/messages")
+                turn -= 1 
               $.get href, {}, (data) =>
-                code = $(data).find('head script').text()
-                gon.turns[turn] = eval """
+                code = data.match(/gon.messages=(.*)<\/script>/)[1]
+                json = eval """
                   (function(){
-                    var gon={},window={gon: gon};
-                    #{code}
-                    return(gon.messages);
+                    gon.turns[#{turn}] = #{code}
                   })()
                 """
-                console.log "show anker #{[turn, logid]}"
                 drag_show mouse, create scan turn, logid
 
           else if "" == title
@@ -223,7 +220,7 @@ class PageBtn
           window.open href, "_blank"
 
       ,=>
-        item = @page.target.find(".drag")
+        item = base.nextAll(".drag")
         item.fadeOut "fast", =>
           item.remove()
 
@@ -231,7 +228,8 @@ class PageBtn
     scan = (turn, logid)=>
       if gon.turns[turn]
         for obj in gon.turns[turn]
-          return obj  if  logid == obj.logid
+          if  logid == obj.logid
+            return obj  
 
     create = (obj)=>
       if obj
@@ -240,4 +238,3 @@ class PageBtn
         bind tag
         tag
     rewrite()
-

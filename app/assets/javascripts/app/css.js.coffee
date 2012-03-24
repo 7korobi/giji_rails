@@ -36,6 +36,14 @@ class CSS
     @render()
 
   render: ->
+    stylesheet = @head.find('link[app]');
+    if 0 == stylesheet.length
+      @head.append """
+        <link media="screen" rel="stylesheet" type="text/css" app/>
+      """
+      stylesheet = @head.find('link[app]');
+    stylesheet.attr("href","/stylesheets/#{@current}.css")
+
     if @current.match /480/ 
       @width = 480 
       @h1_width = 458
@@ -46,13 +54,6 @@ class CSS
     h1_type = OPTION.head_img[@current][ Math.ceil((@date).getTime() / 60*60*12) % 2]
     @h1.attr 'src', "/images/banner/title#{@h1_width}#{h1_type}.jpg"
 
-    stylesheet = @head.find('link[app]');
-    if 0 == stylesheet.length
-      @head.append """
-        <link media="screen" rel="stylesheet" type="text/css" app/>
-      """
-      stylesheet = @head.find('link[app]');
-    stylesheet.attr("href","/stylesheets/#{@current}.css")
     $(window).trigger('resize')
 
   move: ->

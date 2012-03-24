@@ -1,0 +1,97 @@
+=render template:'messages/index'
+
+- content_for :info do
+  br
+  p= event.human_state
+
+-if self?
+  - content_for :info_caption do
+    p GameMaster
+
+  - content_for :info do
+    p= link_to '章を書き換える', edit_trpg_event_path(story, event)
+    =semantic_form_for_resource event do |f|
+      .inputs
+        = f.input :potofs, as: :check_boxes, collection: story.potofs
+      .actions
+        = f.submit
+
+- content_for :log do
+  h3 魔術師
+  table.formpl_common
+    tr.say
+      td.img
+        img alt="" height="130" src="/images/portrate/undef.jpg" width="90"
+          td.field
+            .msg
+              .formpl_content
+                | 村長 アルフレッド (
+                a href="http://utage.sytes.net/WebRecord/user/show?user=a37"
+                | ) 魔術師
+              form action="./sow.cgi" method="post"
+                .formpl_content
+                  input name="cmd" type="hidden" value="vote"
+                    select name="entrust"
+                      option selected="" value=""
+                      option value="on"
+                    select#selectvote name="target"
+                      option value="73"
+                    input disabled="" type="submit" value="変更"
+              form action="./sow.cgi" method="post"
+                .formpl_content
+                  textarea cols="30" name="mes" rows="5"
+                  br
+                    input name="cmd" type="hidden" value="writepr"
+                      input disabled="" type="submit" value="発言 / 更新"
+                        select name="target"
+                          option value="-1"
+                          option value="38"
+                        select name="monospace"
+                          option value=""
+                            | (通常)
+                          option value="monospace"
+                            | 等幅
+                          option value="report"
+                            | 見出し
+                        br
+            .msg
+              form action="./sow8.cgi" method="post"
+                .formpl_action
+                  | アルフレッドは、
+                  select name="target"
+                    option value="-1"
+
+                    option value="73"
+                  br
+                    fieldset.action_type
+                      legend アクション内容
+                      select name="actionno"
+                        option value="-99"
+                        option value="0"
+                        option value="42"
+                        option value="-4"
+                        option value="-5"
+                        option value="-2"
+                      br
+                        input name="cmd" type="hidden" value="action"
+                          input.formpl_actiontext name="actiontext" size="30" type="text" value=""
+                            br
+                    input disabled="" type="submit" value="アクション"
+                      | あと
+  .clearboth
+    hr.invisible_hr
+  .formpl_gm
+  table.WIN_WOLF
+    tr.say
+      td
+        form action="./sow.cgi" method="post"
+          .formpl_content
+            input name="cmd" type="hidden" value="role"
+              label for="selectrole"
+              select#selectrole name="target"
+                option value="-2"
+                option value="73"
+              input disabled="" type="submit" value="変更"
+        .formpl_content
+        .formpl_content
+        hr.invisible_hr

@@ -7,7 +7,9 @@
 - content_for :link do
   - events.each do |event|
     ul
-      li= link_to event.name.html_safe, messages_path(story, event.turn)  
+      li= link_to event.name.html_safe, show_path(event)
+  br
+  p= link_to '他の物語を見る', index_parent_path
   br
 
 - content_for :info_caption do
@@ -18,8 +20,12 @@
   nav.modination
 
 - content_for :log do
-  #messages
-  - gon_templates do |view, options|
-    .message_filter
-      = render "giji/#{view}", options
+  h2= story.name
+  h3= event.name
+  br
+  #messages(data-spy="scroll")
+
+- gon_templates do |view, options|
+  .message_filter
+    = render "giji/#{view}", options
 

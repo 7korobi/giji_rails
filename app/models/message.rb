@@ -55,7 +55,12 @@ class Message < Chat
   end
 
   def self.to_fair(log, parse_uri = true)
-    log.gsub(URI.regexp) do
+    log = if log.nil? 
+          then '' 
+          else log.gsub(/\r\n?/,"\n")
+          end
+    log.gsub!(/(\n)/, '\1<br />')
+    log.gsub!(URI.regexp) do
       uri = Regexp.last_match[0]
       if parse_uri && $1.present? && $4.present?
         <<-_HTML_
@@ -64,12 +69,14 @@ class Message < Chat
       else
         uri
       end
-    end.gsub(/<mw (\w+),(\d+),(\d+)>/) do
+    end
+    log.gsub!(/<mw (\w+),(\d+),([^>]+)>/) do
       uri  = "../#{$2}/messages#&logid=#{$1}"
       <<-_HTML_
-        <a class="res_anchor" rel=​"tooltip" href="#{uri}" turn="#{$2}" logid="#{$1}">&gt;&gt;#{$1}</a>
+        <a class="res_anchor" rel=​"tooltip" href="#{uri}" turn="#{$2}" logid="#{$1}">&gt;&gt;#{$3}</a>
       _HTML_
-    end.html_safe
+    end
+    log.html_safe
   end
 end
 

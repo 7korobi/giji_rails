@@ -1,0 +1,12 @@
+
+-if self?
+  - content_for :info_caption do
+    p GameMaster
+
+  - content_for :info do
+    br
+    p= link_to '物語を書き換える', edit_trpg_story_path(story)
+    p= link_to '新しい章を綴る',   new_trpg_event_path(story_id:story)
+    br
+
+=render template:'events/index'

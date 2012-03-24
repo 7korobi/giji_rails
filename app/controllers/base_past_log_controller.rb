@@ -1,7 +1,4 @@
-class BasePastLogController < ApplicationController
-  expose(:story)
-
-  before_filter :login_require
+class BasePastLogController < BaseLogController
   before_filter :finish_require
 
   protected

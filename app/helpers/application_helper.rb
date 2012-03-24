@@ -5,6 +5,10 @@ require 'yaml'
 module ApplicationHelper
   include GijiHelper
 
+  def semantic_form_for_resource obj, &block
+    semantic_form_for obj, url: controller.send(:form, obj), &block
+  end
+
   def cfg( folder )    
     GAME[folder]['config']['cfg']
   end

@@ -3,18 +3,18 @@ Giji::Application.routes.draw do
     get '/users/sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  resources :trpg_stories
+  resources :trpg_stories, except:%w[show]
 
   scope ':folder' do
     resources :stories, only:%w[index]
   end
 
   scope ':story_id' do
-    resources :trpg_events
     resources :events, only:%w[index]
+    resources :trpg_events,  except:%w[show]
     scope ':turn' do
-      resources :trpg_messages
       resources :messages, only:%w[index show]
+      resources :trpg_messages, except:%w[show]
     end
   end
 

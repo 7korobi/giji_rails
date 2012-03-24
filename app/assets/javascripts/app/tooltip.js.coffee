@@ -1,10 +1,6 @@
 [filter, toggle, cookie, cookie_in_use] = [[],[],[],[]]
 
-class Log
-
 class Filter
-
-
 
 unpack = (key, filter) ->
   if cookie[key]
@@ -287,126 +283,6 @@ setItem = (button, field, value) ->
     button.addClass field.style_disable
   else
     button.addClass field.style_enable
-
-pumpNumber = ->
-  parseInt new Date().getTime() / 1000
-
-closeWindow = ->
-  $(".close").toggle (->
-    ank = $(this)
-    base = ank.parents(".ajax")
-    base.fadeOut "nomal", ->
-      base.remove()
-
-    false
-  ), ->
-    ank = $(this)
-    base = ank.parents(".ajax")
-    base.fadeOut "nomal", ->
-      base.remove()
-
-    false
-
-setAjaxEvent = (target) ->
-  target.find("p:not(.multicolumn_label):not(.mes_date)").each ->
-    html = $(@).html()
-    $(@).html( html.replace(///
-      (/\*)(.*?)(\*/|$)
-    ///g,'<em>$1$2$3</em>') )
-
-  target.find(".img img").mouseup ->
-    name = "？"
-    link = ""
-    text = ""
-    message = $(@).parents(".say").find(".msg")
-    message.find("a[name]").each ->
-      link = @name
-      name_ary = $(@).text().split(" ")
-      name = name_ary[name_ary.length - 1]
-
-    message.find(".mes_date").each ->
-      ank = $(@).text().match(/¥((.?¥d+)¥)/)[1]
-      turn = $(@).attr("turn")
-      text = "¥n(>>" + turn + ":" + ank + " " + name + ")"
-
-    $("#clipboard").val $("#clipboard").val() + text
-
-  drag_switch = $("<span> o </span>").addClass("drag_switch")
-
-  target.filter(->
-    base = $(@)
-    not base.hasClass("ajax")
-  ).find(".mes_date").append drag_switch
-
-  target.find(".drag_switch").toggle(->
-      drag_switch = $(@)
-      base = drag_switch.parents(".message_filter")
-      base.css zIndex: pumpNumber()
-      $(base).clone(true).css("display", "none").addClass("origin").insertAfter base
-      $(base).addClass "drag"
-      handlerId = "handler" + pumpNumber()
-      handler = $("<h3 id=\"" + handlerId + "\">.</h3>").addClass("handler")
-      $(base).prepend handler
-      $(base).easydrag()
-      $(base).setHandler handlerId
-      false
-  ,->
-      name = $(@)
-      base = name.parents(".message_filter")
-      base.nextAll(".origin").fadeIn()
-      base.fadeOut "nomal", ->
-        base.remove()
-
-      false
-  )
-
-  target.find(".res_anchor").toggle ((mouse) ->
-    ank = $(this)
-    base = ank.parents(".message_filter")
-    text = ank.text()
-    title = ank.attr("title")
-    if 0 == text.indexOf(">>")
-      if "" == title
-        href = @href.replace("#", "&logid=").replace("&move=page", "")
-        $.get href, {}, (data) ->
-          mes = $(data).find(".message_filter")
-          date = $(mes).find(".mes_date")
-          base.after mes
-
-          topm = mouse.pageY + 16
-          leftm = mouse.pageX - 100
-          leftend = $("body").width() - mes.width() - 8
-          leftm = leftend  if leftend < leftm
-          mes.css
-            top: topm
-            left: leftm
-            zIndex: pumpNumber()
-
-          mes.addClass("ajax").css "display", "none"
-          $(mes).fadeIn()
-          handlerId = "handler" + pumpNumber()
-          handler = $("<div id=\"" + handlerId + "\">.</div>").addClass("handler")
-          $(mes).prepend handler
-          $(mes).easydrag()
-          $(mes).setHandler handlerId
-          close = $("<span> x </span>").addClass("close")
-          date.append close
-          closeWindow()
-          setAjaxEvent mes
-      else
-        window.open @href, "_blank"
-        return false
-    else
-      window.open @href, "_blank"
-      return false
-    false
-  ), (mouse) ->
-    ank = $(this)
-    base = ank.parents(".message_filter")
-    base.nextAll(".ajax").fadeOut "nomal", ->
-      base.nextAll(".ajax").remove()
-
-    false
 
 deploySayFilter = ->
   setAjaxEvent $(".message_filter")

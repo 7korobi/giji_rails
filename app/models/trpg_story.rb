@@ -2,6 +2,8 @@ class TrpgStory < Story
   belongs_to :user
 
   field :is_finish, type:Boolean, hidden: true
+  has_many :events, inverse_of: :story, class_name: 'TrpgEvent'
+  has_many :potofs, inverse_of: :story, class_name: 'TrpgPotof'
 
   def save
     unless self.vid

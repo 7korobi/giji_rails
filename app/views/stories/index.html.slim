@@ -25,12 +25,14 @@
         tr.i_hover
           td= story.vid
           td
-            = link_to story.name.html_safe, events_path(story.id)
+            = link_to story.name.html_safe, show_path(story)
             i
               br
             = image_tag "/images/icon/cd_#{story.rating}.png"
-            i.small
-              br= "更新 : #{"%02d:%02d"%[story.upd['hour'], story.upd['minute']]} #{24 * story.upd['interval']}h毎"
-          td.small= "%02d人"%[story.vpl.last]
-          td.small= story.type['game']
-          td.small= story.type['say']
+            - if SowVillage === story
+              i.small
+                br= "更新 : #{"%02d:%02d"%[story.upd['hour'], story.upd['minute']]} #{24 * story.upd['interval']}h毎"
+          - if SowVillage === story
+            td.small= "%02d人"%[story.vpl.last]
+            td.small= story.type['game']
+            td.small= story.type['say']

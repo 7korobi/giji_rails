@@ -3,6 +3,30 @@ module GijiHelper
     link_to title, GAME[folder][:config][:cfg][:URL_SW] + "/sow.cgi"
   end
 
+  def index_parent_path
+    case controller
+    when TrpgEventsController, TrpgMessagesController
+      trpg_stories_path
+    when     EventsController,     MessagesController
+      stories_path(story.folder)
+    end
+  end
+
+  def show_path(obj)
+    case obj
+    when TrpgEvent
+      trpg_messages_path(story, obj.turn)
+    when TrpgStory
+      trpg_events_path(story_id:obj)
+    when Event
+      messages_path(story, obj.turn)
+    when Story
+      events_path(obj)
+    else
+      raise RuntimeError
+    end
+  end
+
   def messages_for_auth(auths)
     "".tap do |items|
       auths.each do |auth|

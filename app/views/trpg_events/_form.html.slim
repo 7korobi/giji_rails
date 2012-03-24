@@ -1,0 +1,15 @@
+- content_for :head do
+  | 章を綴る
+
+- content_for :info do
+  | さあ、新しい章を綴ってゆこう。
+
+- content_for :log do
+  =semantic_form_for_resource trpg_event do |f|
+    h2 章の説明
+    .mes_maker
+      = f.input :story_id, as: :hidden
+      = f.input :name
+      = f.input :state, as: :radio, collection: trpg_event.status
+    .actions
+      = f.submit

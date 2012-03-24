@@ -1,19 +1,17 @@
 class TrpgStoriesController < ApplicationController
-  expose(:stories){ trpg_stories }
+  expose(:stories){ TrpgStory.page params[:page] }
+  expose(:story)
 
-  expose(:trpg_stories){ TrpgStory.page params[:page] }
+  expose(:trpg_stories){ stories }
   expose(:trpg_story)
 
   respond_to :html, :json
 
   before_filter :login_require
   before_filter :sign, only:%w[create, update]
-  
-  def index
-    gon.page = { length: trpg_stories.num_pages }
-  end
 
-  def show
+  def index
+    gon.page = { length: stories.num_pages }
   end
 
   def new
@@ -27,22 +25,31 @@ class TrpgStoriesController < ApplicationController
     if trpg_story.save
       flash[:notice] = "successfully #{action_name}d."
     end
-    respond_with trpg_story
+    respond_with story
   end
 
   def update
     if trpg_story.save
       flash[:notice] = "successfully #{action_name}d."
     end
-    respond_with trpg_story
+    respond_with story
   end
 
   protected
   def self?
     trpg_story.user_id == current.user.try(:id)
   end
-
   def sign
     trpg_story.user_id = current.user.id
+  end
+
+  protected
+  class Responder < ActionController::Responder
+    def navigation_location
+      @controller.trpg_events_url @controller.story.id
+    end
+  end
+  def self.responder
+    Responder
   end
 end
