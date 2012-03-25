@@ -37,6 +37,23 @@ class SowVillage < Story
     end
   end
 
+  def self.add_folder(folder)
+    Giji::RSync.new.in_folder(folder) do |folder, protocol, set| 
+      path = set[:files][:ldata] + "/data/vil"
+      Dir.glob("#{path}/*_vil.cgi").each do |s|
+        fname = s.match(/\d\d\d\d_vil.cgi/)[0]
+        GijiVilScanner.new(path, folder, Time.at(0), 60, [], fname).save
+      end
+
+      %w[log memo].each do |type|
+        Dir.glob("#{path}/*_*#{type}.cgi").each do |s|
+          fname = s.match(/\d\d\d\d_\d\d#{type}.cgi/)[0]
+          GijiLogScanner.new(path, folder, Time.at(0), 60, [], fname).save        
+        end
+      end
+    end
+  end
+
   def update_from_file_only_game force = true
     Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
       vid   = self.vid

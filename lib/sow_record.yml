@@ -220,6 +220,9 @@ OFFPARTY:
 PAN:
   <<: *CABALA
 
+TEST:
+  <<: *CABALA
+
 ULTIMATE: &ULTIMATE
   monospace:
     - 
