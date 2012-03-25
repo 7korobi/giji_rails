@@ -24,6 +24,7 @@ class GijiVilScanner < GijiScanner
   end
 
   def enqueue
+#    self.class.perform(@path, @fname, @folder, @vid)
     Resque.enqueue(self.class, @path, @fname, @folder, @vid)
   end
 
@@ -158,9 +159,8 @@ class GijiVilScanner < GijiScanner
         sow.save
         
         o.turn.to_i.times do |turn_no|
-          event = events[turn_no].try(:first) || SowTurn.new
+          event = events[turn_no].try(:first) || SowTurn.new(story_id: sow.id, turn: turn_no)
           event.update_attributes(
-            turn: turn_no,
             winner: SOW_RECORD[folder][:winners][o.winner.to_i], 
           )
           if o.turn.to_i - 1 == turn_no || o.epilogue.to_i == turn_no
@@ -173,7 +173,6 @@ class GijiVilScanner < GijiScanner
             event.seance = o.seance.split('/') || []  rescue  []
             event.say = say
           end
-          event.story = sow
           event.save
         end
         

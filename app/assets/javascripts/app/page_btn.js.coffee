@@ -29,6 +29,10 @@ class PageBtn
   link_local: (page)->
     @page = page
     @link 'hash'
+    if "onhashchange" of window and (document.documentMode is `undefined` or document.documentMode > 7)
+      window.onhashchange = =>
+        params.render()  for params in @page.search
+        @params.render()
 
   link_remote: (page)->
     @data_render = -> true

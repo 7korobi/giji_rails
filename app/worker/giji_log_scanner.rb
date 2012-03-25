@@ -25,6 +25,7 @@ class GijiLogScanner < GijiScanner
   end
 
   def enqueue  type
+#    self.class.perform(@path, @fname, type, @folder, @vid, @turn)
     Resque.enqueue(self.class, @path, @fname, type, @folder, @vid, @turn)
   end
 
@@ -84,7 +85,5 @@ class GijiLogScanner < GijiScanner
     end
     event.messages.sort_by!(&:date)
     event.save
-
-    sleep 25
   end
 end

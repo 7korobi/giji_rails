@@ -18,27 +18,49 @@ class SowVillage < Story
   field :timer, type:Hash
 
   def self.gaps
-    only(:folder, :vid).group_by(&:folder).map do |k,v|
-      list = v.map(&:vid).sort
-      rng=(list.first..list.last).to_a
-      [k,rng - list]
+    only(:folder, :vid).group_by(&:folder).map do |folder,v|
+      out = []
+      Giji::RSync.new.in_folder(folder) do |folder, protocol, set|
+        good = v.map(&:vid).sort
+        list = []
+
+        path = set[:files][:ldata] + "/data/vil"
+        Dir.glob("#{path}/*_vil.cgi").each do |s|
+          match = s.match(/\/(\d\d\d\d)_vil.cgi/)
+          list << match[1].to_i if match
+        end
+        out = list - good
+      end
+      [folder, out]
     end.each_with_object({}) do |(key,val),hash|
       hash[key] = val
     end
   end
 
-  def update_from_file_only_game
+  def update_from_file_only_game force = true
     Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
       vid   = self.vid
       path  = set[:files][:ldata] + "/data/vil"
       fname = "%04d_vil.cgi"%[vid]
-      GijiVilScanner.new(path, folder, Time.at(0), 60, [vid], fname).save
+      GijiVilScanner.new(path, folder, Time.at(0), 60, [vid], fname).save if force
       yield(folder,vid,path) if block_given?
     end
   end
 
+  def update_from_file_only_log
+    update_from_file_only_game(false) do |folder,vid,path|
+      self.events.each do |event|
+        %w[log memo].each do |type|
+          turn = event.turn
+          fname = "%04d_%02d%s.cgi"%[vid, turn, type]
+          GijiLogScanner.new(path, folder, Time.at(0), 60, [vid], fname).save
+        end
+      end
+    end
+  end
+
   def update_from_file
-    update_from_file_only_game do |folder,vid,path|
+    update_from_file_only_game(true) do |folder,vid,path|
       self.events.each do |event|
         %w[log memo].each do |type|
           turn = event.turn
