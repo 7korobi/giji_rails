@@ -21,7 +21,7 @@ end
 
 # client side data
 gem 'gon'
-gem 'faye'
+gem 'faye-rails'
 
 # view environment
 gem "slim"
