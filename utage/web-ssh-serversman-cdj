@@ -1,0 +1,4 @@
+echo "= cookingDJ:$* "
+
+ssh -p 3843 7korobi@183.181.54.214 $*
+

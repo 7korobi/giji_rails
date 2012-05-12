@@ -8,7 +8,8 @@ html lang="ja"
   body
     #outframe.outframe
       #contentframe.contentframe
-        h1 = link_to image_tag(""), root_path
+        h1 = link_to root_path do
+          img
         =render partial: 'layouts/titles'
         .inframe
           hr.invisible_hr

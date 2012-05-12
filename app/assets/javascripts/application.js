@@ -10,6 +10,7 @@
 //= require knockout
 //= require_tree ./base
 //= require_tree ./app
+//= require private_pub
 
 Client.deploy();
 Form.deploy();

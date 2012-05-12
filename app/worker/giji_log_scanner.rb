@@ -14,7 +14,7 @@ class GijiLogScanner < GijiScanner
 
       Dir.new(path).each do | fname |
         next  if  0 == File.size(path+'/'+fname) 
-        next  if  /vil.cgi/ === fname
+        next  if  /vil.cgi/ === fname  rescue  next
 
         new(path, folder, WATCH[:log][:time], from, force, fname).save
       end

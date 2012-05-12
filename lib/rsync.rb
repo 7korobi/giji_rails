@@ -39,10 +39,6 @@ module Giji
         next if deny_protocols.member? protocol
         begin
           yield(folder, protocol, set)
-        rescue => e
-          STDERR.puts [folder, protocol, e].inspect
-          STDERR.puts e.backtrace
-          throw e
         end
       end
     end

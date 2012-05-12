@@ -1,0 +1,2 @@
+echo "= 243:$* "
+ssh -p 2430 7korobi@utage.sytes.net $*

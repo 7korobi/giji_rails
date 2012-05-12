@@ -1,0 +1,10 @@
+#! /bin/sh
+
+cd /c/media/Album
+git add .
+git commit -a -m "collection"
+
+# cd /data
+# rdiff-backup --remove-older-than 3M /data/backup/Album &
+
+# rdiff-backup --print /data/Album /data/backup/Album

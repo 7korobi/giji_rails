@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /utage/web-env
+. /home/7korobi/web-env
 
 APP=giji_rails
 PID=$APP.unicorn
@@ -14,17 +14,21 @@ status)
   ls /utage/pids/*
   ;;
 start)
+  ~/.rbenv/shims/bundle exec rackup private_pub.ru -s thin -E production &
   ~/.rbenv/shims/bundle exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
   ;;
 stop)
   $0 kill QUIT "unicorn_rails master"
+  $0 kill QUIT "rackup private_pub"
   ;;
 restart)
   touch /www/$APP/tmp/restart.txt
   ;;
 reload)
+  $0 kill QUIT "rackup private_pub"
   $0 kill USR2 "unicorn_rails master"
   touch /www/$APP/tmp/restart.txt
+  ~/.rbenv/shims/bundle exec rackup private_pub.ru -s thin -E production &
   ;;
 
 
@@ -33,18 +37,23 @@ bundle-update)
   ;;
 
 QUEUE)
+  LIST=giji_rsyncs,giji_schedules,giji_vils
   $0 kill TERM "resque-web"
-  $0 kill TERM "rake resque:work"
-  $0 kill QUIT "resque.*Forked"
-  /utage/web-resque 1> /dev/null 2> /dev/null
-  ~/.rbenv/shims/bundle exec rake resque:work QUEUE=giji_rsyncs,giji_schedules,giji_vils 1> /dev/null 2> /dev/null &
+  $0 kill TERM "rake resque:"
+  $0 kill QUIT "Waiting for $LIST"
+  $0 kill QUIT "resque-scheduler-"
+
+  /utage/251/resque 1> /dev/null 2> /dev/null
+  QUEUE=$LIST PIDFILE=/utage/pids/resque.pid BACKGROUND=yes rake environment resque:work  1> /dev/null 2> /dev/null
+  rake resque:scheduler  1> /dev/null 2> /dev/null
   ;;
 
 kill)
   shift
   SIG=$1
   shift
-  PROCESS_ID=`ps -ef | grep "$*" | head -1 | cut -c 8-15`
+  ps -ef | grep "$*" | grep -v grep | grep -v web-app
+  PROCESS_ID=`ps -ef | grep "$*" | grep -v grep | grep -v web-app | head -1 | cut -c 8-15`
   echo $SIG $PROCESS_ID
   kill -s $SIG $PROCESS_ID
   ;;
@@ -52,6 +61,14 @@ kill)
 exec)
   shift
   ~/.rbenv/shims/bundle exec $*
+  ;;
+
+time)
+  service ntpd stop
+  ntpdate ntp1.jst.mfeed.ad.jp
+  /sbin/hwclock --systohc
+  service ntpd start
+  ntpq -p
   ;;
 
 s|server|test)
@@ -73,7 +90,7 @@ tail-log)
   echo  "Usage: $0 command"
   echo
   echo  "  command : status start stop restart reload"
-  echo  "          : bundle-update QUEUE "
+  echo  "          : bundle-update QUEUE time"
   echo  "          : kill exec  s server test  c console  tail-log"
   echo  "  product : $APP"
 esac

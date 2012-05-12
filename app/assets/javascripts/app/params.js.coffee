@@ -13,7 +13,7 @@ class Params
     span = 1000 * 3600 * 24
     now = new Date()
     now.setTime( now.getTime() + 3600 * 1000 );
-    document.cookie = "&#{@word}=#{to}; expires=#{now.toGMTString()}"  if  @is_cookie 
+    document.cookie = "&#{@word}=#{to}; expires=#{now.toGMTString()}; path=/"  if  @is_cookie 
     to
 
   val: ->

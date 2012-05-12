@@ -1,0 +1,10 @@
+development:
+  server: "http://localhost:9292/faye"
+  secret_token: "secret"
+test:
+  server: "http://localhost:9292/faye"
+  secret_token: "secret"
+production:
+  server: "http://utage.sytes.net:2549/faye"
+  secret_token: "ca2eb32dd4ebf805c240e32393f75dda8937f65ab60fc8d224ba7888a027b037"
+  signature_expiration: 3600 # one hour

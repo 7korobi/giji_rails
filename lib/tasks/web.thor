@@ -8,26 +8,45 @@ class Web < Thor
   desc "home",   "web-ssh method create as Home"
   def home
     each_servers{|no| "192.168.0.#{no}"}
+    open("/etc/hosts", "w:utf-8") do |f|
+      f.puts HOST
+      f.puts HOST_HOME
+    end
   end
 
   desc "utage",  "web-ssh method create as Other domain"
   def utage
     each_servers{|no| "utage.sytes.net"}
+    open("/etc/hosts", "w:utf-8") do |f|
+      f.puts HOST
+      f.puts HOST_WEB
+    end
   end
 
-  ENV = <<'_SHELL_'
-echo "no: #{no}  environment set."
+  HOST = <<'_HOSTS_'
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1 localhost
+255.255.255.255 broadcasthost
+::1             localhost
+fe80::1%lo0 localhost
 
-PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/rvm/bin:/home/7korobi/bin
-UTAGE=#{no}
-SSH_PORT=#{no}0
-WEB_PORT=#{no}9
+_HOSTS_
 
-export PATH
-export SSH_PORT
-export WEB_PORT
-eval "$(rbenv init -)"
-_SHELL_
+  HOST_HOME = <<'_HOSTS_'
+183.181.24.203  giji.sytes.net
+192.168.0.100  utage.sytes.net
+192.168.0.101     tv.sytes.net
+_HOSTS_
+
+  HOST_WEB = <<'_HOSTS_'
+183.181.24.203  giji.sytes.net
+_HOSTS_
+
 
   SSH = <<'_SHELL_'
 echo "= #{no}:$* "
@@ -42,11 +61,11 @@ rsync -e "ssh -p #{no}0" -r ${TO}/ 7korobi@#{server}:${TO}/ --exclude='*.svn-bas
 _SHELL_
 
   def each_servers
-    [241,247,248,249,250,251,253,254].each do |no|
+    [241,242,243,249,250,251,252,253,254].each do |no|
       [["/utage/web-ssh-#{no}" ,SSH ],
-       ["/utage/#{no}/web-env" ,ENV ],
        ["/utage/web-push-#{no}",PUSH]
       ].each do |fname, shell|
+        `mkdir -p /utage/#{no}`
         open(fname,"w") do |f|
           server = yield(no)
           f.puts eval(%Q[%Q|#{shell}|])

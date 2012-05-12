@@ -1,11 +1,20 @@
+giji_git_scanner:
+  cron: '5  12  *  *  *'
+  class: GijiScheduler
+  args:  git
+  queue: giji_schedules
+  description: giji rsync and vils get.
+
 giji_vil_scanner:
   cron: '1,16,31,46  *  *  *  *'
   class: GijiScheduler
+  args:  vil
   queue: giji_schedules
   description: giji rsync and vils get.
 
 giji_log_scanner:
   cron: '59  0,12  *  *  *'
-  class: GijiLogScheduler
+  class: GijiScheduler
+  args:  log
   queue: giji_schedules
   description: giji logs get.

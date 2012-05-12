@@ -2,13 +2,13 @@
 
 TARGET=$1
 APP=/www/giji_rails
+RUBY="~/.rbenv/bin/rbenv exec ruby "
 shift
 
+/utage/web-push-$TARGET /utage  --delete
 /utage/web-push-$TARGET $APP    --delete &
 
-/utage/web-push-$TARGET /utage  --delete
-
-/utage/web-ssh-$TARGET  /utage/web-deploy $TARGET
+/utage/web-ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET 
 /utage/web-ssh-$TARGET  /utage/web-app $1 &
 
 

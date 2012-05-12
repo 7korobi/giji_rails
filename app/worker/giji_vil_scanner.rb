@@ -13,8 +13,9 @@ class GijiVilScanner < GijiScanner
       force = gaps[folder]
 
       Dir.new(path).each do | fname |
+        p fname
         next  if  0 == File.size(path+'/'+fname) 
-        next  unless  /vil.cgi/ === fname
+        next  unless  /vil.cgi/ === fname  rescue  next
 
         new(path, folder, WATCH[:cgi][:time], from, force, fname).save
       end

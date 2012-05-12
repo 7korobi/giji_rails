@@ -1,0 +1,5 @@
+#! /bin/sh
+
+cd /data/backup/dump/giji
+mongorestore --host 192.168.0.100 --indexesLast -d giji /data/backup/dump/giji
+

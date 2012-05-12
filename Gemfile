@@ -21,14 +21,15 @@ end
 
 # client side data
 gem 'gon'
-gem 'faye-rails'
+gem 'thin'
+gem 'private_pub'
 
 # view environment
 gem "slim"
 gem "knockout-rails"
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
-gem 'spreadsheet'
+# gem 'spreadsheet'
 # gem 'rabl'
 gem 'codemirror-rails'
 

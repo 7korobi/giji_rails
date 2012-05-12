@@ -1,0 +1,4 @@
+APP=/www/giji_rails
+cd $APP
+
+bundle exec resque-web -p $WEB_PORT config/initializers/resque.rb

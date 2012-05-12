@@ -1,0 +1,4 @@
+cd $1
+git log --name-status
+echo
+echo

@@ -1,0 +1,4 @@
+APP=/www/giji_rails
+
+/utage/web-push-readynas /utage  --delete
+
