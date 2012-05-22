@@ -45,7 +45,7 @@ QUEUE)
 
   /utage/251/resque 1> /dev/null 2> /dev/null
   QUEUE=$LIST PIDFILE=/utage/pids/resque.pid BACKGROUND=yes rake environment resque:work  1> /dev/null 2> /dev/null
-  rake resque:scheduler  1> /dev/null 2> /dev/null
+    PIDFILE=/utage/pids/resque-scheduler.pid BACKGROUND=yes rake resque:scheduler         1> /dev/null 2> /dev/null
   ;;
 
 kill)

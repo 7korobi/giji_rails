@@ -1,3 +1,0 @@
-
-cp /utage/$1/* /utage/
-cp /utage/.bash_profile /home/7korobi/.bash_profile

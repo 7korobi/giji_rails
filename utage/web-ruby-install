@@ -1,0 +1,15 @@
+test -d ruby-build || git clone git://github.com/sstephenson/ruby-build.git
+cd ruby-build
+git pull
+./install.sh
+
+rbenv install $1
+rbenv global  $1
+rbenv local   $1
+rbenv shell   $1
+rbenv rehash
+
+cd /www/giji_rails
+gem install bundler
+rbenv exec bundle update
+

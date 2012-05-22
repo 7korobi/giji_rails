@@ -1,7 +1,12 @@
 
+
+
 no = ARGV[0][0..2]
 hwaddr = no[1..2]
 
+system %Q|chmod 777 /usr/local/bin/rbenv-install /usr/local/bin/ruby-build|
+system %Q|mkdir -p     /usr/local/share/ruby-build/|
+system %Q|chmod -R 777 /usr/local/share/ruby-build/|
 
 open('/etc/sysconfig/network-scripts/ifcfg-eth0','w').puts <<-_SH_
 DEVICE="eth0"
@@ -31,7 +36,7 @@ AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
 AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
 AcceptEnv XMODIFIERS
 X11Forwarding yes
-Subsystem	sftp	/usr/libexec/openssh/sftp-server
+Subsystem sftp  /usr/libexec/openssh/sftp-server
 _SH_
 
 
