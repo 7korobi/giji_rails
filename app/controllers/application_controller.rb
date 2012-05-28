@@ -4,6 +4,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   include CurrentAuthenticated
 
+  case Rails.env
+  when 'development'
+    before_filter :debug
+    def debug
+      current.user ||= User.find('7korobi')
+      current.auth ||= current.user.auths.first
+      current_save
+    end
+  end
+
   protected
   def form obj
     url = [:story].each_with_object controller: obj.class.name.collectionize do |symbol, hash|

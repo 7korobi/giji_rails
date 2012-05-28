@@ -3,12 +3,6 @@ Giji::Application.routes.draw do
     get '/users/sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-=begin
-  faye_server '/faye', :timeout => 25 do
-    map '/trpg/**' => TrpgController
-  end
-=end
-
   resources :trpg_stories, except:%w[show]
 
   scope ':folder' do

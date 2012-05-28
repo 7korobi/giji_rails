@@ -21,8 +21,6 @@ end
 
 # client side data
 gem 'gon'
-gem 'thin'
-gem 'private_pub'
 
 # view environment
 gem "slim"

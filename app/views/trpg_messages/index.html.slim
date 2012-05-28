@@ -12,12 +12,35 @@
     p= link_to '章を書き換える', edit_trpg_event_path(story, event)
     =semantic_form_for_resource event do |f|
       .inputs
-        = f.input :potofs, as: :check_boxes, collection: story.potofs
+        = f.input :potofs, as: :check_boxes, collection: story.potofs, label: '参加者一覧'
       .actions
         = f.submit
 
 - content_for :log do
-  h3 魔術師
+  h2= story.name
+  h3= event.name
+  br
+  #messages(data-spy="scroll")
+
+  h3 
+  h3 エントリー
+  =semantic_form_for_resource event do |base|
+    =base.semantic_fields_for :potof do |f|
+      .formpl_frame
+        table.formpl_common
+          tr.say
+            td.img
+              img(name="chr_img" src="/images/portrate/undef.jpg")
+            td.field
+              .msg
+                .formpl_content
+                  = f.input :face_id, as: :select, collection: Face.all, label: '希望する配役：'
+                .formpl_content
+                  = f.submit "このシーンに参加"
+        .clearboth
+          hr.invisible_hr
+
+
   table.formpl_common
     tr.say
       td.img

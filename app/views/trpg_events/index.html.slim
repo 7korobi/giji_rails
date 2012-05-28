@@ -9,4 +9,45 @@
     p= link_to '新しい章を綴る',   new_trpg_event_path(story_id:story)
     br
 
-=render template:'events/index'
+
+- content_for :head do
+  | ページをめくる
+
+- content_for :link_caption do
+  | 他の物語へ
+
+- content_for :link do
+  br
+  p= link_to '他の物語を見る', index_parent_path
+  br
+
+- content_for :info_caption do
+  | 他の章へ
+
+- content_for :info do
+  - events.each do |event|
+    ul
+      li= link_to event.name.html_safe, "#{NODE[:server]}/trpg/#{event.id}/#{current.user.rails_token}"
+  br
+
+- content_for :log do
+  h2 村の情報
+  .mes_maker
+    p.multicolumn_label 村の名前：
+    p.multicolumn_left= story.name.html_safe
+    br.multicolumn_clear
+
+    p.multicolumn_label こだわり：
+    p.multicolumn_left= image_tag "/images/icon/cd_#{story.rating}.png"
+    br.multicolumn_clear
+
+    dl.head
+    dd= Message.to_fair( story.comment )
+
+  .mes_maker
+    =yield :info
+
+  .mes_maker
+    - potofs.each do |potof|
+      ul
+        li= potof.name

@@ -10,7 +10,6 @@
 //= require knockout
 //= require_tree ./base
 //= require_tree ./app
-//= require private_pub
 //= require model_manage
 
 Client.deploy();

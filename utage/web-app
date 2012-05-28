@@ -14,7 +14,6 @@ status)
   ls /utage/pids/*
   ;;
 start)
-  ~/.rbenv/shims/bundle exec rackup private_pub.ru -s thin -E production &
   ~/.rbenv/shims/bundle exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
   ;;
 stop)
@@ -28,7 +27,6 @@ reload)
   $0 kill QUIT "rackup private_pub"
   $0 kill USR2 "unicorn_rails master"
   touch /www/$APP/tmp/restart.txt
-  ~/.rbenv/shims/bundle exec rackup private_pub.ru -s thin -E production &
   ;;
 
 

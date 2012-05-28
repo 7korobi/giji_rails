@@ -6,6 +6,7 @@ class User
   field :name,       limit: 30
   field :email,      limit: 30, allow_blank: true, allow_nil: true
   field :is_admin, type: Boolean, hidden: true
+  field :rails_token,             hidden: true
 
   devise :trackable, :omniauthable
   has_many :auths,    inverse_of: :user

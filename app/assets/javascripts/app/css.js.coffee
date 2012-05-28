@@ -1,6 +1,7 @@
 class CSS
   constructor: (base)->
     base.css = @
+    @location = "/stylesheets/"
 
     @h1 = $("#contentframe h1 img")
     @head = $('head')
@@ -42,7 +43,7 @@ class CSS
         <link media="screen" rel="stylesheet" type="text/css" app/>
       """
       stylesheet = @head.find('link[app]');
-    stylesheet.attr("href","/stylesheets/#{@current}.css")
+    stylesheet.attr("href","#{@location}#{@current}.css")
 
     if @current.match /480/ 
       @width = 480 

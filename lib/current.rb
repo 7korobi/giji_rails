@@ -59,6 +59,7 @@ module CurrentAuthenticated
 
     current.auth.try :save
     if current.user
+      current.user.rails_token = form_authenticity_token
       current.user.save
       current.request.user_ids |= [current.user.id]
     end
