@@ -402,7 +402,7 @@ _PERL_
       end
 
       rsync.each do |folder, protocol, set|
-        next unless GAME[folder][:config]
+        next unless GAME[folder]  &&  GAME[folder][:config]
         rhtml_config_out = GAME[folder][:config][:pl]
         rsync.put(protocol, set, 'config.pl', :ldata, :config)
       end

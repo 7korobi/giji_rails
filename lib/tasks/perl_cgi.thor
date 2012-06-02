@@ -7,8 +7,8 @@ class PerlCgi < Thor
     require 'fileutils'
     require 'yaml'
     require 'erubis'
-    require '/www/giji/lib/const'
-    require '/www/giji/lib/rsync'
+    require '/www/giji_rails/lib/const'
+    require '/www/giji_rails/lib/rsync'
 
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|

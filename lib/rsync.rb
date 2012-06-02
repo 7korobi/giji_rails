@@ -92,7 +92,9 @@ module Giji
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|-X #{name}|
         end.join(' ')
-        @sh << %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{lpath} #{rpath}; exit'|
+        line = %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{lpath} #{rpath}; exit'|
+        puts line
+        @sh << line
 
       when 'ssh'
         option = '--stats'
@@ -100,7 +102,8 @@ module Giji
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|
         end.join(' ')
-        @sh << %Q|rsync -e 'ssh -p #{port}' -r #{lpath} #{user}@#{open}:#{rpath} #{excludes} #{option}|
+        line = %Q|rsync -e 'ssh -p #{port}' -r #{lpath} #{user}@#{open}:#{rpath} #{excludes} #{option}|
+        @sh << line
 
       end
     end

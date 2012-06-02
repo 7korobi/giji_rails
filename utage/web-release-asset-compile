@@ -13,5 +13,4 @@ rake  assets:precompile
 /utage/web-ssh-serversman-giji  $RUBY /utage/init-7korobi-asset.rb
 /utage/web-ssh-serversman-giji-root  /utage/web-infra-serversman restart
 
-rm $APP/public/assets/*
 
