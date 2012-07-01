@@ -8,3 +8,14 @@ git commit -a -m "collection"
 # rdiff-backup --remove-older-than 3M /data/backup/Album &
 
 # rdiff-backup --print /data/Album /data/backup/Album
+
+for TO in 241 242 243 251 254
+do
+
+  for DIR in etc var home
+  do
+    ssh -p ${TO}0 root@192.168.0.$TO "cd /$DIR/  && git commit -a -m backup"
+    rsync -r -e "ssh -p ${TO}0" root@192.168.0.$TO:/$DIR/.git/ /c/backup/$DIR/$TO/.git/
+  done
+done
+

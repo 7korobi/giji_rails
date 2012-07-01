@@ -1,7 +1,7 @@
 #! /bin/sh
 
 STYLE="m4v"
-AUDIO="-a 1 -E faac  -6 dpl2 -R Auto -B 160 -D 0.0"
+AUDIO="-N jpn -E faac  -6 dpl2 -R Auto -B 160 -D 0.0"
 GRAPH="-w 1280 -l 720  -e x264 -q 25 -r 29.97 --pfr"
 HANDBRAKE="/usr/bin/HandBrakeCLI  -f mp4 -4  --verbose=1 "
 OUT="/media/iPad/Videos"

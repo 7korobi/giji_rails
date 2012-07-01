@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /home/7korobi/web-env
+test -f /home/7korobi/web-env  &&  . /home/7korobi/web-env
 
 APP=giji_rails
 PID=$APP.unicorn
@@ -51,7 +51,7 @@ kill)
   SIG=$1
   shift
   ps -ef | grep "$*" | grep -v grep | grep -v web-app
-  PROCESS_ID=`ps -ef | grep "$*" | grep -v grep | grep -v web-app | head -1 | cut -c 8-15`
+  PROCESS_ID=`ps -ef | grep "$*" | grep -v grep | grep -v web-app | head -1 | awk '{print $2}'`
   echo $SIG $PROCESS_ID
   kill -s $SIG $PROCESS_ID
   ;;
@@ -71,12 +71,23 @@ time)
 
 s|server|test)
   $0 stop
-  ~/.rbenv/shims/bundle exec rails s -p $WEB_PORT
-  #  1> /www/$APP/log/test-stdout.log  2> /www/$APP/log/test-stderr.log
+  /opt/local/bin/redis-server /opt/local/etc/redis.conf  &
+  /mongo/mongod  &
+  ~/.rbenv/shims/bundle exec rails s
+  $0 kill TERM "redis-server"
+  $0 kill TERM "/mongo/mongod"
+  $0 kill TERM "redis-server"
+  $0 kill TERM "/mongo/mongod"
   ;;
 c|console)
   shift
+  /opt/local/bin/redis-server /opt/local/etc/redis.conf 1> /dev/null 2> /dev/null &
+  /mongo/mongod  &
   ~/.rbenv/shims/bundle exec rails c $*
+  $0 kill TERM "redis-server"
+  $0 kill TERM "/mongo/mongod"
+  $0 kill TERM "redis-server"
+  $0 kill TERM "/mongo/mongod"
   ;;
 
 tail-log)

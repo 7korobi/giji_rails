@@ -4,6 +4,7 @@
 - content_for :info do
   =semantic_form_for user do |f|
     = f.inputs
+    = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }
     .actions
       = f.submit
 

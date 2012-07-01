@@ -1,0 +1,14 @@
+
+KEY=/root/.ssh/authorized_keys
+PUBR=`cat /root/.ssh/id_rsa.pub`
+PUB7=`cat /c/home/7korobi/.ssh/id_rsa.pub`
+
+for TO in 241 242 243 251 254
+do
+  CMD="/bin/grep \"$PUBR\" \"$KEY\" || /bin/echo \"$PUBR\" >> \"$KEY\";"
+  ssh -p ${TO}0 root@192.168.0.$TO  $CMD
+  CMD="/bin/grep \"$PUB7\" \"$KEY\" || /bin/echo \"$PUB7\" >> \"$KEY\";"
+  ssh -p ${TO}0 root@192.168.0.$TO  $CMD
+done
+
+

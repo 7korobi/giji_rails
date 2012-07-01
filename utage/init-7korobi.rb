@@ -1,5 +1,5 @@
 
-node="v0.6.18"
+node="v0.6.19"
 ss  ="0.3.0RC2"
 
 no = ARGV[0][0..2]
@@ -13,6 +13,7 @@ PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/
 UTAGE=#{no}
 SSH_PORT=#{no}0
 WEB_PORT=#{no}9
+WSS_PORT=#{no}8
 
 export LANG=ja_JP.UTF-8
 export PATH

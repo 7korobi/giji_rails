@@ -1,14 +1,16 @@
 #!/bin/sh
 
-TARGET=$1
 APP=/www/giji_rails
 RUBY="~/.rbenv/bin/rbenv exec ruby "
 shift
 
-/utage/web-push-$TARGET /utage  --delete
-/utage/web-push-$TARGET $APP    --delete &
+for TARGET in $1
+do
+  /utage/web-push-$TARGET /utage    --delete &
+  /utage/web-push-$TARGET /www/giji_rails  --delete &
+  /utage/web-push-$TARGET /www/giji_socketstream  --delete &
 
-/utage/web-ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET 
-/utage/web-ssh-$TARGET  /utage/web-app $1 &
-
+  /utage/web-ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET
+  /utage/web-ssh-$TARGET  /utage/web-app $1 &
+done
 

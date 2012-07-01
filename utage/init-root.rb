@@ -56,5 +56,7 @@ commands = <<-_SH_
 mkdir -p /www/giji_rails /utage
 chown -R 7korobi:users /www /utage /home/7korobi/.bash_profile /home/7korobi/.ssh/authorized_keys
 chmod 600  /home/7korobi/.ssh/authorized_keys
+cd /  && git init
 _SH_
 commands.each_line {|sh| system sh}
+

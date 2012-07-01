@@ -2,6 +2,7 @@ RUBY="~/.rbenv/bin/rbenv exec ruby "
 APP=/www/giji_rails
 cd $APP
 
+rm -rf $APP/public/assets/*
 rake  assets:precompile
 
 /utage/web-push-serversman-cdj  /utage &

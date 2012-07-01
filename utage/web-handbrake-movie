@@ -1,15 +1,17 @@
 #! /bin/sh
 
 STYLE="m4v"
-AUDIO="-a 2 -E faac  -6 dpl2 -R Auto -B 160 -D 2.0"
+AUDIO="-N jpn -E faac  -6 dpl2 -R Auto -B 160 -D 2.0"
 GRAPH="-w 1920 --crop 140:140:0:0 -e x264 -q 25 -r 29.97 --pfr --detelecine --decomb"
-HANDBRAKE="/usr/bin/HandBrakeCLI  -f mp4 -4  --verbose=1 "
+HANDBRAKE="/usr/bin/HandBrakeCLI  -f mp4 -4  -O --verbose=1 "
 OUT="/media/iPad/Videos"
+EXT="$*"
 
 export STYLE
 export AUDIO
 export GRAPH
 export HANDBRAKE
 export OUT
+export EXT
 /utage/web-handbrake-worker
 
