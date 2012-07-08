@@ -1,3 +1,5 @@
+#! /bin/sh
+
 cd $1
 git log --graph --date-order -C -M --pretty=format:"<%h> %ad [%an] %Cgreen%d%Creset %s" --all --date=short
 echo

@@ -1,3 +1,5 @@
+#! /bin/sh
+
 for TO in $1
 do
   mkdir -p etc/$TO/.git var/$TO/.git home/$TO/.git
@@ -5,5 +7,13 @@ do
   ssh -p ${TO}0 root@192.168.0.$TO  "cd /etc/   && git init && git add  /etc/fstab /etc/hosts /etc/ssh/sshd_config /etc/sysconfig/network-scripts/ifcfg-eth0 "
   ssh -p ${TO}0 root@192.168.0.$TO  "cd /var/   && git init && git add  /var/spool/ "
   ssh -p ${TO}0 root@192.168.0.$TO  "cd /home/  && git init "
+
+  if ssh -p ${TO}0 root@192.168.0.$TO  "uname -m" | grep x86_64
+  then
+    ssh -p ${TO}0 root@192.168.0.$TO  "cd /tmp/  &&  wget http://pkgrepo.linuxtech.net/el6/release/x86_64/handbrake-cli-0.9.5-1.el6.x86_64.rpm"
+    ssh -p ${TO}0 root@192.168.0.$TO  "cd /tmp/  &&  wget http://rpms.famillecollet.com/enterprise/6/remi/x86_64/libdvdcss-1.2.12-1.el6.remi.x86_64.rpm"
+    ssh -p ${TO}0 root@192.168.0.$TO  "cd /tmp/  &&  rpm -i libdvdcss-1.2.12-1.el6.remi.x86_64.rpm"
+    ssh -p ${TO}0 root@192.168.0.$TO  "cd /tmp/  &&  rpm -i handbrake-cli-0.9.5-1.el6.x86_64.rpm"
+  fi
 done
 

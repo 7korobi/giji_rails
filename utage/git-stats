@@ -1,3 +1,4 @@
+#! /bin/sh
 
 web-ssh-241       /utage/git-log-stat /etc
 web-ssh-251       /utage/git-log-stat /etc

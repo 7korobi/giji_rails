@@ -1,3 +1,4 @@
+#! /bin/sh
 
 KEY=/root/.ssh/authorized_keys
 PUBR=`cat /root/.ssh/id_rsa.pub`

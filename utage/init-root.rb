@@ -1,5 +1,4 @@
-
-
+#!/usr/bin/env ruby-local-exec
 
 no = ARGV[0][0..2]
 hwaddr = no[1..2]
@@ -49,6 +48,7 @@ _SH_
 
 open('/home/7korobi/.ssh/authorized_keys','w').puts <<-_SH_
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaTyTVqSRr/kH4ZPkH1Y0cpKhGlUmGbUWwSMRcQiXMik3cJfGCVWahUT36snbVzbjJtE15WXi3yfeaIrj2BVn7VDrNabUvSgELKyMzjUEfH1DROQrZN9e0fOwifEGDPlDr/iD0bSX92ZCM/aICaf/awkbs4lZIKAs6V7sG8szk5MZ7rbF+rUAuwh+nLPfboV2ssfCHc72nyeY9+wvhHMD4HDvDSbutPnjAXS5E5JbW82XILLo1PWbN10hJuud16Cui9t5aXYPslJ/GXnKTmqwGy4DYF4aC/VvzpQ5p9vhptmcG0hYlNro3kSgUKn5ZgZlRnFM+6Xo0tKo3LtZIfCbV 7korobi@7korobi-Air.local
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA35zPfcfVXpdORYti8MFr2TaEGHHk+GCCFI9Refys8fEsqAsAWzpSuuFWt4h4LEypXBkfJhuRvSV9mr1yqP3gWS2hUvfmUtb86Kk7RbSJDMmGCS5DsjS+utjGyjt2i4YGZeVfzjW0YNsHy6TmSjj6hWhLCBPYh5xY0D8pucfoSaDDEvz86mws6uZCArpWgZ0PmYcXSDDn73+O/BmlzQh0dFnZ6qL3dlKZwLPtAmQp3ukYSlW8PgHK5LXKt2HgoYAQogCXOpFSfIMLZHO8Aac9sGFkGs7Apy930ShDf0M/Uwd0ektflFFNorpb57L0EnxGXCwNT/aO/ATt28Lxp1c3Bw== 7korobi@ultra6
 _SH_
 
 

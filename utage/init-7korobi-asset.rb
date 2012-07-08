@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby-local-exec
 
 node="v0.6.18"
 ss  ="0.3.0RC2"
