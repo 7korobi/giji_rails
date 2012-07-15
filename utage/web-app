@@ -41,7 +41,7 @@ QUEUE)
   $0 kill QUIT "Waiting for $LIST"
   $0 kill QUIT "resque-scheduler-"
 
-  /utage/251/resque 1> /dev/null 2> /dev/null
+  ~/.rbenv/shims/bundle exec resque-web -p $WEB_PORT config/initializers/resque.rb 1> /dev/null 2> /dev/null
   QUEUE=$LIST PIDFILE=/utage/pids/resque.pid BACKGROUND=yes rake environment resque:work  1> /dev/null 2> /dev/null
     PIDFILE=/utage/pids/resque-scheduler.pid BACKGROUND=yes rake resque:scheduler         1> /dev/null 2> /dev/null
   ;;

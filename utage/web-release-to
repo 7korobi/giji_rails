@@ -2,7 +2,6 @@
 
 APP=/www/giji_rails
 RUBY="~/.rbenv/bin/rbenv exec ruby "
-shift
 
 for TARGET in $1
 do
@@ -11,6 +10,6 @@ do
   /utage/web-push-$TARGET /www/giji_socketstream  --delete &
 
   /utage/web-ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET
-  /utage/web-ssh-$TARGET  /utage/web-app $1 &
+  /utage/web-ssh-$TARGET  /utage/web-app $2 &
 done
 

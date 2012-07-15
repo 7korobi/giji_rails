@@ -1,7 +1,0 @@
-#! /bin/sh
-
-cd /data
-rdiff-backup --remove-older-than 3M /data/backup/mongo &
-mongodump --host 192.168.0.100 -d giji
-
-rdiff-backup --print /data/dump  /data/backup/mongo

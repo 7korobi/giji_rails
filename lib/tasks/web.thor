@@ -16,7 +16,7 @@ class Web < Thor
 
   desc "utage",  "web-ssh method create as Other domain"
   def utage
-    each_servers{|no| "utage.sytes.net"}
+    each_servers{|no| "7korobi.ddo.jp"}
     open("/etc/hosts", "w:utf-8") do |f|
       f.puts HOST
       f.puts HOST_WEB
@@ -41,6 +41,7 @@ _HOSTS_
 183.181.24.203  giji.sytes.net
 192.168.0.100  utage.sytes.net
 192.168.0.101     tv.sytes.net
+192.168.0.100   7korobi.ddo.jp
 _HOSTS_
 
   HOST_WEB = <<'_HOSTS_'

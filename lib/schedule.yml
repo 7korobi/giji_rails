@@ -3,7 +3,7 @@ giji_git_scanner:
   class: GijiScheduler
   args:  git
   queue: giji_schedules
-  description: giji rsync and vils get.
+  description: giji git regular collection.
 
 giji_vil_scanner:
   cron: '1,16,31,46  *  *  *  *'

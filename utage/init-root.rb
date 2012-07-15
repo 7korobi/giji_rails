@@ -43,6 +43,7 @@ open('/etc/hosts','w').puts <<-_SH_
 183.181.24.203  giji.sytes.net
 192.168.0.100  utage.sytes.net
 192.168.0.101     tv.sytes.net
+192.168.0.100  7korobi.ddo.jp
 _SH_
 
 

@@ -34,6 +34,7 @@ module Giji
     end
 
     def in_folder(folder, *deny_protocols)
+      return unless RSYNC[folder]
       RSYNC[folder].each do |protocol, set|
         next if protocol == 'keys'
         next if deny_protocols.member? protocol
@@ -92,7 +93,9 @@ module Giji
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|-X #{name}|
         end.join(' ')
-        line = %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; mirror #{option} #{excludes}  #{lpath} #{rpath}; exit'|
+        cmd = %Q|put #{lpath} -o #{rpath}|                        if FileTest.file?      lpath
+        cmd = %Q|mirror #{option} #{excludes}  #{lpath} #{rpath}| if FileTest.directory? lpath
+        line = %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; #{cmd}; exit'|
         puts line
         @sh << line
 

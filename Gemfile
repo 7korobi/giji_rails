@@ -79,7 +79,7 @@ gem "rdropbox"
 
 # data_base
 gem "paperclip"
-gem "mongoid"
+gem "mongoid", '2.4.11'
 gem "redis-store", '1.0.0.1'
 gem 'sqlite3'
 gem "sqlite3-ruby"
