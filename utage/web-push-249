@@ -1,4 +1,4 @@
 echo "no: 249  to: $1  option: $2 $3 $4 $5"
 TO=$1
 
-rsync -e "ssh -p 2490" -r ${TO}/ 7korobi@7korobi.ddo.jp:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak'  $2 $3 $4 $5
+rsync -e "ssh -p 2490" -r ${TO}/ 7korobi@utage.family.jp:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak'  $2 $3 $4 $5

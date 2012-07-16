@@ -61,45 +61,47 @@ sub OutHTMLAdminInfo {
 ｜
 <a href="http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8">人狼物語Server一覧</a>（melonkoさん管理）
 <div class="choice">
+
 <table class="board">
 <tr>
-<th colspan=5>総合トップページはこちら <a href="http://giji.sytes.net?$topcss"><strong>人狼議事</strong></a> 合計$max_all村を上限としています
+<th colspan=4>総合トップページはこちら <a href="http://giji.sytes.net?$topcss"><strong>人狼議事</strong></a> 合計$max_all村を上限としています
 <td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi">似顔絵<br>人狼<br>　</a>
 <tr class="link">
-<td class="$choice_lobby">   <a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">ロビー<br>　</a>
-<td class="$choice_wolf">    <a href="http://utage.sytes.net/wolf/sow.cgi?$topcss">標準<br>　</a>
+<td class="$choice_lobby">   ロビー<br>　
 <td class="$choice_cabala">  陰謀<br>　
 <td class="$choice_allstar"> 大乱闘<br>　
 <td class="$choice_braid">   ＲＰ　<br>:Braid
 <tr>
-<td class="$choice_lobby">
-<td class="$choice_wolf">$max_wolf村
+<td class="$choice_lobby" style="text-align:left;">
+  <a href="http://giji.sytes.net/LOBBY/stories">終</a>:<a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">lobby</a><br>
+  <a href="http://giji.sytes.net/OFFPARTY/stories">終:offparty</a><br>
+  <br>
+  <br>
+  <br>
 <td class="$choice_cabala" style="text-align:left;">
-$max_cabala村<a href="<%= GAME[:CABALA_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧地</a><br>
-$max_cafe村<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:cafe</a><br>
+  <a href="http://giji.sytes.net/CABALA/stories">終</a>:$max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
 　<br>
-　
+　<br>
+　<br>
+　<br>
 <td class="$choice_allstar" style="text-align:left;">
-$max_allstar村<a href="<%= GAME[:ALLSTAR_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧地</a><br>
-$max_jksy村<a href="<%= GAME[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:allstar</a><br>
+  <a href="http://giji.sytes.net/WOLF/stories">終:wolf</a><br>
+  <a href="http://giji.sytes.net/ULTIMATE/stories">終:ultimate</a><br>
+  <a href="http://giji.sytes.net/ALLSTAR/stories">終</a>:$max_jksy村:<a href="<%= GAME[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">allstar</a><br>
 　<br>
-　
+　<br>
 <td class="$choice_braid" style="text-align:left;">
-$max_perjury村<a href="<%= GAME[:PERJURY_OLD]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">旧RPbp</a><br>
-$max_vage村<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:perjury</a><br>
-$max_xebec村<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:xebec</a><br>
-$max_crazy村<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">:crazy</a>
-<td class="no_choice">$max_pan村
-<tr>
-<td class="$choice_lobby">  <a href="http://utage.sytes.net/WebRecord/vil/LOBBY?$topcss">終了した村</a>
-<td class="$choice_wolf">   <a href="http://utage.sytes.net/WebRecord/vil/WOLF?$topcss">終了した村</a>
-<td class="$choice_cabala"> <a href="http://utage.sytes.net/WebRecord/vil/CABALA?$topcss">終了した村</a>
-<td class="$choice_allstar"><a href="http://utage.sytes.net/WebRecord/vil/ALLSTAR?$topcss">終了した村</a>
-<td class="$choice_braid">  <a href="http://utage.sytes.net/WebRecord/vil/RP?$topcss">終了した村</a>
-<td class="no_choice">
+  <a href="http://giji.sytes.net/RP/stories">終:role-play</a><br>
+  <a href="http://giji.sytes.net/PRETENSE/stories">終:RP-advance</a><br>
+  <a href="http://giji.sytes.net/PERJURY/stories">終</a>:$max_vage村:<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
+  <a href="http://giji.sytes.net/PERJURY/stories">終</a>:$max_xebec村:<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
+  <a href="http://giji.sytes.net/PERJURY/stories">終</a>:$max_crazy村:<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
+<td class="no_choice">:$max_pan村:
+  <br>
+  <br>
+  <br>
+  <br>
 </table>
-
-
 <p style="text-align:right; font-size: 100%;">
 $css_select
 </p>

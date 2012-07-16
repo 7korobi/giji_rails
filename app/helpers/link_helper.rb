@@ -13,11 +13,11 @@ module LinkHelper
     def img(csid,cid)
         case csid
         when "juna","name"
-            '<img src="http://utage.sytes.net/pan/img/%s/%s.jpg">'%[csid,cid]
+            '<img src="http://giji.check.jp/images/%s/%s.jpg">'%[csid,cid]
         when "bloody","15girls","orange","sow","tmmi"
-            '<img src="http://utage.sytes.net/pan/img/%s/%s.png">'%[csid,cid]
+            '<img src="http://giji.check.jp/images/%s/%s.png">'%[csid,cid]
         else
-            '<img src="http://utage.sytes.net/wolf/img/ririnra/%s.jpg" />'%[cid]
+            '<img src="http://giji.check.jp/images/portrate/%s.jpg" />'%[cid]
         end.html_safe
     end
 

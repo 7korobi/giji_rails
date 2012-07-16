@@ -191,8 +191,8 @@ TESTBED:
       ENABLED_SUDDENDEATH: [0, "1:突然死あり"]
     cfg:
       <<: *cfg_union
-      URL_SW:         http://utage.sytes.net/testbed
-      BASEDIR_CGIERR: http://utage.sytes.net//testbed
+      URL_SW:         http://utage.family.jp/testbed
+      BASEDIR_CGIERR: http://utage.family.jp//testbed
       NAME_HOME:      人狼議事 手元テスト
       RULE:           ALLSTAR
       MAX_VILLAGES:   9
@@ -207,7 +207,7 @@ TESTBED:
     pl:  /www/giji_log/testbed/config.pl
 
 PERJURY_OLD:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /perjury/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /perjury/sow.cgi?cmd=rss
   folder: PERJURY
@@ -219,8 +219,8 @@ PERJURY_OLD:
     <<: *config_braid
     cfg:
       <<: *cfg_union
-      URL_SW:         http://utage.sytes.net/perjury
-      BASEDIR_CGIERR: http://utage.sytes.net//perjury
+      URL_SW:         http://utage.family.jp/perjury
+      BASEDIR_CGIERR: http://utage.family.jp//perjury
       NAME_HOME:      人狼議事 Role Play braid perjury
       RULE:           BRAID
       MAX_VILLAGES:   0
@@ -231,7 +231,7 @@ PERJURY_OLD:
       <<: *GIJI_PATH
     pl:  /www/giji_log/perjury/config.pl
 PRETENSE:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /pretense/sow.cgi?cmd=oldlog&rowall=on
   folder: PRETENSE
   info_url: /pretense/sow.cgi?ua=mb&vid=%s&cmd=vinfo
@@ -239,7 +239,7 @@ PRETENSE:
   epi_url:  /pretense/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: A
 RP:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /rp/sow.cgi?cmd=oldlog&rowall=on
   folder: RP
   info_url: /rp/sow.cgi?ua=mb&vid=%s&cmd=vinfo
@@ -247,7 +247,7 @@ RP:
   epi_url:  /rp/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: ""
 CABALA_OLD:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /cabala/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /cabala/sow.cgi?cmd=rss
   folder: CABALA
@@ -263,8 +263,8 @@ CABALA_OLD:
       ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
     cfg:
       <<: *cfg_union
-      URL_SW:         http://utage.sytes.net/cabala
-      BASEDIR_CGIERR: http://utage.sytes.net//cabala
+      URL_SW:         http://utage.family.jp/cabala
+      BASEDIR_CGIERR: http://utage.family.jp//cabala
       NAME_HOME:      人狼議事 陰謀の苑
       RULE:           CABALA
       MAX_VILLAGES:   0
@@ -273,7 +273,7 @@ CABALA_OLD:
       DIR_VIL:  ../cafe/data/vil
     pl:  /www/giji_log/cabala/config.pl
 ALLSTAR_OLD:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /allstar/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /allstar/sow.cgi?cmd=rss
   folder: ALLSTAR
@@ -289,8 +289,8 @@ ALLSTAR_OLD:
       ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
     cfg:
       <<: *cfg_union
-      URL_SW:         http://utage.sytes.net/allstar
-      BASEDIR_CGIERR: http://utage.sytes.net//allstar
+      URL_SW:         http://utage.family.jp/allstar
+      BASEDIR_CGIERR: http://utage.family.jp//allstar
       NAME_HOME:      人狼議事 大乱闘オールスター
       RULE:           ALLSTAR
       MAX_VILLAGES:   0
@@ -299,7 +299,7 @@ ALLSTAR_OLD:
       DIR_VIL:  ../jksy/data/vil
     pl:  /www/giji_log/allstar/config.pl
 ULTIMATE:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /ultimate/sow.cgi?cmd=oldlog&rowall=on
   folder: ULTIMATE
   info_url: /ultimate/sow.cgi?ua=mb&vid=%s&cmd=vinfo
@@ -310,7 +310,7 @@ ULTIMATE:
 WOLF:
   folder: WOLF
   nation: "人狼議事標準:"
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /wolf/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /wolf/sow.cgi?cmd=rss
   info_url: /wolf/sow.cgi?ua=mb&vid=%s&cmd=vinfo
@@ -320,7 +320,7 @@ WOLF:
 # 内部 似顔絵人狼
 #
 PAN:
-  server: utage.sytes.net
+  server: utage.family.jp
   oldlog:   /pan/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /pan/sow.cgi?cmd=rss
   folder: PAN
@@ -352,8 +352,8 @@ PAN:
 
     cfg:
       <<: *cfg_union
-      URL_SW:         http://utage.sytes.net/pan
-      BASEDIR_CGIERR: http://utage.sytes.net//pan
+      URL_SW:         http://utage.family.jp/pan
+      BASEDIR_CGIERR: http://utage.family.jp//pan
       NAME_HOME:      似顔絵人狼
       RULE:           PAN
       MAX_VILLAGES:    1
@@ -367,6 +367,28 @@ PAN:
 
 # 外部 人狼議事
 #
+SOYBEAN:
+  server: soy-bean.sakura.ne.jp
+  oldlog:   /sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /sow.cgi?cmd=rss
+  folder: SOYBEAN
+  info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Bs"
+  epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Bs
+  config:
+    <<: *config_braid
+    cfg:
+      <<: *cfg_braid
+      URL_SW:         http://soy-bean.sakura.ne.jp
+      BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp//
+      NAME_HOME:      人狼議事 soy bean paste<br>- Role Play braid -
+      MAX_VILLAGES:   2
+      BASEDIR_DOC:    /WebRecord
+    path:
+      <<: *SIMPLE_PATH
+    pl:  /www/giji_log/vage/config.pl
+
 PERJURY:
   server: perjury.rulez.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
@@ -387,7 +409,7 @@ PERJURY:
       BASEDIR_DOC:    /WebRecord
     path:
       <<: *SIMPLE_PATH
-    pl:  /www/giji_log/vage/config.pl
+    pl:  /www/giji_log/soy-bean/config.pl
 
 XEBEC:
   server: xebec.x0.to
@@ -432,7 +454,7 @@ CRAZY:
       URL_SW:         http://crazy-crazy.sakura.ne.jp/crazy
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//crazy
       NAME_HOME:      人狼議事 crazy<br>- Role Play braid -
-      MAX_VILLAGES:   1
+      MAX_VILLAGES:   2
       BASEDIR_DOC:    /WebRecord
     path:
       <<: *SIMPLE_PATH
