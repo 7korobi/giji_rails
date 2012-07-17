@@ -2,4 +2,4 @@ development:
   server: http://localhost:3000
 
 production:
-  server: http://giji.sytes.net:3000
+  server: http://giji.check.jp:3000

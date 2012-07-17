@@ -118,7 +118,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   /WebRecord
+      BASEDIR_DOC:   http://giji.check.jp
 
 PERL_BRAID:
   config: &config_braid
@@ -166,7 +166,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   /WebRecord
+      BASEDIR_DOC:   http://giji.check.jp
       RULE:          BRAID
 
 # 内部 人狼議事
@@ -317,10 +317,10 @@ WOLF:
   epi_url:  /wolf/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: ""
 
-# 内部 似顔絵人狼
+# 外部 人狼議事
 #
 PAN:
-  server: utage.family.jp
+  server: soy-bean.sakura.ne.jp
   oldlog:   /pan/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /pan/sow.cgi?cmd=rss
   folder: PAN
@@ -352,21 +352,19 @@ PAN:
 
     cfg:
       <<: *cfg_union
-      URL_SW:         http://utage.family.jp/pan
-      BASEDIR_CGIERR: http://utage.family.jp//pan
+      URL_SW:         http://soy-bean.sakura.ne.jp/pan
+      BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/pan//
       NAME_HOME:      似顔絵人狼
       RULE:           PAN
       MAX_VILLAGES:    1
       TIMEOUT_SCRAP:  10
       TIMEOUT_ENTRY:   3
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
     path:
-      <<: *GIJI_PATH
-      DIR_RS: ./rs
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
     pl:  /www/giji_log/pan/config.pl
 
-# 外部 人狼議事
-#
 SOYBEAN:
   server: soy-bean.sakura.ne.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
@@ -380,14 +378,15 @@ SOYBEAN:
     <<: *config_braid
     cfg:
       <<: *cfg_braid
-      URL_SW:         http://soy-bean.sakura.ne.jp
-      BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp//
+      URL_SW:         http://soy-bean.sakura.ne.jp/soy-bean
+      BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/soy-bean//
       NAME_HOME:      人狼議事 soy bean paste<br>- Role Play braid -
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
-    pl:  /www/giji_log/vage/config.pl
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/soy-bean/config.pl
 
 PERJURY:
   server: perjury.rulez.jp
@@ -406,10 +405,10 @@ PERJURY:
       BASEDIR_CGIERR: http://perjury.rulez.jp//
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
       MAX_VILLAGES:   3
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
-    pl:  /www/giji_log/soy-bean/config.pl
+    pl:  /www/giji_log/vage/config.pl
 
 XEBEC:
   server: xebec.x0.to
@@ -428,7 +427,7 @@ XEBEC:
       BASEDIR_CGIERR: http://xebec.x0.to//xebec
       NAME_HOME:      人狼議事 xebec<br>- Role Play braid -
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/xebec/config.pl
@@ -455,7 +454,7 @@ CRAZY:
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//crazy
       NAME_HOME:      人狼議事 crazy<br>- Role Play braid -
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
       DIR_LIB:  ../giji_lobby/lobby/lib
@@ -487,7 +486,7 @@ CABALA:
       BASEDIR_CGIERR: http://cabala.halfmoon.jp//cafe
       NAME_HOME:      人狼議事 Cabala Cafe
       MAX_VILLAGES:   4
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
@@ -516,7 +515,7 @@ ALLSTAR:
       MAX_VILLAGES:   4
       TIMEOUT_ENTRY:  3
       TIMEOUT_SCRAP: 10
-      BASEDIR_DOC:    /~nanakorobi/WebRecord
+      BASEDIR_DOC:   http://giji.check.jp
       ENABLED_VMAKE:  0
     path:
       <<: *SIMPLE_PATH
@@ -550,7 +549,7 @@ LOBBY:
       URL_SW:         http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby
       NAME_HOME:      人狼議事 ロビー
-      BASEDIR_DOC:    /WebRecord
+      BASEDIR_DOC:    http://giji.check.jp
       ENABLED_VMAKE:    0
       MAX_VILLAGES:    10
       TIMEOUT_SCRAP:  365

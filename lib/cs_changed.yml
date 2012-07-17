@@ -1,0 +1,54 @@
+---
+chr_set_id: changed
+maker: 広場のお告げ
+admin: 闇の呟き
+chr_jobs:
+- face_id: b44
+  job: こあくとう
+- face_id: b49
+  job: いしく
+- face_id: r30
+  job: ひとづかい
+- face_id: m01
+  job: ようせい
+- face_id: m02
+  job: ようせい
+- face_id: m03
+  job: しょうぐん
+- face_id: m04
+  job: すくみず
+- face_id: m05
+  job: はおう
+- face_id: m06
+  job: きゅうていがか
+- face_id: m07
+  job: こひつじ
+- face_id: m08
+  job: おふくろのあじ
+- face_id: m09
+  job: しーさー
+- face_id: m10
+  job: ころぽっくる
+- face_id: m11
+  job: 神聖騎士
+- face_id: m12
+  job: 暗黒騎士
+- face_id: m13
+  job: 調律師
+- face_id: m14
+  job: 奇跡の子
+- face_id: m15
+  job: びじん
+- face_id: m99
+  job: かみさま
+chr_npcs:
+- caption: とのさま広場
+  csid: changed
+  face_id: m08
+  say_0: じんろう？<br>そんななまえのこ、いたかしら……
+  say_1: さあ、ぼうやたちいらっしゃい。ごはんのじかんよ。
+- caption: はおうの広場
+  csid: changed_m05
+  face_id: m05
+  say_0: たいへん、たいへん、たいへん！
+  say_1: 大変、人狼が出たよ！　いつもは嘘だけど、今度は本当の本当に本当！

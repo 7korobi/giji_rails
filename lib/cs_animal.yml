@@ -1,10 +1,8 @@
-_id: animal
 chr_set_id: animal
 admin: 大地の震動
 maker: 草原のざわめき
 chr_npcs:
-- _id: c99
-  caption: うきうきサバンナ
+- caption: うきうきサバンナ
   csid: animal
   face_id: c99
   say_0: 嗚呼、聞こえる。やつの足音が聞こえる……。
@@ -194,49 +192,51 @@ chr_jobs:
   job: びーばー
 - face_id: c106
   job: まんぼう
-- {face_id: c89, job: かば}
-- {face_id: c91, job: あるぱか}
-- {face_id: c93, job: わらいかわせみ}
-- {face_id: c107, job: いぼいのしし}
+- face_id: c89
+  job: かば
+- face_id: c91 
+  job: あるぱか
+- face_id: c93
+  job: わらいかわせみ
+- face_id: c107
+  job: いぼいのしし
+# ayumaruの追加分です。
 # ハナ
-- {face_id: c85, job: はな}
-- {face_id: c85, job: かみつきがめ}
+- face_id: c85
+  job: かみつきがめ
 # シメオン
-- {face_id: c105, job: たらんちゅら}
-- {face_id: c105, job: うみねこ}
-- {face_id: c105, job: みつばいにん}
+- face_id: c105 
+  job: うみねこ
 # レオナルド
-- {face_id: c96,  job: せあかごけぐも}
-- {face_id: c96,  job: しんじゅくのはは}
+- face_id: c96 
+  job: せあかごけぐも
 # オズワルド
-- {face_id: c98,  job: はしびろこう}
-- {face_id: c98,  job: きゃびあ}
+- face_id: c98
+  job: はしびろこう
 # クラリッサ
-- {face_id: c101,  job: らま}
-- {face_id: c101,  job: びくーな}
-- {face_id: c101,  job: すずらん}
-- {face_id: c101,  job: とりかぶと}
+- face_id: c101
+  job: すずらん
 # ヒュー
-- {face_id: c104,  job: おかぴ}
-- {face_id: c104,  job: となかい}
-- {face_id: c104,  job: みいら}
+- face_id: c104
+  job: みいら
 # ブローリン
-- {face_id: c108, job: ぶろっこりー}
-- {face_id: c108, job: りすざる}
+- face_id: c108
+  job: ぶろっこりー
 # ピエール
-- {face_id: c88, job: ゆでたまご}
-- {face_id: c88, job: りょうりにん}
+- face_id: c88
+  job: ゆでたまご
 # ブレンダ
-- {face_id: c84, job: かれき}
-- {face_id: c84, job: ぬけがら}
-- {face_id: c84, job: しろへび}
+- face_id: c84
+  job: しろへび
 # ラディスラヴァ
-- {face_id: c109, job: しろちゃとら}
-- {face_id: c109, job: まんちかん}
+- face_id: c109
+  job: しろちゃとら
 # ウォーレン
-- {face_id: c102, job: さんた}
-- {face_id: c102, job: もみのき}
+- face_id: c102
+  job: さんた
+# エリアス
+- face_id: c87
+  job: りゅう
 # ナンシー
-- {face_id: c103, job: しーらかんす}
-- {face_id: c103, job: めるるーさ}
-- {face_id: c103, job: おうむがい}
+- face_id: c103
+  job: おうむがい
