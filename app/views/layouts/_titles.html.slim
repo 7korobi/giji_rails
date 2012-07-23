@@ -31,11 +31,16 @@ DIV.login
           | 総合トップページはこちら
           strong= link_to '人狼議事', root_path
           | 合計#{max_all}村:を上限としています
-          br
-          span.btn.progress_log(onclick="$('.progress_log').hide();$('.finished_log').show();")
-            | 終了した村を見る
-          span.btn.finished_log(onclick="$('.progress_log').show();$('.finished_log').hide();")
-            | 進行中の村を見る
+          .progress_log
+            strong
+              | 進行中の村　⇦　
+            a(onclick="$('.progress_log').hide();$('.finished_log').show();")
+              | 終了した村を見る
+          .finished_log
+            a(onclick="$('.progress_log').show();$('.finished_log').hide();")
+              | 進行中の村を見る
+            strong
+              | 　⇨　終了した村
 
         td.no_choice.link rowspan="2"
           = link_to "似顔絵<br>人狼<br>　".html_safe, cfg(:PAN)[:URL_SW] + "/sow.cgi?"
@@ -155,7 +160,7 @@ DIV.login
           br
           = link_to "crazy", stories_url(:CRAZY)
         td.no_choice style="text-align:left;"
-          = ""
+          = "pan"
           br
           | 　
           br

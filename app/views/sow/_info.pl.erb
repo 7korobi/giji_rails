@@ -61,46 +61,84 @@ sub OutHTMLAdminInfo {
 ｜
 <a href="http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8">人狼物語Server一覧</a>（melonkoさん管理）
 <div class="choice">
-
+<script>\$(function(){\$('.finished_log').hide()});</script>
 <table class="board">
 <tr>
 <th colspan=4>総合トップページはこちら <a href="http://giji.check.jp?$topcss"><strong>人狼議事</strong></a> 合計$max_all村を上限としています
+<div class="progress_log">
+<strong>進行中の村　←　</strong><a style="color: #ccc;" onclick="\$('.progress_log').hide();\$('.finished_log').show();">終了した村を見る</a>
+</div>
+<div class="finished_log">
+<a style="color: #ccc;" onclick="\$('.progress_log').show();\$('.finished_log').hide();">進行中の村を見る</a><strong>　→　終了した村</strong>
+</div>
 <td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi">似顔絵<br>人狼<br>　</a>
 <tr class="link">
 <td class="$choice_lobby">   ロビー<br>　
 <td class="$choice_cabala">  陰謀<br>　
 <td class="$choice_allstar"> 大乱闘<br>　
 <td class="$choice_braid">   ＲＰ　<br>:Braid
-<tr>
+<tr class="progress_log">
 <td class="$choice_lobby" style="text-align:left;">
-  <a href="http://giji.check.jp/LOBBY/stories">終</a>:<a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">lobby</a><br>
-  <a href="http://giji.check.jp/OFFPARTY/stories">終:offparty</a><br>
-  <br>
-  <br>
-  <br>
+  <a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">lobby</a><br>
+  <a href="http://giji.check.jp/OFFPARTY/stories">offparty</a><br>
+　<br>
+　<br>
+　<br>
 <td class="$choice_cabala" style="text-align:left;">
-  <a href="http://giji.check.jp/CABALA/stories">終</a>:$max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
+  $max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
 　<br>
 　<br>
 　<br>
 　<br>
 <td class="$choice_allstar" style="text-align:left;">
-  <a href="http://giji.check.jp/WOLF/stories">終:wolf</a><br>
-  <a href="http://giji.check.jp/ULTIMATE/stories">終:ultimate</a><br>
-  <a href="http://giji.check.jp/ALLSTAR/stories">終</a>:$max_jksy村:<a href="<%= GAME[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">allstar</a><br>
+  wolf<br>
+  ultimate<br>
+  $max_jksy村:<a href="<%= GAME[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">allstar</a><br>
 　<br>
 　<br>
 <td class="$choice_braid" style="text-align:left;">
-  <a href="http://giji.check.jp/RP/stories">終:role-play</a><br>
-  <a href="http://giji.check.jp/PRETENSE/stories">終:RP-advance</a><br>
-  <a href="http://giji.check.jp/PERJURY/stories">終</a>:$max_vage村:<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
-  <a href="http://giji.check.jp/PERJURY/stories">終</a>:$max_xebec村:<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
-  <a href="http://giji.check.jp/PERJURY/stories">終</a>:$max_crazy村:<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
-<td class="no_choice">:$max_pan村:
-  <br>
-  <br>
-  <br>
-  <br>
+  role-play<br>
+  RP-advance<br>
+  $max_vage村:<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
+  $max_xebec村:<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
+  $max_crazy村:<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
+<td class="no_choice">
+  $max_pan村:pan<br>
+　<br>
+　<br>
+　<br>
+　<br>
+<tr class="finished_log">
+<td class="$choice_lobby" style="text-align:left;">
+  <a href="http://giji.check.jp/LOBBY/stories">lobby</a><br>
+  <a href="http://giji.check.jp/OFFPARTY/stories">offparty</a><br>
+　<br>
+　<br>
+　<br>
+<td class="$choice_cabala" style="text-align:left;">
+  <a href="http://giji.check.jp/CABALA/stories">cafe</a><br>
+　<br>
+　<br>
+　<br>
+　<br>
+<td class="$choice_allstar" style="text-align:left;">
+  <a href="http://giji.check.jp/WOLF/stories">wolf</a><br>
+  <a href="http://giji.check.jp/ULTIMATE/stories">ultimate</a><br>
+  <a href="http://giji.check.jp/ALLSTAR/stories">allstar</a><br>
+　<br>
+　<br>
+<td class="$choice_braid" style="text-align:left;">
+  <a href="http://giji.check.jp/RP/stories">role-play</a><br>
+  <a href="http://giji.check.jp/PRETENSE/stories">RP-advance</a><br>
+  <a href="http://giji.check.jp/PERJURY/stories">perjury</a><br>
+  <a href="http://giji.check.jp/PERJURY/stories">xebec</a><br>
+  <a href="http://giji.check.jp/PERJURY/stories">crazy</a><br>
+<td class="no_choice">
+  pan<br>
+　<br>
+　<br>
+　<br>
+　<br>
 </table>
 <p style="text-align:right; font-size: 100%;">
 $css_select
