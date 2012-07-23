@@ -8,7 +8,7 @@ class MessagesController < BasePastLogController
   respond_to :html, :json
 
   def index
-    gon.messages = messages.gon
-    gon.turn = event.turn
+  	gon.story = story.attributes
+    gon.event = event.attributes
   end
 end

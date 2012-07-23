@@ -1,7 +1,9 @@
-div(class=color)
+div(class="{{mestype}}")
   .guide
     h3.mesname
-      a(name=logid) = name
-    = simple_format(text, class: "#{style} text")
-    p.mes_date= "(#{logid}) #{time}"
+      a(name="{{logid}}")
+        | {{name}}
+    p.text
+      | {{text}}
+    p.mes_date  ({{logid}}) {{time}}
     hr.invisible_hr

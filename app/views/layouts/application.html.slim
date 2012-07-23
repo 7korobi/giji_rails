@@ -1,15 +1,15 @@
 doctype html
 html lang="ja"
-  head
+  head(ng-controller="HEAD")
     =render partial: 'layouts/head'
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事" end
       = if flash[:notice] then flash[:notice] end
   body
     #outframe.outframe
-      #contentframe.contentframe
+      #contentframe.contentframe(ng-controller="MAIN")
         h1 = link_to root_path do
-          img
+          img(ng-src="{{h1.path}}" ng-cloak)
         =render partial: 'layouts/titles'
         .inframe
           hr.invisible_hr
@@ -19,52 +19,35 @@ html lang="ja"
           address
             | 人狼議事キャラセット by りりんら
             br
-            | 管理 sol・la     
+            | 管理 sol・la
             a(href="mailto:7korobi@gmail.com")
               | ななころび
             br
             | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。ご了承ください。
 
       #footer
-      #sayfilter.sayfilter
-        ul.nav.nav-pills
-          li#filter_header.sayfilter_heading.active
-            a(href='#info' data-toggle="tab")
-              | 操作
-          li#filter_header.sayfilter_heading
-            a(href='#link' data-toggle="tab")
-              | 移動
-          li#filter_header.sayfilter_heading
-            a(href='#calc' data-toggle="tab")
-              | 計算
-        .tab-content
-          #link.tab-pane
-            h3.sayfilter_heading 
-              = yield :head
-            .insayfilter
-              .paragraph
-                h4.sayfilter_caption_enable 
-                  = yield :link_caption
-                .sayfilter_content
-                  = yield :link
-          #info.tab-pane.active
-            h3.sayfilter_heading 
-              = yield :head
-            .insayfilter
-              .paragraph
-                h4.sayfilter_caption_enable 
-                  = yield :info_caption
-                .sayfilter_content
-                  = yield :info
-          #calc.tab-pane
-            h3.sayfilter_heading 
-              = yield :head
-            .insayfilter
-              .paragraph
-                h4.sayfilter_caption_enable 
-                  = yield :calc_caption
-                .sayfilter_content
-                  = yield :calc
-                  = text_area_tag :code
-                  br
-                  = link_to 'Chat Forum', 'http://qikpad.co.uk/p/JinroGiji'
+      #tab(ng-controller="TAB")
+        #sayfilter.sayfilter
+          h3.sayfilter_heading(ng-show="! navi.blank")
+            = yield :head
+          - if flash[:error]
+            .insayfilter.paragraph.sayfilter_content
+              = ERROR[flash[:error]]
+
+          .insayfilter(ng-show="navi.link")
+            .paragraph
+              = yield :link_caption
+              = yield :link
+          .insayfilter(ng-show="navi.info")
+            .paragraph
+              = yield :info_caption
+              = yield :info
+          .insayfilter(ng-show="navi.calc")
+            .paragraph
+              = yield :calc_caption
+              = yield :calc
+        #buttons
+          nav
+            span.sayfilter_heading(ng-repeat="key in navi._keys")
+              a.btn(ng-click="navi.move(key)"  ng-class="navi[key]")
+                | {{navi._button[key]}}

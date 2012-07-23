@@ -1,11 +1,34 @@
 - content_for :head do
   | ページをめくる
 
-- content_for :info_caption do
-  | 他の物語へ
-
-- content_for :info do
-  nav.pagination
+- content_for :link do
+  h4.sayfilter_caption_enable
+    | 他の物語へ
+  .sayfilter_content
+    nav
+      span
+        a.btn(ng-click="page.paginate('first')"  ng-class="page.first")
+          | {{page._button.first}}
+      span
+        a.btn(ng-click="page.paginate('second')"  ng-class="page.second")
+          | {{page._button.second}}
+      span(ng-class="page.prev_gap") …
+      span
+        a.btn(ng-click="page.paginate('prev')"  ng-class="page.prev")
+          | {{page._button.prev}}
+      span
+        a.btn(ng-click="page.paginate('current')"  ng-class="page.current")
+          | {{page._button.current}}
+      span
+        a.btn(ng-click="page.paginate('next')"  ng-class="page.next")
+          | {{page._button.next}}
+      span(ng-class="page.next_gap") …
+      span
+        a.btn(ng-click="page.paginate('penu')"  ng-class="page.penu")
+          | {{page._button.penu}}
+      span
+        a.btn(ng-click="page.paginate('last')"  ng-class="page.last")
+          | {{page._button.last}}
 
 - content_for :log do
 

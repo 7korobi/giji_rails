@@ -1,7 +1,8 @@
-div(class=color)
+div(class="{{mestype}}")
   .action
     p.text
-      a(name=logid) = name
-      = "は、#{text}".html_safe
-    p.mes_date= "(#{logid}) #{time}"
+      a(name="{{logid}}")
+        | {{name}}
+      | は、{{text}}
+    p.mes_date  ({{logid}}) {{time}}
     hr.invisible_hr

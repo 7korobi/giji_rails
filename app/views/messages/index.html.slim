@@ -1,31 +1,57 @@
 - content_for :head do
   | ページをめくる
 
-- content_for :link_caption do
-  | 他の章へ
-
 - content_for :link do
-  - events.each do |event|
-    ul
-      li= link_to event.name.html_safe, show_path(event)
-  br
-  p= link_to '他の物語を見る', index_parent_path
-  br
-
-- content_for :info_caption do
-  | 他の場面へ
-
-- content_for :info do
-  nav.pagination
-  nav.modination
+  h4.sayfilter_caption_enable
+    | 他の場面へ
+  .sayfilter_content
+    nav
+      span
+        a.btn(ng-click="page.paginate('first')"  ng-class="page.first")
+          | {{page._button.first}}
+      span
+        a.btn(ng-click="page.paginate('second')"  ng-class="page.second")
+          | {{page._button.second}}
+      span(ng-class="page.prev_gap") …
+      span
+        a.btn(ng-click="page.paginate('prev')"  ng-class="page.prev")
+          | {{page._button.prev}}
+      span
+        a.btn(ng-click="page.paginate('current')"  ng-class="page.current")
+          | {{page._button.current}}
+      span
+        a.btn(ng-click="page.paginate('next')"  ng-class="page.next")
+          | {{page._button.next}}
+      span(ng-class="page.next_gap") …
+      span
+        a.btn(ng-click="page.paginate('penu')"  ng-class="page.penu")
+          | {{page._button.penu}}
+      span
+        a.btn(ng-click="page.paginate('last')"  ng-class="page.last")
+          | {{page._button.last}}
+    nav
+      span(ng-repeat="key in mode._keys")
+        a.btn(ng-click="mode.move(key)"  ng-class="mode[key]")
+          | {{mode._button[key]}}
+    br
+  h4.sayfilter_caption_enable
+    | 他の章へ
+  .sayfilter_content
+    - events.each do |event|
+      ul
+        li= link_to event.name.html_safe, show_path(event)
+    br
+  h4.sayfilter_caption_enable
+    p= link_to '他の物語へ', index_parent_path
 
 - content_for :log do
-  h2= story.name
-  h3= event.name
+  h2 {{title}}
+  h3 {{event.name}}
   br
   #messages(data-spy="scroll")
+    .message_filter(ng-repeat="message in messages" ng-bind-html-unsafe="log(message)")
+    .message_filter.drag(ng-repeat="message in anchors"  ng-bind-html-unsafe="log(message)" style="z-index: {{message.z}}; top: {{message.top}}px; ")
 
-- gon_templates do |view, options|
-  .message_filter
-    = render "giji/#{view}", options
+- angular_templates do |view, options|
+  = render "giji/#{view}", options
 

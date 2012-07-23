@@ -27,12 +27,12 @@ module CurrentAuthenticated
 
   ROLES.each do |role|
     define_method("#{role}_require") do
-      authenticate_deny unless send("#{role}?")
+      authenticate_deny(role) unless send("#{role}?")
     end
   end
 
-  def authenticate_deny
-    redirect_to root_url
+  def authenticate_deny(role)
+    redirect_to root_url, error: "deny/#{role}"
   end
 
   def login(auth)

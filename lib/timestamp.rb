@@ -3,11 +3,7 @@
 class Time
   DateFormat = '%Y-%m-%d'
   TimeFormat = '%H:%M'
-  LaxDateFormat = "%s年%02s月%02s日(%s)"
-  LaxTimeFormat = "%s年%02s月%02s日(%s) %02s時%s頃"
   DATE_FORMATS[:default] = '#{Time::DateFormat} #{Time::TimeFormat}'
-  DATE_FORMATS[:lax_date] = ->(o){now = o + 15.minute; LaxDateFormat%[now.year,now.month,now.day,OPTION[:jp_wday][now.wday]]}
-  DATE_FORMATS[:lax_time] = ->(o){now = o + 15.minute; LaxTimeFormat%[now.year,now.month,now.day,OPTION[:jp_wday][now.wday],now.hour,["","半"][(now.min + 15)/30]]}
 end
 
 module Timestamp
@@ -18,7 +14,7 @@ module Timestamp
 
       field at, type: at_type, limit: 15
 
-      define_method(at) do 
+      define_method(at) do
         Time.at(self[at] ||= Time.now)
       end
       define_method(at_eq) do |time|
@@ -33,8 +29,8 @@ module Timestamp
     now  = now.getutc + now.utc_offset unless now.utc?
 
     ceil = now.to_i % gap
-    now -= ceil 
-    begin 
+    now -= ceil
+    begin
       yield (now - gap .. now)
       now += gap
     end while now < last

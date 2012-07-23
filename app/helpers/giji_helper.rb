@@ -49,11 +49,11 @@ module GijiHelper
       faces_votes.each do |face_id,votes|
         options = {
           logid:'',
-          color:'mes_think', 
+          color:'mes_think',
           style:'mes_text_report',
-          img:  "/images/portrate/#{face_id}.jpg", 
-          name: Face.find(face_id).name, 
-          time: votes.last.created_at, 
+          img:  "/images/portrate/#{face_id}.jpg",
+          name: Face.find(face_id).name,
+          time: votes.last.created_at,
           text: capture{yield votes},
         }
         items << capture{render 'giji/say', options}
@@ -66,6 +66,17 @@ module GijiHelper
     options = %w[logid color style img name to time].each_with_object({}) do |item, hash|
       hash[item.to_sym] = "${#{item}}"
     end.merge(text:"{{html text}}")
+
+    gon.templates = {}
+    %w[action admin info say aim cast].map do |view|
+      gon.templates[view] = capture{ yield(view, options) }
+    end
+  end
+
+  def angular_templates
+    options = %w[logid color style img name to time].each_with_object({}) do |item, hash|
+      hash[item.to_sym] = "${#{item}}"
+    end.merge(text:"{{text}}")
 
     gon.templates = {}
     %w[action admin info say aim cast].map do |view|

@@ -3,7 +3,10 @@ meta content="7korobi@gmail.com" name="Author"
 meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0"
 
 link href="mailto:7korobi@gmail.com" rev="Made"
-link media="screen" rel="stylesheet" type="text/css" app="css" href="/stylesheets/#{ cookies['&css'] || OPTION[:css_wday][Time.now.wday] }.css"
+link media="screen" rel="stylesheet" type="text/css" href="{{css.href}}"
+
+meta(charset="utf-8")
+title {{main.title}}
 
 = javascript_include_tag 'giji'
 = javascript_include_tag 'application'

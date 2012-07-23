@@ -14,18 +14,6 @@ class Message < Chat
 
   scope  :summary, order_by(:date.asc)
 
-  def template
-    GIJI[:message][:template][:subid][subid] || GIJI[:message][:template][:mestype][mestype]
-  end
-
-  def color
-    mestype
-  end
-
-  def time
-    date.to_s(:lax_time)
-  end
-
   def text
     if  /^INFO/ === mestype
       self.class.to_fair( log, nil )
@@ -55,8 +43,8 @@ class Message < Chat
   end
 
   def self.to_fair(log, parse_uri = true)
-    log = if log.nil? 
-          then '' 
+    log = if log.nil?
+          then ''
           else log.gsub(/\r\n?/,"\n")
           end
     log.gsub!(/(\n)/, '\1<br />')
@@ -69,12 +57,6 @@ class Message < Chat
       else
         uri
       end
-    end
-    log.gsub!(/<mw (\w+),(\d+),([^>]+)>/) do
-      uri  = "../#{$2}/messages#&logid=#{$1}"
-      <<-_HTML_
-        <a class="res_anchor" rel=​"tooltip" href="#{uri}" turn="#{$2}" logid="#{$1}">&gt;&gt;#{$3}</a>
-      _HTML_
     end
     log.html_safe
   end

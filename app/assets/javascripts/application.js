@@ -6,9 +6,6 @@
 //
 //= require_tree ./app
 
-Client.deploy();
-Form.deploy();
-
 /*
 //= require codemirror
 //= require codemirror/modes/ruby

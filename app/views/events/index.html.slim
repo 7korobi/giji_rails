@@ -1,22 +1,17 @@
 - content_for :head do
   | ページをめくる
 
-- content_for :link_caption do
-  | 他の物語へ
-
 - content_for :link do
-  br
-  p= link_to '他の物語を見る', index_parent_path
-  br
+  h4.sayfilter_caption_enable
+    | 他の章へ
+  .sayfilter_content
+    - events.each do |event|
+      ul
+        li= link_to event.name.html_safe, show_path(event)
+    br
+  h4.sayfilter_caption_enable
+    = link_to '他の物語へ', index_parent_path
 
-- content_for :info_caption do
-  | 他の章へ
-
-- content_for :info do
-  - events.each do |event|
-    ul
-      li= link_to event.name.html_safe, show_path(event)
-  br
 
 - content_for :log do
   h2 村の情報

@@ -1,12 +1,16 @@
 - content_for :head do
   | input users
 
-- content_for :info do
-  =semantic_form_for user do |f|
-    = f.inputs
-    = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }
-    .actions
-      = f.submit
+- content_for :link do
+  h4.sayfilter_caption_enable
+    | click to login!
+  .sayfilter_content
+    =semantic_form_for user do |f|
+      .form-horizontal
+        = f.inputs
+        = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }
+        .actions
+          = f.submit
 
 - content_for :log do
   h2= "#{user.name} さんの情報"

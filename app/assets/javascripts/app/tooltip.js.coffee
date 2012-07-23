@@ -1,115 +1,9 @@
 [filter, toggle, cookie, cookie_in_use] = [[],[],[],[]]
 
-class Filter
-
-unpack = (key, filter) ->
-  if cookie[key]
-    ary = cookie[key].split(",")
-    i = 0
-
-    while i < ary.length
-      filter[key + "_" + i] = ary[i]
-      i++
-
 initFilter = ->
   filter = []
   toggle = []
-  cookie = []
-  cookie.fixedfilter = -1
-  cookie.layoutfilter = -1
-  cookie_in_use = []
-  cookie_in_use.clipboard = true
-  cookie_in_use.cliptext = true
-  cookie_in_use.toggle = true
-  cookie_in_use.fixedfilter = true
-  cookie_in_use.layoutfilter = true
-  cookie_in_use.uid = false
-  cookie_in_use.pwd = false
-  doc_cookie = document.cookie + "; "
-  cookies = doc_cookie.split("; ")
-  i = 0
 
-  while i < cookies.length
-    data = cookies[i].split("=")
-    data[1] = ""  unless data[1]
-    cookie[data[0]] = data[1]
-    i++
-  unpack "typefilter", filter
-  unpack "pnofilter", filter
-  if cookie.toggle
-    ary = cookie.toggle.split(",")
-    i = 0
-
-    while i < ary.length
-      toggle[ary[i]] = 1
-      i++
-  $("#clipboard").val unescape(cookie.clipboard)  if cookie.clipboard
-  $("#cliptext").val unescape(cookie.cliptext)  if cookie.cliptext
-  cookie.layoutfilter = 0  if cookie.layoutfilter < 1
-  cookie.fixedfilter = 0  if cookie.fixedfilter < 1
-  false if cookie.layoutfilter == 0
-  fixFilterNoWriteCookie()  if (cookie.fixedfilter == 1) and (cookie.layoutfilter == 1)
-  return
-
-writeCookieFilter = ->
-  alives = "; expires=Thu, 1-Jan-2030 00:00:00 GMT"
-  deletes = "; expires=Thu, 1-Jan-1970 00:00:00 GMT"
-  $("#clipboard").each ->
-    cookie.clipboard = escape($(this).val())
-
-  $("#cliptext").each ->
-    cookie.cliptext = escape($(this).val())
-
-  list = []
-  for key of filter
-    fhead = key.split("_")
-    list[fhead[0]] = []
-    cookie_in_use[key] = false
-    cookie_in_use[fhead[0]] = true
-  for key of filter
-    fhead = key.split("_")
-    list[fhead[0]][fhead[1]] = filter[key]
-  for key of list
-    cookie[key] = list[key].join(",")
-  cookie.toggle = ""
-  for key of toggle
-    cookie.toggle += key + ","  if toggle[key] == 1
-  for key of cookie
-    continue  unless cookie_in_use[key]
-    if filter[key]
-      expires = deletes
-    else
-      expires = alives
-    document.cookie = key + "=" + cookie[key] + ";path=/" + expires
-
-changeSayDisplays = ->
-  $(".message_filter").each ->
-    id = @id.split("_")
-    mesno = parseInt(id[0])
-    logpno = parseInt(id[1])
-    mestype = parseInt(id[2])
-    display = "block"
-
-    if filter["pnofilter_" + logpno] == 1 or filter["typefilter_" + mestype] == 1
-      display = "none"
-    else
-      msg_key = $(this).find("p:not(.mes_date)").text().length
-      b_key = 0
-      $(this).find("em").each ->
-        b_display = ""
-        if filter["typefilter_5"] == 1
-          b_display = "none"
-          b_key += $(this).text().length + 4
-          if msg_key - b_key < 1
-            display = "none"
-          else
-            $(this).next("span").remove()
-            $(this).after "<span>/* B.G */</span>"
-        else
-          b_display = "inline"
-          $(this).next("span").remove()
-        @style.display = b_display
-    @style.display = display
 
 summary = ->
   $("#itemlist").empty()
@@ -167,6 +61,7 @@ summary = ->
     result_list.push "<div class=\"sayfilter_content_enable\"><div class=\"sayfilter_incontent\"><a class=\"res_anchor\" href=\"#" + link + "\">" + name + "</a>" + item + "</div></div> "
 
   $("#itemlist").append result_list.join("")
+
 tribind_click = (selecter, ary, enable, disable) ->
   button = $(selecter)
   button.click changeButtonTri
