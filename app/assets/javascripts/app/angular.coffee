@@ -13,37 +13,77 @@ scroll = ->
       cb()
 
 
+cookie_expire =
+  hours: 1
+
+navis = []
+
 class Navi
-  constructor: (field, def)->
-    @_button = def.button
-    @_keys = def.button?.keys()
-    @_params = new Params(field)
-    @_params.merge def.options
-    @move @_params.val()
+  constructor: ($scope, key, def)->
+    @_params = def.options
+    @_params.current_type or= String
+    if def.button?
+      @_button = def.button
+      @_keys = def.button.keys()
+
+    $scope[key] = @
+    navis.push @
+    @_watch = []
+    @_key = key
+
+    chk = ///
+      &#{key}=(\w+)
+    ///
+    l = location[@_params.on].match(chk)?[1]
+    c = document.cookie.match(chk)?[1]
+    @_value = @_params.current_type(l or c or @_params.current)
+    $scope.$watch "#{key}._value", (newVal,oldVal)=>
+      for func in @_watch
+        func @_value
+
+      @_move()
+
+      list = new Object
+      for navi in navis
+        options = navi._params
+        list[options.on] = ""
+      for navi in navis
+        options = navi._params
+        cmd = "&#{navi._key}=#{navi._value}"
+        list[options.on] += cmd
+        if options.is_cookie
+          expire = new Date().advance cookie_expire
+          document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
+      for field, val of list
+        location[field] = val
+
 
   move: (target)->
-    @_params.change target
-    @_filter(target) if @_filter?
+    @_value = target
+
+  _move: ()->
+    target = @_value
     for key, val of @_button
       @[key] = null
     @[target] = 'btn-success'
 
+
 class PageNavi extends Navi
-  constructor: (field, def)->
-    @_items = []
-    @_params = new Params(field)
-    @_params.merge def.options
-    @_params.per ||= 1
-    @move()
-
   paginate: (target)->
-    page = @_button[target]
-    @_params.change page
-    @move page
+    @_value = @_button[target]
 
-  move: (page)->
-    page ||= @_params.val().toNumber()
-    @_filter(page) if @_filter?
+  constructor: ($scope, key, def)->
+    @_items = []
+    super
+    @_params.per or= 1
+    $scope.$watch "#{key}._items.last()", (newVal,oldVal)=>
+      for func in @_watch
+        func @_value
+
+      @_move()
+
+  _move: ()->
+    page = Number(@_value)
     length = (@_items.length / @_params.per).ceil()
     @_button = n =
       first:    1
@@ -69,7 +109,6 @@ class PageNavi extends Navi
       @[key] = 'ng-cloak'
       @[key] = null          if show[key]
       @[key] = 'btn-success' if show[key] && page == @_button[key]
-    console.log [n,show,@]
 
 class FixedBox
   constructor: (dx, dy, box)->
@@ -151,9 +190,12 @@ if_scroll.push ->
 
 window.HEAD = ($scope)->
   head = $scope
-#  if "onhashchange" of window and (document.documentMode is `undefined` or document.documentMode > 7)
-#    window.onhashchange = =>
-#      head.apply()
+  head.location = window.location
+  window.onhashchange = =>
+    head.$digest()
+
+  head.$watch 'location.hash', (oldVal, newVal)->
+    console.log [oldVal, newVal, head]
 
   window.MAIN = ($scope, $interpolate)->
     main = head.main = $scope
@@ -224,7 +266,7 @@ window.HEAD = ($scope)->
       date.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
 
     decolate = (log)->
-      switch head.tab.mode._params.val()
+      switch head.tab.mode._value
         when 'open'
           ret = log.replace ///
             (/\*)(.*?)(\*/|$)
@@ -251,13 +293,13 @@ window.HEAD = ($scope)->
       template = GIJI.message.template.subid[log.subid] || GIJI.message.template.mestype[log.mestype]
       templates[template](log)
 
-    console.log templates
+    console.log ["templates", templates]
     main.title ||= '人狼議事'
 
   window.TAB = ($scope)->
     tab = head.tab = $scope
 
-    tab.navi = new Navi 'navi'
+    new Navi tab, 'navi'
       options:
         on: 'hash'
         current: 'link'
@@ -269,15 +311,24 @@ window.HEAD = ($scope)->
         blank: 'x'
 
     if gon?.page
-      tab.page = new PageNavi 'page',
+      new PageNavi tab, 'page'
         options:
           on: 'search'
           current: 1
+          current_type: Number
           is_cookie: false
       tab.page._items = gon.page
-      tab.page.move()
 
     if gon?.event?.messages
+
+      new PageNavi tab, 'page'
+        options:
+          per: 50
+          on: 'hash'
+          current: 1
+          current_type: Number
+          is_cookie: false
+
       mode_filters =
         memo: /^(.M)|([AM]S)/
         all:  /^.[^M]/
@@ -285,10 +336,10 @@ window.HEAD = ($scope)->
         clan: /^[AmSIiWPX][^M]/
         open: /^[AmSIi][^M]/
 
-      tab.mode = new Navi 'mode'
+      new Navi tab, 'mode'
         options:
           on: 'hash'
-          current: 'all'
+          current: 'open'
           is_cookie: false
         button:
           memo: '相談'
@@ -297,50 +348,50 @@ window.HEAD = ($scope)->
           clan: '仲間'
           open: '議事'
 
-      tab.page = new PageNavi 'page'
-        options:
-          per: 50
-          on: 'hash'
-          current: 1
-          is_cookie: false
-
-      tab.$watch 'tab.mode._params.val()', (newValue, oldValue)->
-        console.log ['tab.mode.filter', newValue, oldValue]
-      tab.$watch 'tab.page._items', (newValue, oldValue)->
-        console.log ['tab.page.filter', newValue, oldValue]
-      tab.mode._filter = ()->
+      tab.mode._watch.push ()->
         tab.page._items = gon.event.messages.filter (log)->
-          filter = mode_filters[tab.mode._params.val()]
+          filter = mode_filters[tab.mode._value]
           log.logid.match filter
-        tab.page.move()
 
-      tab.page._filter = (page)->
+      tab.page._watch.push (page)->
         page_per = tab.page._params.per
         from = (page - 1) * page_per
         to   =  page      * page_per - 1
         head.main.messages = (tab.page._items[idx] for idx in [from .. to])
         box?.window.scrollTop( $(".inframe").offset().top - 20 )
 
-      tab.mode._filter()
-
   window.CSS = ($scope)->
     css = head.css = $scope
-    css.move = (target)=>
-      @params.change(target)
-      [_, theme, width] = target.match /([a-z]*)([0-9]*)/
-      width = width.toNumber()
 
+    new Navi css, 'width'
+      options:
+        on: 'hash'
+        current: 800
+        current_type: Number
+        is_cookie: true
+      button:
+        480: 480
+        800: 800
+
+    new Navi css, 'theme'
+      options:
+        on: 'hash'
+        current: 'wa'
+        is_cookie: true
+      button:
+        cinema: '煉瓦'
+        night: '月夜'
+        star: '蒼穹'
+        wa:  '和の国'
+
+    move = ()->
+      value = "#{css.theme._value}#{css.width._value}"
       date    = new Date
-      current = "#{theme}#{width}"
-      css.merge
-        href: "#{URL.rails}stylesheets/#{current}.css"
-        width: width
-        name:  {}
+      css.href = "#{URL.rails}stylesheets/#{value}.css"
 
-      css.name[current] = "btn-success"
       head.main.h1 =
-        type: OPTION.head_img[current][ Math.ceil((date).getTime() / 60*60*12) % 2]
-      switch width
+        type: OPTION.head_img[value][ Math.ceil((date).getTime() / 60*60*12) % 2]
+      switch Number(css.width._value)
         when 480
           head.main.h1.width = 458
         when 800
@@ -348,11 +399,14 @@ window.HEAD = ($scope)->
       head.main.h1.path = "#{URL.rails}images/banner/title#{head.main.h1.width}#{head.main.h1.type}.jpg"
       resize()
 
+    css.width._watch.push move
+    css.theme._watch.push move
+
     if_resize.push ->
       fold = false
       width = box.window.width()
 
-      switch css.width
+      switch css.width._value
         when 480
           small = 122 + 80 + 20
           if      small < width - 462
@@ -383,15 +437,5 @@ window.HEAD = ($scope)->
         paddingLeft: dst_padding
       box.pagenavi_fullwidth.css
         paddingLeft: dst_pagenavi
-
-    @params = new Params('css')
-    @params.merge
-      current: 'wa800'
-      is_cookie: true
-      on: 'hash'
-    if "onhashchange" of window and (document.documentMode is `undefined` or document.documentMode > 7)
-      window.onhashchange = =>
-        css.move @params.val()
-    css.move @params.val()
 
   console.log [head, document.cookie, location]

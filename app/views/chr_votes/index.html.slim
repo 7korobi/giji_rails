@@ -1,9 +1,11 @@
 - content_for :head do
   | 好きなキャラクターに投票しよう
 
-- content_for :info do
-  =link_to "あなたの投票は？", new_chr_vote_path
-
+- content_for :link do
+  .sayfilter_content
+    ul
+      li=link_to "あなたの投票は？", new_chr_vote_path
+    br
 - content_for :log do
   h2 みんなのコメント
   =messages_for_votes_group(chr_votes_comments) do |votes|

@@ -171,18 +171,12 @@ DIV.login
           | 　
 
 p.css_changer(ng-controller="CSS")
-  a(ng-click="move('cinema800')" ng-class="name.cinema800") 煉瓦
-  |
-  a(ng-click="move('cinema480')" ng-class="name.cinema480") 480
+  span(ng-repeat="key in theme._keys")
+    a(ng-click="theme.move(key)"  ng-class="theme[key]")
+      | {{theme._button[key]}}
+    | &nbsp;
   | ｜
-  a(ng-click="move('night800')" ng-class="name.night800") 月夜
-  |
-  a(ng-click="move('night480')" ng-class="name.night480") 480
-  | ｜
-  a(ng-click="move('star800')" ng-class="name.star800") 蒼穹
-  |
-  a(ng-click="move('star480')" ng-class="name.star480") 480
-  | ｜
-  a(ng-click="move('wa800')" ng-class="name.wa800") 和の国
-  |
-  a(ng-click="move('wa480')" ng-class="name.wa480") 480
+  span(ng-repeat="key in width._keys")
+    a(ng-click="width.move(key)"  ng-class="width[key]")
+      | {{width._button[key]}}
+    | &nbsp;

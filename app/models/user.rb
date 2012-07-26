@@ -32,8 +32,7 @@ class User
     sow_auth_ids.to_a.join("\n")
   end
   def sow_auths=(str)
-    p [:sow_auths, str]
-    sow_auth_ids = str.to_s.lines.to_a
+    self[:sow_auth_ids] = str.to_s.lines.map(&:strip).compact
   end
 end
 

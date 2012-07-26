@@ -89,6 +89,8 @@ chr_jobs:
   job: 機織り
 - face_id: w45
   job: 座敷守
+- face_id: w46
+  job: 屍漁り
 chr_npcs:
 - caption: 和の国てやんでえ
   csid: wa
