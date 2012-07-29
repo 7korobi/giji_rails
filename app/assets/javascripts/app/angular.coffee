@@ -139,6 +139,16 @@ class FixedBox
       left: left
       top:  top
 
+class Form
+  @deploy: ->
+    $(document).ready =>
+      $('#phase_input').change ->
+        $('#chr_vote_phase').val( @value )
+
+  @submit_chr_vote: (face_id)->
+    $('#chr_vote_face_id').val(face_id)
+
+    $('form.chr_vote')[0]?.submit()
 
 app = angular.module '', []
 app.config ($interpolateProvider)->
@@ -199,7 +209,9 @@ window.HEAD = ($scope)->
 
   window.BODY = ($scope, $interpolate)->
     body = head.body = $scope
-
+    body.link =
+      servers: "http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8"
+      wiki:    "http://melon-cirrus.sakura.ne.jp/wiki/"
     templates = {}
     for idx,val in $("script[type='text/x-tmpl']")
       html = $(val).html()

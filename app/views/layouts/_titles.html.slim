@@ -4,9 +4,9 @@ DIV.login
 - if @disable_headline then
   .choice
 - else
-  = link_to '人狼物語専用wiki',"http://melon-cirrus.sakura.ne.jp/wiki/"
+  = link_to '人狼物語専用wiki',"{{link.wiki}}"
   | ｜
-  = link_to '人狼物語Server一覧',"http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8"
+  = link_to '人狼物語Server一覧',"{{link.servers}}"
   |（melonkoさん管理）
   - max_wolf    = 0
   - max_allstar = cfg(:ALLSTAR_OLD)[:MAX_VILLAGES]
