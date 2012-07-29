@@ -5,9 +5,9 @@ html lang="ja"
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事" end
       = if flash[:notice] then flash[:notice] end
-  body
+  body(ng-controller="BODY")
     #outframe.outframe
-      #contentframe.contentframe(ng-controller="MAIN")
+      #contentframe.contentframe
         h1 = link_to root_path do
           img(ng-src="{{h1.path}}" ng-cloak)
         =render partial: 'layouts/titles'
@@ -26,7 +26,7 @@ html lang="ja"
             | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。ご了承ください。
 
       #footer
-      #tab(ng-controller="TAB")
+      #tab
         #sayfilter.sayfilter
           h3.sayfilter_heading(ng-show="! navi.blank")
             = yield :head

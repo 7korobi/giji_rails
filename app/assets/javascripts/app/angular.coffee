@@ -116,7 +116,7 @@ class FixedBox
     @dy = dy
     @box = $(box)
     box.style.position = "fixed"
-    if_resize.push => @calc() if @box?
+    if_scroll.push => @calc() if @box?
 
   calc: ()->
     box_height = @box.height()
@@ -197,8 +197,8 @@ window.HEAD = ($scope)->
   head.$watch 'location.hash', (oldVal, newVal)->
     console.log [oldVal, newVal, head]
 
-  window.MAIN = ($scope, $interpolate)->
-    main = head.main = $scope
+  window.BODY = ($scope, $interpolate)->
+    body = head.body = $scope
 
     templates = {}
     for idx,val in $("script[type='text/x-tmpl']")
@@ -209,24 +209,22 @@ window.HEAD = ($scope)->
       for key,val of gon.templates
         templates[key] = $interpolate(val)
 
-      main.anchors = []
-
       gon.turns = []
       gon.turns[gon.event.turn] = gon.event.messages
 
-      main.event = gon.event
-      main.event.name = gon.event.turn + "日目"
+      body.event = gon.event
+      body.event.name = gon.event.turn + "日目"
 
       $('#messages').on 'click', '[href_eval]', (e)->
         popup_apply = (e, item)->
-          idx = main.anchors.indexOf item
+          idx = body.anchors.indexOf item
           if idx < 0
-            main.anchors.push item
+            body.anchors.push item
           else
-            main.anchors.removeAt idx, main.anchors.length
+            body.anchors.removeAt idx, body.anchors.length
           item.z = Date.now()
           item.top = e.pageY + 16
-          main.$apply()
+          body.$apply()
 
         popup = (turn, ank)->
           href = location.origin + location.pathname
@@ -256,7 +254,7 @@ window.HEAD = ($scope)->
 
         eval $(e.target).attr('href_eval')
     if gon?.story
-      main.title = gon.story.name || '人狼議事'
+      head.title = gon.story.name || '人狼議事'
 
     lax_date = (date)->
       date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
@@ -266,7 +264,7 @@ window.HEAD = ($scope)->
       date.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
 
     decolate = (log)->
-      switch head.tab.mode._value
+      switch body.mode._value
         when 'open'
           ret = log.replace ///
             (/\*)(.*?)(\*/|$)
@@ -282,10 +280,10 @@ window.HEAD = ($scope)->
       log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, ank, turn, id)->
         """ <a class="res_anchor" href_eval="popup(#{turn},'#{ank}')">&gt;&gt;#{id}</a> """
 
-    main.anchor = (turn, ank)->
+    body.anchor = (turn, ank)->
       console.log [turn, ank]
 
-    main.log = (log)->
+    body.log = (log)->
       return unless log
       log = log.clone()
       log.time = lax_time Date.create log.date
@@ -294,12 +292,9 @@ window.HEAD = ($scope)->
       templates[template](log)
 
     console.log ["templates", templates]
-    main.title ||= '人狼議事'
+    head.title ||= '人狼議事'
 
-  window.TAB = ($scope)->
-    tab = head.tab = $scope
-
-    new Navi tab, 'navi'
+    new Navi body, 'navi'
       options:
         on: 'hash'
         current: 'link'
@@ -311,17 +306,17 @@ window.HEAD = ($scope)->
         blank: 'x'
 
     if gon?.page
-      new PageNavi tab, 'page'
+      new PageNavi body, 'page'
         options:
           on: 'search'
           current: 1
           current_type: Number
           is_cookie: false
-      tab.page._items = gon.page
+      body.page._items = gon.page
 
     if gon?.event?.messages
 
-      new PageNavi tab, 'page'
+      new PageNavi body, 'page'
         options:
           per: 50
           on: 'hash'
@@ -336,7 +331,7 @@ window.HEAD = ($scope)->
         clan: /^[AmSIiWPX][^M]/
         open: /^[AmSIi][^M]/
 
-      new Navi tab, 'mode'
+      new Navi body, 'mode'
         options:
           on: 'hash'
           current: 'open'
@@ -348,22 +343,20 @@ window.HEAD = ($scope)->
           clan: '仲間'
           open: '議事'
 
-      tab.mode._watch.push ()->
-        tab.page._items = gon.event.messages.filter (log)->
-          filter = mode_filters[tab.mode._value]
+      body.mode._watch.push ()->
+        body.page._items = gon.event.messages.filter (log)->
+          filter = mode_filters[body.mode._value]
           log.logid.match filter
 
-      tab.page._watch.push (page)->
-        page_per = tab.page._params.per
+      body.page._watch.push (page)->
+        page_per = body.page._params.per
         from = (page - 1) * page_per
         to   =  page      * page_per - 1
-        head.main.messages = (tab.page._items[idx] for idx in [from .. to])
+        body.messages = (body.page._items[idx] for idx in [from .. to])
+        body.anchors = []
         box?.window.scrollTop( $(".inframe").offset().top - 20 )
 
-  window.CSS = ($scope)->
-    css = head.css = $scope
-
-    new Navi css, 'width'
+    new Navi body, 'width'
       options:
         on: 'hash'
         current: 800
@@ -373,7 +366,7 @@ window.HEAD = ($scope)->
         480: 480
         800: 800
 
-    new Navi css, 'theme'
+    new Navi body, 'theme'
       options:
         on: 'hash'
         current: 'wa'
@@ -385,28 +378,28 @@ window.HEAD = ($scope)->
         wa:  '和の国'
 
     move = ()->
-      value = "#{css.theme._value}#{css.width._value}"
+      value = "#{body.theme._value}#{body.width._value}"
       date    = new Date
-      css.href = "#{URL.rails}stylesheets/#{value}.css"
+      head.href = "#{URL.rails}stylesheets/#{value}.css"
 
-      head.main.h1 =
+      body.h1 =
         type: OPTION.head_img[value][ Math.ceil((date).getTime() / 60*60*12) % 2]
-      switch Number(css.width._value)
+      switch Number(body.width._value)
         when 480
-          head.main.h1.width = 458
+          body.h1.width = 458
         when 800
-          head.main.h1.width = 580
-      head.main.h1.path = "#{URL.rails}images/banner/title#{head.main.h1.width}#{head.main.h1.type}.jpg"
+          body.h1.width = 580
+      body.h1.path = "#{URL.rails}images/banner/title#{body.h1.width}#{body.h1.type}.jpg"
       resize()
 
-    css.width._watch.push move
-    css.theme._watch.push move
+    body.width._watch.push move
+    body.theme._watch.push move
 
     if_resize.push ->
       fold = false
       width = box.window.width()
 
-      switch css.width._value
+      switch body.width._value
         when 480
           small = 122 + 80 + 20
           if      small < width - 462

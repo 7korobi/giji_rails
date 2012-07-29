@@ -3,6 +3,8 @@
 APP=/www/giji_rails
 RUBY="~/.rbenv/bin/rbenv exec ruby "
 
+mkdir -p /utage/run /utage/log
+
 for TARGET in $1
 do
   /utage/web-push-$TARGET /utage    --delete &

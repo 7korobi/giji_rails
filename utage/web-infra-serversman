@@ -2,13 +2,13 @@
 
 nginx=/usr/local/nginx/sbin/nginx
 conf=/utage/conf/nginx.conf
-pid=/utage/pids/nginx.pid
+pid=/utage/run/nginx.pid
 
 case "$1" in
 status)
   echo
   ps -A | grep $conf | grep master
-  ls /utage/pids/*
+  ls -ltra /var/run/*
   ;;
 start)
   $nginx -c $conf

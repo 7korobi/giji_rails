@@ -23,8 +23,6 @@ DIV.login
   - max_all    += ( max_perjury + max_vage   + max_crazy + max_xebec )
   - max_all    += ( max_cafe    + max_cabala )
   .choice
-    script
-      | $(function(){$('.finished_log').hide()});
     table.board
       tr
         th.no_choice colspan="4" style="text-align:center;"
@@ -169,8 +167,10 @@ DIV.login
           | 　
           br
           | 　
+    script
+      | $(function(){$('.progress_log').hide()});
 
-p.css_changer(ng-controller="CSS")
+p.css_changer
   span(ng-repeat="key in theme._keys")
     a(ng-click="theme.move(key)"  ng-class="theme[key]")
       | {{theme._button[key]}}

@@ -1,7 +1,7 @@
 # path info
 stderr_path "/utage/log/giji_rails.unicorn.stderr.log"
 stdout_path "/utage/log/giji_rails.unicorn.stdout.log"
-pid         "/utage/pids/giji_rails.unicorn.pid"
+pid         "/utage/run/giji_rails.unicorn.pid"
 
 
 # Help ensure your application will always spawn in the symlinked

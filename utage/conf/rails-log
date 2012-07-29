@@ -6,11 +6,11 @@
     delaycompress
     sharedscripts
     postrotate
-        /bin/kill -USR1 `cat /utage/pids/giji_rails.unicorn.pid`
+        /bin/kill -USR1 `cat /utage/run/giji_rails.unicorn.pid`
     endscript
 }
 
-/utage/logs/giji_rails*.log {
+/utage/log/giji_rails*.log {
     daily
     rotate 10
     missingok
@@ -18,11 +18,11 @@
     delaycompress
     sharedscripts
     postrotate
-        /bin/kill -USR1 `cat /utage/pids/giji_rails.unicorn.pid`
+        /bin/kill -USR1 `cat /utage/run/giji_rails.unicorn.pid`
     endscript
 }
 
-/utage/logs/nginx*.log {
+/utage/log/nginx*.log {
     daily
     rotate 10
     missingok
