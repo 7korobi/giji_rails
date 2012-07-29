@@ -1,5 +1,4 @@
-class Google
-###
+
 google.load "search", "2"
 google.setOnLoadCallback ->
   google.search.CustomSearchControl.attachAutoCompletion(
@@ -25,4 +24,3 @@ do ->
   ga.src = (if "https:" == document.location.protocol then "https://ssl" else "http://www") + ".google-analytics.com/ga.js"
   s = document.getElementsByTagName("script")[0]
   s.parentNode.insertBefore ga, s
-###

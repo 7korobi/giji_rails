@@ -1,18 +1,3 @@
-if_resize = []
-if_scroll = []
-
-resize = ->
-  if box?
-    scroll()
-    for cb in if_resize
-      cb()
-
-scroll = ->
-  if box?
-    for cb in if_scroll
-      cb()
-
-
 cookie_expire =
   hours: 1
 
@@ -111,12 +96,14 @@ class PageNavi extends Navi
       @[key] = 'btn-success' if show[key] && page == @_button[key]
 
 class FixedBox
-  constructor: (dx, dy, box)->
+  constructor: (dx, dy, fixed_box)->
     @dx = dx
     @dy = dy
-    @box = $(box)
-    box.style.position = "fixed"
-    if_scroll.push => @calc() if @box?
+    @box = $(fixed_box)
+
+    fixed_box.style.position = "fixed"
+    if @box?
+      box.window.scroll => @calc()
 
   calc: ()->
     box_height = @box.height()
@@ -135,17 +122,15 @@ class FixedBox
     top = @dy + height if @dy < 0
     top = @dy          if   0 < @dy
     @box.to_z_front()
-    @box.css
-      left: left
-      top:  top
+#    @box.css
+#      top:  top  + "px"
+#      left: left + "px"
 
 
 app = angular.module '', []
 app.config ($interpolateProvider)->
 
 jQuery ->
-  angular.bootstrap(document);
-
   window.box =
     contentframe: $('#contentframe')
     sayfilter: $("#sayfilter")
@@ -166,26 +151,32 @@ jQuery ->
         .action_bm
     """)
 
+  angular.bootstrap(document);
+
+  sayfilter.fix = new FixedBox 1, 1, window.sayfilter
+  buttons.fix = new FixedBox 1,-1, window.buttons
+
   unless document.cookie.layoutfilter > 0
     contentframe.className = "contentframe_navileft"
     outframe.className = "outframe_navimode"
-    sayfilter.fix = new FixedBox 1, 1, window.sayfilter
-    buttons.fix = new FixedBox 1,-1, window.buttons
     box.notepad.after "<div id=\"notepad_after\" style=\"height:55px\"></div>"
 
+  box.window.resize ->
+    box.window.scroll()
 
-  window.onorientationchange = resize
-  box.window.resize resize
-  box.window.scroll scroll
-  resize()
+  window.onorientationchange = ->
+    box.window.resize()
+
+#  box.window.resize ->
+#    $('.drag').css
+#      left: box.contentframe.offset().left + "px"
+
+  box.window.scroll ->
+    box.outframe.height box.contentframe.height()
+
+  box.window.resize()
 
 
-if_resize.push ->
-  $('.drag').css
-    left: box.contentframe.offset().left
-
-if_scroll.push ->
-  box.outframe.height box.contentframe.height()
 
 
 window.HEAD = ($scope)->
@@ -390,12 +381,12 @@ window.HEAD = ($scope)->
         when 800
           body.h1.width = 580
       body.h1.path = "#{URL.rails}images/banner/title#{body.h1.width}#{body.h1.type}.jpg"
-      resize()
+      box.window.resize()
 
     body.width._watch.push move
     body.theme._watch.push move
 
-    if_resize.push ->
+    box.window.resize ->
       fold = false
       width = box.window.width()
 
@@ -426,9 +417,10 @@ window.HEAD = ($scope)->
         dst_pagenavi = 48
 
       box.sayfilter.width info_width
-      box.navimode_fullwidth.css
-        paddingLeft: dst_padding
-      box.pagenavi_fullwidth.css
-        paddingLeft: dst_pagenavi
+#      box.navimode_fullwidth.css
+#        paddingLeft: dst_padding  + "px"
+#      box.pagenavi_fullwidth.css
+#        paddingLeft: dst_pagenavi + "px"
 
   console.log [head, document.cookie, location]
+

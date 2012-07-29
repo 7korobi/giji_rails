@@ -5,23 +5,3 @@
 // the compiled file.
 //
 //= require_tree ./app
-
-/*
-//= require codemirror
-//= require codemirror/modes/ruby
-//= require codemirror/keymaps/vim
-editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    mode: "text/ruby",
-    theme: "default",
-    indentUnit: 2,
-    indentWithTabs: false,
-    tabMode: "shift",
-    enterMode: "keep",
-    electricChars: false,
-    lineNumbers: true,
-    firstLineNumber: 1,
-    gutter: false,
-    fixedGutter:false,
-    matchBrackets: true
-});)
-*/
