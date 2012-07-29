@@ -266,7 +266,7 @@ window.HEAD = ($scope)->
 
         eval $(e.target).attr('href_eval')
     if gon?.story
-      head.title = gon.story.name || '人狼議事'
+      head.title = body.title ||= gon.story.name || '人狼議事'
 
     lax_date = (date)->
       date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
@@ -304,7 +304,7 @@ window.HEAD = ($scope)->
       templates[template](log)
 
     console.log ["templates", templates]
-    head.title ||= '人狼議事'
+    head.title ||= body.title ||= '人狼議事'
 
     new Navi body, 'navi'
       options:

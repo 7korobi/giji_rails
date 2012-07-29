@@ -1,9 +1,7 @@
 - content_for :link do
   h4.sayfilter_caption_enable
-    | click to login!
+    | Choice open id
   .sayfilter_content
-    li
-      label.label Choice open id
     table#follow
       tr
         td= link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
@@ -11,11 +9,12 @@
       tr
         td  Twitter
         td Facebook
-      tr
-        td(colspan='2')= link_to 'mixi',   '/users/auth/mixi'
-      tr
-        td(colspan='2')= link_to 'google', '/users/auth/google'
-      tr
-        td(colspan='2')= link_to 'yahoo',  '/users/auth/yahoo'
+    li
+      label.label = link_to 'mixi',   '/users/auth/mixi'
+    li
+      label.label = link_to 'google', '/users/auth/google'
+    li
+      label.label = link_to 'yahoo',  '/users/auth/yahoo'
     -if login?
-      h4.sayfilter_caption_enable= link_to 'click to logout', destroy_user_session_path
+      li
+        label.label = link_to 'click to logout', destroy_user_session_path
