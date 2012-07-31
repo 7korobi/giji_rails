@@ -127,7 +127,7 @@ game_rule:
   TABULA:
     CAPTION: タブラの人狼
     HELP:    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村勝利。<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。</li>
-  MILLERHOLLOW: 
+  MILLERHOLLOW:
     CAPTION: ミラーズホロウ
     HELP:    <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。<li>狼を全滅させると、村勝利。<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。<li>すべての死者は役職が公開される。</li>
   LIVE_TABULA:
@@ -150,43 +150,43 @@ trs:
   all:
     CAPTION: オール☆スター
     HELP:    すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。
-  simple: 
+  simple:
     CAPTION: ラッキー☆スター
     HELP:    初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。
-  star: 
+  star:
     CAPTION: Orbital☆Star
     HELP:    すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……
-  regend: 
+  regend:
     CAPTION: 議事☆伝承
     HELP:    すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。
-  fool: 
+  fool:
     CAPTION: 適当系
     HELP:    てきとーな感じ。
-  sow: 
+  sow:
     CAPTION: 人狼物語
     HELP:    ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。
-  wbbs: 
+  wbbs:
     CAPTION: 人狼BBS
     HELP:    ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。
-  juna: 
+  juna:
     CAPTION: 人狼審問
     HELP:    ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。
-  complex: 
+  complex:
     CAPTION: PARANOIA
     HELP:    ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！
-  complexx: 
+  complexx:
     CAPTION: ParanoiA
     HELP:    ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！
-  cabala: 
+  cabala:
     CAPTION: ギロチン広場
     HELP:    権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。
-  tabula: 
+  tabula:
     CAPTION: タブラの人狼
     HELP:    カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。
-  millerhollow: 
+  millerhollow:
     CAPTION: ミラーズホロウ
     HELP:    カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。
-  ultimate: 
+  ultimate:
     CAPTION: アルティメット
     HELP:    カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。
 
@@ -256,7 +256,7 @@ wolf2cabala:
     G:  G  # MESTYPE_GSAY
     P:  P  # MESTYPE_SPSAY
     V:  V  # MESTYPE_VSAY
-  
+
 
 cabala:
   folder:
@@ -265,7 +265,7 @@ cabala:
   - :PERJURY
   - :CRAZY
   - :XEBEC
-  
+
   logmestypetext:
   -                # MESTYPE_UNDEF
   -                # MESTYPE_INFOSP
@@ -285,7 +285,7 @@ cabala:
   - 【見】         # MESTYPE_VSAY
   - 【憑】         # MESTYPE_MSAY
   -                # MESTYPE_AIM
-  -                # 
+  -                #
   -                # MESTYPE_INFOWOLF
 
   logfont:
@@ -307,7 +307,7 @@ cabala:
   - color="maroon" # MESTYPE_VSAY
   -                # MESTYPE_MSAY
   - color="purple" # MESTYPE_AIM
-  -                # 
+  -                #
   - color="red"    # MESTYPE_INFOWOLF
 
   messtyle:
@@ -329,7 +329,7 @@ cabala:
   - mes_mob      # MESTYPE_VSAY
   - mes_nom      # MESTYPE_MSAY
   - mes_sympa    # MESTYPE_AIM
-  -              # 
+  -              #
   - infowolf     # MESTYPE_INFOWOLF
 
   logmestype:
@@ -351,7 +351,7 @@ cabala:
   -  V   # MESTYPE_VSAY
   -  S   # MESTYPE_MSAY
   -  T   # MESTYPE_AIM
-  -      # 
+  -      #
   -  w   # MESTYPE_INFOWOLF
 
   mestype2typeid:
@@ -373,7 +373,7 @@ cabala:
   -  4 # MESTYPE_VSAY
   -  0 # MESTYPE_MSAY
   -  1 # MESTYPE_AIM
-  - -1 # 
+  - -1 #
   -  2 # MESTYPE_INFOWOLF
 
   loganchormark:
@@ -389,7 +389,7 @@ cabala:
     P: '='       # MESTYPE_SPSAY
     X: '!'       # MESTYPE_XSAY
     V: '@'       # MESTYPE_VSAY
-          
+
 
 
 

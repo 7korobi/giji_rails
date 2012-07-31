@@ -1,3 +1,10 @@
+link:
+  servers: http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8
+  wiki:    http://melon-cirrus.sakura.ne.jp/wiki/
+
+turns: []
+templates: {}
+
 message:
   template:
     subid:
