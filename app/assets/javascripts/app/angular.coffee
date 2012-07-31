@@ -122,10 +122,20 @@ class FixedBox
     top = @dy + height if @dy < 0
     top = @dy          if   0 < @dy
     @box.to_z_front()
-#    @box.css
-#      top:  top  + "px"
-#      left: left + "px"
+    @box.css
+      top:  top  + "px"
+      left: left + "px"
 
+class Form
+  @deploy: ->
+    $(document).ready =>
+      $('#phase_input').change ->
+        $('#chr_vote_phase').val( @value )
+
+  @submit_chr_vote: (face_id)->
+    $('#chr_vote_face_id').val(face_id)
+
+    $('form.chr_vote')[0]?.submit()
 
 app = angular.module '', []
 app.config ($interpolateProvider)->
@@ -139,22 +149,6 @@ jQuery ->
     buttons: $("#buttons")
     notepad: $("#notepad")
     window: $(window)
-
-    pagenavi_fullwidth: $("#contentframe").find(".pagenavi")
-    navimode_fullwidth: $("#contentframe").find("""
-        h2, h3,
-        .turnnavi,
-        .row_all,
-        .ADMIN,     .MAKER,     .INFONOM, .INFOSP, .INFOWOLF,
-        .mes_admin, .mes_maker, .info,    .infosp, .infowolf,
-        .caution,
-        .action_bm
-    """)
-
-  angular.bootstrap(document);
-
-  sayfilter.fix = new FixedBox 1, 1, window.sayfilter
-  buttons.fix = new FixedBox 1,-1, window.buttons
 
   unless document.cookie.layoutfilter > 0
     contentframe.className = "contentframe_navileft"
@@ -178,6 +172,9 @@ jQuery ->
 
 
 
+GIJI.turns = []
+GIJI.templates = {}
+
 
 window.HEAD = ($scope)->
   head = $scope
@@ -190,18 +187,20 @@ window.HEAD = ($scope)->
 
   window.BODY = ($scope, $interpolate)->
     body = head.body = $scope
-
-    templates = {}
+    body.link = GIJI.link
     for idx,val in $("script[type='text/x-tmpl']")
       html = $(val).html()
-      templates[val.id] = $interpolate(html)
+      GIJI.templates[val.id] = $interpolate(html)
 
-    if gon?.event?.messages
+    if gon?.templates?
       for key,val of gon.templates
-        templates[key] = $interpolate(val)
+        GIJI.templates[key] = $interpolate(val)
 
-      gon.turns = []
-      gon.turns[gon.event.turn] = gon.event.messages
+    if gon?.story?
+      head.title = body.title ||= gon.story.name || '人狼議事'
+
+    if gon?.event?.messages?
+      GIJI.turns[gon.event.turn] = gon.event.messages
 
       body.event = gon.event
       body.event.name = gon.event.turn + "日目"
@@ -221,22 +220,25 @@ window.HEAD = ($scope)->
           href = location.origin + location.pathname
 
           popup_find = ()->
-            return null unless gon.turns[turn]
-            item = gon.turns[turn].find (log)->
+            return null unless GIJI.turns[turn]
+            item = GIJI.turns[turn].find (log)->
               log.logid == ank
             if item
               popup_apply e, item
             item
 
           popup_ajax = (turn)->
-            return null if gon.turns[turn]
-            href = href.replace("/#{gon.event.turn}/messages","/#{turn}/messages")
+            return null if GIJI.turns[turn]
+            href = href.replace(///
+              /\d+/messages
+            ///,"/#{turn}/messages")
 
             $.get href, {}, (data) =>
-              code = data.match(/gon.event=(.*)<\/script>/)[1]
-              json = eval """(function(){ return #{code} })()"""
-              gon.turns[json.turn] = json.messages
-              return  if  popup_find()
+              for dom in $(data)
+                if dom.innerText?.match(/gon.event=\{/)?
+                  eval  dom.innerText
+                  GIJI.turns[gon.event.turn] = gon.event.messages
+                  return  if  popup_find()
             href
 
           return  if  popup_ajax turn
@@ -244,8 +246,6 @@ window.HEAD = ($scope)->
           return  if  popup_ajax turn - 1
 
         eval $(e.target).attr('href_eval')
-    if gon?.story
-      head.title = gon.story.name || '人狼議事'
 
     lax_date = (date)->
       date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
@@ -271,19 +271,15 @@ window.HEAD = ($scope)->
       log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, ank, turn, id)->
         """ <a class="res_anchor" href_eval="popup(#{turn},'#{ank}')">&gt;&gt;#{id}</a> """
 
-    body.anchor = (turn, ank)->
-      console.log [turn, ank]
-
     body.log = (log)->
       return unless log
       log = log.clone()
       log.time = lax_time Date.create log.date
       log.text = decolate anker log.log
       template = GIJI.message.template.subid[log.subid] || GIJI.message.template.mestype[log.mestype]
-      templates[template](log)
+      GIJI.templates[template](log)
 
-    console.log ["templates", templates]
-    head.title ||= '人狼議事'
+    head.title ||= body.title ||= '人狼議事'
 
     new Navi body, 'navi'
       options:
@@ -296,7 +292,7 @@ window.HEAD = ($scope)->
         calc: '計算'
         blank: 'x'
 
-    if gon?.page
+    if gon?.page?
       new PageNavi body, 'page'
         options:
           on: 'search'
@@ -305,7 +301,7 @@ window.HEAD = ($scope)->
           is_cookie: false
       body.page._items = gon.page
 
-    if gon?.event?.messages
+    if gon?.event?.messages?
 
       new PageNavi body, 'page'
         options:
@@ -335,7 +331,7 @@ window.HEAD = ($scope)->
           open: '議事'
 
       body.mode._watch.push ()->
-        body.page._items = gon.event.messages.filter (log)->
+        body.page._items = body.event.messages.filter (log)->
           filter = mode_filters[body.mode._value]
           log.logid.match filter
 
@@ -417,10 +413,6 @@ window.HEAD = ($scope)->
         dst_pagenavi = 48
 
       box.sayfilter.width info_width
-#      box.navimode_fullwidth.css
-#        paddingLeft: dst_padding  + "px"
-#      box.pagenavi_fullwidth.css
-#        paddingLeft: dst_pagenavi + "px"
 
   console.log [head, document.cookie, location]
 
