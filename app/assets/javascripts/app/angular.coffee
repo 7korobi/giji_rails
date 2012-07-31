@@ -122,9 +122,9 @@ class FixedBox
     top = @dy + height if @dy < 0
     top = @dy          if   0 < @dy
     @box.to_z_front()
-    @box.css
-      top:  top  + "px"
-      left: left + "px"
+#    @box.css
+#      top:  top  + "px"
+#      left: left + "px"
 
 class Form
   @deploy: ->
@@ -149,6 +149,11 @@ jQuery ->
     buttons: $("#buttons")
     notepad: $("#notepad")
     window: $(window)
+
+  angular.bootstrap(document);
+
+  sayfilter.fix = new FixedBox 1, 1, window.sayfilter
+  buttons.fix = new FixedBox 1,-1, window.buttons
 
   unless document.cookie.layoutfilter > 0
     contentframe.className = "contentframe_navileft"
