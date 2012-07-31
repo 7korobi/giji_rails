@@ -10,9 +10,22 @@ class Config < Thor
     require './lib/const'
     require './lib/rsync'
 
-    ConfigCreate.new.activate
+    ConfigCreate.new.activate{|files| true }
   end
 
+  desc "test", "create config to other server"
+  def test
+    require 'active_support/all'
+    require 'fileutils'
+    require 'yaml'
+    require 'erubis'
+    require './lib/const'
+    require './lib/rsync'
+
+    ConfigCreate.new.activate do |files|
+      files && files['lapp'] && files['lapp'][/testbed$/]
+    end
+  end
 
   class WebHtml
     def render_exec
@@ -398,11 +411,13 @@ _PERL_
 
       rsync = Giji::RSync.new
       rsync.each do |folder, protocol, set|
+        next unless yield(set['files'])
         rsync.put(protocol, set, '_info.pl', :lsow, :config)
       end
 
       rsync.each do |folder, protocol, set|
         next unless GAME[folder]  &&  GAME[folder][:config]
+        next unless yield(set['files'])
         rhtml_config_out = GAME[folder][:config][:pl]
         rsync.put(protocol, set, 'config.pl', :ldata, :config)
       end

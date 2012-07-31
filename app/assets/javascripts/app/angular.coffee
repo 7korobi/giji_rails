@@ -122,9 +122,9 @@ class FixedBox
     top = @dy + height if @dy < 0
     top = @dy          if   0 < @dy
     @box.to_z_front()
-#    @box.css
-#      top:  top  + "px"
-#      left: left + "px"
+    @box.css
+      top:  top  + "px"
+      left: left + "px"
 
 class Form
   @deploy: ->
