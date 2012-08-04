@@ -1,5 +1,4 @@
 //"日本語";
-
 <%
 Dir.glob('lib/*.yml').each do |path|
   file, name = /(\w+).yml/.match(path).to_a
@@ -7,7 +6,7 @@ Dir.glob('lib/*.yml').each do |path|
   if Kernel.constants.member?(const)
 %>
 
-<%= const %> = <%= Kernel.const_get( const ).to_json %> ;
+this.<%= const %> = <%= Kernel.const_get( const ).to_json %> ;
 
 <%
   end

@@ -2,6 +2,17 @@
 chr_set_id: changed
 maker: 広場のお告げ
 admin: 闇の呟き
+chr_npcs:
+- caption: とのさま広場
+  csid: changed
+  face_id: m08
+  say_0: じんろう？<br>そんななまえのこ、いたかしら……
+  say_1: さあ、ぼうやたちいらっしゃい。ごはんのじかんよ。
+- caption: はおうの広場
+  csid: changed_m05
+  face_id: m05
+  say_0: たいへん、たいへん、たいへん！
+  say_1: 大変、人狼が出たよ！　いつもは嘘だけど、今度は本当の本当に本当！
 chr_jobs:
 - face_id: b44
   job: こあくとう
@@ -41,14 +52,3 @@ chr_jobs:
   job: びじん
 - face_id: m99
   job: かみさま
-chr_npcs:
-- caption: とのさま広場
-  csid: changed
-  face_id: m08
-  say_0: じんろう？<br>そんななまえのこ、いたかしら……
-  say_1: さあ、ぼうやたちいらっしゃい。ごはんのじかんよ。
-- caption: はおうの広場
-  csid: changed_m05
-  face_id: m05
-  say_0: たいへん、たいへん、たいへん！
-  say_1: 大変、人狼が出たよ！　いつもは嘘だけど、今度は本当の本当に本当！

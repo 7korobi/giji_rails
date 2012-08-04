@@ -19,6 +19,7 @@ PERL_DEFAULT:
       - wa
       - wa_w23
       - SF
+      - SF_sf10
 
       # SFが大文字なのは、従来との互換性を保つため。たぶん変更不能。
     path: &GIJI_PATH

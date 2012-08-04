@@ -1,0 +1,13 @@
+table(class="{{mestype}}")
+  tbody
+    tr.say
+      td.img
+        img(src="{{img}}")
+      td.field
+        .msg
+          h3.mesname
+            a(name="{{logid}}")
+              | {{name}}
+          p(class="{{style}} text")
+            | {{text}}
+          p.mes_date  ({{logid}}) {{time}}

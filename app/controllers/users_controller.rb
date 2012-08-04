@@ -19,6 +19,17 @@ class UsersController < ApplicationController
   end
 
   def edit
+    gon.messages = user.auths.map do |auth|
+      { template: 'giji/say',
+        mestype: 'mes_think',
+        style: '',
+        img: auth.image,
+        logid: auth.nickname,
+        name: auth.provider,
+        time: auth.updated_at,
+        text: "<dl><dt>nickname</dt><dd>#{auth.nickname}</dd><dt>name</dt><dd>#{auth.name}</dd></dl>".html_safe,
+      }
+    end
   end
 
   def create

@@ -7,15 +7,11 @@ tmp/
 .sass-cache/
 Gemfile.lock
 config/database.yml
-config/environments/development.rb
-config/environments/production.rb
-config/initializers/secret_token.rb
-config/initializers/session_store.rb
-config/initializers/typus.rb
+config/initializers/secret.rb
+config/initializers/resque.rb
 config/mongoid.yml
 config/omni_auth.yml
 config/rsync.yml
-config/typus/
 public/
 public_old/
 test/

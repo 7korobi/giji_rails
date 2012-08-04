@@ -26,10 +26,8 @@
   h2 {{title}}
   h3 {{event.name}}
   br
-  #messages(data-spy="scroll")
+  #messages
     .message_filter(ng-repeat="message in messages" ng-bind-html-unsafe="log(message)")
     .message_filter.drag(ng-repeat="message in anchors"  ng-bind-html-unsafe="log(message)" style="z-index: {{message.z}}; top: {{message.top}}px; ")
 
-- angular_templates do |view, options|
-  = render "giji/#{view}", options
 

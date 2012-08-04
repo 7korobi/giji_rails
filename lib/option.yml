@@ -1,3 +1,7 @@
+cookie:
+  expire:
+    hours: 1
+
 css_wday:
   - cinema800
   - cinema800

@@ -16,8 +16,23 @@ class ChrVotesController < ApplicationController
 
   before_filter :login_require, only:%w[new create update destroy]
 
+  def index
+    gon.messages = chr_votes_comments.map do |face_id, votes|
+      { template: 'giji/say',
+        mestype: 'mes_think',
+        style: '',
+        logid:'',
+        face_id: face_id,
+        name: Face.find(face_id).name,
+        time: votes.last.created_at,
+        text: votes.map{|vote| "<ul><li>#{vote.comment}</li></ul>"}.join,
+      }
+    end
+  end
+
   def new
-    chr_vote.vote = chr_votes.max(:vote).to_i + 1
+    chr_vote.vote  = chr_votes.max(:vote).to_i + 1
+    chr_vote.phase = chr_vote_phases[0]
   end
 
   def create

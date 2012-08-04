@@ -3,23 +3,23 @@
 
 - content_for :link do
   h4.sayfilter_caption_enable
-    | click to login!
+    | 他のことを知りたい
+  .sayfilter_content
+    li=link_to 'あなたのトップページ', user_path
+
+- content_for :info do
+  h4.sayfilter_caption_enable
+    | あなたの登録情報
   .sayfilter_content
     =semantic_form_for user do |f|
-      .form-horizontal
+      .form-horizontal(ng-init="navi._value='info'")
         = f.inputs
-        = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }
+        = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "人狼議事で使っているID"
         .actions
           = f.submit
 
 - content_for :log do
   h2= "#{user.name} さんの情報"
-  =messages_for_auth(user.auths) do |auth|
-    table
-      tbody
-        tr
-          th nickname
-          td=auth.nickname
-        tr
-          th name
-          td=auth.name
+  #messages
+    .message_filter(ng-repeat="message in messages" ng-bind-html-unsafe="log(message)")
+

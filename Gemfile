@@ -24,7 +24,6 @@ gem 'gon'
 
 # view environment
 gem "slim"
-gem "knockout-rails"
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 # gem 'spreadsheet'
@@ -36,7 +35,7 @@ gem 'resque'
 gem 'resque-scheduler'
 
 # menus
-gem "typus"
+#gem "typus"
 #gem "web-app-theme"
 
 # input support

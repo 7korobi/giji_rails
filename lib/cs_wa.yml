@@ -2,6 +2,17 @@
 chr_set_id: wa
 maker: 稲荷のお告げ
 admin: 闇の呟き
+chr_npcs:
+- caption: 和の国てやんでえ
+  csid: wa
+  face_id: w17
+  say_0: 嗚呼、聞こえる。やつの足音が聞こえる……。
+  say_1: 逃げろ。逃げろ！おまえらだけでも逃げろ。
+- caption: 和の国てやんでえ（仁右衛門）
+  csid: wa_w23
+  face_id: w23
+  say_0: なんと、これは奇っ怪……分かったゾ！
+  say_1: やっぱり人狼は実在するんだヨ！　うっひょひょーい！
 chr_jobs:
 - face_id: w01
   job: 役者
@@ -91,14 +102,3 @@ chr_jobs:
   job: 座敷守
 - face_id: w46
   job: 屍漁り
-chr_npcs:
-- caption: 和の国てやんでえ
-  csid: wa
-  face_id: w17
-  say_0: 嗚呼、聞こえる。やつの足音が聞こえる……。
-  say_1: 逃げろ。逃げろ！おまえらだけでも逃げろ。
-- caption: 和の国てやんでえ（仁右衛門）
-  csid: wa_w23
-  face_id: w23
-  say_0: なんと、これは奇っ怪……分かったゾ！
-  say_1: やっぱり人狼は実在するんだヨ！　うっひょひょーい！

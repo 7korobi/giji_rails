@@ -1,11 +1,11 @@
 doctype html
-html lang="ja"
-  head(ng-controller="HEAD")
+html(lang="ja" ng-controller="RAILS")
+  head
     =render partial: 'layouts/head'
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事" end
       = if flash[:notice] then flash[:notice] end
-  body(ng-controller="BODY")
+  body
     #outframe.outframe
       #contentframe.contentframe
         h1 = link_to root_path do

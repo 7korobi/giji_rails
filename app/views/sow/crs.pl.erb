@@ -38,8 +38,8 @@ sub GetRSChr {
 
   # ダミーキャラの発言
   my @npcsay =(
-    '<%= @chrnpc.says[0] %>',
-    '<%= @chrnpc.says[1] %>',
+    <%= @chrnpc.says[0].inspect %>,
+    <%= @chrnpc.says[1].inspect %>,
   );
 
   my @expression = (

@@ -4,6 +4,7 @@ cd $APP
 
 rm -rf $APP/public/assets/*
 rake  assets:precompile
+thor  sjis:create
 
 /utage/web-push-serversman-cdj  /utage &
 /utage/web-push-serversman-cdj  $APP/public  --delete

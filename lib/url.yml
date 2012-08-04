@@ -1,10 +1,10 @@
 development:
   rails:
-    http://localhost:3000/
+    http://localhost:3000
   ss:
-    http://localhost:3000/
+    http://localhost:3000
 production:
   rails:
-    http://giji.check.jp/
+    http://giji.check.jp
   ss:
-    http://localhost:3000/
+    http://localhost:3000

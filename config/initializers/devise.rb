@@ -9,7 +9,6 @@ Devise.setup do |config|
     config.omniauth :openid, options.merge(store: OpenID::Store::Filesystem.new('/tmp') )
   end
 
-  config.mailer_sender = '7korobi@gmail.com'
   config.case_insensitive_keys = [ :email ]
 
   # Configure the class responsible to send e-mails.

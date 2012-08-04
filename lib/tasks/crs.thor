@@ -9,22 +9,6 @@ class Crs < Thor
 
     rsync = Giji::RSync.new
 
-    ChrSet.all.each do |set|
-      set.chr_npcs.each do |npc|
-        set_id = set.id
-        set_id = 'SF'  if 'sf' == set.id
-
-        if %w[c99 sf04 m08 w17].member? npc.id
-          npc.csid = "#{set_id}"
-        else
-          npc.csid = "#{set_id}_#{npc.id}"
-        end
-
-        npc.save
-      end
-      set.save
-    end
-
     ChrSet.all.map do |set|
       faces = set.faces.to_a
       set.chr_npcs.map do |npc|
@@ -37,10 +21,6 @@ class Crs < Thor
     rsync.each do |folder, protocol, set|
       rsync.put(protocol, set, 'rs/', :lapp, :app)
     end
-    rsync.each do |folder, protocol, set|
-      rsync.put(protocol, set, 'WebRecord/', :lasset, :asset)
-    end
-
     rsync.exec
   end
 

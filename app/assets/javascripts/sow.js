@@ -1,1 +1,2 @@
-//= require_tree ./sow
+//= require ./app/class.coffee
+//= require ./app/sow.coffee

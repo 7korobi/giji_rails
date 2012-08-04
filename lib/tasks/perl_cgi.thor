@@ -21,9 +21,15 @@ class PerlCgi < Thor
     require '/www/giji_rails/lib/const'
     require '/www/giji_rails/lib/rsync'
 
+    files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
+
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
       next unless yield(set['files'])
+
+      files.each do |fname|
+        rsync.put(protocol, set, fname, :lapp, :app)
+      end
       rsync.put(protocol, set, 'html/', :lapp, :app)
       rsync.put(protocol, set, 'lib/',  :lapp, :app)
     end

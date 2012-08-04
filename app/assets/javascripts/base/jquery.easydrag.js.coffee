@@ -37,7 +37,7 @@
     $(currentElement).css "left", lastElemLeft + spanX
 
   $.updatePositionY = (e)->
-    pos = $.getMousePosition e    
+    pos = $.getMousePosition e
     spanY = pos.y - lastMouseY
     $(currentElement).css  "top", lastElemTop + spanY
 

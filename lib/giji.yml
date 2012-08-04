@@ -1,9 +1,12 @@
 link:
-  servers: http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8
-  wiki:    http://melon-cirrus.sakura.ne.jp/wiki/
+  servers:  http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8
+  plan:     http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
+  wiki:     http://melon-cirrus.sakura.ne.jp/wiki/
+  scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 turns: []
 templates: {}
+box: {}
 
 message:
   template:
