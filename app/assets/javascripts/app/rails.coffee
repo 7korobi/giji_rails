@@ -12,7 +12,6 @@ RAILS = ($scope, $interpolate)->
       $scope.$digest()
 
   $scope.$watch 'location.hash', (oldVal, newVal)->
-    console.log [oldVal, newVal, $scope]
 
   $scope.link = GIJI.link
   for idx,val in $("script[type='text/x-tmpl']")
@@ -233,6 +232,4 @@ RAILS = ($scope, $interpolate)->
           info_width  = width
 
     GIJI.box.sayfilter.width info_width
-
-  console.log [$scope, document.cookie, location]
 

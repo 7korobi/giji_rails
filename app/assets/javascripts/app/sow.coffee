@@ -44,7 +44,6 @@ CGI = ($scope, $interpolate)->
       $scope.$digest()
 
   $scope.$watch 'location.hash', (oldVal, newVal)->
-    console.log [oldVal, newVal, $scope]
 
   $scope.link = GIJI.link
 

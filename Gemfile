@@ -25,6 +25,7 @@ gem 'gon'
 # view environment
 gem "slim"
 gem 'jquery-rails'
+gem 'jquery_mobile_rails'
 gem 'twitter-bootstrap-rails'
 # gem 'spreadsheet'
 # gem 'rabl'

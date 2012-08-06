@@ -9,7 +9,7 @@ for TARGET in $1
 do
   /utage/web-push-$TARGET /utage    --delete &
   /utage/web-push-$TARGET /www/giji_rails  --delete &
-  /utage/web-push-$TARGET /www/giji_socketstream  --delete &
+  /utage/web-push-$TARGET /www/sow-giji  --delete &
 
   /utage/web-ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET
   /utage/web-ssh-$TARGET  /utage/web-app $2 &

@@ -79,6 +79,7 @@ hr {
 }
 
 .board {
+  text-align: center;
   margin: 0 0 0 5%;
   width: 90%;
   th, td, td a {
@@ -88,19 +89,17 @@ hr {
   td {
     vertical-align: top;
   }
-}
-.choice .board {
-  border-bottom: none;
-}
-.choice .board th{
-}
-.choice .board td{
-  vertical-align: bottom;
-  text-align: center;
-  border-top: none;
-}
-.choice .board .link A{
-  display: block;
+
+  .choice {
+    border-bottom: none;
+    th, td {
+      vertical-align: bottom;
+      border-top: none;
+    }
+    .link A{
+      display: block;
+    }
+  }
 }
 
 .say img {

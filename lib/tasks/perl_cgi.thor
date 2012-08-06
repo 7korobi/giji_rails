@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
 class PerlCgi < Thor
+  desc "init", "push files initial to server"
+  def init
+    files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
+    sync_to_servers(files) do |files|
+      files && files['lapp'] && files['lapp'][/testbed$/]
+    end
+  end
+
   desc "push", "push files to other servers"
   def push
     sync_to_servers{|files| true }
@@ -13,7 +21,7 @@ class PerlCgi < Thor
     end
   end
 
-  def sync_to_servers
+  def sync_to_servers(files = [])
     require 'active_support/all'
     require 'fileutils'
     require 'yaml'
@@ -21,7 +29,6 @@ class PerlCgi < Thor
     require '/www/giji_rails/lib/const'
     require '/www/giji_rails/lib/rsync'
 
-    files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
 
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
