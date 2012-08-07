@@ -12,7 +12,7 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier',     ">= 1.0.3"
 
-  gem 'sass'
+  #gem 'sass'
   #gem 'coffee-script'
   #gem 'uglifier'
   #gem 'execjs'
