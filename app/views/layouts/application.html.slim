@@ -48,6 +48,6 @@ html(lang="ja" ng-controller="RAILS")
               = yield :calc
         #buttons
           nav
-            span.sayfilter_heading(ng-repeat="key in navi._keys")
+            div(ng-repeat="key in navi._keys")
               a.btn(ng-click="navi.move(key)"  ng-class="navi[key]")
                 | {{navi._button[key]}}

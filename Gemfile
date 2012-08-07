@@ -12,7 +12,7 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier',     ">= 1.0.3"
 
-  #gem 'sass'
+  gem 'sass'
   #gem 'coffee-script'
   #gem 'uglifier'
   #gem 'execjs'
@@ -25,7 +25,7 @@ gem 'gon'
 # view environment
 gem "slim"
 gem 'jquery-rails'
-gem 'jquery_mobile_rails'
+# gem 'jquery_mobile_rails'
 gem 'twitter-bootstrap-rails'
 # gem 'spreadsheet'
 # gem 'rabl'

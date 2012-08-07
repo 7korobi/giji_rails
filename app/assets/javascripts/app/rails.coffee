@@ -12,6 +12,8 @@ RAILS = ($scope, $interpolate)->
       $scope.$digest()
 
   $scope.$watch 'location.hash', (oldVal, newVal)->
+  $scope.$watch 'title', (oldVal, newVal)->
+    $('title').text(newVal);
 
   $scope.link = GIJI.link
   for idx,val in $("script[type='text/x-tmpl']")
@@ -46,7 +48,7 @@ RAILS = ($scope, $interpolate)->
         $scope.$apply()
 
       popup = (turn, ank)->
-        href = location.origin + location.pathname
+        href = location.protocol + "//"+ location.host + location.pathname
 
         popup_find = ()->
           return null unless GIJI.turns[turn]
@@ -64,8 +66,9 @@ RAILS = ($scope, $interpolate)->
 
           $.get href, {}, (data) =>
             for dom in $(data)
-              if dom.innerText?.match(/gon.event=\{/)?
-                eval  dom.innerText
+              code = $(dom).text()
+              if code.match(/gon.event=\{/)?
+                eval  code
                 GIJI.turns[gon.event.turn] = gon.event.messages
                 return  if  popup_find()
           href
@@ -89,7 +92,7 @@ RAILS = ($scope, $interpolate)->
         ret = log.replace ///
           (/\*)(.*?)(\*/|$)
         ///g,'<span>$1 B.G $3</span>'
-        ret = null  if  "" == ret.removeTags('span').trim()
+        # ret = ""  if  "" == ret.removeTags('span').trim()
         ret
       else
         log.replace ///
@@ -101,14 +104,12 @@ RAILS = ($scope, $interpolate)->
       """ <a class="res_anchor" href_eval="popup(#{turn},'#{ank}')">&gt;&gt;#{id}</a> """
 
   $scope.log = (log)->
-    return unless log
+    return unless log?
     log.time or= lax_time Date.create log.date
-    log.text or= decolate anker log.log
+    log.text   = decolate anker log.log
     log.img  or= "#{URL.rails}/images/portrate/#{log.face_id}.jpg"
 
     log.template or= "giji/" + (GIJI.message.template.subid[log.subid] || GIJI.message.template.mestype[log.mestype])
-
-    log.log = null
     GIJI.templates[log.template](log)
 
   $scope.title ||= $scope.title ||= '人狼議事'
@@ -129,7 +130,6 @@ RAILS = ($scope, $interpolate)->
       options:
         on: 'search'
         current: 1
-        current_type: Number
         is_cookie: false
     $scope.page._items = gon.page
 
@@ -140,7 +140,6 @@ RAILS = ($scope, $interpolate)->
         per: 50
         on: 'hash'
         current: 1
-        current_type: Number
         is_cookie: false
 
     mode_filters =
@@ -162,9 +161,9 @@ RAILS = ($scope, $interpolate)->
         clan: '仲間'
         open: '議事'
 
-    $scope.mode._watch.push ()->
+    $scope.mode._watch.push (mode)->
+      filter = mode_filters[mode]
       $scope.page._items = $scope.event.messages.filter (log)->
-        filter = mode_filters[$scope.mode._value]
         log.logid.match filter
 
     $scope.page._watch.push (page)->
@@ -173,7 +172,7 @@ RAILS = ($scope, $interpolate)->
       to   =  page      * page_per - 1
       $scope.messages = ($scope.page._items[idx] for idx in [from .. to])
       $scope.anchors = []
-      GIJI.box.window?.scrollTop( $(".inframe").offset().top - 20 )
+      $(window).scrollTop( $(".inframe").offset().top - 20 )
 
   Navi.push $scope, 'width'
     options:
@@ -200,6 +199,7 @@ RAILS = ($scope, $interpolate)->
     value = "#{$scope.theme._value}#{$scope.width._value}"
     date    = new Date
     $scope.css = "#{URL.rails}/stylesheets/#{value}.css"
+    $("#giji_css").attr 'href', $scope.css
 
     $scope.h1 =
       type: OPTION.head_img[value][ (date / 60*60*12).ceil() % 2]
@@ -209,13 +209,13 @@ RAILS = ($scope, $interpolate)->
       when 800
         $scope.h1.width = 580
     $scope.h1.path = "#{URL.rails}/images/banner/title#{$scope.h1.width}#{$scope.h1.type}.jpg"
-    GIJI.box.window.resize()
+    $(window).resize()
 
   $scope.width._watch.push move
   $scope.theme._watch.push move
 
-  GIJI.box.window.resize ->
-    width = GIJI.box.window.width()
+  $(window).resize ->
+    width = $(window).width()
 
     switch $scope.width._value
       when 480
@@ -231,5 +231,5 @@ RAILS = ($scope, $interpolate)->
         else
           info_width  = width
 
-    GIJI.box.sayfilter.width info_width
+    $("#sayfilter").width info_width
 

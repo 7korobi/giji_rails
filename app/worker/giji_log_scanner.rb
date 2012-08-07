@@ -10,10 +10,10 @@ class GijiLogScanner < GijiScanner
 
       path = set[:files][:ldata] + '/data/vil'
       from = set[:files][:from]
-      force = gaps[folder]
+      force = gaps[folder] || []
 
       Dir.new(path).each do | fname |
-        next  if  0 == File.size(path+'/'+fname) 
+        next  if  0 == File.size(path+'/'+fname)
         next  if  /vil.cgi/ === fname  rescue  next
 
         new(path, folder, WATCH[:log][:time], from, force, fname).save
@@ -53,7 +53,7 @@ class GijiLogScanner < GijiScanner
                       end
       next if ids.member? [logid, subid]
 
-      # message embedded in 
+      # message embedded in
       message = Message.new( logid: logid, sow_auth_id: o.uid, date: o.date, log: o.log )
       message.subid = subid
       message.face_id = o.cid

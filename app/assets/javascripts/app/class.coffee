@@ -52,10 +52,12 @@ class PageNavi extends Navi
     @_value = @_params.current_type @_button[target]
 
   constructor: ($scope, key, def)->
+    def.options.current_type = Number
+    def.options.per or= 1
+
     @_items = []
     super
-    @_params.per or= 1
-    $scope.$watch "#{key}._items.last()", (newVal,oldVal)=>
+    $scope.$watch "#{key}._items.length", (newVal,oldVal)=>
       for func in @_watch
         func @_value
 
@@ -94,22 +96,23 @@ class FixedBox
   constructor: (dx, dy, fixed_box)->
     @dx = dx
     @dy = dy
-    @box = $(fixed_box)
+    @box = fixed_box
 
-    fixed_box.style.position = "fixed"
     if @box?
-      GIJI.box.window.resize => @calc()
+      @box.css
+        position: "fixed"
+      $(window).resize => @calc()
 
   calc: ()->
     box_height = @box.height()
     win_height = window.innerHeight ||
-      GIJI.box.window.height() ||
+      $(window).height() ||
       document.documentElement.clientHeight ||
       document.body.clientHeight
     height = win_height - box_height
 
     box_width = @box.width()
-    win_width = GIJI.box.window.width()
+    win_width = $(window).width()
     width = win_width - box_width
 
     left = @dx + width if @dx < 0
@@ -134,7 +137,7 @@ PageNavi.push = ($scope, key, def)->
   $scope[key] = Navi.list[key]
 
 FixedBox.push = (dx, dy, key)->
-  FixedBox.list[key] or= new FixedBox dx, dy, GIJI.box[key][0]
+  FixedBox.list[key] or= new FixedBox dx, dy, $("#" + key)
 
 
 class Form
