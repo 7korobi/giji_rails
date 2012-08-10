@@ -22,6 +22,10 @@
   h4.sayfilter_caption_enable
     p= link_to '他の物語へ', index_parent_path
 
+- content_for :info do
+  .sayfilter_content
+    = render "layouts/potofs"
+
 - content_for :log do
   h2 {{title}}
   h3 {{event.name}}

@@ -19,14 +19,17 @@ html(lang="ja" ng-controller="RAILS")
           address
             | 人狼議事キャラセット by りりんら
             br
-            | 管理 sol・la
-            a(href="mailto:7korobi@gmail.com")
-              | ななころび
+            | 管理
+            code  sol・la
+            code
+              a(href="mailto:7korobi@gmail.com") ななころび
             br
-            | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。ご了承ください。
+            | 人狼議事で使っているキャラチップは、原則として他所での利用を許諾しておりません。
+            br
+            | ご了承ください。
 
       #footer
-      #tab
+      #tab(ng-cloak)
         #sayfilter.sayfilter
           h3.sayfilter_heading(ng-show="! navi.blank")
             = yield :head

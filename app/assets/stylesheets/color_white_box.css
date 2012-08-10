@@ -71,85 +71,47 @@ h3 {
 .mes_del .img{
   opacity: 0.25;
 }
-.DELETED .action,
-.DELETED .msg,
-.DELETEDADMIN .action,
-.DELETEDADMIN .msg,
-.mes_del .action,
-.mes_del .memoleft,
-.mes_del .memoright,
-.mes_del .msg{
+.DELETED,
+.DELETEDADMIN,
+.mes_del{
   color: #aaa;  background: #666;}
 /* 未確定発言 ----------*/
-.QUE .action,
-.QUE .msg,
-.mes_que .action,
-.mes_que .memoleft,
-.mes_que .memoright,
-.mes_que .msg{
+.QUE,
+.mes_que{
   color: #664;  background: #cb8; border: none; }
 /* 独り言 ----------*/
-.TSAY .action,
-.TSAY .msg,
-.mes_think .action,
-.mes_think .memoleft,
-.mes_think .memoright,
-.mes_think .msg{
+.TSAY,
+.mes_think{
   color: #000;  background: #a98;} /*茶鼠*/
 
 /* 死者のうめき ----------*/
-.GSAY .action,
-.GSAY .msg,
-.mes_grave .action,
-.mes_grave .memoleft,
-.mes_grave .memoright,
-.mes_grave .msg{
+.GSAY,
+.mes_grave {
   color: #000;  background: #bbd;} /*空色*/
 
 /* 見物人 ------*/
-.VSAY .action,
-.VSAY .msg,
-.mes_mob .action,
-.mes_mob .memoleft,
-.mes_mob .memoright,
-.mes_mob .msg{
+.VSAY,
+.mes_mob {
   color: #000;  background: #ca6; } /*榛色*/
 /* 囁き ----------*/
-.WSAY .action,
-.WSAY .msg,
-.mes_wolf .action,
-.mes_wolf .memoleft,
-.mes_wolf .memoright,
-.mes_wolf .msg{
+.WSAY,
+.mes_wolf {
   color: #000;  background: #a55; } /*紅海老茶*/
 /* 共鳴 ----------*/
-.SPSAY .action,
-.SPSAY .msg,
-.AIM .action,
-.AIM .msg,
-.mes_sympa .action,
-.mes_sympa .memoleft,
-.mes_sympa .memoright,
-.mes_sympa .msg{
+.SPSAY,
+.AIM,
+.mes_sympa {
   color: #000;  background: #dcb; } /*薄柿*/
 /* 念話 ----------*/
-.BSAY .action,
-.BSAY .msg,
-.XSAY .action,
-.XSAY .msg,
-.mes_bat  .msg ,
-.mes_pixi .action,
-.mes_pixi .memoleft,
-.mes_pixi .memoright,
-.mes_pixi .msg {
+.BSAY,
+.XSAY,
+.mes_bat,
+.mes_pixi {
   color: #000;  background: #9a7;  }
 
 
 /* 発言入力欄（共通） ---*/
-.formpl_common {
-  border-color: #664;
-}
-.formpl_common .msg ,
+.formpl_common,
 .formpl_common textarea ,
 .formpl_commit ,
 .formpl_commit textarea ,

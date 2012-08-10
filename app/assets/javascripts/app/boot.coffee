@@ -13,11 +13,8 @@ jQuery ->
     notepad: $("#notepad")
     window: $(window)
 
-  FixedBox.push  1, 1, 'sayfilter'
-  FixedBox.push -1,-1, 'buttons'
-
-  $("#contentframe")[0].className = "contentframe_navileft"
-  $("#outframe")[0].className = "outframe_navimode"
+  FixedBox.push  1, 1, '#sayfilter'
+  FixedBox.push -1,-1, '#buttons'
 
   $(window).resize ->
     $(window).scroll()
@@ -29,8 +26,8 @@ jQuery ->
 
 if  "Microsoft Internet Explorer" == navigator.appName
   jQuery ->
-    start.delay 1000
-    bootstrap.delay 1000
+    start.delay 1200
+    bootstrap.delay 800
 else
   jQuery ->
     start.delay 1000

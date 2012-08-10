@@ -1,12 +1,32 @@
+turns: []
+templates: {}
+box: {}
+
 link:
   servers:  http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8
   plan:     http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
   wiki:     http://melon-cirrus.sakura.ne.jp/wiki/
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
-turns: []
-templates: {}
-box: {}
+themes:
+  pan:
+    juna: 審問
+    sow:  物語
+  giji:
+    cinema: 煉瓦
+    night:  月夜
+    star:   蒼穹
+    wa:     和の国
+
+csids:
+  15girls: 15girls
+  bloody:  bloody
+  bunmei:  bunmei
+  juna:    juna
+  name:    name
+  orange:  orange
+  sow:     sow
+  tmmi:    TMMI
 
 message:
   template:

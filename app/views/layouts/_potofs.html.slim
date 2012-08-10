@@ -1,0 +1,30 @@
+table(class="table table-condensed")
+  thead
+    tr
+      th
+        | キャラクター
+        i(class="icon-user")
+      th
+        code(href_eval="sort_potofs('role')") 役職
+        code(href_eval="sort_potofs('select')") 希望
+      th
+        code(href_eval="sort_potofs('deathday')") 日程
+        code(href_eval="sort_potofs('live')") 死因
+        code(href_eval="sort_potofs('text')") 状態
+        | 発言 ({{sum.actaddpt}}促)
+  tbody(ng-repeat="potof in potofs")
+    tr
+      td
+        | {{potof.name}}
+        .note
+          i(class="icon-user")
+          | {{potof.auth}}
+      td
+        | {{potof.role.join(' ')}}
+        .note
+          | {{potof.select}}
+      td
+        | {{potof.stat}}
+        span(ng-bind-html-unsafe="potof.text.join(' ')")
+        .note
+          | {{potof.said}}

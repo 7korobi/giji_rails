@@ -9,6 +9,7 @@
 @textColor:      #ccc;
 @linkColor:      #333;
 @linkColorHover: #8bf;
+@baseFontFamily: sans-serif;
 @baseFontSize:   16px;
 @baseLineHeight: 21px;
 
@@ -26,12 +27,14 @@ h2 {
   border-bottom: 1px solid @textColor;
 }
 
-.mesname,
-.mesname a,
-.mesname a:hover,
-.message_filter a,
-.message_filter a.res_anchor,
-.sayfilter a {
-  color: @linkColor;
+code a,
+.btn a {
+  color: @gray;
 }
 
+.toppage, .choice, .vindex, .turnnavi, .pagenavi
+{
+  a {
+  	color: #afa;
+  }
+}

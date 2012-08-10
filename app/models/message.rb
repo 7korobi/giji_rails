@@ -41,24 +41,5 @@ class Message < Chat
   def self.gon
     all.map &:gon
   end
-
-  def self.to_fair(log, parse_uri = true)
-    log = if log.nil?
-          then ''
-          else log.gsub(/\r\n?/,"\n")
-          end
-    log.gsub!(/(\n)/, '\1<br />')
-    log.gsub!(URI.regexp) do
-      uri = Regexp.last_match[0]
-      if parse_uri && $1.present? && $4.present?
-        <<-_HTML_
-          =<a class="res_anchor" rel=​"tooltip" href="#{uri}" title=​"#{uri}">#{$4}</a>=
-        _HTML_
-      else
-        uri
-      end
-    end
-    log.html_safe
-  end
 end
 

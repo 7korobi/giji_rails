@@ -6,5 +6,7 @@ class EventsController < BasePastLogController
 
   respond_to :html, :json
   def index
+    gon.potofs = potofs.map(&:attributes)
+    gon.folder = story.folder
   end
 end

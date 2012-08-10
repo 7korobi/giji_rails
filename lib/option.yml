@@ -20,6 +20,10 @@ head_img:
   wa480:     [b, w]
   night800:  [b, w]
   night480:  [b, w]
+  sow800:    [r, c]
+  sow480:    [r, c]
+  juna800:   [b, w]
+  juna480:   [b, w]
 
 jp_wday:
   - 日

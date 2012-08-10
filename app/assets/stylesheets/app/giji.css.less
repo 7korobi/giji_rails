@@ -7,10 +7,27 @@ address * {
   clear: both;
 }
 
+.btn {
+  white-space: nowrap;
+}
+
 .drag,
 .ajax {
   position: absolute;
-  cursor: move;
+}
+
+.say .img{
+  vertical-align: top;
+  padding: 0 11px 6px 0;
+}
+
+.note {
+  font-size: small;
+  line-height: 2ex;
+}
+
+.table-condensed td {
+  line-height: 2ex;
 }
 
 form.login {
@@ -40,13 +57,6 @@ img[onclick] {
   input[type=password] {
     width: 10em;
   }
-}
-
-
-.mes_maker a.res_anchor:link,
-.mes_admin a.res_anchor:link,
-a:link {
-  white-space: nowrap;
 }
 
 th strong{
@@ -100,10 +110,6 @@ hr {
   }
 }
 
-.say img {
-  max-width:   90px;
-}
-
 .chrbox {
   height: 200px;
 }
@@ -111,10 +117,11 @@ hr {
 .chrbox,
 .chrblank,
 .chrM,
-.chrF {
+.chrF,
+.say img {
   float: left;
-  max-width:   90px;
-  width: 90px;
+  max-width: 90px;
+  width:     90px;
 }
 
 .chrlist {
@@ -124,36 +131,23 @@ hr {
   background-color: #000;
 }
 
-.chrblank {
-  background-image: url(http://giji.check.jp/images/portrate/blank.jpg);
+.chrblank, .chrM, .chrF {
   background-repeat: no-repeat;
   background-position: top;
   padding: 6px 0 0 0;
   height: 60px;
-  width:  90px;
   font-size: smaller;
   margin: 0 auto 0 auto;
   text-align: center;
 }
+.chrblank {
+  background-image: url(http://giji.check.jp/images/portrate/blank.jpg);
+}
 .chrM {
   background-image: url(http://giji.check.jp/images/portrate/blankM.jpg);
-  background-repeat: no-repeat;
-  background-position: top;
-  padding: 6px 0 0 0;
-  height: 60px;
-  width:  90px;
-  font-size: smaller;
-  margin: 0 auto 0 auto;
 }
 .chrF {
   background-image: url(http://giji.check.jp/images/portrate/blankF.jpg);
-  background-repeat: no-repeat;
-  background-position: top;
-  padding: 6px 0 0 0;
-  height: 60px;
-  width:  90px;
-  font-size: smaller;
-  margin: 0 auto 0 auto;
 }
 
 .sayfilter_content_enable {
@@ -209,29 +203,45 @@ hr {
   text-align: right;
 }
 
-
-.MAKER h3,
-.mes_maker h3{  color: #666;}
-.MAKER .action,
-.MAKER .guide,
-.mes_maker .action,
-.mes_maker .guide {
-  border-style: none;
-  text-align: left;
-  color: #ccf;  background: #000;
+.MAKER, .mes_maker {
+  color: #ccf; background: #000;
+  h3 { color: #844;}
+  a {  color: #afa;}
+  .action, .guide {
+    border-style: none;
+    text-align: left;
+    color: #ccf;  background: #000;
+  }
 }
 
-.ADMIN h3,
-.mes_admin h3{  color: #844;}
-.ADMIN .action,
-.ADMIN .guide,
-.mes_admin .action,
-.mes_admin .guide {
-  border-style: none;
-  text-align: left;
-  color: #c99;  background: #000;
+.ADMIN, .mes_admin {
+  color: #c99; background: #000;
+  h3 { color: #666;}
+  a {  color: #afa;}
+  .action, .guide {
+    border-style: none;
+    text-align: left;
+    color: #c99;  background: #000;
+  }
 }
-.MAKER,
-.mes_maker {  color: #ccf;  background: #000;  }
-.ADMIN,
-.mes_admin {  color: #c99;  background: #000;  }
+
+.clearboth { clear:both; }
+.invisible_hr { display: none; }
+.say { width:100%; }
+img { border-style: none; }
+
+#clipboard,
+#cliptext,
+.action_type,
+.action_type legend {
+  font-size: smaller;
+  line-height: 1em;
+}
+
+fieldset.action_type  select,
+.formpl_content textarea,
+.formpl_actiontext {
+  width: 100%;
+}
+.formpl_content label { display: inline;}
+.formpl_action select { width: 55%;}

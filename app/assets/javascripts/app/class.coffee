@@ -1,4 +1,6 @@
 class Navi
+  @list = {}
+
   move: (target)->
     @_value = @_params.current_type target
 
@@ -13,11 +15,15 @@ class Navi
     @_key = key
 
     chk = ///
-      &#{key}=(\w+)
+      (^|\s)#{key}=(\w+)
     ///
-    l = location[@_params.on].match(chk)?[1]
-    c = document.cookie.match(chk)?[1]
-    @_value = @_params.current_type(l or c or @_params.current)
+    l = Object.fromQueryString(location[@_params.on].replace(/^[#?]/,""))[key]
+    c = document.cookie.match(chk)?[2]
+    @_value = @_params.current_type( l or c )
+    if @_button
+      unless @_button.keys().find String @_value
+        @_value = null
+    @_value or= @_params.current_type @_params.current
     $scope.$watch "#{key}._value", (newVal,oldVal)=>
       for func in @_watch
         func @_value
@@ -28,17 +34,18 @@ class Navi
       list = new Object
       for navi in navis
         options = navi._params
-        list[options.on] = ""
+        list[options.on] = []
       for navi in navis
         options = navi._params
-        cmd = "&#{navi._key}=#{navi._value}"
-        list[options.on] += cmd
+        cmd = "#{navi._key}=#{navi._value}"
+
+        list[options.on].push cmd
         if options.is_cookie
           expire = new Date().advance OPTION.cookie.expire
           document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
       for field in list.keys()
         val = list[field]
-        location[field] = val
+        location[field] = list[field].join("&")
 
   _move: ()->
     target = String @_value
@@ -93,6 +100,9 @@ class PageNavi extends Navi
 
 
 class FixedBox
+  @list = {}
+  win_width  = win_height = 0
+
   constructor: (dx, dy, fixed_box)->
     @dx = dx
     @dy = dy
@@ -101,19 +111,21 @@ class FixedBox
     if @box?
       @box.css
         position: "fixed"
-      $(window).resize => @calc()
+
+      $(window).scroll =>
+        @calc()
+
+      $(window).resize =>
+        win_width = $(window).width()
+        win_height = window.innerHeight ||
+          $(window).height() ||
+          document.documentElement.clientHeight ||
+          document.body.clientHeight
+        @calc()
 
   calc: ()->
-    box_height = @box.height()
-    win_height = window.innerHeight ||
-      $(window).height() ||
-      document.documentElement.clientHeight ||
-      document.body.clientHeight
-    height = win_height - box_height
-
-    box_width = @box.width()
-    win_width = $(window).width()
-    width = win_width - box_width
+    height = win_height - @box.height()
+    width = win_width - @box.width()
 
     left = @dx + width if @dx < 0
     left = @dx         if   0 < @dx
@@ -125,9 +137,6 @@ class FixedBox
       left: left + "px"
 
 
-Navi.list = {}
-FixedBox.list = {}
-
 Navi.push = ($scope, key, def)->
   Navi.list[key] or= new Navi $scope, key, def
   $scope[key] = Navi.list[key]
@@ -137,7 +146,7 @@ PageNavi.push = ($scope, key, def)->
   $scope[key] = Navi.list[key]
 
 FixedBox.push = (dx, dy, key)->
-  FixedBox.list[key] or= new FixedBox dx, dy, $("#" + key)
+  FixedBox.list[key] or= new FixedBox dx, dy, $(key)
 
 
 class Form

@@ -12,6 +12,10 @@
   h4.sayfilter_caption_enable
     = link_to '他の物語へ', index_parent_path
 
+- content_for :info do
+  .sayfilter_content
+    = render "layouts/potofs"
+
 
 - content_for :log do
   h2 村の情報
@@ -25,16 +29,12 @@
     br.multicolumn_clear
 
     dl.head
-    dd= Message.to_fair( story.comment )
+    dd.text= story.comment.html_safe
 
   .mes_maker
-    =yield :info
+    = render "layouts/potofs"
 
   .mes_maker
-    - potofs.each do |potof|
-      ul
-        li= potof.name
-
   - if SowVillage === story
     .mes_maker
       = story[:options].inspect

@@ -8,7 +8,9 @@ class MessagesController < BasePastLogController
   respond_to :html, :json
 
   def index
-  	gon.story = story.attributes
-    gon.event = event.attributes
+  	gon.story  = story.attributes
+    gon.event  = event.attributes
+    gon.potofs = potofs.map(&:attributes)
+    gon.folder = story.folder
   end
 end

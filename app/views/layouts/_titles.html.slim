@@ -4,10 +4,11 @@ DIV.login
 - if @disable_headline then
   .choice
 - else
-  = link_to '人狼物語専用wiki',"{{link.wiki}}"
-  | ｜
-  = link_to '人狼物語Server一覧',"{{link.servers}}"
-  |（melonkoさん管理）
+  .choice
+    = link_to '人狼物語専用wiki',"{{link.wiki}}"
+    | ｜
+    = link_to '人狼物語Server一覧',"{{link.servers}}"
+    |（melonkoさん管理）
   - max_wolf    = 0
   - max_allstar = cfg(:ALLSTAR_OLD)[:MAX_VILLAGES]
   - max_jksy    = cfg(:ALLSTAR)[:MAX_VILLAGES]
@@ -158,7 +159,7 @@ DIV.login
           br
           = link_to "crazy", stories_url(:CRAZY)
         td.no_choice style="text-align:left;"
-          = "pan"
+          = link_to "pan", stories_url(:PAN)
           br
           | 　
           br
@@ -170,13 +171,13 @@ DIV.login
     script
       | $(function(){$('.progress_log').hide()});
 
-p.css_changer
-  span(ng-repeat="key in theme._keys")
-    a(ng-click="theme.move(key)"  ng-class="theme[key]")
-      | {{theme._button[key]}}
-    | &nbsp;
-  | ｜
-  span(ng-repeat="key in width._keys")
-    a(ng-click="width.move(key)"  ng-class="width[key]")
-      | {{width._button[key]}}
-    | &nbsp;
+    p.css_changer
+      span(ng-repeat="key in theme._keys")
+        a(ng-click="theme.move(key)"  ng-class="theme[key]")
+          | {{theme._button[key]}}
+        | &nbsp;
+      | ｜
+      span(ng-repeat="key in width._keys")
+        a(ng-click="width.move(key)"  ng-class="width[key]")
+          | {{width._button[key]}}
+        | &nbsp;
