@@ -20,33 +20,38 @@
 - content_for :log do
   h2 村の情報
   #messages
-    .mes_maker
-      p.multicolumn_label 村の名前：
-      p.multicolumn_left= story.name.html_safe
-      br.multicolumn_clear
+    .mes_maker.form-horizontal
+      .control-group
+        label.control-label 村の名前
+        .controls= story.name.html_safe
 
-      p.multicolumn_label こだわり：
-      p.multicolumn_left= image_tag "/images/icon/cd_#{story.rating}.png"
-      br.multicolumn_clear
+      .control-group
+        label.control-label こだわり
+        .controls= image_tag "/images/icon/cd_#{story.rating}.png"
 
-      dl.head
-      dd.text= story.comment.html_safe
+      .text= story.comment.html_safe
 
-    .mes_maker
-      div
+    .mes_maker.form-horizontal
+      .control-group
         code 編成
         | ： {{story.card.config_names}}
-      div
+      .control-group
         code 残存事件
         | ： {{story.card.event_names}}
-      div
+      .control-group
         code 破棄役職
         | ： {{story.card.discard_names}}
 
     - if SowVillage === story
       .mes_maker
-        = story[:options].inspect
+        ul
+          li(ng-repeat="option_help in story.option_helps")
+            | {{option_help}}
 
+    .mes_maker
+      = render "layouts/potofs"
+
+    - if SowVillage === story
       .mes_maker
         = story[:upd].inspect
 
@@ -55,7 +60,4 @@
 
       .mes_maker
         = story[:timer].inspect
-
-    .mes_maker
-      = render "layouts/potofs"
 

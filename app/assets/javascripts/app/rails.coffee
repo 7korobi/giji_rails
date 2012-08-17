@@ -85,7 +85,8 @@ RAILS = ($scope, $interpolate)->
       $scope.story.vpl
       $scope.story.type
       $scope.story.timer
-      $scope.story.options
+      $scope.story.option_helps = gon.story.options.map (o)-> SOW.options[o].help
+
 
     if gon.potofs?
       live_potofs = gon.potofs
@@ -304,7 +305,7 @@ RAILS = ($scope, $interpolate)->
           #{protocol}://#{host}<br>
           #{path}
         """
-        log = log.replace uri, """ <a rel="tooltip" target="_blank" href="#{uri}" title="#{title}"><code>LINK - #{protocol}</code></a> """
+        log = log.replace uri, """ <a rel="tooltip" target="_blank" href="#{uri}" title="#{title}" class="badge">LINK - #{protocol}</a> """
     log
 
   $scope.log = (log)->

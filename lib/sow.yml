@@ -1,5 +1,11 @@
 ---
-
+options:
+  select-role:
+    help: 役職希望を受け付ける
+  random-target:
+    help: 投票・能力の対象に「ランダム」を含める
+  undead-talk:
+    help: 狼・妖精と死者との間で、会話ができる
 
 roletable:
   custom:   自由設定
@@ -28,24 +34,6 @@ n_rule_name:
   - 進行中は、どんな嘘でもＯＫ。
   - ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。
   - 突然死をしない。
-
-css_wday:
-  - wa800
-  - cinema800
-  - star800
-  - night800
-  - star800
-  - wa800
-  - cinema800
-
-jp_wday:
-  - 日
-  - 月
-  - 火
-  - 水
-  - 木
-  - 金
-  - 土
 
 loves:
   love:
@@ -376,17 +364,6 @@ live_caption:
   mob:        見物人
   suddendead: 突然死
 
-win_list:
-  - :WIN_NONE
-  - :WIN_HUMAN
-  - :WIN_WOLF
-  - :WIN_GURU
-  - :WIN_PIXI
-  - :WIN_PIXI
-  - :WIN_LONEWOLF
-  - :WIN_LOVER
-  - :WIN_HATER
-
 mob:
   visiter:
     CAPTION: 客席
@@ -468,83 +445,21 @@ trs:
     CAPTION: アルティメット
     HELP:    カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。
 
-rp:
-  folder:
-    - :RP
-    - :PRETENSE
-    - :PERJURY
-    - :CRAZY
-    - :XEBEC
-    - :LOBBY
-    - :LOBBY_OLD
-    - :OFFPARTY
+loganchormark:
+  c: '-CAST-'  # MESTYPE_CAST
+  m: '#'       # MESTYPE_MAKER
+  a: '%'       # MESTYPE_ADMIN
+  S: ''        # MESTYPE_SAY
+               # MESTYPE_MSAY
+  T: '-'       # MESTYPE_TSAY
+               # MESTYPE_AIM
+  W: '*'       # MESTYPE_WSAY
+  G: '+'       # MESTYPE_GSAY
+  P: '='       # MESTYPE_SPSAY
+  X: '!'       # MESTYPE_XSAY
+  V: '@'       # MESTYPE_VSAY
 
-wolf:
-  folder:
-    - :WOLF
-    - :RP
-
-ultimate:
-  folder:
-    - :ULTIMATE
-    - :PRETENSE
-
-wolf2cabala:
-  folder:
-    - WOLF
-    - RP
-    - ULTIMATE
-    - PRETENSE
-    - LOBBY_OLD
-
-  mestype:
-  -  0  # MESTYPE_UNDEF
-  -  7  # MESTYPE_INFONOM
-  -  1  # MESTYPE_INFOSP
-  -  8  # MESTYPE_DELETED
-  -  2  # MESTYPE_DELETEDADMIN
-  -  6  # MESTYPE_QUE
-  -  9  # MESTYPE_SAY
-  - 10  # MESTYPE_TSAY
-  - 11  # MESTYPE_WSAY
-  - 12  # MESTYPE_GSAY
-  -  4  # MESTYPE_MAKER
-  -  5  # MESTYPE_ADMIN
-  - 13  # MESTYPE_SPSAY
-  - 14  # MESTYPE_BSAY
-  -  3  # MESTYPE_CAST
-  - 15  # MESTYPE_VSAY
-
-  logid_0:
-    X: '-' #
-    I:  I  # MESTYPE_DELETE
-    i:  i  # MESTYPE_DELADMIN
-    D:  D  # MESTYPE_DELETE
-    d:  d  # MESTYPE_DELADMIN
-    Q:  q  # MESTYPE_QUEUE
-    C:  c  # MESTYPE_CAST
-    M:  m  # MESTYPE_MAKER
-    A:  a  # MESTYPE_ADMIN
-    B:  X  # MESTYPE_XSAY
-    S:  S  # MESTYPE_SAY
-           # MESTYPE_MSAY
-    T:  T  # MESTYPE_TSAY
-           # MESTYPE_AIM
-    W:  W  # MESTYPE_WSAY
-    G:  G  # MESTYPE_GSAY
-    P:  P  # MESTYPE_SPSAY
-    V:  V  # MESTYPE_VSAY
-
-
-cabala:
-  folder:
-  - :ALLSTAR
-  - :CABALA
-  - :PERJURY
-  - :CRAZY
-  - :XEBEC
-
-  logmestypetext:
+logmestypetext:
   -                # MESTYPE_UNDEF
   -                # MESTYPE_INFOSP
   - 【管理人削除】 # MESTYPE_DELETEDADMIN
@@ -566,7 +481,7 @@ cabala:
   -                #
   -                # MESTYPE_INFOWOLF
 
-  logfont:
+logfont:
   -                # MESTYPE_UNDEF
   -                # MESTYPE_INFOSP
   - color="gray"   # MESTYPE_DELETEDADMIN
@@ -587,87 +502,3 @@ cabala:
   - color="purple" # MESTYPE_AIM
   -                #
   - color="red"    # MESTYPE_INFOWOLF
-
-  messtyle:
-  - mes_undef    # MESTYPE_UNDEF
-  - infosp       # MESTYPE_INFOSP
-  - mes_deladmin # MESTYPE_DELETEDADMIN
-  - mes_undef    # MESTYPE_CAST
-  - mes_maker    # MESTYPE_MAKER
-  - mes_admin    # MESTYPE_ADMIN
-  - mes_queue    # MESTYPE_QUEUE
-  - info         # MESTYPE_INFONOM
-  - mes_del      # MESTYPE_DELETED
-  - mes_nom      # MESTYPE_SAY
-  - mes_think    # MESTYPE_TSAY
-  - mes_wolf     # MESTYPE_WSAY
-  - mes_grave    # MESTYPE_GSAY
-  - mes_sympa    # MESTYPE_AIM
-  - mes_pixi     # MESTYPE_XSAY
-  - mes_mob      # MESTYPE_VSAY
-  - mes_nom      # MESTYPE_MSAY
-  - mes_sympa    # MESTYPE_AIM
-  -              #
-  - infowolf     # MESTYPE_INFOWOLF
-
-  logmestype:
-  - '-' # MESTYPE_UNDEF
-  -  i   # MESTYPE_INFOSP
-  -  d   # MESTYPE_DELETEDADMIN
-  -  c   # MESTYPE_CAST
-  -  m   # MESTYPE_MAKER
-  -  a   # MESTYPE_ADMIN
-  -  q   # MESTYPE_QUEUE
-  -  I   # MESTYPE_INFONOM
-  -  D   # MESTYPE_DELETED
-  -  S   # MESTYPE_SAY
-  -  T   # MESTYPE_TSAY
-  -  W   # MESTYPE_WSAY
-  -  G   # MESTYPE_GSAY
-  -  P   # MESTYPE_SPSAY
-  -  X   # MESTYPE_XSAY
-  -  V   # MESTYPE_VSAY
-  -  S   # MESTYPE_MSAY
-  -  T   # MESTYPE_AIM
-  -      #
-  -  w   # MESTYPE_INFOWOLF
-
-  mestype2typeid:
-  - -1 # MESTYPE_UNDEF
-  -  5 # MESTYPE_INFOSP
-  - -1 # MESTYPE_DELETEDADMIN
-  -  6 # MESTYPE_CAST
-  -  5 # MESTYPE_MAKER
-  -  5 # MESTYPE_ADMIN
-  -  0 # MESTYPE_QUEUE
-  -  6 # MESTYPE_INFONOM
-  - -1 # MESTYPE_DELETED
-  -  0 # MESTYPE_SAY
-  -  1 # MESTYPE_TSAY
-  -  2 # MESTYPE_WSAY
-  -  3 # MESTYPE_GSAY
-  -  2 # MESTYPE_SPSAY
-  -  2 # MESTYPE_XSAY
-  -  4 # MESTYPE_VSAY
-  -  0 # MESTYPE_MSAY
-  -  1 # MESTYPE_AIM
-  - -1 #
-  -  2 # MESTYPE_INFOWOLF
-
-  loganchormark:
-    c: '-CAST-'  # MESTYPE_CAST
-    m: '#'       # MESTYPE_MAKER
-    a: '%'       # MESTYPE_ADMIN
-    S: ''        # MESTYPE_SAY
-                 # MESTYPE_MSAY
-    T: '-'       # MESTYPE_TSAY
-                 # MESTYPE_AIM
-    W: '*'       # MESTYPE_WSAY
-    G: '+'       # MESTYPE_GSAY
-    P: '='       # MESTYPE_SPSAY
-    X: '!'       # MESTYPE_XSAY
-    V: '@'       # MESTYPE_VSAY
-
-
-
-
