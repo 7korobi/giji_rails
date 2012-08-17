@@ -1,12 +1,12 @@
 CABALA: &CABALA
   monospace:
-    - 
+    -
     - mono
     - head
     -
 
   roles:
-    - 
+    -
     - villager
     - stigma
     - fm
@@ -119,8 +119,8 @@ CABALA: &CABALA
     -
 
   gifts:
-    - 
-    - none
+    -
+    -
     - lost
     - bind
     - 4
@@ -142,8 +142,8 @@ CABALA: &CABALA
     -
 
   events:
-    - 
-    - 
+    -
+    -
     - aprilfool
     - turnfink
     - turnfairy
@@ -177,7 +177,7 @@ CABALA: &CABALA
     -
 
   mestypes:
-    - 
+    -
     - INFOSP
     - DELETEDADMIN
     - CAST
@@ -198,6 +198,9 @@ CABALA: &CABALA
     - ANONYMOUS
     - INFOWOLF
     -
+
+SOYBEAN:
+  <<: *CABALA
 
 PERJURY:
   <<: *CABALA
@@ -225,13 +228,13 @@ TEST:
 
 ULTIMATE: &ULTIMATE
   monospace:
-    - 
+    -
     - mono
     - head
     -
 
   roles:
-    - 
+    -
     - villager
     - stigma
     - fm
@@ -305,8 +308,8 @@ ULTIMATE: &ULTIMATE
 
 
   gifts:
-    - 
-    - 
+    -
+    -
     - lost
     - bind
     - decide
@@ -318,7 +321,7 @@ ULTIMATE: &ULTIMATE
     -
 
   events:
-    - 
+    -
     - nothing
     - aprilfool
     - turnfink
@@ -379,13 +382,13 @@ LOBBY_OLD:
 
 WOLF: &WOLF
   monospace:
-    - 
+    -
     - mono
     - head
     -
 
   roles:
-    - 
+    -
     - villager
     - wolf
     - seer

@@ -1,20 +1,21 @@
 class SowUser < Potof
   include Giji
   cache
-  
+
   field :sow_auth_id
   field :csid
   field :jobname
   field :zapcount,  type: Integer
   field :clearance
 
-  field :select
-
+  field :role,      type: Array
   field :rolestate
+  field :select
   field :live
   field :deathday,  type: Integer
-  
+
   field :history
+
 
   field :overhear,    type: Array
 

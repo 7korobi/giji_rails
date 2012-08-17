@@ -1,14 +1,4 @@
 ---
-PERMIT:
-  - [読み書き許可         ,A]
-  - [読取のみ（書込み禁止） ,R]
-  - [書込のみ（隠し要素）   ,H]
-
-RATING:
-  - [www笑www, www  ]
-  - [感動ログ, wow  ]
-  - [名勝負  , fight]
-  - [１８禁  , R18  ]
 
 
 roletable:
@@ -56,6 +46,292 @@ jp_wday:
   - 木
   - 金
   - 土
+
+loves:
+  love:
+    win: LOVER
+  hate:
+    win: HATER
+
+wins:
+  NONE:
+    name: 見物人
+  HUMAN:
+    name: 村人陣営
+  WOLF:
+    name: 人狼陣営
+  EVIL:
+    name: 破滅陣営
+  GURU:
+    name: 笛吹き
+  PIXI:
+    name: 妖精
+  LONEWOLF:
+    name: 一匹狼
+  LOVER:
+    name: 恋人陣営
+  HATER:
+    name: 邪気陣営
+  DISH:
+    name: 据え膳
+
+roles:
+  mob:
+    name: 見物人
+    win:
+  lover:
+    name: 弟子
+    win:
+  robber:
+    name: 盗賊
+    win:
+  villager:
+    name: 村人
+    win: HUMAN
+  stigma:
+    name: 聖痕者
+    win: HUMAN
+  fm:
+    name: 結社員
+    win: HUMAN
+  sympathy:
+    name: 共鳴者
+    win: HUMAN
+  seer:
+    name: 占い師
+    win: HUMAN
+  seerwin:
+    name: 信仰占師
+    win: HUMAN
+  aura:
+    name: 気占師
+    win: HUMAN
+  seerrole:
+    name: 賢者
+    win: HUMAN
+  guard:
+    name: 守護者
+    win: HUMAN
+  medium:
+    name: 霊能者
+    win: HUMAN
+  mediumwin:
+    name: 信仰霊能者
+    win: HUMAN
+  mediumrole:
+    name: 導師
+    win: HUMAN
+  necromancer:
+    name: 降霊者
+    win: HUMAN
+  follow:
+    name: 追従者
+    win: HUMAN
+  fan:
+    name: 煽動者
+    win: HUMAN
+  hunter:
+    name: 賞金稼
+    win: HUMAN
+  weredog:
+    name: 人犬
+    win: HUMAN
+  prince:
+    name: 王子様
+    win: HUMAN
+  rightwolf:
+    name: 狼血族
+    win: HUMAN
+  doctor:
+    name: 医師
+    win: HUMAN
+  curse:
+    name: 呪人
+    win: HUMAN
+  dying:
+    name: 預言者
+    win: HUMAN
+  invalid:
+    name: 病人
+    win: HUMAN
+  alchemist:
+    name: 錬金術師
+    win: HUMAN
+  witch:
+    name: 魔女
+    win: HUMAN
+  girl:
+    name: 少女
+    win: HUMAN
+  scapegoat:
+    name: 生贄
+    win: HUMAN
+  elder:
+    name: 長老
+    win: HUMAN
+  jammer:
+    name: 邪魔之民
+    win: EVIL
+  snatch:
+    name: 宿借之民
+    win: EVIL
+  bat:
+    name: 念波之民
+    win: EVIL
+  cpossess:
+    name: 囁き狂人
+    win: EVIL
+  possess:
+    name: 狂人
+    win: EVIL
+  fanatic:
+    name: 狂信者
+    win: EVIL
+  muppeting:
+    name: 人形使い
+    win: EVIL
+  wisper:
+    name: 囁き狂人
+    win: EVIL
+  semiwolf:
+    name: 半狼
+    win: EVIL
+  dyingpossess:
+    name: ---
+    win: EVIL
+  oracle:
+    name: 魔神官
+    win: EVIL
+  sorcerer:
+    name: 魔術師
+    win: EVIL
+  headless:
+    name: 首無騎士
+    win: EVIL
+  wolf:
+    name: 人狼
+    win: WOLF
+  aurawolf:
+    name: ---
+    win: WOLF
+  intwolf:
+    name: 智狼
+    win: WOLF
+  cursewolf:
+    name: 呪狼
+    win: WOLF
+  whitewolf:
+    name: 白狼
+    win: WOLF
+  childwolf:
+    name: 仔狼
+    win: WOLF
+  dyingwolf:
+    name: 衰狼
+    win: WOLF
+  silentwolf:
+    name: 黙狼
+    win: WOLF
+  werebat:
+    name: コウモリ人間
+    win: PIXI
+  hamster:
+    name: 栗鼠妖精
+    win: PIXI
+  mimicry:
+    name: 擬狼妖精
+    win: PIXI
+  dyingpixi:
+    name: 風花妖精
+    win: PIXI
+  trickster:
+    name: 悪戯妖精
+    win: PIXI
+  hatedevil:
+    name: 邪気悪魔
+    win: HATER
+  loveangel:
+    name: 恋愛天使
+    win: LOVER
+  passion:
+    name: 片思い
+    win: LOVER
+  lonewolf:
+    name: 一匹狼
+    win: LONEWOLF
+  guru:
+    name: 笛吹き
+    win: GURU
+  dish:
+    name: 鱗魚人
+    win: DISH
+  bitch:
+    name: 遊び人
+    win: LOVER
+
+gifts:
+  none:
+    name: ""
+    win:
+  lost:
+    name: 喪失
+    win:
+  bind:
+    name: ---
+    win:
+  shield:
+    name: 光の輪
+    win:
+  glass:
+    name: 魔鏡
+    win:
+  ogre:
+    name: 悪鬼
+    win: WOLF
+  fairy:
+    name: 妖精の子
+    win: PIXI
+  fink:
+    name: 半端者
+    win: EVIL
+  decide:
+    name: 決定者
+  seeronce:
+    name: 夢占師
+  dipsy:
+    name: 酔払い
+
+events:
+  nothing:
+    name: 普通の日
+  aprilfool:
+    name: 四月馬鹿
+  turnfink:
+    name: 二重スパイ
+  turnfairy:
+    name: 妖精の輪
+  eclipse:
+    name: 日蝕
+  cointoss:
+    name: Sir Cointoss
+  force:
+    name: 影響力
+  miracle:
+    name: 奇跡
+  prophecy:
+    name: 聖者のお告げ
+  clamor:
+    name: 不満
+  fire:
+    name: 熱意
+  nightmare:
+    name: 悪夢
+  ghost:
+    name: 亡霊
+  escape:
+    name: 逃亡
+  seance:
+    name: 降霊会
 
 maskstates:
   0b001000000: 感染
@@ -110,18 +386,6 @@ win_list:
   - :WIN_LONEWOLF
   - :WIN_LOVER
   - :WIN_HATER
-
-role_win:
-  WIN_NONE:     見物人
-  WIN_HUMAN:    村人陣営
-  WIN_WOLF:     人狼陣営
-  WIN_GURU:     笛吹き
-  WIN_PIXI:     妖精
-  WIN_LONEWOLF: 一匹狼
-  WIN_LOVER:    恋人陣営
-  WIN_HATER:    邪気陣営
-  WIN_EVIL:     破滅陣営
-  WIN_DISH:     据え膳
 
 mob:
   visiter:

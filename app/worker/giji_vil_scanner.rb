@@ -14,7 +14,7 @@ class GijiVilScanner < GijiScanner
 
       Dir.new(path).each do | fname |
         p fname
-        next  if  0 == File.size(path+'/'+fname) 
+        next  if  0 == File.size(path+'/'+fname)
         next  unless  /vil.cgi/ === fname  rescue  next
 
         new(path, folder, WATCH[:cgi][:time], from, force, fname).save
@@ -54,12 +54,13 @@ class GijiVilScanner < GijiScanner
         potof   = story.potofs.where( sow_auth_id: o.uid ).first     rescue nil
         potof ||= event_now.potofs.where( sow_auth_id: o.uid ).first rescue nil
         potof ||= SowUser.new
-        potof.update_attributes( 
+
+        potof.update_attributes(
           sow_auth_id: o.uid,
-          face_id: o.cid,
-          csid:    o.csid.split('_')[0],
-          jobname: o.jobname,
-          name:    name,
+          face_id:  o.cid,
+          csid:     o.csid.split('_')[0],
+          jobname:  o.jobname,
+          name:     name,
 
           history:  o.history,
 
@@ -67,20 +68,21 @@ class GijiVilScanner < GijiScanner
 
           live:      o.live,
           deathday:  o.deathday,
-
-          role: [ SOW_RECORD[folder][:roles][o.role.to_i] ]
         )
+
+        role = [ SOW_RECORD[folder][:roles][o.role.to_i] ]
+        gift =   SOW_RECORD[folder][:gifts][o.gift.to_i]  rescue  nil
+        role.push( gift )  if  gift
+
+        potof.role  = role     rescue  nil
+        potof.love  = o.love   rescue  nil
+        potof.sheep = o.sheep  rescue  nil
+
         potof.zapcount   = o.zapcount    rescue  nil
         potof.pseudolove = o.pseudolove  rescue  nil
         potof.clearance  = o.clearance   rescue  nil
         potof.rolestate  = o.rolestate   rescue  nil
 
-        potof.love  = o.love   rescue  nil
-        potof.sheep = o.sheep  rescue  nil
-          
-        gift = SOW_RECORD[folder][:gifts][o.gift]  rescue  nil
-        potof.role.push( gift )  if  gift
-        
         potof.overhear    = o.overhear.split('/')    || []  rescue  []
         potof.bonds       = o.bonds.split('/')       || []  rescue  []
         potof.pseudobonds = o.pseudobonds.split('/') || []  rescue  []
@@ -108,11 +110,11 @@ class GijiVilScanner < GijiScanner
       when 'Struct::SowRecordFileVil'
         sow.update_attributes(
           folder: o.folder.to_s,
-          vid:    o.vid, 
-          
-          name:    o.vname, 
-          comment: o.vcomment, 
-          
+          vid:    o.vid,
+
+          name:    o.vname,
+          comment: o.vcomment,
+
           sow_auth_id: o.makeruid,
           type: {
             say:  o.saycnttype,
@@ -124,13 +126,13 @@ class GijiVilScanner < GijiScanner
           vpl:  [ o.vplcnt.to_i, o.vplcntstart.to_i ],
           upd: {
             interval: o.updinterval.to_i,
-            hour:     o.updhour.to_i, 
+            hour:     o.updhour.to_i,
             minute:   o.updminite.to_i
           },
         )
-        sow.rating = o.rating  rescue  nil 
+        sow.rating = o.rating  rescue  nil
         sow.type[:mob] = o.mob  rescue  nil
-        sow.type[:game] = o.game  rescue  nil 
+        sow.type[:game] = o.game  rescue  nil
 
         sow.options = []
         sow.options.push "select-role"   if  (o.noselrole    != '1'  rescue  false)
@@ -158,11 +160,11 @@ class GijiVilScanner < GijiScanner
         sow.timer  = dt
         sow.is_finish = (o.epilogue.to_i <= o.turn.to_i)
         sow.save
-        
+
         o.turn.to_i.times do |turn_no|
           event = events[turn_no].try(:first) || SowTurn.new(story_id: sow.id, turn: turn_no)
           event.update_attributes(
-            winner: SOW_RECORD[folder][:winners][o.winner.to_i], 
+            winner: SOW_RECORD[folder][:winners][o.winner.to_i],
           )
           if o.turn.to_i - 1 == turn_no || o.epilogue.to_i == turn_no
             event.epilogue = o.epilogue.to_i,
@@ -176,7 +178,7 @@ class GijiVilScanner < GijiScanner
           end
           event.save
         end
-        
+
         events = sow.events.group_by(&:turn)
         event_now = events[ events.keys.max ].try(:first)
       end

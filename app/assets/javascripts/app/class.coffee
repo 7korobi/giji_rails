@@ -43,13 +43,12 @@ class Navi
         if options.is_cookie
           expire = new Date().advance OPTION.cookie.expire
           document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
-      for field in list.keys()
-        val = list[field]
-        location[field] = list[field].join("&")
+      list.keys (field, val)->
+        location[field] = val.join("&")
 
   _move: ()->
     target = String @_value
-    for key in @_button.keys()
+    @_button.keys (key, _)=>
       @[key] = null
     @[target] = 'btn-success'
 
@@ -93,10 +92,10 @@ class PageNavi extends Navi
       next:     2 < n.next     < n.penu
       next_gap: 2 < n.next + 1 < n.penu
 
-    for key in show.keys()
+    show.keys (key, val)=>
       @[key] = 'ng-cloak'
-      @[key] = null          if show[key]
-      @[key] = 'btn-success' if show[key] && page == @_button[key]
+      @[key] = null          if val
+      @[key] = 'btn-success' if val && page == @_button[key]
 
 
 class FixedBox

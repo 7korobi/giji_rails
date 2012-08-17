@@ -1,17 +1,16 @@
 table(class="table table-condensed")
   thead
     tr
-      th
-        | キャラクター
-        i(class="icon-user")
-      th
-        code(href_eval="sort_potofs('role')") 役職
-        code(href_eval="sort_potofs('select')") 希望
+      th(colspan="2" style="text-align:right")
+        code(href_eval="sort_potofs('win_name')") 陣営
+        code(href_eval="sort_potofs('role_names')") 役割
+        code(href_eval="sort_potofs('select_name')") 希望
       th
         code(href_eval="sort_potofs('deathday')") 日程
-        code(href_eval="sort_potofs('live')") 死因
-        code(href_eval="sort_potofs('text')") 状態
-        | 発言 ({{sum.actaddpt}}促)
+        code(href_eval="sort_potofs('live')") 状態
+        code(href_eval="sort_potofs('text')") 補足
+        code(href_eval="sort_potofs('said_num')") 発言
+        | {{sum.actaddpt}}促
   tbody(ng-repeat="potof in potofs")
     tr
       td
@@ -20,11 +19,13 @@ table(class="table table-condensed")
           i(class="icon-user")
           | {{potof.auth}}
       td
-        | {{potof.role.join(' ')}}
+        | {{potof.win_name}} :: {{potof.role_names.join('、')}}
         .note
-          | {{potof.select}}
+          | {{potof.select_name}}
       td
         | {{potof.stat}}
         span(ng-bind-html-unsafe="potof.text.join(' ')")
+        | {{potof.bond_names.join('、')}}
         .note
+          i(class='icon-comment')
           | {{potof.said}}

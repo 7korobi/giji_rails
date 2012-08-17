@@ -19,34 +19,43 @@
 
 - content_for :log do
   h2 村の情報
-  .mes_maker
-    p.multicolumn_label 村の名前：
-    p.multicolumn_left= story.name.html_safe
-    br.multicolumn_clear
-
-    p.multicolumn_label こだわり：
-    p.multicolumn_left= image_tag "/images/icon/cd_#{story.rating}.png"
-    br.multicolumn_clear
-
-    dl.head
-    dd.text= story.comment.html_safe
-
-  .mes_maker
-    = render "layouts/potofs"
-
-  .mes_maker
-  - if SowVillage === story
+  #messages
     .mes_maker
-      = story[:options].inspect
+      p.multicolumn_label 村の名前：
+      p.multicolumn_left= story.name.html_safe
+      br.multicolumn_clear
+
+      p.multicolumn_label こだわり：
+      p.multicolumn_left= image_tag "/images/icon/cd_#{story.rating}.png"
+      br.multicolumn_clear
+
+      dl.head
+      dd.text= story.comment.html_safe
 
     .mes_maker
-      = story[:upd].inspect
+      div
+        code 編成
+        | ： {{story.card.config_names}}
+      div
+        code 残存事件
+        | ： {{story.card.event_names}}
+      div
+        code 破棄役職
+        | ： {{story.card.discard_names}}
+
+    - if SowVillage === story
+      .mes_maker
+        = story[:options].inspect
+
+      .mes_maker
+        = story[:upd].inspect
+
+      .mes_maker
+        = story[:type].inspect
+
+      .mes_maker
+        = story[:timer].inspect
 
     .mes_maker
-      = story[:card].inspect
+      = render "layouts/potofs"
 
-    .mes_maker
-      = story[:type].inspect
-
-    .mes_maker
-      = story[:timer].inspect

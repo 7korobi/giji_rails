@@ -38,7 +38,7 @@ RAILS = ($scope, $interpolate)->
     all:  /^.[^M]/
     mob:  /^[AmSIiVG][^M]/
     clan: /^[AmSIiWPX][^M]/
-    open: /^[AmSIi][^M]/
+    open: /^[AmSI][^M]/
 
   $scope.title = '人狼議事'
 
@@ -57,8 +57,35 @@ RAILS = ($scope, $interpolate)->
           is_cookie: false
       $scope.page._items = gon.page
 
+    rolename = (o)->
+      SOW.roles[o]?.name || SOW.gifts[o]?.name || SOW.events[o]?.name || o || ""
+
+    countup = (list)->
+      counts = []
+      group = list.groupBy()
+      group.keys (key,val)->
+        counts.push [val.length, key]
+
+      counts.sortBy ([size, key])->
+        size
+      .map ([size, key])->
+        if 1 < size
+          "#{rolename(key)}x#{size}"
+        else
+          "#{rolename(key)}"
+      .join('、')
+
     if gon.story?
       $scope.title = gon.story.name
+      $scope.story = gon.story
+      $scope.story.card.discard_names = countup gon.story.card.discard
+      $scope.story.card.event_names   = countup gon.story.card.event
+      $scope.story.card.config_names  = countup gon.story.card.config
+      $scope.story.upd
+      $scope.story.vpl
+      $scope.story.type
+      $scope.story.timer
+      $scope.story.options
 
     if gon.potofs?
       live_potofs = gon.potofs
@@ -67,22 +94,51 @@ RAILS = ($scope, $interpolate)->
 
       potofs = gon.potofs
       .map (potof)->
-        potof.text = []
-        potof.said = ""
+        potof.bonds = potof.bonds.map (pid)->
+          gon.potofs[pid]
+        potof.pseudobonds = potof.pseudobonds.map (pid)->
+          gon.potofs[pid]
+
+        win_check = (potof)->
+          win_by_role = (list)->
+            for role in potof.role
+              win = list[role]?.win
+              return win if win
+            return null
+          SOW.loves[potof.love]?.win || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
+        potof.win = win_check potof
+        potof.win_name = SOW.wins[potof.win]?.name
+
+        potof.select_name = rolename potof.select
+        potof.role_names  = potof.role.map rolename
+
+        potof.live or= ""
         potof.auth = potof.sow_auth_id
         potof.head = SOW.live_caption[ potof.live ]
-        potof.said += " 発言#{potof.point.saidcount}回" if 0 < potof.point.saidcount
-        potof.said += " #{potof.point.saidpoint}pt" if 0 < potof.point.saidpoint
-        potof.text.push " <i class='icon-heart'></i>"       if 'love' == potof.love
-        potof.text.push " <i class='icon-thumbs-down'></i>" if 'hate' == potof.love
-        potof.text.push " <i class='icon-check'></i>"       if 'pixi' == potof.sheep
-        for mask in SOW.maskstates.keys()
-          text = SOW.maskstates[mask]
-          potof.text.push " #{text}" if 0 == potof.rolestate & mask
+
+        potof.bond_names       = potof.bonds.map       (o)-> o.name
+        potof.pseudobond_names = potof.pseudobonds.map (o)-> o.name
         if potof.deathday < 0
           potof.stat = SOW.live[ potof.live ]
         else
           potof.stat = "#{potof.deathday}日 #{SOW.live[ potof.live ]}"
+
+        potof.text = []
+        SOW.maskstates.keys (mask, text)->
+          potof.text.push " #{text}" if 0 == potof.rolestate & mask
+        potof.text.push " <i class='icon-check'></i>"       if 'pixi' == potof.sheep
+        potof.text.push " <i class='icon-heart'></i>"       if 'love' == potof.love
+        potof.text.push " <i class='icon-thumbs-down'></i>" if 'hate' == potof.love
+
+        potof.said = ""
+        potof.said_num = 0
+        if 0 < potof.point.saidcount
+          potof.said_num += potof.point.saidcount
+          potof.said     += " #{potof.point.saidcount}回"
+        if 0 < potof.point.saidpoint
+          potof.said_num += potof.point.saidpoint
+          potof.said     += " #{potof.point.saidpoint}pt"
+
         potof
       .sortBy (o)-> o.deathday
 
@@ -156,8 +212,10 @@ RAILS = ($scope, $interpolate)->
 
   click_eval = (e)->
     sort_potofs = (tgt)->
-      $scope.potofs = $scope.potofs.sortBy tgt
+      reverse = (tgt == @tgt)
+      $scope.potofs = $scope.potofs.sortBy tgt, reverse
       $scope.$apply()
+      @tgt = reverse || tgt
 
     navi = (link)->
       $scope.navi._value = link
@@ -296,25 +354,26 @@ RAILS = ($scope, $interpolate)->
       trigger: 'focus'
 
   $(window).resize ->
-    width = $(window).width()
+    width  = $(window).width()
+    height = $(window).height()
 
     if 'info' == $scope.navi._value && $scope.potofs?
       small = 470
 
     switch $scope.width._value
       when 480
-        info_left = width - 462
-        content  = "contentframe"
-        outframe = "outframe"
         small or= 222
+        info_left = width - 462
         if      small < info_left
           info_width  = info_left
         else
           info_width  = width
+        content  = "contentframe"
+        outframe = "outframe"
 
       when 800
-        info_left  = (width - 770)/2 + 190
         small or= 290
+        info_left  = (width - 770)/2 + 189
         if     small  < info_left
           info_width  = info_left
           content  = "contentframe_navileft"
@@ -326,5 +385,7 @@ RAILS = ($scope, $interpolate)->
 
     $("#contentframe")[0].className = content
     $("#outframe")[0].className = outframe
-    $("#sayfilter").width info_width
+    $("#sayfilter").css
+      width: info_width
+      "max-height": height
 
