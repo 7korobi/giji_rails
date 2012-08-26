@@ -445,21 +445,20 @@ trs:
     CAPTION: アルティメット
     HELP:    カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。
 
-loganchormark:
-  c: '-CAST-'  # MESTYPE_CAST
-  m: '#'       # MESTYPE_MAKER
-  a: '%'       # MESTYPE_ADMIN
-  S: ''        # MESTYPE_SAY
-               # MESTYPE_MSAY
-  T: '-'       # MESTYPE_TSAY
-               # MESTYPE_AIM
-  W: '*'       # MESTYPE_WSAY
-  G: '+'       # MESTYPE_GSAY
-  P: '='       # MESTYPE_SPSAY
-  X: '!'       # MESTYPE_XSAY
-  V: '@'       # MESTYPE_VSAY
+log:
+  anchor:
+    m: '#'       # MESTYPE_MAKER
+    a: '%'       # MESTYPE_ADMIN
+    S: ''        # MESTYPE_SAY
+    T: '-'       # MESTYPE_TSAY
+    W: '*'       # MESTYPE_WSAY
+    G: '+'       # MESTYPE_GSAY
+    P: '='       # MESTYPE_SPSAY
+    X: '!'       # MESTYPE_XSAY
+    V: '@'       # MESTYPE_VSAY
 
-logmestypetext:
+
+  mestypetext:
   -                # MESTYPE_UNDEF
   -                # MESTYPE_INFOSP
   - 【管理人削除】 # MESTYPE_DELETEDADMIN
@@ -481,7 +480,7 @@ logmestypetext:
   -                #
   -                # MESTYPE_INFOWOLF
 
-logfont:
+  font:
   -                # MESTYPE_UNDEF
   -                # MESTYPE_INFOSP
   - color="gray"   # MESTYPE_DELETEDADMIN

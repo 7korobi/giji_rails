@@ -1,0 +1,3 @@
+echo "= ipad:$* "
+ssh mobile@192.168.11.3 $*
+

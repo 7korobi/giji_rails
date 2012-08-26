@@ -286,9 +286,9 @@ RAILS = ($scope, $interpolate)->
           (/\*)(.*?)(\*/|$)
         ///g,'<em>$1$2$3</em>'
 
-  anker = (log)->
-    log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, ank, turn, id)->
-      """ <code href_eval="popup(#{turn},'#{ank}')">&gt;&gt;#{id}</code> """
+  anchor = (log)->
+    log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
+      """ <code href_eval="popup(#{turn},'#{a}')">&gt;&gt;#{id}</code> """
 
   link_regexp = ///
       (\w+)://([^/]+)([^<>）］】」\s]+)
@@ -310,16 +310,20 @@ RAILS = ($scope, $interpolate)->
 
   $scope.log = (log)->
     return unless log?
-    log.time or= lax_time Date.create log.date
     if log.face_id? && log.csid?
       csid = GIJI.csids[log.csid]
       csid or= 'portrate'
+      if 'portrate' == csid &&
+        log.face_id
       log.img  or= "#{URL.rails}/images/#{csid}/#{log.face_id}.jpg"
-    log.text   = decolate anker link log.log
+    log.text   = decolate anchor link log.log
+    log.time or= lax_time Date.create log.date
 
+    [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
+    log.anchor   or= "#{SOW.log.anchor[mark]}#{Number(num)}"
     log.template or= "giji/" + (GIJI.message.template.subid[log.subid] || GIJI.message.template.mestype[log.mestype])
     if 'cast' == GIJI.message.template.mestype[log.mestype]
-      log.log = """ <code href_eval="navi('info')"> CAST </code> """
+      log.log = """ <div href_eval="navi('info')" class="badge"> CAST </div> """
 
     GIJI.templates[log.template](log)
 

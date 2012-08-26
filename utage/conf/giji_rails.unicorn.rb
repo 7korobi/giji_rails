@@ -12,13 +12,13 @@ case ENV['RAILS_ENV']
 when 'development'
   # performance
   worker_processes 1
-  timeout 10
+  timeout 20
 
 
 when 'production'
   # performance
-  worker_processes 3
-  timeout 30
+  worker_processes 4
+  timeout 20
 end
 
 #listen /utage/socket/giji.unicorn.sock, ENV['RAILS_ROOT']
