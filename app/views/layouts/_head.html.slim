@@ -2,8 +2,9 @@ meta http-equiv='Content-Type' content='text/html; charset=utf-8'
 meta content="7korobi@gmail.com" name="Author"
 link href="mailto:7korobi@gmail.com" rev="Made"
 
-- css = "#{URL[:rails]}/stylesheets/#{cookies["theme"]}#{cookies["width"]}.css".html_safe if cookies["theme"] && cookies["width"]
-link#giji_css media="screen" rel="stylesheet" type="text/css" href="#{css}"
+- css = "#{cookies["theme"]}#{cookies["width"]}".html_safe if cookies["theme"] && cookies["width"]
+- css ||= "cinema800".html_safe
+link#giji_css media="screen" rel="stylesheet" type="text/css" href="#{URL[:rails]}/stylesheets/#{css}.css"
 
 meta(charset="utf-8")
 title 人狼議事

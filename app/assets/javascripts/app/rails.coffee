@@ -313,8 +313,6 @@ RAILS = ($scope, $interpolate)->
     if log.face_id? && log.csid?
       csid = GIJI.csids[log.csid]
       csid or= 'portrate'
-      if 'portrate' == csid &&
-        log.face_id
       log.img  or= "#{URL.rails}/images/#{csid}/#{log.face_id}.jpg"
     log.text   = decolate anchor link log.log
     log.time or= lax_time Date.create log.date
@@ -326,10 +324,6 @@ RAILS = ($scope, $interpolate)->
       log.log = """ <div href_eval="navi('info')" class="badge"> CAST </div> """
 
     GIJI.templates[log.template](log)
-
-  Navi.push $scope, 'navi',  navi
-  Navi.push $scope, 'width', width
-  Navi.push $scope, 'theme', theme
 
   move = ()->
     value = "#{$scope.theme._value}#{$scope.width._value}"
@@ -347,8 +341,19 @@ RAILS = ($scope, $interpolate)->
     $scope.h1.path = "#{URL.rails}/images/banner/title#{$scope.h1.width}#{$scope.h1.type}.jpg"
     $(window).resize()
 
-  $scope.width._watch.push move
-  $scope.theme._watch.push move
+  if window.opera
+    $scope.width =
+      _value: 800
+    $scope.theme =
+      _value: 'cinema'
+  else
+    Navi.push $scope, 'width', width
+    Navi.push $scope, 'theme', theme
+
+    $scope.width._watch.push move
+    $scope.theme._watch.push move
+
+  Navi.push $scope, 'navi',  navi
   $scope.navi._watch.push ->
     $(window).resize()
 

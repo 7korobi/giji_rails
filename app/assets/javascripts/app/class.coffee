@@ -44,7 +44,8 @@ class Navi
           expire = new Date().advance OPTION.cookie.expire
           document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
       list.keys (field, val)->
-        location[field] = val.join("&")
+        value = val.join "&"
+        location[field] = value  if  location[field].from(1) != value
 
   _move: ()->
     target = String @_value
