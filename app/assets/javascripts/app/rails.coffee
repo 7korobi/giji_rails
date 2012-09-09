@@ -104,10 +104,10 @@ RAILS = ($scope, $interpolate)->
         if potof.role?
           win_check = (potof)->
             win_by_role = (list)->
-                for role in potof.role
-                  win = list[role]?.win
-                  return win if win
-              return null
+              for role in potof.role
+                win = list[role]?.win
+                return win if win
+              null
             SOW.loves[potof.love]?.win || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
           potof.win = win_check potof
           potof.win_name = SOW.wins[potof.win]?.name
@@ -216,8 +216,10 @@ RAILS = ($scope, $interpolate)->
     GIJI.templates[val.id] = $interpolate(html)
 
   click_eval = (e)->
-    sort_potofs = (tgt)->
+    sort_potofs = (tgt, zero)->
       reverse = (tgt == @tgt)
+      for potof in $scope.potofs
+        potof[tgt] or= zero
       $scope.potofs = $scope.potofs.sortBy tgt, reverse
       $scope.$apply()
       @tgt = reverse || tgt
@@ -375,7 +377,7 @@ RAILS = ($scope, $interpolate)->
     height = $(window).height()
 
     if 'info' == $scope.navi._value && $scope.potofs?
-      small = 470
+      small = 430
 
     switch $scope.width._value
       when 480
