@@ -4,7 +4,7 @@ PUBR=`cat /root/.ssh/id_rsa.pub`
 PUB7=`cat /c/home/7korobi/.ssh/id_rsa.pub`
 PUBD=`cat /c/home/7korobi/.ssh/master.pub`
 
-for TO in 241 242 243 251 254
+for TO in 241 243 252 254
 do
     KEY=/root/.ssh/authorized_keys
     CMD="/bin/grep \"$PUB7\" \"$KEY\" || /bin/echo \"$PUB7\" >> \"$KEY\";"

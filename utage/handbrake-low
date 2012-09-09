@@ -11,5 +11,5 @@ export AUDIO
 export GRAPH
 export HANDBRAKE
 export OUT
-/utage/web-handbrake-worker
+/utage/handbrake-worker
 

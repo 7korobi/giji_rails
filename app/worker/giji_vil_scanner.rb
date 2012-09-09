@@ -154,9 +154,9 @@ class GijiVilScanner < GijiScanner
         end
 
         sow.card = {}
-        sow.card[:discard] = o.rolediscard.split('/').map{|c| SOW_RECORD[folder][:roles][c.to_i] } || [] rescue []
-        sow.card[:event]   = o.eventcard.split('/').map{|c| SOW_RECORD[folder][:events][c.to_i] } || [] rescue []
-        sow.card[:config] = cnt
+        sow.card[:discard] = o.rolediscard.split('/').map{|c| if c.to_i == 0 then c else SOW_RECORD[folder][:roles ][c.to_i] end } || [] rescue []
+        sow.card[:event]   = o.eventcard.split('/').map{|c|   if c.to_i == 0 then c else SOW_RECORD[folder][:events][c.to_i] end } || [] rescue []
+        sow.card[:config]  = cnt
         sow.timer  = dt
         sow.is_finish = (o.epilogue.to_i <= o.turn.to_i)
         sow.save

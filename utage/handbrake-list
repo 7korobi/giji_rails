@@ -1,0 +1,8 @@
+
+for TO in 241 243
+do
+  ssh-$TO ps -ef | grep HandBrakeCLI
+  ssh-$TO top -b -n 1 | grep HandBrakeCLI
+  echo
+done
+

@@ -5,7 +5,7 @@ class Web < Thor
   def deploy
   end
 
-  desc "home",   "web-ssh method create as Home"
+  desc "home",   "ssh method create as Home"
   def home
     each_servers{|no| "192.168.0.#{no}"}
     open("/etc/hosts", "w:utf-8") do |f|
@@ -14,7 +14,7 @@ class Web < Thor
     end
   end
 
-  desc "utage",  "web-ssh method create as Other domain"
+  desc "utage",  "ssh method create as Other domain"
   def utage
     each_servers{|no| "utage.family.jp"}
     open("/etc/hosts", "w:utf-8") do |f|
@@ -62,7 +62,7 @@ _SHELL_
 
   def each_servers
     [241,242,243,248,249,250,251,252,253,254].each do |no|
-      [["/utage/web-ssh-#{no}" ,SSH ],
+      [["/utage/ssh-#{no}" ,SSH ],
        ["/utage/web-push-#{no}",PUSH]
       ].each do |fname, shell|
         `mkdir -p /utage/#{no}`

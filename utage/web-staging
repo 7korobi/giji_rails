@@ -3,7 +3,7 @@
 APP=/www/giji_rails
 TARGET=253
 
-/utage/web-ssh-$TARGET mkdir -p $APP/public
+/utage/ssh-$TARGET mkdir -p $APP/public
 /utage/web-push-$TARGET $APP/public  --delete 1> /dev/null 2> /dev/null &
 
 /utage/web-cleanup

@@ -57,10 +57,13 @@ RAILS = ($scope, $interpolate)->
           is_cookie: false
       $scope.page._items = gon.page
 
-    rolename = (o)->
+    $scope.remove_card = (at, idx)->
+      story.card[at].removeAt idx
+
+    $scope.rolename = rolename = (o)->
       SOW.roles[o]?.name || SOW.gifts[o]?.name || SOW.events[o]?.name || o || ""
 
-    countup = (list)->
+    $scope.countup = countup = (list)->
       counts = []
       group = list.groupBy()
       group.keys (key,val)->
@@ -73,18 +76,14 @@ RAILS = ($scope, $interpolate)->
           "#{rolename(key)}x#{size}"
         else
           "#{rolename(key)}"
-      .join('、')
 
     if gon.story?
       $scope.title = gon.story.name
       $scope.story = gon.story
-      $scope.story.card.discard_names = countup gon.story.card.discard
-      $scope.story.card.event_names   = countup gon.story.card.event
-      $scope.story.card.config_names  = countup gon.story.card.config
-      $scope.story.upd
-      $scope.story.vpl
-      $scope.story.type
-      $scope.story.timer
+
+      $scope.story.card.discard_names = countup(gon.story.card.discard).join '、'
+      $scope.story.card.event_names   = countup(gon.story.card.event).join '、'
+      $scope.story.card.config_names  = countup(gon.story.card.config).join '、'
       $scope.story.option_helps = gon.story.options.map (o)-> SOW.options[o].help
 
 
@@ -95,23 +94,28 @@ RAILS = ($scope, $interpolate)->
 
       potofs = gon.potofs
       .map (potof)->
-        potof.bonds = potof.bonds.map (pid)->
-          gon.potofs[pid]
-        potof.pseudobonds = potof.pseudobonds.map (pid)->
-          gon.potofs[pid]
+        if potof.bonds?
+          potof.bonds = potof.bonds.map (pid)->
+            gon.potofs[pid]
+        if potof.pseudobonds?
+          potof.pseudobonds = potof.pseudobonds.map (pid)->
+            gon.potofs[pid]
 
-        win_check = (potof)->
-          win_by_role = (list)->
-            for role in potof.role
-              win = list[role]?.win
-              return win if win
-            return null
-          SOW.loves[potof.love]?.win || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
-        potof.win = win_check potof
-        potof.win_name = SOW.wins[potof.win]?.name
+        if potof.role?
+          win_check = (potof)->
+            win_by_role = (list)->
+                for role in potof.role
+                  win = list[role]?.win
+                  return win if win
+              return null
+            SOW.loves[potof.love]?.win || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
+          potof.win = win_check potof
+          potof.win_name = SOW.wins[potof.win]?.name
 
-        potof.select_name = rolename potof.select
-        potof.role_names  = potof.role.map rolename
+          potof.role_names  = potof.role.map rolename
+
+        if potof.select?
+          potof.select_name = rolename potof.select
 
         potof.live or= ""
         potof.auth = potof.sow_auth_id
@@ -269,9 +273,12 @@ RAILS = ($scope, $interpolate)->
   lax_date = (date)->
     date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
   lax_time = (date)->
-    now = date.addMinutes(15)
-    postfix = ["頃","半頃"][(date.getMinutes()/30).floor()]
-    date.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
+    now = date.clone()
+    now.addMinutes(15)
+    postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
+    now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
+  $scope.lax_date = lax_date
+  $scope.lax_time = lax_time
 
   decolate = (log)->
     switch $scope.mode._value

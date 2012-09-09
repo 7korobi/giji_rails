@@ -26,5 +26,5 @@ do
   DST="$target/$title-$postfix"
   echo "$DST"
 
-  test -f "$OUT/$DST.$STYLE" || echo $HANDBRAKE $GRAPH $EXT $AUDIO -i \""$SRC"\" -o \""$OUT/$DST.$STYLE"\" | bash
+  test -f "$OUT/$DST.$STYLE" || echo $HANDBRAKE $GRAPH $EXT $AUDIO -i \""$SRC"\" -o \""$OUT/$DST.$STYLE"\" >> ./handbrake.sh
 done

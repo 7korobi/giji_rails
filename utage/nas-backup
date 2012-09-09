@@ -4,7 +4,7 @@ cd /c/media/Album
 git add .
 git commit -a -m "collection"
 
-for TO in 241 242 243 251 254
+for TO in 241 243 252 254
 do
 
   for DIR in etc var home
@@ -14,7 +14,7 @@ do
   done
 done
 
-TO=251
+TO=252
 ssh -p ${TO}0 7korobi@192.168.0.$TO "
   rdiff-backup --remove-older-than 3M /data/backup/mongo/ &
   mongodump --host 192.168.0.100 -d giji -o /data/mongo/

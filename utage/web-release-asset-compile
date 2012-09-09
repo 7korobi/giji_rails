@@ -8,11 +8,11 @@ thor  sjis:create
 
 /utage/web-push-serversman-cdj  /utage &
 /utage/web-push-serversman-cdj  $APP/public  --delete
-/utage/web-ssh-serversman-cdj   $RUBY /utage/init-7korobi-asset.rb
+/utage/ssh-serversman-cdj   $RUBY /utage/init-7korobi-asset.rb
 
 /utage/web-push-serversman-giji /utage &
 /utage/web-push-serversman-giji $APP/public  --delete
-/utage/web-ssh-serversman-giji  $RUBY /utage/init-7korobi-asset.rb
-/utage/web-ssh-serversman-giji-root  /utage/web-infra-serversman restart
+/utage/ssh-serversman-giji  $RUBY /utage/init-7korobi-asset.rb
+/utage/ssh-serversman-giji-root  /utage/web-infra-serversman restart
 
 

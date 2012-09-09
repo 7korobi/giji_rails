@@ -1,5 +1,7 @@
 ---
 options:
+  show-id:
+    help: ユーザーIDを公開する
   select-role:
     help: 役職希望を受け付ける
   random-target:

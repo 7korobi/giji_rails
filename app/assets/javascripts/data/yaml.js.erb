@@ -1,7 +1,6 @@
 //"日本語";
 <%
-Dir.glob('lib/*.yml').each do |path|
-  file, name = /(\w+).yml/.match(path).to_a
+%w[error giji option sow url].each do |name|
   const = name.upcase.to_sym
   if Kernel.constants.member?(const)
 %>
@@ -12,3 +11,5 @@ this.<%= const %> = <%= Kernel.const_get( const ).to_json %> ;
   end
 end
 %>
+
+this.SOW_RECORD = {"CABALA":<%= SOW_RECORD[:CABALA].to_json %>};

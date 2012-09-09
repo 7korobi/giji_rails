@@ -11,7 +11,7 @@ do
   /utage/web-push-$TARGET /www/giji_rails  --delete &
   /utage/web-push-$TARGET /www/sow-giji  --delete &
 
-  /utage/web-ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET
-  /utage/web-ssh-$TARGET  /utage/web-app $2 &
+  /utage/ssh-$TARGET  $RUBY /utage/init-7korobi.rb $TARGET
+  /utage/ssh-$TARGET  /utage/web-app $2 &
 done
 

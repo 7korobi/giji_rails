@@ -377,6 +377,16 @@ SOYBEAN:
   vid_code: Bs
   config:
     <<: *config_braid
+    saycnt:
+      - weak
+      - juna
+      - vulcan
+      - infinity
+    enable:
+      <<: *enable_braid
+      ENABLED_AIMING:       [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_SUICIDE_VOTE: [1, "1:自殺投票"]
+      ENABLED_SEQ_EVENT:    [1, "0:ランダムイベント 1:順序通りのイベント"]
     cfg:
       <<: *cfg_braid
       URL_SW:         http://soy-bean.sakura.ne.jp/soy-bean
