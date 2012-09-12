@@ -1,5 +1,4 @@
-ssh-250 du -h /var/log /utage/log/ /www/*/log/
-ssh-251 du -h /var/log /utage/log/ /www/*/log/
-ssh-253 du -h /var/log /utage/log/ /www/*/log/
+
+ssh-249 du -h /var/log /utage/log/ /www/*/log/
 ssh-254 du -h /var/log /utage/log/ /www/*/log/
 

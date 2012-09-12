@@ -22,7 +22,7 @@ ls       "$OUT/$target" || exit
 
 cat /tmp/handbrake.txt | while read SRC
 do
-  postfix=` echo "$SRC" | sed -e "s/$author//g" | sed -e "s/$title//g" | sed -f /media/flatten-make.sed`
+  postfix=` echo "$SRC" | sed -e "s/$author//g" | sed -e "s/$title//g" | sed -f /c/media/flatten-make.sed`
   DST="$target/$title-$postfix"
   echo "$DST"
 

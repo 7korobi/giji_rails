@@ -10,7 +10,7 @@ do
     yum update
   "
 
-  if [ "251" = ${TO} ]
+  if [ "241" = ${TO} ]
   then
     ssh -p ${TO}0 root@192.168.0.$TO  "
       cd /tmp/

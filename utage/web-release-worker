@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TARGET=252
+TARGET=249
 
 /utage/web-cleanup
 /utage/web-release-to $TARGET $1 &

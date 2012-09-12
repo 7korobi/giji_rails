@@ -4,7 +4,7 @@ STYLE="m4v"
 AUDIO="-N jpn -E faac  -6 dpl2 -R Auto -B 160 -D 0.0"
 GRAPH="-w 960 -l 544  -e x264 -q 25 -r 29.97 --pfr --detelecine --decomb"
 HANDBRAKE="/usr/bin/HandBrakeCLI  -f mp4 -4  --verbose=1 "
-OUT="/media/PSV/Videos"
+OUT="/c/media/PSV/Videos"
 EXT="$*"
 
 export STYLE

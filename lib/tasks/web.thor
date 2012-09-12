@@ -61,7 +61,7 @@ rsync -e "ssh -p #{no}0" -r ${TO}/ 7korobi@#{server}:${TO}/ --exclude='*.svn-bas
 _SHELL_
 
   def each_servers
-    [241,242,243,248,249,250,251,252,253,254].each do |no|
+    [241,242,243,247,248,249,250,251,252,253,254].each do |no|
       [["/utage/ssh-#{no}" ,SSH ],
        ["/utage/web-push-#{no}",PUSH]
       ].each do |fname, shell|
