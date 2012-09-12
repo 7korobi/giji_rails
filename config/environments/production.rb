@@ -34,7 +34,7 @@ Giji::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( data.js giji.js sow.js color_white.css color_black.css color_white_box.css color_black_box.css )
+  config.assets.precompile += %w( data.js base.js sow.js color_white.css color_black.css color_white_box.css color_black_box.css )
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

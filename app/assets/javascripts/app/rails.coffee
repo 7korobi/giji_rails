@@ -86,14 +86,14 @@ RAILS = ($scope, $interpolate)->
       $scope.story.card.config_names  = countup(gon.story.card.config).join '、'
       $scope.story.option_helps = gon.story.options.map (o)-> SOW.options[o].help
 
+    if gon.potof?
+      $scope.potof = gon.potof
 
     if gon.potofs?
-      live_potofs = gon.potofs
-      .filter (o)->
+      live_potofs = gon.potofs.filter (o)->
         o.deathday < 0
 
-      potofs = gon.potofs
-      .map (potof)->
+      potofs = gon.potofs.map (potof)->
         if potof.bonds?
           potof.bonds = potof.bonds.map (pid)->
             gon.potofs[pid]

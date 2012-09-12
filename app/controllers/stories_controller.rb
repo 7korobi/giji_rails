@@ -3,8 +3,6 @@ class StoriesController < ApplicationController
 
   respond_to :html, :json
 
-  before_filter :login_require
-
   def index
     gon.page = { length: stories.num_pages }
     gon.folder = params[:folder]

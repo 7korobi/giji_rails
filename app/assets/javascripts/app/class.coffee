@@ -83,6 +83,7 @@ class PageNavi extends Navi
       last:     length
 
     show =
+      go_next:  n.current < n.last
       first:    0 < n.last
       second:   1 < n.last
       last:     2 < n.last

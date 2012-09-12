@@ -1,6 +1,6 @@
 
 module CurrentAuthenticated
-  ROLES = %w[admin self login auth]
+  ROLES = %w[admin self user login auth]
   protected
   def admin?
     login? && current.user.try(:admin?)
@@ -8,8 +8,11 @@ module CurrentAuthenticated
   def self?
     false
   end
+  def user?
+    current.user.try(:login?)
+  end
   def login?
-    auth?
+    user?
   end
   def auth?
     current.auth.try(:login?)

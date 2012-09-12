@@ -8,8 +8,7 @@ class ApplicationController < ActionController::Base
   when 'development'
     before_filter :debug
     def debug
-      current.user ||= User.find('7korobi')
-      current.auth ||= current.user.auths.first
+      current.auth ||= Auth.where(nickname:'7korobi').first
       current_save
     end
   end
@@ -19,7 +18,7 @@ class ApplicationController < ActionController::Base
     url = [:story].each_with_object controller: obj.class.name.collectionize do |symbol, hash|
       hash[:"#{symbol}_id"] = send(symbol)
     end
-    if obj.new_record? 
+    if obj.new_record?
       url.merge action: 'create'
     else
       url.merge action: 'update', id: obj.id

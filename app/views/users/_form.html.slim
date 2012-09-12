@@ -5,7 +5,7 @@
   h4.sayfilter_caption_enable
     | 他のことを知りたい
   .sayfilter_content
-    li=link_to 'あなたのトップページ', user_path
+    li=link_to 'あなたのトップページ', user_path(user.user_id)
 
 - content_for :info do
   h4.sayfilter_caption_enable

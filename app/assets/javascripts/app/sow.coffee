@@ -29,6 +29,25 @@ CGI = ($scope, $interpolate)->
       resultsFormatter: (item)-> "<li>#{item.name}</li>"
       tokenFormatter:   (item)-> "<li>#{item.name}</li>"
 
+  $scope.form =
+    action:
+      no:    "-99"
+      target: "-1"
+      text: ""
+      result: ()->
+        act = $scope.form.action
+        if 0 < act.text.length
+          text = act.text
+        else
+          text = $('.formpl_action select[name=actionno]').find("option[value=#{act.no}]").text()
+
+        if -1 < Number(act.target)
+          target = $('.formpl_action select[name=target]').find("option[value=#{act.target}]").text()
+        else
+          target = ""
+        "#{$scope.potof.shortname}は、#{target}#{text}"
+
+
   if gon?
     if gon.story?
       $scope.story.upd.time_text = "#{gon.story.upd.hour}時#{gon.story.upd.minute}分"

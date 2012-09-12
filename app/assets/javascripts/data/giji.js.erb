@@ -1,0 +1,17 @@
+//"日本語";
+
+<%
+namespace = "this.JST"
+head = "app/assets/javascripts/"
+Dir.glob(head + "giji/*") do |path|
+  idx = path.match(/#{head}([^\/]+\/[^\/.]+)/)[1]
+  Tilt.new(path).render
+%>
+
+<%=namespace%> || (<%=namespace%> = {});
+<%=namespace%>[<%=idx.inspect%>] = <%=Tilt.new(path).render.to_json%>;
+
+<%
+end
+%>
+
