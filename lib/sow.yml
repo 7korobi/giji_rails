@@ -449,6 +449,7 @@ trs:
 
 log:
   anchor:
+    q:           # no anchor
     m: '#'       # MESTYPE_MAKER
     a: '%'       # MESTYPE_ADMIN
     S: ''        # MESTYPE_SAY

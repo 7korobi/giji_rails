@@ -1,3 +1,4 @@
+
 class Navi
   @list = {}
 
@@ -17,32 +18,34 @@ class Navi
     chk = ///
       (^|\s)#{key}=(\w+)
     ///
-    l = Object.fromQueryString(location[@_params.on].replace(/^[#?]/,""))[key]
+    l = Object.fromQueryString(location[@_params.on].replace(/^[#?]/,""))[key] if location[@_params.on]
     c = document.cookie.match(chk)?[2]
     @_value = @_params.current_type( l or c )
+
     if @_button
       unless @_button.keys().find String @_value
         @_value = null
     @_value or= @_params.current_type @_params.current
     $scope.$watch "#{key}._value", (newVal,oldVal)=>
+      @_move()
+
       for func in @_watch
         func @_value
-
-      @_move()
 
       navis = Navi.list.values()
       list = new Object
       for navi in navis
         options = navi._params
-        list[options.on] = []
-      for navi in navis
-        options = navi._params
         cmd = "#{navi._key}=#{navi._value}"
 
-        list[options.on].push cmd
+        if options.on?
+          list[options.on] or= []
+          list[options.on].push cmd
+
         if options.is_cookie
           expire = new Date().advance OPTION.cookie.expire
           document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
+
       list.keys (field, val)->
         value = val.join "&"
         location[field] = value  if  location[field].from(1) != value
@@ -64,23 +67,26 @@ class PageNavi extends Navi
 
     @_items = []
     super
-    $scope.$watch "#{key}._items.length", (newVal,oldVal)=>
+    draw = (newVal,oldVal)=>
+      @_move()
       for func in @_watch
         func @_value
 
-      @_move()
+    $scope.$watch "#{key}._items.length", draw
+    $scope.$watch "#{key}._params.per",   draw
+    $scope.$watch "#{key}._params.order", draw
 
   _move: ()->
     page = Number(@_value)
-    length = (@_items.length / @_params.per).ceil()
+    @_length = (@_items.length / @_params.per).ceil()
     @_button = n =
       first:    1
       second:   2
       prev:     page - 1
       current:  page
       next:     page + 1
-      penu:     length  - 1
-      last:     length
+      penu:     @_length  - 1
+      last:     @_length
 
     show =
       go_next:  n.current < n.last
@@ -102,7 +108,7 @@ class PageNavi extends Navi
 
 class FixedBox
   @list = {}
-  win_width  = win_height = 0
+  win_width  = win_height = win_zoom = 0
 
   constructor: (dx, dy, fixed_box)->
     @dx = dx
@@ -117,16 +123,16 @@ class FixedBox
         @calc()
 
       $(window).resize =>
-        win_width = $(window).width()
-        win_height = window.innerHeight ||
-          $(window).height() ||
-          document.documentElement.clientHeight ||
-          document.body.clientHeight
+        win_height = window.innerHeight || $(window).height()
+        win_width = window.innerWidth || $(window).width()
+
+        base_width = document.body.clientWidth || win_width
+        win_zoom = base_width / win_width
         @calc()
 
   calc: ()->
-    height = win_height - @box.height()
     width = win_width - @box.width()
+    height = win_height - @box.height()
 
     left = @dx + width if @dx < 0
     left = @dx         if   0 < @dx

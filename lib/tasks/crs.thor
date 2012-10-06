@@ -46,6 +46,11 @@ class Crs < Thor
       @csid   = params[:csid]
       @chrset = params[:set]
       @chrnpc = params[:npc]
+
+      perl_change = -> s { s.inspect.gsub(/[噂]/){ $& + '\\' }}
+      @chrnpc.say_0 = perl_change.call @chrnpc.say_0
+      @chrnpc.say_1 = perl_change.call @chrnpc.say_1
+
       jobs  = @chrset.chr_jobs
       job_groups = jobs.group_by(&:face_id)
       faces = params[:faces]

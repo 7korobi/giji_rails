@@ -1,7 +1,8 @@
 
-for TO in 241
+for TO in 241 242 243
 do
-  ssh-$TO ps -ef | grep HandBrakeCLI
+  echo "== $TO =="
+  ssh-$TO ps -ef | grep handbrake-do\\\|HandBrakeCLI
   ssh-$TO top -b -n 1 | grep HandBrakeCLI
   echo
 done

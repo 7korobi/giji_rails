@@ -6,8 +6,9 @@ table(class="{{mestype}}")
       td.field
         .msg
           h3.mesname
+            | {{mesicon}}&nbsp;
             a(name="{{logid}}")
               | {{name}}
           p(class="{{style}} text")
             | {{text}}
-          p.mes_date  ({{anchor}}) {{time}}
+          p.mes_date  {{anchor}} {{time}}

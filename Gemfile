@@ -85,6 +85,7 @@ gem "sqlite3-ruby"
 
 # model support
 gem "model_manage"
+gem "pattern-match"
 
 # management
 #gem "rubygems-update"
