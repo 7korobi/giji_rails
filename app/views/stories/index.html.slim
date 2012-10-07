@@ -16,24 +16,25 @@
   table.vindex(border="1" summary="物語の一覧")
     thead
       tr
-        th(scope="col") id
-        th(scope="col") 村の名前
+        th(scope="col")
+          code(ng-click="stories_is_small = ! stories_is_small") スタイル
         th(scope="col") 人数
         th(scope="col") ルール
-        th(scope="col") 制限
     tbody
       - stories.each do |story|
-        tr.i_hover
-          td= story.vid
+        tr
           td
+            = story.vid
+            | &nbsp;
             = link_to story.name.html_safe, show_path(story)
-            i
-              br
             = image_tag "/images/icon/cd_#{story.rating}.png"
             - if SowVillage === story
-              i.small
-                br= "更新 : #{"%02d:%02d"%[story.upd['hour'], story.upd['minute']]} #{24 * story.upd['interval']}h毎"
+              span.note(ng-show="stories_is_small")
+                br= "　　更新 : #{"%02d:%02d"%[story.upd['hour'], story.upd['minute']]} #{24 * story.upd['interval']}h毎"
           - if SowVillage === story
             td.small= "%02d人"%[story.vpl.last]
-            td.small= story.type['game']
-            td.small= story.type['say']
+            td
+              span.note(ng-show="stories_is_small")
+                = SOW[:saycnt][story.type['say']][:CAPTION] rescue story.type['say']
+                br
+              = SOW[:game_rule][story.type['game'] || 'TABULA'][:CAPTION] rescue story.type['game']

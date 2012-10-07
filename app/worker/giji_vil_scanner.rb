@@ -166,6 +166,12 @@ class GijiVilScanner < GijiScanner
           event.update_attributes(
             winner: SOW_RECORD[folder][:winners][o.winner.to_i],
           )
+          case turn_no
+          when 0
+            event.name = "プロローグ"
+          when o.epilogue.to_i
+            event.name = "エピローグ"
+          end
           if o.turn.to_i - 1 == turn_no || o.epilogue.to_i == turn_no
             event.epilogue = o.epilogue.to_i,
             event.event = SOW_RECORD[folder][:events][o.event.to_i]  rescue  nil

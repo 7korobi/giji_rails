@@ -186,6 +186,15 @@ RAILS = ($scope, $interpolate)->
 
   anime = ()->
     $(window).scrollTop( $(".inframe").offset().top - 20 )
+
+    $('.text').each (idx, dom)->
+      $(dom).html link $(dom).html()
+
+    popover = $('a[title]')
+    popover.each (idx, dom)->
+      $(dom).attr "data-content", $(dom).attr("title")
+      $(dom).attr "title", ''
+      $(dom).attr "rel", 'popover'
     $('[rel="popover"]').popover()
 
   if 'PAN' == gon?.folder
@@ -376,10 +385,13 @@ RAILS = ($scope, $interpolate)->
   lax_date = (date)->
     date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
   lax_time = (date)->
-    now = date.clone()
-    now.addMinutes(15)
-    postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
-    now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
+    if date?
+      now = date.clone()
+      now.addMinutes(15)
+      postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
+      now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
+    else
+      "....-..-..(？？？) --..時頃"
   $scope.lax_date = lax_date
   $scope.lax_time = lax_time
 
@@ -402,7 +414,7 @@ RAILS = ($scope, $interpolate)->
 
   random = (log)->
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """ <a rel="popover" data-content="#{cmd}" class="badge">#{val}</a> """
+      """ <a title="#{cmd}" class="badge">#{val}</a> """
 
   link_regexp = ///
       (\w+)://([^/]+)([^<>）］】」\s]+)
@@ -419,7 +431,7 @@ RAILS = ($scope, $interpolate)->
           #{protocol}://#{host} <br>
           #{path}
         """
-        log = log.replace uri, """ <span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a rel="popover" data-content="#{title}">#{protocol}</a></span> """
+        log = log.replace uri, """ <span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a title="#{title}">#{protocol}</a></span> """
     log
 
   $scope.log = (log)->
@@ -473,9 +485,7 @@ RAILS = ($scope, $interpolate)->
     $(window).resize()
 
   $ ->
-    anime()
-    $('.text').each (idx, dom)->
-      $(dom).html link $(dom).html()
+    anime.delay(100)
 
   $scope.form =
     csid_cid: null
