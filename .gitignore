@@ -1,4 +1,5 @@
 
+.rbx
 .DS_Store
 .bundle
 db/*.sqlite3
