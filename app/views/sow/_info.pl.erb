@@ -51,10 +51,6 @@ sub OutHTMLAdminInfo {
   my $choice_allstar  = ( 'ALLSTAR' eq $cfg->{'RULE'})?("choice"):("no_choice");
   my $choice_cabala   = (  'CABALA' eq $cfg->{'RULE'})?("choice"):("no_choice");
 
-  my $css_select = '<p class="css_changer"><span><a href="sow.cgi?ua=mb">携帯</a></span> | <span ng-repeat="key in theme._keys"><a ng-class="theme[key]" ng-click="theme.move(key)">{{theme._button[key]}}</a>&nbsp;</span> | <span ng-repeat="key in width._keys"><a ng-class="width[key]" ng-click="width.move(key)">{{width._button[key]}}</a>&nbsp;</span></p>';
-  if( 'PAN' eq $cfg->{'RULE'} ){
-    $css_select = '<a href="sow.cgi">標準</a> <a href="sow.cgi?css=sow800">新</a> <a href="sow.cgi?css=sow480">iPhone</a>｜<a href="sow.cgi?css=junawide">審問</a> <a href="sow.cgi?css=juna800">新</a> <a href="sow.cgi?css=juna480">iPhone</a>｜<a href="sow.cgi?ua=mb">携帯</a>';
-  }
   print <<"_HTML_";
 <a href="{{link.wiki}}">人狼物語専用wiki</a>
 ｜
@@ -139,9 +135,6 @@ sub OutHTMLAdminInfo {
 　<br>
 　<br>
 </table>
-<p style="text-align:right; font-size: 100%;">
-$css_select
-</p>
 </div>
 _HTML_
 }
@@ -153,7 +146,7 @@ sub OutHTMLStateInfo {
   my $license = 'https://github.com/7korobi/sow-giji/blob/master/cabala/license.txt';
 
   print <<"_HTML_";
-<p class="paragraph">
+<div class="paragraph">
 _HTML_
 
   if( 'WOLF' eq $cfg->{'RULE'} ){
@@ -164,7 +157,6 @@ _HTML_
 <li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。
 <li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
 </ul>
-</p>
 _HTML_
   }
 
@@ -179,7 +171,6 @@ _HTML_
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
 <li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
-</p>
 _HTML_
   }
   if( 'BRAID' eq $cfg->{'RULE'} ){
@@ -193,7 +184,6 @@ _HTML_
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
 <li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
-</p>
 _HTML_
   }
 
@@ -208,7 +198,6 @@ _HTML_
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
 <li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
-</p>
 _HTML_
   }
 
@@ -223,7 +212,6 @@ _HTML_
 <li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
 <li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
 </ul>
-</p>
 _HTML_
   }
 
@@ -237,7 +225,7 @@ _HTML_
 </ul>
 _HTML_
   }
-
+  print "</div>";
 }
 
 1;

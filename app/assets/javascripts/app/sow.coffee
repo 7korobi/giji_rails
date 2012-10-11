@@ -11,7 +11,17 @@ if SOW_RECORD.CABALA.events?
 POOL = ($scope, $interpolate)->
   if $scope.event?.is_news
     last_id = $scope.event.messages.last().logid
-    timer = 5 * 60 * 1000
+    ajax_timer = 5 * 60 * 1000
+    message_timer =   3 * 1000
+
+    refresh = ->
+      if $scope.messages?
+        for message in $scope.messages
+          $scope.log_refresh message
+        $scope.$apply()
+        $scope.refresh()
+        refresh.delay message_timer
+    refresh.delay message_timer
 
     pool = ->
       href = location.href
@@ -22,8 +32,8 @@ POOL = ($scope, $interpolate)->
         if $scope.story? && 0 < news_size
           $scope.title = "(#{news_size}) #{$scope.story.name}"
         $scope.$apply()
-        pool.delay timer
-    pool.delay timer
+        pool.delay ajax_timer
+    pool.delay ajax_timer
 
 CGI = ($scope, $interpolate)->
   RAILS $scope, $interpolate
@@ -57,18 +67,22 @@ CGI = ($scope, $interpolate)->
       if 0 < act.text.length
         text = act.text
       else
-        text = $('select[ng-model="form.action.no"]').find("option[value=#{act.no}]").text().replace(/\(.*\)$/,"")
+        text = $($('select[ng-model="form.action.no"]').find("option[value=#{act.no}]")[0]).text().replace(/\(.*\)$/,"")
 
       if -1 < Number(act.target)
-        target = $('select[ng-model="form.action.target"]').find("option[value=#{act.target}]").text()
+        target = $($('select[ng-model="form.action.target"]').find("option[value=#{act.target}]")[0]).text()
       else
         target = ""
       "#{$scope.potof.shortname}は、#{target}#{text}"
 
+  if $scope.story?
+    $scope.story.upd.time_text = "#{$scope.story.upd.hour}時#{$scope.story.upd.minute}分"
+    $scope.story.upd.interval_text = "#{$scope.story.upd.interval * 24}時間"
 
-  if gon?
-    if gon.story?
-      $scope.story.upd.time_text = "#{gon.story.upd.hour}時#{gon.story.upd.minute}分"
-      $scope.story.upd.interval_text = "#{gon.story.upd.interval * 24}時間"
-
+  if $scope.event?.messages?
+    $scope.$watch "mode.value == 'memo'", (newVal,oldVal)=>
+      in_memo = location.search.match ///&cmd=memo///
+      if newVal && not in_memo
+        search_base = location.search.replace(/&cmd=[a-z]+/, '')
+        location.search = location.search + "&cmd=memo"
 

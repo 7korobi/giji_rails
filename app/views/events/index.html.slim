@@ -2,19 +2,14 @@
   | ページをめくる
 
 - content_for :link do
-  h4.sayfilter_caption_enable
-    | 他の章へ
-  .sayfilter_content
-    - events.each do |event|
-      ul
-        li= link_to event.name.html_safe, show_path(event)
-    br
+  = render_cell :navi, :events, gon, story
+
   h4.sayfilter_caption_enable
     = link_to '他の物語へ', index_parent_path
 
 - content_for :info do
   .sayfilter_content
-    = render "layouts/potofs"
+    = render_cell :navi, :potofs, gon, story
 
 
 - content_for :log do
@@ -49,7 +44,7 @@
             | {{option_help}}
 
     .mes_maker
-      = render "layouts/potofs"
+      = render_cell :navi, :potofs, gon, story
 
     - if SowVillage === story
       .mes_maker

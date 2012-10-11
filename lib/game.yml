@@ -391,7 +391,7 @@ SOYBEAN:
       <<: *cfg_braid
       URL_SW:         http://soy-bean.sakura.ne.jp/soy-bean
       BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/soy-bean//
-      NAME_HOME:      人狼議事 soy bean paste<br>- Role Play braid -
+      NAME_HOME:      人狼議事 鯖の味噌煮
       MAX_VILLAGES:   2
       BASEDIR_DOC:    http://giji.check.jp
     path:

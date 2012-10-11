@@ -1,16 +1,16 @@
 table(class="table table-condensed")
   thead
     tr
-      th(colspan="2" style="text-align:right")
+      th
         code(ng-click="potofs_is_small = ! potofs_is_small") スタイル
-        | -
+      th
         code(href_eval="sort_potofs('deathday',0)") 日程
         code(href_eval="sort_potofs('live','')") 状態
-        code(href_eval="sort_potofs('said_num',0)") 発言
+        code(href_eval="sort_potofs('said_num',0)" ng-show="potofs_is_small") 発言
       th(colspan="2")
         code(href_eval="sort_potofs('win_name','')") 陣営
         code(href_eval="sort_potofs('role_names','')") 役割
-        code(href_eval="sort_potofs('select_name','')") 希望
+        code(href_eval="sort_potofs('select_name','')" ng-show="potofs_is_small") 希望
         code(href_eval="sort_potofs('text','')") 補足
         | {{sum.actaddpt}}促
   tbody(ng-repeat="potof in potofs")

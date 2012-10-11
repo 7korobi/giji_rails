@@ -135,9 +135,11 @@ class GijiVilScanner < GijiScanner
         sow.type[:game] = o.game  rescue  nil
 
         sow.options = []
-        sow.options.push "select-role"   if  (o.noselrole    != '1'  rescue  false)
-        sow.options.push "random-target" if  (o.randomtarget == '1'  rescue  false)
-        sow.options.push "undead-talk"   if  (o.undead       == '1'  rescue  false)
+        sow.options.push "select-role"   if  (o.noselrole.to_i    != 1  rescue  false)
+        sow.options.push "random-target" if  (o.randomtarget.to_i == 1  rescue  false)
+        sow.options.push "undead-talk"   if  (o.undead.to_i       == 1  rescue  false)
+        sow.options.push "entrust"       if  (o.entrust.to_i      == 1  rescue  false)
+        sow.options.push "seq-event"     if  (o.seqevent.to_i     == 1  rescue  false)
 
         cnt = []
         say = Hash.new

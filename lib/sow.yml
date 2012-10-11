@@ -1,7 +1,11 @@
 ---
 options:
+  seq-event:
+    help: 事件が順序どおりに発生する
   show-id:
     help: ユーザーIDを公開する
+  entrust:
+    help: 委任投票をする
   select-role:
     help: 役職希望を受け付ける
   random-target:

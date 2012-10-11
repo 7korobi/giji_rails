@@ -18,8 +18,11 @@ group :assets do
   #gem 'therubyracer'
 end
 
-# client side data
+# DCI
 gem 'gon'
+gem "decent_exposure"
+gem "cells"
+gem "active_decorator"
 
 # view environment
 gem "slim"
@@ -44,7 +47,6 @@ gem "formtastic"
 # gem "mercury-rails"
 
 # control support
-gem "decent_exposure"
 gem "kaminari"
 gem "moji"
 gem "jpmobile"

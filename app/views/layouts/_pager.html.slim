@@ -1,23 +1,16 @@
-span
-  a.btn(ng-click="page.paginate('first')"  ng-class="page.first")
-    | {{page._button.first}}
-span
-  a.btn(ng-click="page.paginate('second')"  ng-class="page.second")
-    | {{page._button.second}}
-span(ng-class="page.prev_gap") …
-span
-  a.btn(ng-click="page.paginate('prev')"  ng-class="page.prev")
-    | {{page._button.prev}}
-span
-  a.btn(ng-click="page.paginate('current')"  ng-class="page.current")
-    | {{page._button.current}}
-span
-  a.btn(ng-click="page.paginate('next')"  ng-class="page.next")
-    | {{page._button.next}}
-span(ng-class="page.next_gap") …
-span
-  a.btn(ng-click="page.paginate('penu')"  ng-class="page.penu")
-    | {{page._button.penu}}
-span
-  a.btn(ng-click="page.paginate('last')"  ng-class="page.last")
-    | {{page._button.last}}
+a.btn(ng-click="page.move(page.first.val)"  ng-class="page.first.class")
+  | {{page.first.name}}
+a.btn(ng-click="page.move(page.second.val)"  ng-class="page.second.class")
+  | {{page.second.name}}
+span(ng-class="page.prev_gap.class") …
+a.btn(ng-click="page.move(page.prev.val)"  ng-class="page.prev.class")
+  | {{page.prev.name}}
+select(ng-model="page.value" ng-options="pno.val as pno.name for pno in page.select" class="input-mini")
+a.btn(ng-click="page.move(page.next.val)"  ng-class="page.next.class")
+  | {{page.next.name}}
+span(ng-class="page.next_gap.class") …
+a.btn(ng-click="page.move(page.penu.val)"  ng-class="page.penu.class")
+  | {{page.penu.name}}
+a.btn(ng-click="page.move(page.last.val)"  ng-class="page.last.class")
+  | {{page.last.name}}
+

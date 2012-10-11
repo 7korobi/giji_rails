@@ -2,41 +2,47 @@
 class Navi
   @list = {}
 
-  move: (target)->
-    @_value = @_params.current_type target
+  move: (newVal)->
+    @value = @params.current_type newVal if newVal?
+    @value
 
   constructor: ($scope, key, def)->
-    @_params = def.options
-    @_params.current_type or= String
-    if def.button?
-      @_button = def.button
-      @_keys = def.button.keys()
+    @params = def.options
+    @params.current_type or= String
 
-    @_watch = []
-    @_key = key
+    @key = key
+    @show = {}
+    @watch = []
+    @select = []
+    def.button?.keys (key, val)=>
+      @select.push
+        name: val
+        val:  @params.current_type key
 
     chk = ///
       (^|\s)#{key}=(\w+)
     ///
-    l = Object.fromQueryString(location[@_params.on].replace(/^[#?]/,""))[key] if location[@_params.on]
-    c = document.cookie.match(chk)?[2]
-    @_value = @_params.current_type( l or c )
+    l = Object.fromQueryString(location[@params.on].replace(/^[#?]/,""))[key] if location[@params.on]
+    c = document.cookie.match(chk)?[2] if @params.is_cookie?
+    @value = @params.current_type l or c
 
-    if @_button
-      unless @_button.keys().find String @_value
-        @_value = null
-    @_value or= @_params.current_type @_params.current
-    $scope.$watch "#{key}._value", (newVal,oldVal)=>
+    keys = def.button?.keys()
+    if keys?
+      unless keys.find String @value
+        @value = null
+
+    @value or= @params.current_type @params.current
+    $scope.$watch "#{key}.value", (newVal,oldVal)=>
       @_move()
 
-      for func in @_watch
-        func @_value
+      for func in @watch
+        func @value
 
       navis = Navi.list.values()
       list = new Object
       for navi in navis
-        options = navi._params
-        cmd = "#{navi._key}=#{navi._value}"
+        options = navi.params
+        cmd = "#{navi.key}=#{navi.value}"
 
         if options.on?
           list[options.on] or= []
@@ -51,64 +57,104 @@ class Navi
         location[field] = value  if  location[field].from(1) != value
 
   _move: ()->
-    target = String @_value
-    @_button.keys (key, _)=>
-      @[key] = null
-    @[target] = 'btn-success'
+    target = String @value
+    for o in @select
+      if o.val == @value
+        o.class = 'btn-success'
+        @show[o.val] = true
+      else
+        o.class = null
+        @show[o.val] = false
 
 
 class PageNavi extends Navi
-  paginate: (target)->
-    @_value = @_params.current_type @_button[target]
-
   constructor: ($scope, key, def)->
     def.options.current_type = Number
     def.options.per or= 1
 
-    @_items = []
+    @items = []
     super
     draw = (newVal,oldVal)=>
       @_move()
-      for func in @_watch
-        func @_value
+      for func in @watch
+        func @value
 
-    $scope.$watch "#{key}._items.length", draw
-    $scope.$watch "#{key}._params.per",   draw
-    $scope.$watch "#{key}._params.order", draw
+    $scope.$watch "#{key}.items.length", draw
+    $scope.$watch "#{key}.params.per",   draw
+    $scope.$watch "#{key}.params.order", draw
 
   _move: ()->
-    page = Number(@_value)
-    @_length = (@_items.length / @_params.per).ceil()
-    @_button = n =
+    @length = (@items.length / @params.per).ceil()
+    @select  = [1..@length].map (i)->
+      name: i
+      val:  i
+      class:
+        if i == @value
+        then 'btn-success'
+        else null
+
+    n =
       first:    1
       second:   2
-      prev:     page - 1
-      current:  page
-      next:     page + 1
-      penu:     @_length  - 1
-      last:     @_length
+      prev:     @value  - 1
+      current:  @value
+      next:     @value  + 1
+      penu:     @length - 1
+      last:     @length
 
     show =
-      go_next:  n.current < n.last
-      first:    0 < n.last
-      second:   1 < n.last
-      last:     2 < n.last
-      penu:     2 < n.penu
-      prev_gap: 2 < n.prev - 1 < n.penu
-      prev:     2 < n.prev     < n.penu
-      current:  2 < n.current  < n.penu
-      next:     2 < n.next     < n.penu
-      next_gap: 2 < n.next + 1 < n.penu
+      first:    0 < @length and n.first  < n.prev
+      second:   1 < @length and n.second < n.prev
 
-    show.keys (key, val)=>
-      @[key] = 'ng-cloak'
-      @[key] = null          if val
-      @[key] = 'btn-success' if val && page == @_button[key]
+      last:     2 < @length and n.next   < n.last
+      penu:     3 < @length and n.next   < n.penu
 
+      prev_gap: 3 + 1 < @value
+      prev:         1 < @value
+      current:            true
+      next:             @value < @length
+      next_gap:         @value < @length - 3
+
+    show.keys (key, is_show)=>
+      is_show = show[key]
+      item = @select.find (o)-> o.val == n[key]
+      item or=
+        name: ""
+        val:  null
+      @[key] = item.clone()
+
+      @[key].class = 'ng-cloak'
+      @[key].class = null          if is_show
+      @[key].class = 'btn-success' if is_show && @value == n[key]
+
+win =
+  top:    0
+  left:   0
+  width:  0
+  height: 0
+  zoom:   0
+  accel:   0
+  gravity: 0
+  rotate:  0
+
+$(window).scroll ->
+  win.left = window.pageXOffset
+  win.top = window.pageYOffset
+
+$(window).resize ->
+  win.height = window.innerHeight || $(window).height()
+  win.width = window.innerWidth || $(window).width()
+
+  base_width = document.body.clientWidth || win.width
+  win.zoom = base_width / win.width
+
+$(window).bind 'devicemotion', (e)->
+  win.accel   = e.originalEvent.acceleration
+  win.gravity = e.originalEvent.accelerationIncludingGravity
+  win.rotate  = e.originalEvent.rotationRate
 
 class FixedBox
   @list = {}
-  win_width  = win_height = win_zoom = 0
 
   constructor: (dx, dy, fixed_box)->
     @dx = dx
@@ -117,32 +163,41 @@ class FixedBox
 
     if @box?
       @box.css
-        position: "fixed"
+        position: "absolute"
 
       $(window).scroll =>
-        @calc()
-
+        @scroll()
       $(window).resize =>
-        win_height = window.innerHeight || $(window).height()
-        win_width = window.innerWidth || $(window).width()
+        @resize()
+        @scroll()
 
-        base_width = document.body.clientWidth || win_width
-        win_zoom = base_width / win_width
-        @calc()
+  resize: ()->
+    width  = win.width  - @box.width()
+    height = win.height - @box.height()
 
-  calc: ()->
-    width = win_width - @box.width()
-    height = win_height - @box.height()
-
-    left = @dx + width if @dx < 0
-    left = @dx         if   0 < @dx
-    top = @dy + height if @dy < 0
-    top = @dy          if   0 < @dy
-    @box.to_z_front()
+    @left = @dx + width if @dx < 0
+    @left = @dx         if   0 < @dx
+    @top = @dy + height if @dy < 0
+    @top = @dy          if   0 < @dy
     @box.css
-      top:  top  + "px"
-      left: left + "px"
+      top:  @top  + "px"
+      left: @left + "px"
 
+
+  scroll: ()->
+    @box.to_z_front()
+    if head.csstransitions
+      @box.css "-webkit-transition", "all 500ms ease"
+      @box.css "-webkit-transform",  "translate(#{win.left}px, #{win.top}px)"
+
+    else
+      @box.animate
+        top:  win.top  + @top  + "px"
+        left: win.left + @left + "px"
+      ,
+        duration: 'fast'
+        easing: 'swing'
+        queue: false
 
 Navi.push = ($scope, key, def)->
   Navi.list[key] or= new Navi $scope, key, def

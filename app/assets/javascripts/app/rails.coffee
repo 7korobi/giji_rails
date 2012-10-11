@@ -29,16 +29,16 @@ EFFECT = ($scope, $interpolate)->
   $('dl.accordion').find("dd").hide()
   $('dl.accordion').on 'click', 'dt', ->
     $(this).parents('dl').find("dd").hide()
-    $(this).next().show("fast")
+    $(this).next().show 'fast'
 
   $(window).resize ->
-    width  = $(window).width()
-    height = $(window).height()
+    height = window.innerHeight || $(window).height()
+    width = window.innerWidth || $(window).width()
 
-    if 'info' == $scope.navi._value && $scope.potofs?
-      small = 430
+    if 'info' == $scope.navi.move() && $scope.potofs?
+      small = 350
 
-    switch $scope.width._value
+    switch $scope.width.move()
       when 480
         small or= 222
         info_left = width - 462
@@ -50,7 +50,7 @@ EFFECT = ($scope, $interpolate)->
         outframe = "outframe"
 
       when 800
-        small or= 290
+        small or= 270
         info_left  = (width - 770)/2 + 189
         if     small  < info_left
           info_width  = info_left
@@ -63,22 +63,24 @@ EFFECT = ($scope, $interpolate)->
 
     $("#contentframe")[0].className = content
     $("#outframe")[0].className = outframe
-    $("#sayfilter").css
+    $("#sayfilter").animate
       width: info_width
-      "max-height": height
+    ,
+      duration: 'fast'
+      easing:  'swing'
+      queue:     false
 
 INIT = ($scope, $interpolate)->
+  gon.keys (key, val)->
+    $scope[key] = val
+
   if gon.story?
     $scope.title = gon.story.name
-    $scope.story = gon.story
 
     $scope.story.card.discard_names = $scope.countup(gon.story.card.discard).join '、'
     $scope.story.card.event_names   = $scope.countup(gon.story.card.event).join '、'
     $scope.story.card.config_names  = $scope.countup(gon.story.card.config).join '、'
     $scope.story.option_helps = gon.story.options.map (o)-> SOW.options[o].help
-
-  if gon.potof?
-    $scope.potof = gon.potof
 
   if gon.potofs?
     live_potofs = gon.potofs.filter (o)->
@@ -143,9 +145,15 @@ INIT = ($scope, $interpolate)->
       actaddpt: (live_potofs.sum (o)-> o.point.actaddpt)
 
   if gon.event?.messages?
-    $scope.event = gon.event
     $scope.event.name or= gon.event.turn + "日目"
 
+  if gon.pages?
+    PageNavi.push $scope, 'page'
+      options:
+        on: 'search'
+        current: 1
+        is_cookie: false
+    $scope.page.items = gon.pages
 
 RAILS = ($scope, $interpolate)->
   navi =
@@ -178,24 +186,38 @@ RAILS = ($scope, $interpolate)->
   mode_filters =
     memo: /^(.M)|([AM]S)/
     all:  /^.[^M]/
-    mob:  /^[AmSIiVG][^M]/
-    clan: /^[AmSIiWPX][^M]/
-    open: /^[AmSI][^M]/
+    mob:  /^[qAmSIiVG][^M]/
+    clan: /^[qAmSIiWPX][^M]/
+    open: /^[qAmSI][^M]/
 
   $scope.title = '人狼議事'
 
-  anime = ()->
-    $(window).scrollTop( $(".inframe").offset().top - 20 )
-
-    $('.text').each (idx, dom)->
-      $(dom).html link $(dom).html()
-
+  $scope.refresh = ->
     popover = $('a[title]')
     popover.each (idx, dom)->
       $(dom).attr "data-content", $(dom).attr("title")
       $(dom).attr "title", ''
       $(dom).attr "rel", 'popover'
     $('[rel="popover"]').popover()
+
+  anime = ()->
+    if $scope.event.is_news && $scope.messages_last?
+      logid = $scope.messages_last.logid
+      anime_scroll = "a[name=#{logid}]"
+      target = $(anime_scroll).offset()
+
+    unless target?
+      anime_scroll = ".inframe"
+      target = $(anime_scroll).offset()
+
+    $('.text').each (idx, dom)->
+      $(dom).html link $(dom).html()
+
+    $(window).scrollTop  target.top - 20
+
+    $scope.refresh()
+
+  anime = anime.throttle(2000)
 
   if 'PAN' == gon?.folder
     theme.options.current = 'sow'
@@ -204,14 +226,6 @@ RAILS = ($scope, $interpolate)->
     theme.options.current = 'wa'
     theme.button = GIJI.themes.giji
   if gon?
-    if gon.page?
-      PageNavi.push $scope, 'page'
-        options:
-          on: 'search'
-          current: 1
-          is_cookie: false
-      $scope.page._items = gon.page
-
     $scope.remove_card = (at, idx)->
       story.card[at].removeAt idx
 
@@ -259,8 +273,8 @@ RAILS = ($scope, $interpolate)->
           50: '50行'
           100: '100行'
 
-      $scope.row._watch.push (row)->
-        $scope.page._params.per = row
+      $scope.row.watch.push (row)->
+        $scope.page.params.per = row
 
       Navi.push $scope, 'order'
         options:
@@ -270,41 +284,40 @@ RAILS = ($scope, $interpolate)->
           asc:  '上から下へ'
           desc: '下から上へ'
 
-      $scope.order._watch.push (order)->
-        $scope.page._params.order = order
+      $scope.order.watch.push (order)->
+        $scope.page.params.order = order
 
       PageNavi.push $scope, 'page'
         options:
           current: 1
           is_cookie: false
 
-      $scope.page._watch.push (page)->
-        page_per = $scope.page._params.per
+      $scope.page.watch.push (page)->
+        page_per = $scope.page.params.per
 
         if $scope.event.is_news
-          GIJI.turns[gon.event.turn] = $scope.event
-          to   = $scope.page._items.length
+          to   = $scope.page.items.length
           from = to - page_per
-          $scope.page._value = $scope.page._length
+          $scope.page.move $scope.page.length
           $scope.event.is_rowover = (0 < from)
         else
           to   =  page      * page_per - 1
           from = (page - 1) * page_per
-        $scope.messages = ($scope.page._items[idx] for idx in [from .. to])
-        $scope.messages = $scope.messages.reverse() if "desc" == $scope.page._params.order
-
+        $scope.messages = $scope.page.items.to(to).from(from)
+        $scope.messages_last = $scope.messages.last()
+        $scope.messages = $scope.messages.reverse() if "desc" == $scope.page.params.order
         $scope.anchors = []
-        anime.delay(100)
+        anime.delay(300)
 
       message_refresh = (mode)->
         filter = mode_filters[mode]
-        $scope.page._items = $scope.event.messages.filter (log)->
+        $scope.page.items = $scope.event.messages.filter (log)->
           log.logid.match filter
-      $scope.mode._watch.push message_refresh
-      $scope.$watch "event.messages", -> message_refresh $scope.mode._value
+      $scope.mode.watch.push message_refresh
+      $scope.$watch "event.messages", -> message_refresh $scope.mode.move()
 
       if $scope.event.is_news
-        $scope.mode._value = 'all'
+        $scope.mode.move 'all'
       else
         GIJI.turns[$scope.event.turn] = $scope.event
 
@@ -326,6 +339,10 @@ RAILS = ($scope, $interpolate)->
     html = $(val).html()
     GIJI.templates[val.id] = $interpolate(html)
 
+  $scope.drag = (log)->
+    "z-index": log.z
+    "top":     log.top
+
   click_eval = (e)->
     sort_potofs = (tgt, zero)->
       reverse = (tgt == @tgt)
@@ -336,10 +353,15 @@ RAILS = ($scope, $interpolate)->
       @tgt = reverse || tgt
 
     navi = (link)->
-      $scope.navi._value = link
+      $scope.navi.move link
       $scope.$apply()
 
-
+    cancel_say = (logid)->
+      params = Object.fromQueryString(location.search)
+      params.cmd   = 'cancel'
+      params.queid = logid
+      GIJI.cancel_log = $.param params
+      location.search = GIJI.cancel_log
 
     popup_apply = (e, item)->
       idx = $scope.anchors.indexOf item
@@ -348,9 +370,9 @@ RAILS = ($scope, $interpolate)->
         item.top = e.pageY + 24
         $scope.anchors.push item
         $scope.$apply()
-        $(".drag [name=#{item.logid}]").parents(".drag").hide().show("fast")
+        $(".drag [name=#{item.logid}]").parents(".drag").hide().fadeIn 'fast'
       else
-        $(".drag").hide "fast", ->
+        $(".drag").fadeOut 'fast', ->
           $scope.anchors.removeAt(idx)
           $scope.$apply()
 
@@ -386,17 +408,30 @@ RAILS = ($scope, $interpolate)->
     date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
   lax_time = (date)->
     if date?
-      now = date.clone()
-      now.addMinutes(15)
-      postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
-      now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
+      timespan = (new Date() - date)/1000
+      if timespan < 30 * 60
+        return "25秒以内"                    if 0   < timespan < 25
+        timespan = (timespan / 10)
+        return "#{timespan.round()}0秒経過"  if 2.5 < timespan <  6
+        timespan = (timespan /  6)
+        return "#{timespan.round()}分経過"   if 1   < timespan < 10
+        timespan = (timespan / 10)
+        return "#{timespan.round()}0分経過"  if 1   < timespan <  6
+        timespan = (timespan /  6)
+        return "#{timespan.round()}時間経過" if 1   < timespan < 24
+      else
+        now = date.clone()
+        now.addMinutes(15)
+        postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
+        return now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
     else
-      "....-..-..(？？？) --..時頃"
+      return "....-..-..(？？？) --..時頃"
+
   $scope.lax_date = lax_date
   $scope.lax_time = lax_time
 
   decolate = (log)->
-    switch $scope.mode._value
+    switch $scope.mode.move()
       when 'open'
         ret = log.replace ///
           (/\*)(.*?)(\*/|$)
@@ -414,7 +449,7 @@ RAILS = ($scope, $interpolate)->
 
   random = (log)->
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """ <a title="#{cmd}" class="badge">#{val}</a> """
+      """ <a rel="popover" data-content="#{cmd}" class="badge">#{val}</a> """
 
   link_regexp = ///
       (\w+)://([^/]+)([^<>）］】」\s]+)
@@ -422,24 +457,31 @@ RAILS = ($scope, $interpolate)->
   link_regexp_g = link_regexp.setFlags('g')
 
   link = (log)->
+    return log unless log
     text = log.removeTags('a')
     uris = text.match link_regexp_g
     if uris
       for uri in uris
         [uri, protocol, host, path] = uri.match link_regexp
-        title = """
+        data = """
           #{protocol}://#{host} <br>
           #{path}
         """
-        log = log.replace uri, """ <span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a title="#{title}">#{protocol}</a></span> """
-    log
+        log = log.replace uri, """ <span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a rel=popover data-content="#{data}">#{protocol}</a></span> """
+    return log
+
+  $scope.log_refresh = (log)->
+    log.time = lax_time Date.create log.date
+    if "q" == log.logid[0] && (new Date() - log.date) < 25 * 1000
+      log.cancel_btn = """<span class="btn btn-danger"><i class="icon-remove" href_eval='cancel_say("#{log.logid}")'></i></span>"""
+    else
+      log.cancel_btn = ""
 
   $scope.log = (log)->
     return unless log?
     if log.face_id? && log.csid?
       log.img  or= $scope.img_cid(log.csid, log.face_id)
-    log.text   = decolate anchor link random log.log
-    log.time or= lax_time Date.create log.date
+    log.text = decolate anchor link random log.log
 
     [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
     if SOW.log.anchor[mark]?
@@ -450,17 +492,18 @@ RAILS = ($scope, $interpolate)->
     if 'cast' == GIJI.message.template.mestype[log.mestype]
       log.log = """ <div href_eval="navi('info')" class="badge"> CAST </div> """
 
+    $scope.log_refresh log
     GIJI.templates[log.template](log)
 
   move = ()->
-    value = "#{$scope.theme._value}#{$scope.width._value}"
+    value = "#{$scope.theme.move()}#{$scope.width.move()}"
     date    = new Date
     $scope.css = "#{URL.resource}/stylesheets/#{value}.css"
     $("#giji_css").attr 'href', $scope.css
 
     $scope.h1 =
       type: OPTION.head_img[value][ (date / 60*60*12).ceil() % 2]
-    switch $scope.width._value
+    switch $scope.width.move()
       when 480
         $scope.h1.width = 458
       when 800
@@ -470,22 +513,22 @@ RAILS = ($scope, $interpolate)->
 
   if window.opera
     $scope.width =
-      _value: 800
+      value: 800
     $scope.theme =
-      _value: 'cinema'
+      value: 'cinema'
   else
     Navi.push $scope, 'width', width
     Navi.push $scope, 'theme', theme
 
-    $scope.width._watch.push move
-    $scope.theme._watch.push move
+    $scope.width.watch.push move
+    $scope.theme.watch.push move
 
   Navi.push $scope, 'navi',  navi
-  $scope.navi._watch.push ->
+  $scope.navi.watch.push ->
     $(window).resize()
 
   $ ->
-    anime.delay(100)
+    anime.delay(500)
 
   $scope.form =
     csid_cid: null

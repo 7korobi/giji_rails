@@ -1,0 +1,8 @@
+h4.sayfilter_caption_enable
+  | 他の章へ
+.sayfilter_content
+  ul
+    li= link_to_unless_current '- 情報 -', events_path(@story)
+    - @events.each do |event|
+      li= link_to_unless_current event.name, messages_path(event.story_id, event.turn)
+  br

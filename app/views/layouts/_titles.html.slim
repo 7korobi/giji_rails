@@ -172,12 +172,12 @@ DIV.login
       | $(function(){$('.progress_log').hide()});
 
     p.css_changer
-      span(ng-repeat="key in theme._keys")
-        a(ng-click="theme.move(key)"  ng-class="theme[key]")
-          | {{theme._button[key]}}
+      span(ng-repeat="o in theme.select")
+        a(ng-click="theme.move(o.val)"  ng-class="o.class")
+          | {{o.name}}
         | &nbsp;
       | ｜
-      span(ng-repeat="key in width._keys")
-        a(ng-click="width.move(key)"  ng-class="width[key]")
-          | {{width._button[key]}}
+      span(ng-repeat="o in width.select")
+        a(ng-click="width.move(o.val)"  ng-class="o.class")
+          | {{o.name}}
         | &nbsp;

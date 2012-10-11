@@ -14,7 +14,7 @@ jQuery ->
     window: $(window)
 
   FixedBox.push  1, 1, '#sayfilter'
-  FixedBox.push -1,-1, '#buttons'
+  FixedBox.push -8,-8, '#buttons'
 
   $(window).resize ->
     $(window).scroll()

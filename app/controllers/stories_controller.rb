@@ -4,7 +4,7 @@ class StoriesController < ApplicationController
   respond_to :html, :json
 
   def index
-    gon.page = { length: stories.num_pages }
+    gon.pages = { length: stories.num_pages }
     gon.folder = params[:folder]
   end
 end

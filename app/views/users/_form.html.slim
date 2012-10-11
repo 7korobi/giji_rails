@@ -12,7 +12,7 @@
     | あなたの登録情報
   .sayfilter_content
     =semantic_form_for user do |f|
-      .form-horizontal(ng-init="navi._value='info'")
+      .form-horizontal(ng-init="navi.value='info'")
         = f.inputs
         = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "人狼議事で使っているID"
         .actions

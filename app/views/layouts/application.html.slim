@@ -31,26 +31,26 @@ html(lang="ja" ng-controller="RAILS")
       #footer
       #tab(ng-cloak)
         #sayfilter.sayfilter
-          h3.sayfilter_heading(ng-show="! navi.blank")
+          h4.sayfilter_heading(ng-show="! navi.show.blank")
             = yield :head
           - if flash[:error]
             .insayfilter.paragraph.sayfilter_content
               = ERROR[flash[:error]]
 
-          .insayfilter(ng-show="navi.link")
+          .insayfilter(ng-show="navi.show.link")
             .paragraph
               = yield :link_caption
               = yield :link
-          .insayfilter(ng-show="navi.info")
+          .insayfilter(ng-show="navi.show.info")
             .paragraph
               = yield :info_caption
               = yield :info
-          .insayfilter(ng-show="navi.calc")
+          .insayfilter(ng-show="navi.show.calc")
             .paragraph
               = yield :calc_caption
               = yield :calc
         #buttons
           nav
-            div(ng-repeat="key in navi._keys")
-              a.btn(ng-click="navi.move(key)"  ng-class="navi[key]")
-                | {{navi._button[key]}}
+            div(ng-repeat="o in navi.select")
+              a.btn(ng-click="navi.move(o.val)"  ng-class="o.class")
+                | {{o.name}}

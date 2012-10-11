@@ -24,13 +24,13 @@ class SowRecordFile
   def self.log( path, fname, folder, vid, turn )
     res = []
     scanner = self.new
-    sow_each(path+'/'+fname) do | line | 
+    sow_each(path+'/'+fname) do | line |
       scanner.cgi_scan_by_line(folder,vid,turn, ["logid"],line) do |item|
         next unless item.remoteaddr
         next unless item.agent
         next unless item.uid
 
-        case item.mestype 
+        case item.mestype
         when 1,2
           item.logsubid = 'I'
         end
@@ -42,12 +42,12 @@ class SowRecordFile
   def self.memo( path, fname, folder, vid, turn )
     res = []
     scanner = self.new
-    sow_each(path+'/'+fname) do | line | 
+    sow_each(path+'/'+fname) do | line |
       scanner.cgi_scan_by_line(folder,vid,turn, ["logid"],line) do |item|
         next unless item.remoteaddr
         next unless item.agent
         next unless item.uid
-        
+
         case item.mestype
         when 1
           item.mestype = 3
@@ -61,7 +61,7 @@ class SowRecordFile
     end
     res
   end
-  
+
   def self.sow_each(path)
     open(path, 'r:ascii-8bit').each do | line |
       line.force_encoding('windows-31j')
@@ -137,13 +137,14 @@ class SowRecordFile
             :say,:tsay,:spsay,:wsay,:xsay,:gsay,:bsay,:psay,:esay,
             :say_act,:actaddpt,:saidcount,:saidpoint,:countinfosp,:countthink,
             :lastwritepos,
-            :vote1,:vote2,:role1,:role2,:gift1,:gift2,:vote,:target,:target2,
+            :vote1,:vote2,:role1,:role2,:gift1,:gift2,:entrust1,
+            :showid, :undead, :randomtarget, :noselrole, :entrust,:vote,:target,:target2,
             :gift,:role,:rolestate,:rolesubid,:selrole,:deathday,
             :mestype, :monospace,
             :commit, :draftmestype, :draftmspace, :zapcount, :clearance
           ].index( key_sym )
           item[key_sym] = val.to_i
-          item[key_sym] = val.to_i - 0x10000000000000000  if  0xffffffff00000000 < val.to_i 
+          item[key_sym] = val.to_i - 0x10000000000000000  if  0xffffffff00000000 < val.to_i
         else
           item[key_sym] = (val.to_s.encode('UTF-8')  rescue  '- invisible text -')
         end

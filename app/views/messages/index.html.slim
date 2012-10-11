@@ -8,34 +8,40 @@
     nav
       = render "layouts/pager"
     nav
-      span(ng-repeat="key in mode._keys")
-        a.btn(ng-click="mode.move(key)"  ng-class="mode[key]")
-          | {{mode._button[key]}}
+      span(ng-repeat="o in mode.select")
+        a.btn(ng-click="mode.move(o.val)"  ng-class="o.class")
+          | {{o.name}}
     br
-  h4.sayfilter_caption_enable
-    | 他の章へ
-  .sayfilter_content
-    - events.each do |event|
-      ul
-        li= link_to event.name.html_safe, show_path(event)
-    br
+
+  = render_cell :navi, :events, gon, story
+
   h4.sayfilter_caption_enable
     p= link_to '他の物語へ', index_parent_path
 
 - content_for :info do
   .sayfilter_content
-    = render "layouts/potofs"
+    = render_cell :navi, :potofs, gon, story
 
 - content_for :log do
   h2 {{title}}
   h3 {{event.name}}
-  br
+  .pagenavi
+    form(class="form-inline")
+      select(ng-model="page.value"  ng-options="o.val as o.name for o in page.select"  class="input-mini")
+      select(ng-model="order.value" ng-options="o.val as o.name for o in order.select" class="input-medium")
+      select(ng-model="row.value"   ng-options="o.val as o.name for o in row.select"   class="input-small")
   #messages
     .message_filter(ng-repeat="message in messages" ng-bind-html-unsafe="log(message)")
     .message_filter
-      div.badge(ng-class="page.go_next" ng-click="page.paginate('next')")  次のページ
+      div.badge(ng-class="page.next.class" ng-click="page.move(page.next.val)")  次のページ
       hr.invisible_hr
 
-    .message_filter.drag(ng-repeat="message in anchors"  ng-bind-html-unsafe="log(message)" style="z-index: {{message.z}}; top: {{message.top}}px; ")
+    .message_filter.drag(ng-repeat="message in anchors"  ng-bind-html-unsafe="log(message)" ng-style="drag(message)")
+
+  .pagenavi
+    form(class="form-inline")
+      select(ng-model="page.value"  ng-options="o.val as o.name for o in page.select"  class="input-mini")
+      select(ng-model="order.value" ng-options="o.val as o.name for o in order.select" class="input-medium")
+      select(ng-model="row.value"   ng-options="o.val as o.name for o in row.select"   class="input-small")
 
 

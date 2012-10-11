@@ -355,7 +355,15 @@ sub GetConfig {
 		HEIGHT  => 16,
 	);
 
-	my @rating_order = ('default', 'love', 'sexy', 'sexylove', 'violence', 'sexyviolence', 'teller','drunk','gamble','crime','drug','word', 'fireplace', 'appare','ukkari', 'child');
+	my %cd_biohazard = (
+		FILE    => 'cd_biohazard.png',
+		CAPTION => '[危] 無茶ぶり上等',
+		ALT     => '危',
+		WIDTH   => 20,
+		HEIGHT  => 16,
+	);
+
+	my @rating_order = ('default', 'love', 'sexy', 'sexylove', 'violence', 'sexyviolence', 'teller','drunk','gamble','crime','drug','word', 'fireplace', 'appare','ukkari', 'child', 'biohazard');
 	my %rating = (
 		ORDER     => \@rating_order,
 		default   => \%ratingnormal,
@@ -375,6 +383,7 @@ sub GetConfig {
 		ukkari    => \%cd_ukkari,
 		child     => \%cd_child,
 		alert     => \%cd_alert,
+		biohazard => \%cd_biohazard,
 	);
 
 	my @file_js = (
