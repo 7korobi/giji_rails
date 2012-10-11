@@ -187,7 +187,7 @@ class FixedBox
   scroll: ()->
     @box.to_z_front()
     if head.csstransitions
-      @box.css "-webkit-transition", "all 500ms ease"
+      @box.css "-webkit-transition", "all 200ms ease"
       @box.css "-webkit-transform",  "translate(#{win.left}px, #{win.top}px)"
 
     else

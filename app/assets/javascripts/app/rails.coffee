@@ -409,7 +409,7 @@ RAILS = ($scope, $interpolate)->
   lax_time = (date)->
     if date?
       timespan = (new Date() - date)/1000
-      if timespan < 30 * 60
+      if timespan < 3 * 60 * 60
         return "25秒以内"                    if 0   < timespan < 25
         timespan = (timespan / 10)
         return "#{timespan.round()}0秒経過"  if 2.5 < timespan <  6
