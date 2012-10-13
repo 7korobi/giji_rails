@@ -24,7 +24,7 @@
       - chr_vote_phases.each_with_index do |phase, id| chr_votes = chr_votes_in_phase[phase]
         .collapse.in(ng-show="phase_input == '#{phase}'")
           - (chr_votes || []).each do |chr_vote|
-            img(src="/images/portrate/#{chr_vote.face_id}.jpg")
+            img(ng-src="/images/portrate/#{chr_vote.face_id}.jpg")
           ul.comments
           - (chr_votes || []).each do |chr_vote|
             li= chr_vote.comment

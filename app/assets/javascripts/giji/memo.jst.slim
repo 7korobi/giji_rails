@@ -1,0 +1,9 @@
+table(class="memo {{mestype}}")
+  tbody
+    tr.mes_nom
+      td.memoleft
+        h4 {{name}}
+      td.memoright
+        p(class="{{style}} text")
+          | {{text}}
+        p.mes_date {{time()}}

@@ -16,24 +16,13 @@ jQuery ->
   FixedBox.push  1, 1, '#sayfilter'
   FixedBox.push -8,-8, '#buttons'
 
-  $(window).resize ->
-    $(window).scroll()
-
-  $(window).scroll ->
-    $("#outframe").height $("#contentframe").height()
-
   start()
 
 if  "Microsoft Internet Explorer" == navigator.appName
   jQuery ->
-    start.delay 1200
-    bootstrap.delay 800
+    start.delay 1000
+    bootstrap.delay 600
 else
   jQuery ->
-    start.delay 1000
+    start.delay  500
     bootstrap()
-
-
-
-
-

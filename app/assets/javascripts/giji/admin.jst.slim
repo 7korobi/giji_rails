@@ -1,10 +1,10 @@
 div(class="{{mestype}}")
   .guide
     h3.mesname
-      | {{cancel_btn}}
       a(name="{{logid}}")
         | {{name}}
     p.text
       | {{text}}
-    p.mes_date  {{anchor}} {{time}}
+    p.mes_date
+      | {{anchor}} {{time()}} {{cancel_btn()}}
     hr.invisible_hr

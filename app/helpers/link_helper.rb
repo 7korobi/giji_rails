@@ -2,24 +2,6 @@
 
 
 module LinkHelper
-    def img_cd(rating)
-        case rating
-        when nil,"view","r15","r18","gro","0"
-            image_tag 'icon/cd_default.png'
-        else
-            image_tag 'icon/cd_' + rating + '.png'
-        end
-    end
-    def img(csid,cid)
-        case csid
-        when "juna","name"
-            '<img src="http://giji.check.jp/images/%s/%s.jpg">'%[csid,cid]
-        when "bloody","15girls","orange","sow","tmmi"
-            '<img src="http://giji.check.jp/images/%s/%s.png">'%[csid,cid]
-        else
-            '<img src="http://giji.check.jp/images/portrate/%s.jpg" />'%[cid]
-        end.html_safe
-    end
 
     # リンク：外部も含む、人狼の国へ
     def link_to_folder_vil( title, vil )

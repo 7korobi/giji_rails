@@ -18,6 +18,34 @@ themes:
     star:   蒼穹
     wa:     和の国
 
+widths:
+  480: 480
+  800: 800
+
+orders:
+  asc:  上から下へ
+  desc: 下から上へ
+
+modes:
+  memo: 相談
+  all:  混合
+  mob:  裏方
+  clan: 仲間
+  open: 議事
+
+rows:
+  10:  10行
+  20:  20行
+  30:  30行
+  50:  50行
+  100: 100行
+
+navis:
+  link:  移動
+  info:  情報
+  calc:  計算
+  blank: x
+
 csids:
   15girls: 15girls
   bloody:  bloody
@@ -31,8 +59,8 @@ csids:
 message:
   template:
     subid:
-      I: info
       A: action
+      M: memo
 
     mestype:
       INFOSP:    info

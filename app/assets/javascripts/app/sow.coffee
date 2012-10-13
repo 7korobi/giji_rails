@@ -1,5 +1,3 @@
-tokenInput = {}
-
 GIJI.change_turn = (href, turn)->
   href.replace('&rowall=on',"").replace(/turn=\d+/,"") + "&turn=#{turn}&rowall=on"
 
@@ -8,55 +6,8 @@ if SOW_RECORD.CABALA.events?
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
-POOL = ($scope, $interpolate)->
-  if $scope.event?.is_news
-    last_id = $scope.event.messages.last().logid
-    ajax_timer = 5 * 60 * 1000
-    message_timer =   3 * 1000
-
-    refresh = ->
-      if $scope.messages?
-        for message in $scope.messages
-          $scope.log_refresh message
-        $scope.$apply()
-        $scope.refresh()
-        refresh.delay message_timer
-    refresh.delay message_timer
-
-    pool = ->
-      href = location.href
-      GIJI.gon href, =>
-        INIT $scope, $interpolate
-        last_idx  = $scope.event.messages.findIndex (o)-> last_id == o.logid
-        news_size = $scope.event.messages.length - last_idx
-        if $scope.story? && 0 < news_size
-          $scope.title = "(#{news_size}) #{$scope.story.name}"
-        $scope.$apply()
-        pool.delay ajax_timer
-    pool.delay ajax_timer
-
-CGI = ($scope, $interpolate)->
-  RAILS $scope, $interpolate
-  POOL  $scope, $interpolate
-
-  $scope.tokenInput = (target, all, obj)->
-    event_value = (key)-> SOW[all][key]
-    event_add   = (key)-> $(target).tokenInput 'add', event_value(key)
-    sel_values = obj.map event_value
-    all_values = SOW[all].keys().map event_value
-
-    tokenInput[target] =
-      selValue: sel_values.compact()
-      allValue: all_values
-      eventAdd:   event_add
-      eventValue: event_value
-
-    $(target).tokenInput all_values,
-      prePopulate: sel_values.compact()
-      tokenDelimiter:   "/"
-      propertyToSearch: "name"
-      resultsFormatter: (item)-> "<li>#{item.name}</li>"
-      tokenFormatter:   (item)-> "<li>#{item.name}</li>"
+CGI = ($scope, $compile, $interpolate)->
+  RAILS $scope, $compile, $interpolate
 
   $scope.form.action =
     no:    "-99"
@@ -84,5 +35,7 @@ CGI = ($scope, $interpolate)->
       in_memo = location.search.match ///&cmd=memo///
       if newVal && not in_memo
         search_base = location.search.replace(/&cmd=[a-z]+/, '')
-        location.search = location.search + "&cmd=memo"
+        link_to = ->
+          location.search = location.search + "&cmd=memo"
+        link_to.delay(1)
 

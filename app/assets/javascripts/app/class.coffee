@@ -7,17 +7,21 @@ class Navi
     @value
 
   constructor: ($scope, key, def)->
+    @scope = $scope
     @params = def.options
     @params.current_type or= String
 
     @key = key
     @show = {}
     @watch = []
-    @select = []
-    def.button?.keys (key, val)=>
-      @select.push
-        name: val
-        val:  @params.current_type key
+    if def.button?
+      @select = []
+      def.button.keys (key, val)=>
+        @select.push
+          name: val
+          val:  @params.current_type key
+    else
+      @select = def.select
 
     chk = ///
       (^|\s)#{key}=(\w+)
@@ -25,14 +29,10 @@ class Navi
     l = Object.fromQueryString(location[@params.on].replace(/^[#?]/,""))[key] if location[@params.on]
     c = document.cookie.match(chk)?[2] if @params.is_cookie?
     @value = @params.current_type l or c
-
-    keys = def.button?.keys()
-    if keys?
-      unless keys.find String @value
-        @value = null
-
+    @value = null if @select?.all((o)=> @value != o.val)
     @value or= @params.current_type @params.current
-    $scope.$watch "#{key}.value", (newVal,oldVal)=>
+
+    @scope.$watch "#{@key}.value", (value,oldVal)=>
       @_move()
 
       for func in @watch
@@ -53,11 +53,10 @@ class Navi
           document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
 
       list.keys (field, val)->
-        value = val.join "&"
-        location[field] = value  if  location[field].from(1) != value
+        val_str = val.join "&"
+        location[field] = val_str  if  location[field].from(1) != val_str
 
   _move: ()->
-    target = String @value
     for o in @select
       if o.val == @value
         o.class = 'btn-success'
@@ -72,19 +71,43 @@ class PageNavi extends Navi
     def.options.current_type = Number
     def.options.per or= 1
 
-    @items = []
     super
-    draw = (newVal,oldVal)=>
-      @_move()
-      for func in @watch
-        func @value
+    @filters = []
 
-    $scope.$watch "#{key}.items.length", draw
-    $scope.$watch "#{key}.params.per",   draw
-    $scope.$watch "#{key}.params.order", draw
+  paginate: (page_per_key, func)->
+    @filter page_per_key, (page_per, list)=>
+      @length = (list.length / page_per).ceil()
+      console.log list.length
+      list
+
+    @filter page_per_key, func
+
+    @filter "#{@key}.value", (page, list)=>
+      @item_last = list.last() if list.last
+      console.log list.length
+      list
+
+  filter_by: (by_key)->
+    @by_key = by_key
+    @filter "#{@by_key}.length"
+
+  filter_to: (to_key)->
+    @to_key = to_key
+
+  filter: (key, func)->
+    @scope.$watch key, =>
+      if @by_key?
+        list = @scope.$eval @by_key
+        for [target_key, filter] in @filters
+          target = @scope.$eval target_key
+          list = filter target, list
+        if @to_key? && list
+          eval "_this.scope.#{@to_key} = list"
+      @_move()
+
+    @filters.push [key, func] if func
 
   _move: ()->
-    @length = (@items.length / @params.per).ceil()
     @select  = [1..@length].map (i)->
       name: i
       val:  i
@@ -127,6 +150,7 @@ class PageNavi extends Navi
       @[key].class = null          if is_show
       @[key].class = 'btn-success' if is_show && @value == n[key]
 
+
 win =
   top:    0
   left:   0
@@ -165,11 +189,8 @@ class FixedBox
       @box.css
         position: "absolute"
 
-      $(window).scroll =>
-        @scroll()
-      $(window).resize =>
-        @resize()
-        @scroll()
+      $(window).scroll => @scroll()
+      $(window).resize => @resize()
 
   resize: ()->
     width  = win.width  - @box.width()
@@ -182,7 +203,6 @@ class FixedBox
     @box.css
       top:  @top  + "px"
       left: @left + "px"
-
 
   scroll: ()->
     @box.to_z_front()
@@ -200,12 +220,12 @@ class FixedBox
         queue: false
 
 Navi.push = ($scope, key, def)->
-  Navi.list[key] or= new Navi $scope, key, def
-  $scope[key] = Navi.list[key]
+  navi = Navi.list[key] = new Navi $scope, key, def
+  eval "$scope.#{key} = navi"
 
 PageNavi.push = ($scope, key, def)->
-  Navi.list[key] or= new PageNavi $scope, key, def
-  $scope[key] = Navi.list[key]
+  navi = Navi.list[key] or= new PageNavi $scope, key, def
+  eval "$scope.#{key} = navi"
 
 FixedBox.push = (dx, dy, key)->
   FixedBox.list[key] or= new FixedBox dx, dy, $(key)
@@ -215,7 +235,7 @@ class Form
   @deploy: ->
     $(document).ready =>
       $('#phase_input').change ->
-        $('#chr_vote_phase').val( @value )
+        $('#chr_vote_phase').val( value )
 
   @submit_chr_vote: (face_id)->
     $('#chr_vote_face_id').val(face_id)

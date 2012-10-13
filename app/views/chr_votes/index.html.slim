@@ -20,7 +20,7 @@
         hr(style="border-color:black;")
         -groups.each do |group|
           .chrbox
-            img(src="/images/portrate/#{group['face_id']}.jpg")
+            img(ng-src="/images/portrate/#{group['face_id']}.jpg")
             .chrblank
               =group['group'].size
               | 票
