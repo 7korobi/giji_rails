@@ -1,5 +1,5 @@
 GIJI.change_turn = (href, turn)->
-  href.replace('&rowall=on',"").replace(/turn=\d+/,"") + "&turn=#{turn}&rowall=on"
+  href.replace(/\&?rowall=\w+/,"").replace(/\&?cmd=\w+/,"").replace(/\&?turn=\d+/,"") + "&turn=#{turn}&rowall=on"
 
 if SOW_RECORD.CABALA.events?
   SOW.events.keys (k,v)->

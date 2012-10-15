@@ -1,0 +1,44 @@
+table(class="table table-condensed")
+  thead
+    tr
+      th
+        code(ng-click="potofs_toggle()") スタイル
+        | &nbsp;{{sum.actaddpt}}促
+      th
+        code(href_eval="sort_potofs('deathday',0)") 日程
+        code(href_eval="sort_potofs('live','')") 状態
+        code(href_eval="sort_potofs('said_num',0)" ng-hide="potofs_is_small") 発言
+      th(colspan="2")
+        code(href_eval="sort_potofs('win_name','')" ng-hide="potofs_is_small") 陣営
+        code(href_eval="sort_potofs('role_names','')") 役割
+        span(ng-hide="potofs_is_small")
+          code(href_eval="sort_potofs('select_name','')" ng-hide="potofs_is_small") 希望
+          code(href_eval="sort_potofs('text','')") 補足
+  tbody
+    tr(ng-repeat="potof in potofs" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'")
+      td
+        | {{potof.name}}
+        .note(ng-show="potof.auth && ! potofs_is_small")
+          i(class="icon-user")
+          | {{potof.auth}}
+      td(style="text-align: right;")
+        | {{potof.stat}}
+        .note(ng-show="potof.said && ! potofs_is_small")
+          i(class='icon-comment')
+          | {{potof.said}}
+      td
+        span(ng-hide="potofs_is_small")
+          | {{potof.win_name}}::
+        | {{potof.role_names.join('、')}}
+        .note(ng-show="potof.select_name && ! potofs_is_small")
+          | {{potof.select_name}}
+      td
+        span(ng-bind-html-unsafe="potof.text.join(' ')")
+        .note(ng-show="potof.bond_names && ! potofs_is_small")
+          | {{potof.bond_names.join('、')}}
+    tr(ng-click="other_toggle()" ng-class="others_hide && 'btn-inverse'")
+      td 他の人々
+      td
+      td
+      td
+

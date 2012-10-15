@@ -2,29 +2,29 @@
   | ページをめくる
 
 - content_for :link do
-  = render_cell :navi, :events, gon, story
+  h4.sayfilter_caption_enable
+    | 他の章へ
+  .sayfilter_content(template="navi/events")
 
   h4.sayfilter_caption_enable
     = link_to '他の物語へ', index_parent_path
 
 - content_for :info do
-  .sayfilter_content
-    = render_cell :navi, :potofs, gon, story
-
+  .sayfilter_content(template="navi/potofs")
 
 - content_for :log do
   h2 村の情報
+
   #messages
-    .mes_maker.form-horizontal
-      .control-group
-        label.control-label 村の名前
-        .controls= story.name.html_safe
+    .mes_maker
+      dl.dl-horizontal
+        dt 村の名前
+        dd {{story.name}}
+        dt こだわり
+        dd
+          img(ng-src="{{URL.resource}}/images/icon/cd_{{story.rating}}.png")
 
-      .control-group
-        label.control-label こだわり
-        .controls= image_tag "/images/icon/cd_#{story.rating}.png"
-
-      .text= story.comment.html_safe
+      p.head.text(ng-bind-html-unsafe="story.comment")
 
     .mes_maker.form-horizontal
       .control-group
@@ -43,8 +43,7 @@
           li(ng-repeat="option_help in story.option_helps")
             | {{option_help}}
 
-    .mes_maker
-      = render_cell :navi, :potofs, gon, story
+    .mes_maker(template="navi/potofs")
 
     - if SowVillage === story
       .mes_maker

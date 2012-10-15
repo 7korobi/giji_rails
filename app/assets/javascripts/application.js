@@ -1,3 +1,10 @@
 //= require ./app/class.coffee
+//= require ./app/module.coffee
+//= require ./app/template.coffee
+//= require ./app/init.coffee
+//= require ./app/css.coffee
+//= require ./app/pool.coffee
+//= require ./app/effect.coffee
+//= require ./app/filter.coffee
 //= require ./app/rails.coffee
 //= require ./app/boot.coffee

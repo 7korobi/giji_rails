@@ -77,14 +77,12 @@ class PageNavi extends Navi
   paginate: (page_per_key, func)->
     @filter page_per_key, (page_per, list)=>
       @length = (list.length / page_per).ceil()
-      console.log list.length
       list
 
     @filter page_per_key, func
 
     @filter "#{@key}.value", (page, list)=>
       @item_last = list.last() if list.last
-      console.log list.length
       list
 
   filter_by: (by_key)->
@@ -125,7 +123,7 @@ class PageNavi extends Navi
       penu:     @length - 1
       last:     @length
 
-    show =
+    @show =
       first:    0 < @length and n.first  < n.prev
       second:   1 < @length and n.second < n.prev
 
@@ -138,8 +136,8 @@ class PageNavi extends Navi
       next:             @value < @length
       next_gap:         @value < @length - 3
 
-    show.keys (key, is_show)=>
-      is_show = show[key]
+    @show.keys (key, is_show)=>
+      is_show = @show[key]
       item = @select.find (o)-> o.val == n[key]
       item or=
         name: ""
@@ -160,10 +158,6 @@ win =
   accel:   0
   gravity: 0
   rotate:  0
-
-$(window).scroll ->
-  win.left = window.pageXOffset
-  win.top = window.pageYOffset
 
 $(window).resize ->
   win.height = window.innerHeight || $(window).height()
@@ -189,8 +183,10 @@ class FixedBox
       @box.css
         position: "absolute"
 
-      $(window).scroll => @scroll()
       $(window).resize => @resize()
+      ###
+      $(window).scroll => @scroll()
+      ###
 
   resize: ()->
     width  = win.width  - @box.width()
@@ -205,10 +201,29 @@ class FixedBox
       left: @left + "px"
 
   scroll: ()->
+    win.left = window.pageXOffset
+    win.top  = window.pageYOffset
+
     @box.to_z_front()
     if head.csstransitions
-      @box.css "-webkit-transition", "all 200ms ease"
-      @box.css "-webkit-transform",  "translate(#{win.left}px, #{win.top}px)"
+      if head.browser.webkit
+        @box.css "-webkit-transition", "all 200ms ease"
+        @box.css "-webkit-transform",  "translate(#{win.left}px, #{win.top}px)"
+
+      if head.browser.mozilla
+        @box.css "-moz-transition", "all 200ms ease"
+        @box.css "-moz-transform",  "translate(#{win.left}px, #{win.top}px)"
+
+      if head.browser.ie
+        @box.css "-ms-transition", "all 200ms ease"
+        @box.css "-ms-transform",  "translate(#{win.left}px, #{win.top}px)"
+
+      if head.browser.opera
+        @box.css "-o-transition", "all 200ms ease"
+        @box.css "-o-transform",  "translate(#{win.left}px, #{win.top}px)"
+
+      @box.css "transition", "all 200ms ease"
+      @box.css "transform",  "translate(#{win.left}px, #{win.top}px)"
 
     else
       @box.animate

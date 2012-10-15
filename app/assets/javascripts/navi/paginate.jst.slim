@@ -1,0 +1,16 @@
+a.btn(ng-click="page.move(page.first.val)"  ng-class="page.first.class")
+  | {{page.first.name}}
+a.btn(ng-click="page.move(page.second.val)"  ng-class="page.second.class")
+  | {{page.second.name}}
+span(ng-class="page.prev_gap.class") …
+a.btn(ng-click="page.move(page.prev.val)"  ng-class="page.prev.class")
+  | {{page.prev.name}}
+select(ng-model="page.value" ng-options="pno.val as pno.name for pno in page.select" class="input-mini")
+a.btn(ng-click="page.move(page.next.val)"  ng-class="page.next.class")
+  | {{page.next.name}}
+span(ng-class="page.next_gap.class") …
+a.btn(ng-click="page.move(page.penu.val)"  ng-class="page.penu.class")
+  | {{page.penu.name}}
+a.btn(ng-click="page.move(page.last.val)"  ng-class="page.last.class")
+  | {{page.last.name}}
+

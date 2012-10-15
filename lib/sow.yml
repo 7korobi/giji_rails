@@ -24,9 +24,11 @@ roletable:
   wbbs_c:   人狼BBS-C国
   wbbs_f:   人狼BBS-F国
 
-votetypes:
-  sign:      記名で投票
-  anonymity: 匿名で投票
+vote:
+  sign:
+    CAPTION: 記名で投票
+  anonymity:
+    CAPTION: 匿名で投票
 
 mes_text:
   - mes_text

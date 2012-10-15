@@ -5,8 +5,7 @@
   h4.sayfilter_caption_enable
     | 他の物語へ
   .sayfilter_content
-    nav
-      = render "layouts/pager"
+    nav(template="navi/paginate")
 
 - content_for :log do
 

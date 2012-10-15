@@ -73,8 +73,12 @@ h3 {
 }
 .DELETED .action,
 .DELETED .msg,
+.DELETED .memoleft,
+.DELETED .memoright,
 .DELETEDADMIN .action,
 .DELETEDADMIN .msg,
+.DELETEDADMIN .memoleft,
+.DELETEDADMIN .memoright,
 .mes_del .action,
 .mes_del .memoleft,
 .mes_del .memoright,
@@ -83,6 +87,8 @@ h3 {
 /* 未確定発言 ----------*/
 .QUE .action,
 .QUE .msg,
+.QUE .memoleft,
+.QUE .memoright,
 .mes_que .action,
 .mes_que .memoleft,
 .mes_que .memoright,
@@ -91,6 +97,8 @@ h3 {
 /* 独り言 ----------*/
 .TSAY .action,
 .TSAY .msg,
+.TSAY .memoleft,
+.TSAY .memoright,
 .mes_think .action,
 .mes_think .memoleft,
 .mes_think .memoright,
@@ -100,6 +108,8 @@ h3 {
 /* 死者のうめき ----------*/
 .GSAY .action,
 .GSAY .msg,
+.GSAY .memoleft,
+.GSAY .memoright,
 .mes_grave .action,
 .mes_grave .memoleft,
 .mes_grave .memoright,
@@ -109,6 +119,8 @@ h3 {
 /* 見物人 ------*/
 .VSAY .action,
 .VSAY .msg,
+.VSAY .memoleft,
+.VSAY .memoright,
 .mes_mob .action,
 .mes_mob .memoleft,
 .mes_mob .memoright,
@@ -117,6 +129,8 @@ h3 {
 /* 囁き ----------*/
 .WSAY .action,
 .WSAY .msg,
+.WSAY .memoleft,
+.WSAY .memoright,
 .mes_wolf .action,
 .mes_wolf .memoleft,
 .mes_wolf .memoright,
@@ -125,8 +139,12 @@ h3 {
 /* 共鳴 ----------*/
 .SPSAY .action,
 .SPSAY .msg,
+.SPSAY .memoleft,
+.SPSAY .memoright,
 .AIM .action,
 .AIM .msg,
+.AIM .memoleft,
+.AIM .memoright,
 .mes_sympa .action,
 .mes_sympa .memoleft,
 .mes_sympa .memoright,
@@ -135,8 +153,12 @@ h3 {
 /* 念話 ----------*/
 .BSAY .action,
 .BSAY .msg,
+.BSAY .memoleft,
+.BSAY .memoright,
 .XSAY .action,
 .XSAY .msg,
+.XSAY .memoleft,
+.XSAY .memoright,
 .mes_bat  .msg ,
 .mes_pixi .action,
 .mes_pixi .memoleft,

@@ -1,0 +1,6 @@
+ul
+  li
+    a(ng-href="{{story.link}}") - 情報 -
+  li(ng-repeat="event in events")
+    a(ng-href="{{event.link}}") {{event.name}}
+br

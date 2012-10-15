@@ -58,34 +58,38 @@ csids:
 
 message:
   template:
-    subid:
-      A: action
-      M: memo
+    - subid:
+        A: action
 
-    mestype:
-      INFOSP:    info
-      INFONOM:   info
-      INFOWOLF:  info
-      ANONYMOUS: info
+    - mestype:
+        DELETEDADMIN: admin
+        MAKER: admin
+        ADMIN: admin
 
-      DELETEDADMIN: admin
-      MAKER: admin
-      ADMIN: admin
+    - subid:
+        M: memo
 
-      AIM: aim
+    - mestype:
+        INFOSP:    info
+        INFONOM:   info
+        INFOWOLF:  info
+        ANONYMOUS: info
 
-      DELETED: say
-      QUE:   say
-      QUEUE: say
-      SAY:   say
-      TSAY:  say
-      WSAY:  say
-      GSAY:  say
-      SPSAY: say
-      BSAY:  say
-      XSAY:  say
-      VSAY:  say
-      MSAY:  say
+        AIM: aim
 
-      CAST:  cast
+        DELETED: say
+        QUE:   say
+        QUEUE: say
+        SAY:   say
+        TSAY:  say
+        WSAY:  say
+        GSAY:  say
+        SPSAY: say
+        BSAY:  say
+        XSAY:  say
+        VSAY:  say
+        MSAY:  say
+
+        CAST:    cast
+        CAUTION: caution
 

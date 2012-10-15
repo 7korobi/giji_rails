@@ -6,3 +6,7 @@ APP=/www/giji_rails
 /utage/ssh-serversman-giji  $RUBY /utage/init-7korobi-asset.rb
 /utage/ssh-serversman-giji-root  /utage/web-infra-serversman restart
 
+/utage/web-push-serversman-cdj  /utage &
+/utage/web-push-serversman-cdj  $APP/public  --delete
+/utage/ssh-serversman-cdj   $RUBY /utage/init-7korobi-asset.rb
+
