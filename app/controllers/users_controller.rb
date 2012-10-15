@@ -5,12 +5,37 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   before_filter :auth_require, only:%w[new  create]
-  before_filter :self_require, only:%w[edit update show]
+  before_filter :self_require, only:%w[edit update]
 
   def index
   end
 
   def show
+    return unless user.sow_auth_ids
+    criteria = SowUser.includes(:story).only(:story_id, :name, :face_id, :csid, :sow_auth_id )
+    sow_auth_ids = user.sow_auth_ids - %w[master]
+
+    list = criteria.in(sow_auth_id:sow_auth_ids).select do |o|
+      o.story && o.story.is_finish
+    end
+
+    gon.messages_raw = list.map do |chr|
+      nation  = GAME[chr.story.folder][:nation] rescue ' - '
+      link    = events_path(chr.story_id)
+      created = chr.story.timer["updateddt"]
+
+      chr.attributes.merge(
+        template: "giji/say",
+        mestype: "SAY",
+        anchor: "#{nation}#{chr.story.vid}",
+        style: 'head',
+        date: created,
+        name: "<a href=\"#{link}\">#{chr.story.name}</a>",
+        log: <<_HTML_ ,
+<b style="display:inline-block; width:150px"> #{chr.name} </b> #{chr.sow_auth_id} <br>
+_HTML_
+      )
+    end.sort_by{|o| 0 - o["date"].to_i }
   end
 
   def new
@@ -19,17 +44,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    gon.messages = user.auths.map do |auth|
-      { template: 'giji/say',
-        mestype: 'mes_think',
-        style: '',
-        img: auth.image,
-        logid: auth.nickname,
-        name: auth.provider,
-        time: auth.updated_at,
-        text: "<dl><dt>nickname</dt><dd>#{auth.nickname}</dd><dt>name</dt><dd>#{auth.name}</dd></dl>".html_safe,
-      }
-    end
   end
 
   def create

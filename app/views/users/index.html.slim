@@ -4,12 +4,17 @@
   | Listing users
 
 
-- content_for :log do
+- content_for :top do
   h2 ログインの仕方
-  p 左のどれかのボタンをクリックして、ログインしよう！
+  .paragraph 左のどれかのボタンをクリックして、ログインしよう！
+
+  h2 更新情報
+  .paragraph
+    ul
+      li アカウントに人狼議事idを登録すると、あなたの参加した村を一覧表示します。
 
   h2 アカウント一覧
-  .mes_maker
+  .paragraph
     = ' / '
     - users.each do |user|
       = link_to user.name, user

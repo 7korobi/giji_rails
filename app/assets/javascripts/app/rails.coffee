@@ -11,8 +11,7 @@ RAILS = ($scope, $compile, $interpolate)->
   CSS      $scope
   POOL     $scope
   EFFECT   $scope
-  if $scope.event?.messages?
-    FILTER $scope
+  FILTER   $scope
 
   navi =
     options:
@@ -105,7 +104,7 @@ RAILS = ($scope, $compile, $interpolate)->
 
   $scope.log_refresh = (log)->
     log.cancel_btn = ->
-      if "q" == log.logid[0] && (new Date() - log.date) < 25 * 1000
+      if log.logid? && "q" == log.logid[0] && (new Date() - log.date) < 25 * 1000
         """<span class="btn btn-danger" href_eval='cancel_say("#{log.logid}")'><i class="icon-remove"></i></span>"""
       else
         ""
@@ -113,26 +112,31 @@ RAILS = ($scope, $compile, $interpolate)->
 
   $scope.log = (log)->
     return unless log?
-    if log.face_id? && log.csid?
+
+    if ! log.img? && log.face_id? && log.csid?
       log.img  or= $scope.img_cid(log.csid, log.face_id)
+
+    if ! log.anchor? && log.logid?
+      [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
+      if SOW.log.anchor[mark]?
+        log.anchor or= "(#{SOW.log.anchor[mark]}#{Number(num)})"
+      else
+        log.anchor or= " "
+
+    if ! log.template? && log.logid? && log.mestype? && log.subid?
+      log.sub1id = log.logid[0]
+      log.sub2id = log.logid[1]
+      template = null
+      for style in GIJI.message.template
+        style.keys (target, table)->
+          template or= table[log[target]]
+      log.template or= "giji/#{template}"
+
     log.text = $scope.text_decolate log.log
-
-    [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
-    if SOW.log.anchor[mark]?
-      log.anchor or= "(#{SOW.log.anchor[mark]}#{Number(num)})"
-    else
-      log.anchor or= " "
-
-    log.sub1id = log.logid[0]
-    log.sub2id = log.logid[1]
-    template = null
-    for style in GIJI.message.template
-      style.keys (target, table)->
-        template or= table[log[target]]
-    log.template or= "giji/#{template}"
-
     $scope.log_refresh log
-    GIJI.interpolates[log.template](log)
+
+    box = GIJI.interpolates[log.template]
+    box(log) if box?
 
   Navi.push $scope, 'navi',  navi
   $scope.navi.watch.push ->

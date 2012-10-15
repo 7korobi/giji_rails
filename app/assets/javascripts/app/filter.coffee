@@ -1,17 +1,10 @@
 
 FILTER = ($scope)->
-  mode_current = 'open'
-  mode_current = 'all' if $scope.event.is_news
-
-  mode_filters =
-    memo: /^(.M)|([AM]S)/
-    all:  /^.[^M]/
-    mob:  /^[qcAmSIiVG][^M]/
-    clan: /^[qcAmSIiWPX][^M]/
-    open: /^[qcAmSI][^M]/
+  has_messages =  $scope.event?.messages?  ||  $scope.messages_raw?
+  return unless has_messages
 
   anime = ()->
-    if ! head.browser.ie && $scope.event.is_news && $scope.page.item_last?
+    if ! head.browser.ie && $scope.event?.is_news && $scope.page.item_last?
       target = $("a[name=#{$scope.page.item_last.logid}]")
 
     if target?.offset()?
@@ -26,13 +19,6 @@ FILTER = ($scope)->
 
   $ ->
     anime()
-
-  Navi.push $scope, 'mode'
-    options:
-      on: 'hash'
-      current: mode_current
-      is_cookie: false
-    button: GIJI.modes
 
   Navi.push $scope, 'row'
     options:
@@ -53,22 +39,43 @@ FILTER = ($scope)->
       is_cookie: false
 
   page = $scope.page
-  page.filter_by 'event.messages'
   page.filter_to 'messages'
-  page.filter 'event.is_news'
 
-  page.filter 'mode.value', (key, list)->
-    filter = mode_filters[key]
-    list.filter (o)->
-      o.logid.match filter
+  if $scope.messages_raw?
+    page.filter_by 'messages_raw'
 
-  page.filter 'face_id.hide', (face_ids, list)->
-    face_ids = $scope.face_id.all.subtract $scope.face_id.hide
-    list.filter (o)->
-      face_ids.some o.face_id
+  if $scope.event?.messages?
+    page.filter_by 'event.messages'
+    page.filter 'event.is_news'
+    mode_current = 'open'
+    mode_current = 'all' if $scope.event.is_news
+
+    mode_filters =
+      memo: /^(.M)|([AM]S)/
+      all:  /^.[^M]/
+      mob:  /^[qcAmSIiVG][^M]/
+      clan: /^[qcAmSIiWPX][^M]/
+      open: /^[qcAmSI][^M]/
+
+    Navi.push $scope, 'mode'
+      options:
+        on: 'hash'
+        current: mode_current
+        is_cookie: false
+      button: GIJI.modes
+
+    page.filter 'mode.value', (key, list)->
+      filter = mode_filters[key]
+      list.filter (o)->
+        o.logid.match filter
+
+    page.filter 'face_id.hide', (face_ids, list)->
+      face_ids = $scope.face_id.all.subtract $scope.face_id.hide
+      list.filter (o)->
+        face_ids.some o.face_id
 
   page.paginate 'row.value', (page_per, list)->
-    if $scope.event.is_news
+    if $scope.event?.is_news
       to   = list.length
       from = to - page_per
       from = 0 if from < 0

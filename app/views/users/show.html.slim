@@ -3,10 +3,20 @@
 - content_for :head do
   | show user
 
-- content_for :log do
-  h2= "ようこそ #{user.name} さん"
-  .mes_maker
-    ul
-      li=link_to 'キャラクターに投票！', new_chr_vote_path
-      li=link_to '自分のアカウントを詳しく見る', edit_user_path(user)
+- content_for :top do
+  - if self?
+    h2= "ようこそ #{user.name} さん"
+    .paragraph
+      ul
+        li=link_to 'キャラクターに投票！', new_chr_vote_path
+        li
+          =link_to '自分のアカウントを編集する', edit_user_path(user)
+          ul
+            li お使いの人狼議事アカウントを登録して、あなたの参加履歴に簡単アクセス！
 
+- content_for :log do
+  - if user.sow_auth_ids && gon.messages_raw
+    h2= "#{user.name} さんの情報"
+    .pagenavi(template="navi/page_navi")
+    #messages(template="navi/messages")
+    .pagenavi(template="navi/page_navi")

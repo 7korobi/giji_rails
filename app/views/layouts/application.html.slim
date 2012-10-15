@@ -11,11 +11,12 @@ html(lang="ja" ng-controller="RAILS")
         h1 = link_to root_path do
           img(ng-src="{{h1.path}}" ng-cloak)
         =render partial: 'layouts/titles'
+        .inframe.toppage
+          hr.invisible_hr
+          = yield :top
         .inframe
           hr.invisible_hr
-          = yield :navi
           = yield :log
-          = yield :navi
           address
             | 人狼議事キャラセット by りりんら
             br

@@ -2,29 +2,28 @@
 INIT = ($scope)->
   return unless gon?
 
-  # TODO news refresh will drop cache.
-  caches = $scope.events
+  cache_events   = $scope.events
+  cache_event    = $scope.event
 
-  # merge news
-  if gon.event?.is_news
-    $scope.event_merge gon.event
-    if 0 < $scope.event?.messages?.length
-      merge_messages = $scope.event.messages.union(gon.event.messages).unique (log)-> log.logid
-      $scope.event.messages = merge_messages
+  # autoload news merge
+  if gon.event?.is_news && 0 < cache_event?.messages?.length
+    cache_messages = cache_event.messages.union(gon.event.messages).unique (log)-> log.logid
+    cache_event.messages = cache_messages
 
-  gon.keys (key, val)->
-    $scope[key] = val
+  gon.keys (key, news)->
+    $scope[key] = news
 
-  # TODO news refresh will drop cache.
-  for cache, idx in caches
-    $scope.events[idx] = $scope.event_cache cache
+  # events join legacy cache
+  if cache_events?
+    for cache in cache_events
+      $scope.event_cache cache
+
+  # events join new one-day log
+  if ! gon.event?.is_news && ! gon.event?.is_deny_messages
+    $scope.event_cache $scope.event
 
   $scope.stories_is_small = true
   $scope.potofs_is_small  = true
-
-  if gon.event?
-    if ! gon.event.is_news && ! gon.event.is_deny_messages
-      $scope.event_cache gon.event
 
   if gon.story?
     $scope.title = gon.story.name
