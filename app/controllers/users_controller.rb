@@ -17,6 +17,8 @@ class UsersController < ApplicationController
 
     list = criteria.in(sow_auth_id:sow_auth_ids).select do |o|
       o.story && o.story.is_finish
+    end.sort_by do |o|
+      0 - o.story.timer["updateddt"].to_i
     end
 
     gon.messages_raw = list.map do |chr|
@@ -35,7 +37,7 @@ class UsersController < ApplicationController
 <b style="display:inline-block; width:150px"> #{chr.name} </b> #{chr.sow_auth_id} <br>
 _HTML_
       )
-    end.sort_by{|o| 0 - o["date"].to_i }
+    end
   end
 
   def new
