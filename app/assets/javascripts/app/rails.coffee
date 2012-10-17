@@ -5,11 +5,12 @@ GIJI.change_turn = (href, turn)->
   ///,"/#{turn}/messages")
 
 RAILS = ($scope, $compile, $interpolate)->
-  MODULE   $scope
   TEMPLATE $scope, $compile, $interpolate
+  LIB      $scope
+
+  MODULE   $scope
   INIT     $scope
-  CSS      $scope
-  POOL     $scope
+
   EFFECT   $scope
   FILTER   $scope
 
@@ -140,8 +141,7 @@ RAILS = ($scope, $compile, $interpolate)->
 
   Navi.push $scope, 'navi',  navi
   $scope.navi.watch.push ->
-    $(window).resize()
-    $scope.adjust()
+    $scope.boot()
 
   $scope.form =
     csid_cid: null

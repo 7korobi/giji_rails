@@ -13,15 +13,13 @@ EFFECT = ($scope)->
     $('[rel="popover"]').popover()
     $("#outframe").height $("#contentframe").height()
 
-    FixedBox.list.keys (key, box)->
-      box.scroll()
-
   $(window).scroll ->
     hide = ->
-      if $scope.is_shy
-        $scope.navi.value = 'blank'
-        $scope.$apply()
-    hide.delay(1)
+      $scope.navi.value = 'blank'
+      $scope.$apply()
+
+    if $scope.is_shy
+      hide.delay(1)
 
   $(window).resize ->
     height = win.height
@@ -34,20 +32,10 @@ EFFECT = ($scope)->
             small = 300
           else
             small = 460
-      when 'link'
-        small = 200
-        scan_width = (idx, ele)->
-          count = 0
-          $(ele).find("> *").each (idx, ele)-> count += $(ele).width()
-          small = count + 30 if small < count + 30
-
-        $('.insayfilter [template="navi/page_filter"]').each scan_width
-        $('.insayfilter [template="navi/paginate"]').each    scan_width
-        small = null
 
     switch $scope.width.value
       when 480
-        small or= 222
+        small   or=   638 - 462
         info_left = width - 462
         if      small < info_left
           info_width  = info_left
@@ -59,7 +47,7 @@ EFFECT = ($scope)->
         outframe = "outframe"
 
       when 800
-        small or= 270
+        small    or= (  798 - 770)/2 + 189
         info_left  = (width - 770)/2 + 189
         if     small  < info_left
           info_width  = info_left

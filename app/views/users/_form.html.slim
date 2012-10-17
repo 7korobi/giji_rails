@@ -15,6 +15,7 @@
       .form-horizontal(ng-init="navi.value='info'")
         = f.inputs
         = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "人狼議事で使っているID"
+        = f.input :byebyes, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "Bye-Bye List"
         .actions
           = f.submit
 

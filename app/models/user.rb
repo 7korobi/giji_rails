@@ -8,6 +8,7 @@ class User
   field :is_admin, type: Boolean,   hidden: true
   field :rails_token,               hidden: true
   field :sow_auth_ids, type: Array, hidden: true
+  field :byebye_ids,   type: Array, hidden: true
 
   devise :trackable, :omniauthable
   has_many :auths,    inverse_of: :user
@@ -26,6 +27,13 @@ class User
 
   def login?
     user_id.present? && name.present?
+  end
+
+  def byebyes
+    byebye_ids.to_a.join("\n")
+  end
+  def byebyes=(str)
+    self[:byebye_ids] = str.to_s.lines.map(&:strip).compact
   end
 
   def sow_auths

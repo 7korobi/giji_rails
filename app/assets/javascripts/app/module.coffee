@@ -51,7 +51,10 @@ MODULE = ($scope)->
 
 
   $scope.text_decolate = (log)->
-    background anchor link random log
+    if log
+      background anchor link random log
+    else
+      null
 
   $scope.lax_date = (date)->
     date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
@@ -158,7 +161,7 @@ MODULE = ($scope)->
 
   $scope.potofs_toggle = ->
     $scope.potofs_is_small = ! $scope.potofs_is_small
-    $(window).resize()
+    $scope.boot()
 
   # token input support
 

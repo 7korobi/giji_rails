@@ -73,6 +73,7 @@ class PageNavi extends Navi
 
     super
     @filters = []
+    @refresh = ->
 
   paginate: (page_per_key, func)->
     @filter page_per_key, (page_per, list)=>
@@ -83,6 +84,7 @@ class PageNavi extends Navi
 
     @filter "#{@key}.value", (page, list)=>
       @item_last = list.last() if list.last
+      @refresh.delay 300
       list
 
   filter_by: (by_key)->
@@ -166,6 +168,11 @@ $(window).resize ->
   base_width = document.body.clientWidth || win.width
   win.zoom = base_width / win.width
 
+  win.max = {
+    top:  $('html').height() - win.height
+    left: $('html').width()  - win.width
+  }
+
 $(window).bind 'devicemotion', (e)->
   win.accel   = e.originalEvent.acceleration
   win.gravity = e.originalEvent.accelerationIncludingGravity
@@ -203,6 +210,9 @@ class FixedBox
   scroll: ()->
     win.left = window.pageXOffset
     win.top  = window.pageYOffset
+
+    win.left = win.max.left if win.max.left < win.left
+    win.top  = win.max.top  if win.max.top  < win.top
 
     @box.to_z_front()
     if head.csstransitions

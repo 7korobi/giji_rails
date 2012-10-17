@@ -12,10 +12,10 @@ class UsersController < ApplicationController
 
   def show
     return unless user.sow_auth_ids
-    criteria = SowUser.includes(:story).only(:story_id, :name, :face_id, :csid, :sow_auth_id )
+    criteria = SowUser.only(:story_id, :name, :face_id, :csid, :sow_auth_id )
     sow_auth_ids = user.sow_auth_ids - %w[master]
 
-    list = criteria.in(sow_auth_id:sow_auth_ids).select do |o|
+    list = criteria.in(sow_auth_id:sow_auth_ids).includes(:story).select do |o|
       o.story && o.story.is_finish
     end.sort_by do |o|
       0 - o.story.timer["updateddt"].to_i

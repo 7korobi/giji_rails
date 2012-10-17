@@ -5,7 +5,7 @@
   h4.sayfilter_caption_enable
     | 他の場面へ
   .sayfilter_content
-    nav(template="navi/paginate" ng-hide="event.is_news")
+    nav(template="navi/paginate" class="form-inline" ng-hide="event.is_news")
     nav(template="navi/page_filter")
     br
 
@@ -22,7 +22,7 @@
 - content_for :log do
   h2 {{title}}
   h3 {{event.name}}
-  .pagenavi(template="navi/page_navi")
+  .pagenavi(template="navi/page_navi" class="form-inline")
   #messages(template="navi/messages")
-  .pagenavi(template="navi/page_navi")
+  .pagenavi(template="navi/page_navi" class="form-inline")
 

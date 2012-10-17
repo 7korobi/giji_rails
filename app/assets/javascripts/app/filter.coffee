@@ -3,40 +3,12 @@ FILTER = ($scope)->
   has_messages =  $scope.event?.messages?  ||  $scope.messages_raw?
   return unless has_messages
 
-  anime = ()->
-    if ! head.browser.ie && $scope.event?.is_news && $scope.page.item_last?
-      target = $("a[name=#{$scope.page.item_last.logid}]")
+  row = OPTION.page.row
+  row.options.current_type = Number
 
-    if target?.offset()?
-    else
-      target = $(".inframe")
-
-    do_adjust = -> $scope.adjust()
-    do_scroll = -> $(window).scrollTop  target.offset().top - 20
-    do_adjust.delay 100
-    do_scroll.delay 300
-    $(window).resize()
-
-  $ ->
-    anime()
-
-  Navi.push $scope, 'row'
-    options:
-      current: 50
-      is_cookie: true
-      current_type: Number
-    button: GIJI.rows
-
-  Navi.push $scope, 'order'
-    options:
-      current: 'asc'
-      is_cookie: true
-    button: GIJI.orders
-
-  PageNavi.push $scope, 'page'
-    options:
-      current: 1
-      is_cookie: false
+  Navi.push     $scope, 'row',   row
+  Navi.push     $scope, 'order', OPTION.page.order
+  PageNavi.push $scope, 'page',  OPTION.page.page
 
   page = $scope.page
   page.filter_to 'messages'
@@ -92,13 +64,23 @@ FILTER = ($scope)->
 
   page.filter 'order.value', (key, list)->
     $scope.anchors = []
-    $('div.popover').remove()
-    anime(100)
-
     if "desc" == key
       list.reverse()
     else
       list
+
+  page.refresh = ()->
+    $('div.popover').remove()
+    if $scope.event?.is_news && $scope.page.item_last?
+      target = $("a[name=#{$scope.page.item_last.logid}]")
+
+    if target?.offset()?
+    else
+      target = $(".inframe")
+
+    $(window).scrollTop  target.offset().top - 20
+    $scope.boot()
+
 
   ###
   mode default

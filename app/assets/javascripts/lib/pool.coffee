@@ -1,10 +1,12 @@
 POOL = ($scope)->
-  message_timer =      1 * 1000
-  ajax_timer    = 5 * 60 * 1000
+  message_timer =   1 * 1000
+  ajax_timer = 5 * 60 * 1000
 
   refresh = ->
+    FixedBox.list.keys (key, box)->
+      box.scroll()
+
     $scope.$apply()
-    $scope.adjust()
 
     refresh.delay message_timer
   refresh.delay message_timer

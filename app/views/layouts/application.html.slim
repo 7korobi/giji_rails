@@ -11,6 +11,8 @@ html(lang="ja" ng-controller="RAILS")
         h1 = link_to root_path do
           img(ng-src="{{h1.path}}" ng-cloak)
         =render partial: 'layouts/titles'
+        .choice
+          p(style="text-align:right; font-size: 100%;" template="navi/css")
         .inframe.toppage
           hr.invisible_hr
           = yield :top

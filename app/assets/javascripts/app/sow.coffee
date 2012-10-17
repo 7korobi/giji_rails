@@ -37,5 +37,5 @@ CGI = ($scope, $compile, $interpolate)->
         search_base = location.search.replace(/&cmd=[a-z]+/, '')
         link_to = ->
           location.search = location.search + "&cmd=memo"
-        link_to.delay(1)
+        link_to.delay 10
 

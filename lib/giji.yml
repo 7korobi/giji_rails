@@ -1,4 +1,3 @@
-turns: []
 templates: {}
 box: {}
 
@@ -8,37 +7,12 @@ link:
   wiki:     http://melon-cirrus.sakura.ne.jp/wiki/
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
-themes:
-  pan:
-    juna: 審問
-    sow:  物語
-  giji:
-    cinema: 煉瓦
-    night:  月夜
-    star:   蒼穹
-    wa:     和の国
-
-widths:
-  480: 480
-  800: 800
-
-orders:
-  asc:  上から下へ
-  desc: 下から上へ
-
 modes:
   memo: 相談
   all:  混合
   mob:  裏方
   clan: 仲間
   open: 議事
-
-rows:
-  10:  10行
-  20:  20行
-  30:  30行
-  50:  50行
-  100: 100行
 
 navis:
   link:  移動
@@ -65,31 +39,14 @@ message:
         DELETEDADMIN: admin
         MAKER: admin
         ADMIN: admin
+        AIM: aim
+        CAST: cast
+        CAUTION: caution
+        INFOSP: info
+        INFONOM: info
+        INFOWOLF: info
+        ANONYMOUS: info
 
     - subid:
         M: memo
-
-    - mestype:
-        INFOSP:    info
-        INFONOM:   info
-        INFOWOLF:  info
-        ANONYMOUS: info
-
-        AIM: aim
-
-        DELETED: say
-        QUE:   say
-        QUEUE: say
-        SAY:   say
-        TSAY:  say
-        WSAY:  say
-        GSAY:  say
-        SPSAY: say
-        BSAY:  say
-        XSAY:  say
-        VSAY:  say
-        MSAY:  say
-
-        CAST:    cast
-        CAUTION: caution
-
+        S: say
