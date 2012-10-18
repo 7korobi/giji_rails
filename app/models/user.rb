@@ -14,7 +14,7 @@ class User
   has_many :auths,    inverse_of: :user
 
   validates_each :sow_auth_ids do |record, field, value|
-    if 0 < where(field.in => value.to_a).count
+    if 0 < where(field.in => value.to_a, :user_id.ne => record.user_id).count
       record.errors.add field, "already in use."
     end
   end

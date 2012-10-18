@@ -169,8 +169,8 @@ $(window).resize ->
   win.zoom = base_width / win.width
 
   win.max = {
-    top:  $('html').height() - win.height
-    left: $('html').width()  - win.width
+    top:  $('body').height() - win.height
+    left: $('body').width()  - win.width
   }
 
 $(window).bind 'devicemotion', (e)->
@@ -213,6 +213,8 @@ class FixedBox
 
     win.left = win.max.left if win.max.left < win.left
     win.top  = win.max.top  if win.max.top  < win.top
+    win.left = 0            if                win.left  < 0
+    win.top  = 0            if                win.top   < 0
 
     @box.to_z_front()
     if head.csstransitions
