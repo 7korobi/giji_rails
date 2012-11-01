@@ -121,8 +121,8 @@ INIT = ($scope)->
   if gon.pages?
     PageNavi.push $scope, 'page'
       options:
-        on: 'search'
         current: 1
+        location: 'search'
         is_cookie: false
 
     $scope.page.length = gon.pages.length

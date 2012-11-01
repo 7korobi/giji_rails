@@ -8,16 +8,18 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 modes:
-  memo: 相談
-  all:  混合
-  mob:  裏方
-  clan: 仲間
-  open: 議事
+- {val: memo_all,  name: メモ全部, group: メモ}
+- {val: memo_hist, name: メモ履歴, group: メモ}
+- {val: memo_open, name: メモ, group: メモ}
+- {val: talk_all,   name: 全部, group: 議事}
+- {val: talk_think, name: 独り言, group: 議事}
+- {val: talk_clan,  name: 内緒話/狼/鳴/…, group: 議事}
+- {val: talk_open,  name: 通常, group: 議事}
 
 navis:
   link:  移動
-  info:  情報
-  calc:  計算
+  info:  参加
+  calc:  状況
   blank: x
 
 csids:

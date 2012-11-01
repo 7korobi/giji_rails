@@ -17,7 +17,7 @@ done
 TO=241
 ssh -p ${TO}0 7korobi@192.168.0.$TO "
   rdiff-backup --remove-older-than 3M /data/backup/mongo/ &
-  mongodump --host 192.168.0.100 -d giji -o /data/mongo/
+  mongodump --host mongo.family.jp -d giji -o /data/mongo/
 
   rdiff-backup --print /data/mongo/  /data/backup/mongo/
 "

@@ -25,10 +25,29 @@ head_img:
   juna800:   [b, w]
   juna480:   [b, w]
 
+jp_wday:
+  - 日
+  - 月
+  - 火
+  - 水
+  - 木
+  - 金
+  - 土
+
+face_titles:
+  c:  人狼議事
+  m:  とのさま広場
+  r:
+  b:
+  sf: 明後日の道標
+  w:  和の国てやんでえ
+
+
 page:
   page:
     options:
       current: 1
+      location: 'hash'
       is_cookie: false
 
   order:
@@ -49,6 +68,7 @@ page:
       30:  30行
       50:  50行
       100: 100行
+      200: 200行
 
 css:
   h1:
@@ -59,7 +79,7 @@ css:
   width:
     options:
       is_cookie: true
-      on: hash
+      location: hash
       current: 800
     button:
       480: 480
@@ -68,8 +88,8 @@ css:
   themes:
     pan:
       options:
-        on: hash
         is_cookie: true
+        location: hash
         current: sow
       button:
         juna: 審問
@@ -77,8 +97,8 @@ css:
 
     giji:
       options:
-        on: hash
         is_cookie: true
+        location: hash
         current: cinema
       button:
         cinema: 煉瓦
@@ -86,20 +106,11 @@ css:
         star:   蒼穹
         wa:     和の国
 
-
-jp_wday:
-  - 日
-  - 月
-  - 火
-  - 水
-  - 木
-  - 金
-  - 土
-
-face_titles:
-  c:  人狼議事
-  m:  とのさま広場
-  r:
-  b:
-  sf: 明後日の道標
-  w:  和の国てやんでえ
+form:
+  styles:
+  - name: "(通常)"
+    val:  ""
+  - name: "等幅"
+    val:  "mono"
+  - name: "見出し"
+    val:  "head"

@@ -1,0 +1,86 @@
+.caution
+  | {{ potof.form.caution }}
+.caution(ng-show=" 0 < potof.timer.limitentrydt")
+  | {{potof.timer.entry_limit()}}までに一度も発言せず村も開始されなかった場合、あなたは自動的に村から追い出されます。
+  <br>
+  | ※発言すると期限が延長されます。
+
+table.formpl_common
+  tr.say
+    td.img
+      img(ng-src="{{img_csid_cid(potof.form.csid_cid)}}")
+    td.field
+      .msg
+        .formpl_content
+          |  {{potof.longname}}
+          | ({{potof.sow_auth_id}})
+        form.form-inline(action="{{potof.form.uri}}" method="post")
+          .controls.controls-row.formpl_content
+            input(type="hidden" name="turn" ng-model="event.turn")
+            input(type="hidden" name="vid"  ng-model="event.vid")
+            input(type="hidden" name="cmd"  ng-model="potof.form.params.cmd")
+            textarea(name="mes" cols="30" rows="5" ng-model="potof.form.text")
+            br
+            input.btn(type="submit" value="{{potof.form.submit_text}}")
+
+            select.input-medium(name="target" ng-model="potof.form.target")
+              option(value="-1") あと{{potof.cnt.say}}{{event.type.say}} (発言)
+              option(value="{{potof.pid}}") あと{{potof.cnt.tsay}}{{event.type.say}} (独り言)
+              option(value="{{target.pid}}") あと{{potof.cnt.say}}{{event.type.say}} {{target.name}}と内緒話
+
+            select.input-small(name="monospace")
+              option(value="") (通常)
+              option(value="mono") 等幅
+              option(value="head") 見出し
+            br
+
+div
+  form.form-inline(action="{{potof.form.uri}}" method="post")
+    .action
+      .controls.controls-row
+        select.input-medium(name="target" ng-model="form.action.target")
+        select.input-medium(name="actionno" ng-model="form.action.no")
+        input(type="hidden" name="cmd" ng-model="form.action.text")
+        input(type="hidden" name="turn" value="{{event.turn}}")
+        input(type="hidden" name="vid"  value="{{event.vid}}")
+        input.formpl_actiontext(type="text" name="actiontext" ng-model="form.action.text"  value="")
+        br
+      fieldset.formpl_action.action_type
+        legend アクション内容
+
+      .text
+        | {{form.action.preview()}}request p
+        input.btn(type="submit" value="{{potof.form.submit_text}}")
+        | あと{{potof.say.act}}回
+
+.clearboth
+  hr.invisible_hr
+
+.WIN_NONE
+  | {{potof.form.win_text}}
+
+.formpl_gm
+  form(action="./sow.cgi" method="post")
+  p.commitbutton
+    input(type="hidden" name="cmd" ng-model="form.action.text")
+    input(type="hidden" name="turn" value="{{event.turn}}")
+    input(type="hidden" name="vid"  value="{{event.vid}}")
+    input.btn(type="submit" value="村を出る")
+
+.formpl_gm
+  form(action="./sow.cgi" method="post")
+  p.commitbutton
+    input(type="hidden" name="cmd" ng-model="form.action.text")
+    input(type="hidden" name="turn" value="{{event.turn}}")
+    input(type="hidden" name="vid"  value="{{event.vid}}")
+    input.btn(type="submit" value="この人に村を任せる！")
+    select.input-medium(id="maker" name="target" ng-model="potofs")
+
+.formpl_gm
+  form(action="./sow.cgi" method="post")
+  p.commitbutton
+    input(type="hidden" name="cmd" ng-model="form.action.text")
+    input(type="hidden" name="turn" value="{{event.turn}}")
+    input(type="hidden" name="vid"  value="{{event.vid}}")
+    input.btn(type="submit" value="村を編集しよう！")
+

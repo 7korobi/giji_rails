@@ -1,0 +1,43 @@
+table(class="say {{f.mestype}}")
+  tr
+    td.img
+      img(ng-src="{{img_csid_cid(f.csid_cid)}}")
+    td.field
+      form(name="write_form")
+        .msg
+          .form-horizontal
+            .control-group(ng-show="story.entry.limit == 'password'")
+              label.control-label(for="entrypwd") 参加パスワード
+              .controls
+                input.input-medium#entrypwd(type="password" maxlength="8" size="8" ng-model="f.password" required)
+            .control-group
+              label.control-label(for="selectid") 希望する配役
+              .controls
+                select.input-medium#selectid(ng-model="f.csid_cid" ng-options="o.val as o.name for o in f.csid_cids")
+            .control-group
+              label.control-label(for="selectrole") 希望する役職
+              .controls
+                select.input-medium#selectrole(ng-model="f.role" ng-options="o.val as o.name for o in f.roles")
+
+          .form-inline
+            .formpl_content
+              div(ng-hide="f.is_preview")
+                p  参加する時のセリフ
+                textarea(cols="30" rows="5" ng-model="f.text" required)
+              div(ng-show="f.is_preview" )
+                h3.mesname
+                  a  {{option(f.csid_cids, f.csid_cid).name}}
+                p(class="{{f.style}} text" ng-bind-html-unsafe="preview(f)")
+
+              a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
+              a.btn(ng-click="entry(f, f.valid)") {{f.title}}
+              | {{f.count}}
+
+              select.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
+              p  {{f.caption}}
+              p(class="{{f.error}}")
+                i.icon-ban-circle(ng-hide="f.valid")
+                | {{text_valid(f, write_form)}}
+
+
+

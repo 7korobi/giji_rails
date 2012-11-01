@@ -1,0 +1,169 @@
+event:
+  turn:
+  vid:
+  type:
+    say:
+
+potof:
+  win:
+    visible:
+    result:
+  point:
+    actaddpt:
+    saidpoint:
+    saidcount:
+  say:
+    say:
+    tsay:
+    spsay:
+    wsay:
+    gsay:
+    say_act:
+  is_voter:
+  is_human:
+  is_enemy:
+  is_wolf:
+  is_pixi:
+  is_sensible:
+  is_committer:
+
+  sow_auth_id:
+  longname:
+  shortname:
+  name:
+
+  live:
+  love:
+  overhear:
+
+  history:
+  status:
+
+  timer:
+    entrieddt:
+    limitentrydt:
+
+  timer:
+    entry_limit: ->
+
+form:
+    uri:
+    texts:
+    - cmd: write
+      title:
+      text:
+      style:
+      target:
+      targets:
+      sympathy:
+      img:
+      is_preview:
+      preview: ->
+      request: ->
+    - cmd: wrmemo
+      title:
+      text:
+      style:
+      sympathy:
+      is_preview:
+      preview: ->
+      request: ->
+    - cmd: entry
+      title:
+      text:
+      style:
+      csid_cid:
+      csid_cids:
+      role:
+      roles:
+      is_preview:
+      img: ->
+      preview: ->
+      request: ->
+    - cmd: action
+      title:
+      text:
+      target:
+      targets:
+      action:
+      actions:
+      no:
+      nos:
+      is_preview:
+      preview: ->
+      request: ->
+
+    targets:
+    - cmd: vote
+      jst: target
+      title:
+      target:
+      target2:
+      targets:
+      request: ->
+    - cmd: entrust
+      title:
+      target:
+      targets:
+      request: ->
+    - cmd: role
+      title:
+      target:
+      target2:
+      targets:
+      request: ->
+    - cmd: gift
+      title:
+      target:
+      target2:
+      targets:
+      request: ->
+
+    commands:
+    - cmd: kick
+      jst: target
+      title:
+      target:
+      request: ->
+    - cmd: maker
+      jst: target
+      title:
+      target:
+      request: ->
+
+    - cmd: muster
+      jst: button
+      title:
+      request: ->
+    - cmd: start
+      jst: button
+      title:
+      request: ->
+    - cmd: update
+      jst: button
+      title:
+      request: ->
+    - cmd: extend
+      jst: button
+      title:
+      request: ->
+    - cmd: scrapvil
+      jst: button
+      title:
+      request: ->
+
+    links:
+    - cmd: exit
+      jst: button
+      title:
+      request: ->
+    - cmd: makevilform
+      title:
+      request: ->
+
+    side:
+    - cmd: rolelist
+      trsid:
+      game:
+      request: ->
+

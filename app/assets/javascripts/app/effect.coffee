@@ -1,18 +1,13 @@
+angular.module("giji.directives").directive "accordion", [->
+  restrict: "C"
+  link: ($scope, elm, attr, ctrl)->
+    elm.find("dd").hide()
+    elm.on 'click', 'dt', ->
+      $(this).parents('dl').find("dd").hide()
+      $(this).next().show 'fast'
+]
+
 EFFECT = ($scope)->
-  $('dl.accordion').find("dd").hide()
-  $('dl.accordion').on 'click', 'dt', ->
-    $(this).parents('dl').find("dd").hide()
-    $(this).next().show 'fast'
-
-  $scope.adjust = ->
-    popover = $('a[title]')
-    popover.each (idx, dom)->
-      $(dom).attr "data-content", $(dom).attr("title")
-      $(dom).attr "title", ''
-      $(dom).attr "rel", 'popover'
-    $('[rel="popover"]').popover()
-    $("#outframe").height $("#contentframe").height()
-
   $(window).scroll ->
     hide = ->
       $scope.navi.value = 'blank'
@@ -22,6 +17,7 @@ EFFECT = ($scope)->
       hide.delay(1)
 
   $(window).resize ->
+    return unless $scope.navi? && $scope.width?
     height = win.height
     width  = win.width
 

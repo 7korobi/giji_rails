@@ -1,6 +1,10 @@
-.message_filter(ng-repeat="message in messages" ng-bind-html-unsafe="log(message)")
+.message_filter
+  div.badge(ng-class="page.prev.class" ng-click="page.move(page.prev.val)")  前のページ
+  hr.invisible_hr
+
+.message_filter(ng-repeat="message in messages" log="message")
 .message_filter
   div.badge(ng-class="page.next.class" ng-click="page.move(page.next.val)")  次のページ
   hr.invisible_hr
 
-.message_filter.drag(ng-repeat="message in anchors"  ng-bind-html-unsafe="log(message)" ng-style="drag(message)")
+.message_filter.drag(ng-repeat="message in anchors" log="message" drag="message")

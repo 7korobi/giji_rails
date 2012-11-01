@@ -6,36 +6,111 @@ if SOW_RECORD.CABALA.events?
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
-CGI = ($scope, $compile, $interpolate)->
-  RAILS $scope, $compile, $interpolate
+CGI = ($scope, $filter, $compile)->
+  RAILS $scope, $filter, $compile
 
-  $scope.form.action =
-    no:    "-99"
-    target: "-1"
-    text: ""
-    result: ()->
-      act = $scope.form.action
-      if 0 < act.text.length
-        text = act.text
+  length = (text, unit)->
+    switch unit
+      when 'point'
+        # countup sjis byte size
+        ascii = text.match(/[\x01-\xff]/g)  or []
+        other = text.match(/[^\x01-\xff]/g) or []
+        ascii.length + other.length * 2
       else
-        text = $($('select[ng-model="form.action.no"]').find("option[value=#{act.no}]")[0]).text().replace(/\(.*\)$/,"")
+        text.length
 
-      if -1 < Number(act.target)
-        target = $($('select[ng-model="form.action.target"]').find("option[value=#{act.target}]")[0]).text()
+  $scope.text_valid = (f, form)->
+    f.valid = true
+    if f.max
+      size = length(f.text, f.max.unit)
+      f.valid = false if size < 1
+      f.valid = false if f.max.size < size
+      f.valid = false if f.max.line < f.text.lines().length
+      f.valid = false unless form.$valid
+      if f.valid
+        f.error = ""
       else
-        target = ""
-      "#{$scope.potof.shortname}は、#{target}#{text}"
+        f.error = "cautiontext"
+      "#{size} / #{f.max.size}"
+    else
+      ""
+
+  $scope.preview_action = (f)->
+    text =
+      if 0 < f.text?.length
+        f.text
+      else
+        $scope.option(f.actions, f.action).name.replace(/\(.*\)$/,"")
+    target =
+      if -1 < f.target
+        $scope.option(f.targets, f.target).name
+      else
+        ""
+    "#{f.shortname}は、#{target}#{text}"
+
+  $scope.preview = (f)->
+    if f.text?
+      lines = f.text.escapeHTML().lines()
+      lines.join "<br>"
+    else
+      ""
+
+  $scope.option = (list, key)->
+    find = list.find (o)-> o.val == key
+    if find?
+      find
+    else
+      {}
+
+  $scope.submit = (param)->
+    form = $("""<form action="#{$scope.form.uri}" method="post"></form>""")
+    $('body').append form
+
+    param.keys (key,val)->
+      return unless val?
+      form.append """<input type=hidden name="#{key}" value="#{val}">"""
+
+    form.submit()
+
+  $scope.entry = (f, valid)->
+    if valid && f.is_preview
+      param =
+        cmd:  'entry'
+        turn: $scope.event.turn
+        vid:  $scope.story.vid
+        target:    -1
+        monospace: f.style
+        csid_cid:  f.csid_cid
+        mes:       f.text
+        entrypwd:  f.password
+      $scope.submit param
+    else
+      f.is_preview = valid
+
+  $scope.write = (f, valid)->
+    if valid && f.is_preview
+      param =
+        cmd: f.cmd,
+        turn: $scope.event.turn
+        vid:  $scope.story.vid
+        target:    f.target
+        monospace: f.style
+        mes:       f.text
+      param[f.switch] = "on"  if  f.switch
+      $scope.submit param
+    else
+      f.is_preview = valid
+
+  $scope.action = (f, valid)->
+    param =
+      cmd: "action",
+      turn: $scope.event.turn
+      vid:  $scope.story.vid
+      target:     f.target
+      actionno:   f.action
+      actiontext: f.text
+    $scope.submit param
 
   if $scope.story?
     $scope.story.upd.time_text = "#{$scope.story.upd.hour}時#{$scope.story.upd.minute}分"
     $scope.story.upd.interval_text = "#{$scope.story.upd.interval * 24}時間"
-
-  if $scope.event?.messages?
-    $scope.$watch "mode.value == 'memo'", (newVal,oldVal)=>
-      in_memo = location.search.match ///&cmd=memo///
-      if newVal && not in_memo
-        search_base = location.search.replace(/&cmd=[a-z]+/, '')
-        link_to = ->
-          location.search = location.search + "&cmd=memo"
-        link_to.delay 10
-

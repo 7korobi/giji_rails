@@ -1,0 +1,16 @@
+table(class="say {{f.mestype}}")
+  tr
+    td.img
+      img(ng-src="{{img_csid_cid(f.csid_cid)}}")
+    td.field
+      form(name="write_form")
+        .msg
+          .form-horizontal
+            h3.mesname
+              a  {{f.longname}}
+
+            .vote(form="f.jst" ng-repeat="f in f.votes")
+
+          .form-inline
+            .formpl_content
+              p  {{f.caption}}

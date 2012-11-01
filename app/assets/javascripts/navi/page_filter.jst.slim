@@ -1,2 +1,1 @@
-span(ng-repeat="o in mode.select")
-  a.btn(ng-class="o.class" ng-click="mode.move(o.val)") {{o.name}}
+select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")

@@ -1,0 +1,30 @@
+table(class="say {{option(f.targets, f.target).mestype}}")
+  tr
+    td.img
+      img(ng-src="{{img_csid_cid(f.csid_cid)}}")
+    td.field
+      form(name="write_form")
+        .msg
+          .form-horizontal
+            h3.mesname
+              a  {{f.longname}}
+              | &nbsp;({{potof.sow_auth_id}})
+              | &nbsp; {{potof.role_names.join("、")}}
+              span(ng-show="0 < potof.bonds.length")&nbsp;★絆
+
+            .vote(form="f.jst" ng-repeat="f in f.votes")
+
+          .form-inline
+            .formpl_content
+              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview" require)
+              p(class="{{f.style}} text" ng-bind-html-unsafe="preview(f)" ng-show="f.is_preview")
+
+              a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
+              a.btn(ng-click="write(f, f.valid)") {{f.title}}
+
+              select.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
+              select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
+              p  {{f.caption}}
+              p(class="{{f.error}}")
+                i.icon-ban-circle(ng-hide="f.valid")
+                | {{text_valid(f, write_form)}}

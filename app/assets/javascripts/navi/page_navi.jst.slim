@@ -1,3 +1,7 @@
-select(ng-model="page.value"  ng-options="o.val as o.name for o in page.select"  class="input-mini" ng-hide="event.is_news")
-select(ng-model="order.value" ng-options="o.val as o.name for o in order.select" class="input-medium")
-select(ng-model="row.value"   ng-options="o.val as o.name for o in row.select"   class="input-small")
+select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select" ng-hide="event.is_news")
+select.input-small(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
+select.input-small(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
+
+span.add-on
+  i.icon-search
+input.input-small(type="text" ng-model="search.value" placeholder="ログを探す")

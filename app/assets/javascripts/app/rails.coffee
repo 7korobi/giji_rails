@@ -4,21 +4,20 @@ GIJI.change_turn = (href, turn)->
     /\d+/messages
   ///,"/#{turn}/messages")
 
-RAILS = ($scope, $compile, $interpolate)->
-  TEMPLATE $scope, $compile, $interpolate
+RAILS = ($scope, $filter, $compile)->
   LIB      $scope
 
   MODULE   $scope
   INIT     $scope
 
   EFFECT   $scope
-  FILTER   $scope
+  FILTER   $scope, $filter
 
   navi =
     options:
       current: 'link'
+      location: 'hash'
       is_cookie: false
-      on: 'hash'
     button: GIJI.navis
 
   $scope.location = window.location
@@ -27,12 +26,13 @@ RAILS = ($scope, $compile, $interpolate)->
       $scope.$digest()
 
   $scope.$watch 'location.hash', (oldVal, newVal)->
+
   $scope.$watch 'title', (oldVal, newVal)->
     $('title').text(newVal);
 
   $scope.link = GIJI.link
 
-  click_eval = (e)->
+  href_eval = (e)->
     init_gon = (href)->
       $scope.gon(href)
 
@@ -57,16 +57,20 @@ RAILS = ($scope, $compile, $interpolate)->
       GIJI.cancel_log = $.param params
       location.search = GIJI.cancel_log
 
-    popup_apply = (e, item)->
+    popup_apply = (e, item, turn)->
       idx = $scope.anchors.indexOf item
       if idx < 0
         item.z = Date.now()
         item.top = e.pageY + 24
         $scope.anchors.push item
         $scope.$apply()
-        $(".drag [name=#{item.logid}]").parents(".drag").hide().fadeIn 'fast'
+        drag = $(".drag [name=#{item.logid}]").parents(".drag")
+        drag.prepend("""<div class="drag_head"><span class="badge"><i class="icon-minus" href_eval="popup(#{turn},'#{item.logid}')"></i></span></div>""")
+        drag.hide().fadeIn 'fast'
+        $scope.boot.delay 20
+
       else
-        $(".drag").fadeOut 'fast', ->
+        $(".drag [name=#{item.logid}]").parents(".drag").fadeOut 'fast', ->
           $scope.anchors.removeAt(idx)
           $scope.$apply()
 
@@ -80,7 +84,7 @@ RAILS = ($scope, $compile, $interpolate)->
         item = $scope.events[turn].messages.find (log)->
           log.logid == ank
         if item
-          popup_apply e, item
+          popup_apply e, item, turn
         item
 
       popup_ajax = (turn)->
@@ -89,7 +93,7 @@ RAILS = ($scope, $compile, $interpolate)->
         return null if has_messages
 
         href = GIJI.change_turn href, turn
-        $scope.gon href, =>
+        $scope.get href, =>
           $scope.event_cache gon.event  if  turn == gon.event.turn
           return  if  popup_find()
         href
@@ -100,48 +104,17 @@ RAILS = ($scope, $compile, $interpolate)->
 
     eval $(e.target).attr('href_eval')
 
-  $('#messages').on  'click', '[href_eval]', click_eval
-  $('#sayfilter').on 'click', '[href_eval]', click_eval
+  foreground = (e)->
+    logid = $(e.target).find("[name]").attr('name')
+    item  = $scope.anchors.find (o)-> logid = o.logid
+    item.z = Date.now()
+    $scope.$apply()
 
-  $scope.log_refresh = (log)->
-    log.cancel_btn = ->
-      if log.logid? && "q" == log.logid[0] && (new Date() - log.date) < 25 * 1000
-        """<span class="btn btn-danger" href_eval='cancel_say("#{log.logid}")'><i class="icon-remove"></i></span>"""
-      else
-        ""
-    log.time = -> $scope.lax_time Date.create log.date
-
-  $scope.log = (log)->
-    return unless log?
-
-    if ! log.img? && log.face_id? && log.csid?
-      log.img  or= $scope.img_cid(log.csid, log.face_id)
-
-    if ! log.anchor? && log.logid?
-      [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
-      if SOW.log.anchor[mark]?
-        log.anchor or= "(#{SOW.log.anchor[mark]}#{Number(num)})"
-      else
-        log.anchor or= " "
-
-    if ! log.template? && log.logid? && log.mestype? && log.subid?
-      log.sub1id = log.logid[0]
-      log.sub2id = log.logid[1]
-      template = null
-      for style in GIJI.message.template
-        style.keys (target, table)->
-          template or= table[log[target]]
-      log.template or= "giji/#{template}"
-
-    log.text = $scope.text_decolate log.log
-    $scope.log_refresh log
-
-    box = GIJI.interpolates[log.template]
-    box(log) if box?
+  # use in interpolate
+  $('#messages').on  'click', '.drag',      foreground
+  $('#messages').on  'click', '[href_eval]', href_eval
+  $('#sayfilter').on 'click', '[href_eval]', href_eval
 
   Navi.push $scope, 'navi',  navi
   $scope.navi.watch.push ->
-    $scope.boot()
-
-  $scope.form =
-    csid_cid: null
+    $scope.boot.delay 20

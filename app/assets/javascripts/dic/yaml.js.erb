@@ -1,0 +1,13 @@
+//"日本語";
+<%
+%w[a_dic].each do |name|
+  const = name.upcase.to_sym
+  if Kernel.constants.member?(const)
+%>
+
+this.<%= const %> = <%= Kernel.const_get( const ).to_json %> ;
+
+<%
+  end
+end
+%>

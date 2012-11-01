@@ -5,7 +5,7 @@ a.btn(ng-click="page.move(page.second.val)"  ng-class="page.second.class")
 span(ng-class="page.prev_gap.class") …
 a.btn(ng-click="page.move(page.prev.val)"  ng-class="page.prev.class")
   | {{page.prev.name}}
-select(ng-model="page.value" ng-options="pno.val as pno.name for pno in page.select" class="input-mini")
+select(ng-model="page.value" ng-options="pno.val as pno.name for pno in page.select" class="input-mini" ng-class="page.current.class")
 a.btn(ng-click="page.move(page.next.val)"  ng-class="page.next.class")
   | {{page.next.name}}
 span(ng-class="page.next_gap.class") …

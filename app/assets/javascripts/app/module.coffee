@@ -9,9 +9,8 @@ MODULE = ($scope)->
     others: []
     all:    []
 
-
   background = (log)->
-    if 'open' == $scope.mode
+    if 'memo_all' != $scope.mode?.value and 'talk_all' != $scope.mode?.value
       ret = log.replace ///
         (/\*)(.*?)(\*/|$)
       ///g,'<span>$1 B.G $3</span>'
@@ -24,11 +23,11 @@ MODULE = ($scope)->
 
   anchor = (log)->
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """ <code href_eval="popup(#{turn},'#{a}')">&gt;&gt;#{id}</code> """
+      """ <a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a> """
 
   random = (log)->
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """ <a rel="popover" data-content="#{cmd}" class="badge">#{val}</a> """
+      """ <a rel="popover" data-content="#{cmd}" class="mark">#{val}</a> """
 
   link_regexp = ///
       (\w+)://([^/]+)([^<>）］】」\s]+)
@@ -77,15 +76,24 @@ MODULE = ($scope)->
       return "....-..-..(？？？) --..時頃"
 
   # page requesting
-  $scope.gon = (href, func)->
-    $.get href, {}, (data) =>
-      codes = data.match ///
-        <script.*?>[\s\S]*?</script>
-      ///ig
-      for dom in codes
-        code = $(dom).text()
-        if code.match(/gon/)?
-          eval code
+  replace_gon = (data)->
+    codes = data.match ///
+      <script.*?>[\s\S]*?</script>
+    ///ig
+    for dom in codes
+      code = $(dom).text()
+      if code.match(/gon/)?
+        console.log code
+        eval code
+
+  $scope.post = (href, form, func)->
+    $.post href, form, (data)->
+      replace_gon data
+      func()
+
+  $scope.get = (href, func)->
+    $.get href, {}, (data)->
+      replace_gon data
       func()
 
   # face_id support
@@ -147,13 +155,14 @@ MODULE = ($scope)->
     hides.remove '_none_'
     $scope.face_id.hide = hides
 
-  $scope.drag = (log)->
-    "z-index": log.z
-    "top":     log.top
-
   $scope.other_toggle = ->
     $scope.others_hide = ! $scope.others_hide
     calc_potof()
+
+  $scope.potof_href = (potof)->
+    hash = location.hash
+    location.href.replace hash, "##{hash}&face_only=#{potof.face_id}"
+
 
   $scope.potof_toggle = (potof)->
     potof.is_hide = ! potof.is_hide

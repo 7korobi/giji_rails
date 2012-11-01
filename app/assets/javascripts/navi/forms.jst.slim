@@ -1,0 +1,11 @@
+.caution.text(listup="cautions")
+
+.formpl_common
+
+div(form="f.jst" ng-repeat="f in form.texts")
+
+div(class="{{form.win}}")
+  p.text(listup="form.secrets")
+
+.formpl_gm
+  p.commitbutton(form="f.jst" ng-repeat="(key, f) in form.commands")

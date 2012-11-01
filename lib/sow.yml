@@ -43,6 +43,16 @@ n_rule_name:
   - ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。
   - 突然死をしない。
 
+switch:
+  wolf:
+    mestype: WSAY
+  pixi:
+    mestype: XSAY
+  muppet:
+    mestype: SAY
+  sympathy:
+    mestype: SPSAY
+
 loves:
   love:
     win: LOVER

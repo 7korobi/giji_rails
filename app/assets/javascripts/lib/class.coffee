@@ -1,3 +1,7 @@
+angular.module("giji.config", []).value "giji.config", {}
+angular.module "giji.filters", ["giji.config"]
+angular.module "giji.directives", ["giji.config"]
+angular.module "giji", ["giji.filters", "giji.directives", "giji.config"]
 
 class Navi
   @list = {}
@@ -26,10 +30,10 @@ class Navi
     chk = ///
       (^|\s)#{key}=(\w+)
     ///
-    l = Object.fromQueryString(location[@params.on].replace(/^[#?]/,""))[key] if location[@params.on]
+    l = Object.fromQueryString(location[@params.location].replace(/^[#?]/,""))[key] if location[@params.location]
     c = document.cookie.match(chk)?[2] if @params.is_cookie?
-    @value = @params.current_type l or c
-    @value = null if @select?.all((o)=> @value != o.val)
+    @value = @params.current_type l or c or ""
+    @value = "" if @select?.all((o)=> @value != o.val)
     @value or= @params.current_type @params.current
 
     @scope.$watch "#{@key}.value", (value,oldVal)=>
@@ -42,28 +46,30 @@ class Navi
       list = new Object
       for navi in navis
         options = navi.params
-        cmd = "#{navi.key}=#{navi.value}"
+        if navi.value
+          cmd = "#{navi.key}=#{navi.value}"
 
-        if options.on?
-          list[options.on] or= []
-          list[options.on].push cmd
+          if options.location?
+            list[options.location] or= []
+            list[options.location].push cmd
 
-        if options.is_cookie
-          expire = new Date().advance OPTION.cookie.expire
-          document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
+          if options.is_cookie
+            expire = new Date().advance OPTION.cookie.expire
+            document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
 
       list.keys (field, val)->
         val_str = val.join "&"
         location[field] = val_str  if  location[field].from(1) != val_str
 
   _move: ()->
-    for o in @select
-      if o.val == @value
-        o.class = 'btn-success'
-        @show[o.val] = true
-      else
-        o.class = null
-        @show[o.val] = false
+    if @select?
+      for o in @select
+        if o.val == @value
+          o.class = 'btn-success'
+          @show[o.val] = true
+        else
+          o.class = null
+          @show[o.val] = false
 
 
 class PageNavi extends Navi
@@ -150,7 +156,6 @@ class PageNavi extends Navi
       @[key].class = null          if is_show
       @[key].class = 'btn-success' if is_show && @value == n[key]
 
-
 win =
   top:    0
   left:   0
@@ -160,6 +165,9 @@ win =
   accel:   0
   gravity: 0
   rotate:  0
+  max:
+    top:  0
+    left: 0
 
 $(window).resize ->
   win.height = window.innerHeight || $(window).height()
@@ -168,6 +176,7 @@ $(window).resize ->
   base_width = document.body.clientWidth || win.width
   win.zoom = base_width / win.width
 
+  $("#outframe").height $("#contentframe").height() + win.height / 2
   win.max = {
     top:  $('body').height() - win.height
     left: $('body').width()  - win.width
@@ -215,6 +224,7 @@ class FixedBox
     win.top  = win.max.top  if win.max.top  < win.top
     win.left = 0            if                win.left  < 0
     win.top  = 0            if                win.top   < 0
+
 
     @box.to_z_front()
     if head.csstransitions
