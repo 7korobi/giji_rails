@@ -1,6 +1,11 @@
-ul
+ul.nav.nav-list
   li
-    a(ng-href="{{story.link}}") - 情報 -
-  li(ng-repeat="event in events")
-    a(ng-href="{{event.link}}") {{event.name}}
+    a(ng-href="{{story.link}}")
+      i.icon-book
+      | 情報
+  li(ng-repeat="e in events")
+    a(ng-href="{{e.link}}")
+      i.icon-film( ng-show="e.turn == event.turn")
+      i.icon-minus(ng-hide="e.turn == event.turn")
+      | {{e.name}}
 br
