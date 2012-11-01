@@ -65,7 +65,7 @@ RAILS = ($scope, $filter, $compile)->
         $scope.anchors.push item
         $scope.$apply()
         drag = $(".drag [name=#{item.logid}]").parents(".drag")
-        drag.prepend("""<div class="drag_head"><span class="badge"><i class="icon-minus" href_eval="popup(#{turn},'#{item.logid}')"></i></span></div>""")
+        drag.prepend("""<div class="drag_head"><span class="badge" href_eval="popup(#{turn},'#{item.logid}')">―</span></div>""")
         drag.hide().fadeIn 'fast'
         $scope.boot.delay 20
 

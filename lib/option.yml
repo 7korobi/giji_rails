@@ -53,6 +53,7 @@ page:
   order:
     options:
       current: 'asc'
+      location: 'hash'
       is_cookie: true
     button:
       asc:  上から下へ
@@ -61,6 +62,7 @@ page:
   row:
     options:
       current: 50
+      location: 'hash'
       is_cookie: true
     button:
       10:  10行

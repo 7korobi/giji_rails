@@ -229,22 +229,22 @@ class FixedBox
     @box.to_z_front()
     if head.csstransitions
       if head.browser.webkit
-        @box.css "-webkit-transition", "all 200ms ease"
+        @box.css "-webkit-transition", "all 250ms ease"
         @box.css "-webkit-transform",  "translate(#{win.left}px, #{win.top}px)"
 
       if head.browser.mozilla
-        @box.css "-moz-transition", "all 200ms ease"
+        @box.css "-moz-transition", "all 250ms ease"
         @box.css "-moz-transform",  "translate(#{win.left}px, #{win.top}px)"
 
       if head.browser.ie
-        @box.css "-ms-transition", "all 200ms ease"
+        @box.css "-ms-transition", "all 250ms ease"
         @box.css "-ms-transform",  "translate(#{win.left}px, #{win.top}px)"
 
       if head.browser.opera
-        @box.css "-o-transition", "all 200ms ease"
+        @box.css "-o-transition", "all 250ms ease"
         @box.css "-o-transform",  "translate(#{win.left}px, #{win.top}px)"
 
-      @box.css "transition", "all 200ms ease"
+      @box.css "transition", "all 250ms ease"
       @box.css "transform",  "translate(#{win.left}px, #{win.top}px)"
 
     else

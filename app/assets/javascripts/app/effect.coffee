@@ -37,7 +37,7 @@ EFFECT = ($scope)->
           info_width  = info_left
           $scope.is_shy = false
         else
-          info_width  = width
+          info_width = FixedBox.list["#buttons"].left
           $scope.is_shy = true
         content  = "contentframe"
         outframe = "outframe"
@@ -51,7 +51,7 @@ EFFECT = ($scope)->
           content  = "contentframe_navileft"
           outframe = "outframe_navimode"
         else
-          info_width  = width
+          info_width = FixedBox.list["#buttons"].left
           $scope.is_shy = true
           content  = "contentframe"
           outframe = "outframe"
