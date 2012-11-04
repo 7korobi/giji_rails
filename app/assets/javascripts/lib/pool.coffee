@@ -1,5 +1,5 @@
 POOL = ($scope)->
-  scroll_timer  =        200
+  scroll_timer  =        250
   message_timer =  60 * 1000
   message_first =  25 * 1000
   ajax_timer = 5 * 60 * 1000

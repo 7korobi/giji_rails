@@ -10,6 +10,9 @@ class Navi
     @value = @params.current_type newVal if newVal?
     @value
 
+  choice: ->
+    @select.find (o)=> o.val == @value
+
   constructor: ($scope, key, def)->
     @scope = $scope
     @params = def.options

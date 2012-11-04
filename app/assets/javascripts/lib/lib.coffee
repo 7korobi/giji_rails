@@ -11,7 +11,9 @@ LIB = ($scope)->
 
     resize = ->
       $(window).resize()
-    resize.delay 40
+    resize.delay   20
+    resize.delay  200
+    resize.delay 2000
 
   $scope.boot = (func)->
     $scope.adjust()

@@ -83,7 +83,6 @@ MODULE = ($scope)->
     for dom in codes
       code = $(dom).text()
       if code.match(/gon/)?
-        console.log code
         eval code
 
   $scope.post = (href, form, func)->

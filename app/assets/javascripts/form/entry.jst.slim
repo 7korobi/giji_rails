@@ -1,4 +1,4 @@
-table(class="say {{f.mestype}}")
+table(class="say {{f.mestype}}" ng-show="form_show.find('entry')")
   tr
     td.img
       img(ng-src="{{img_csid_cid(f.csid_cid)}}")
@@ -9,7 +9,7 @@ table(class="say {{f.mestype}}")
             .control-group(ng-show="story.entry.limit == 'password'")
               label.control-label(for="entrypwd") 参加パスワード
               .controls
-                input.input-medium#entrypwd(type="password" maxlength="8" size="8" ng-model="f.password" required)
+                input.input-medium#entrypwd(type="password" maxlength="8" size="8" ng-model="f.password")
             .control-group
               label.control-label(for="selectid") 希望する配役
               .controls

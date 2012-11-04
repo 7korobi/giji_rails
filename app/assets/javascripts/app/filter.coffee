@@ -72,6 +72,8 @@ FILTER = ($scope, $filter)->
       select: GIJI.modes
 
     page.filter 'mode.value', (key, list)->
+      $scope.form_show = $scope.mode.choice().form
+
       filter = mode_filters[key]
       list = list.filter (o)->
         o.logid.match filter

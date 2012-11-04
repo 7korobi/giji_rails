@@ -1,4 +1,5 @@
 ---
+
 options:
   seq-event:
     help: 事件が順序どおりに発生する

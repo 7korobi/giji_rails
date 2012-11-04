@@ -23,7 +23,7 @@ CGI = ($scope, $filter, $compile)->
     f.valid = true
     if f.max
       size = length(f.text, f.max.unit)
-      f.valid = false if size < 1
+      f.valid = false if size < 4
       f.valid = false if f.max.size < size
       f.valid = false if f.max.line < f.text.lines().length
       f.valid = false unless form.$valid
@@ -63,12 +63,14 @@ CGI = ($scope, $filter, $compile)->
       {}
 
   $scope.submit = (param)->
-    form = $("""<form action="#{$scope.form.uri}" method="post"></form>""")
+    form = $("""<form action="#{$scope.form.uri.escapeURL()}" method="post"></form>""")
     $('body').append form
 
     param.keys (key,val)->
       return unless val?
-      form.append """<input type=hidden name="#{key}" value="#{val}">"""
+      tag = $("""<input type="hidden" name="#{key}">""")
+      tag.attr "value", val
+      form.append tag
 
     form.submit()
 
@@ -110,6 +112,21 @@ CGI = ($scope, $filter, $compile)->
       actionno:   f.action
       actiontext: f.text
     $scope.submit param
+
+  $scope.confirm = (f)->
+    if f.targets
+      target_name = $scope.option(f.targets, f.target).name
+    if target_name
+      $scope.form.confirm = "#{target_name} - #{f.title}"
+    else
+      return if f.targets?
+      $scope.form.confirm = f.title
+
+    $scope.confirm_cancel = ->
+      $scope.form.confirm = null
+    $scope.confirm_complete = ->
+      $scope.form.confirm = null
+      $("#" + f.cmd).submit()
 
   if $scope.story?
     $scope.story.upd.time_text = "#{$scope.story.upd.hour}時#{$scope.story.upd.minute}分"

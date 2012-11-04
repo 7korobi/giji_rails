@@ -5,7 +5,13 @@
 div(form="f.jst" ng-repeat="f in form.texts")
 
 div(class="{{form.win}}")
-  p.text(listup="form.secrets")
+  .secret
+    p.text(listup="form.secrets")
 
-.formpl_gm
+.formpl_gm(ng-hide="form.confirm")
   p.commitbutton(form="f.jst" ng-repeat="(key, f) in form.commands")
+
+.formpl_gm(ng-show="form.confirm")
+  h3 {{form.confirm}}
+  a.btn(ng-click="confirm_cancel()") ×
+  a.btn(ng-click="confirm_complete()") ◯

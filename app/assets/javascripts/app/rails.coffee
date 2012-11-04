@@ -67,7 +67,7 @@ RAILS = ($scope, $filter, $compile)->
         drag = $(".drag [name=#{item.logid}]").parents(".drag")
         drag.prepend("""<div class="drag_head"><span class="badge" href_eval="popup(#{turn},'#{item.logid}')">―</span></div>""")
         drag.hide().fadeIn 'fast'
-        $scope.boot.delay 20
+        $scope.boot()
 
       else
         $(".drag [name=#{item.logid}]").parents(".drag").fadeOut 'fast', ->
@@ -117,4 +117,4 @@ RAILS = ($scope, $filter, $compile)->
 
   Navi.push $scope, 'navi',  navi
   $scope.navi.watch.push ->
-    $scope.boot.delay 20
+    $scope.boot()

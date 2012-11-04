@@ -8,17 +8,38 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 modes:
-- {val: memo_all,  name: メモ全部, group: メモ}
-- {val: memo_hist, name: メモ履歴, group: メモ}
-- {val: memo_open, name: メモ, group: メモ}
-- {val: talk_all,   name: 全部, group: 議事}
-- {val: talk_think, name: 独り言, group: 議事}
-- {val: talk_clan,  name: 内緒話/狼/鳴/…, group: 議事}
-- {val: talk_open,  name: 通常, group: 議事}
+- val: memo_all
+  name: メモ全部
+  form: [entry, action, memo]
+  group: メモ
+- val: memo_hist
+  name: メモ履歴
+  form: [entry, action, memo]
+  group: メモ
+- val: memo_open
+  name: メモ
+  form: [entry, action, memo]
+  group: メモ
+- val: talk_all
+  name: 全部
+  form: [entry, action, open, secret, silent]
+  group: 議事
+- val: talk_think
+  name: 独り言
+  form: [entry, action, open, secret, silent]
+  group: 議事
+- val: talk_clan
+  name: 内緒話/狼/鳴/…
+  form: [entry, action, open, secret, silent]
+  group: 議事
+- val: talk_open
+  name: 通常
+  form: [entry, action, open, secret, silent]
+  group: 議事
 
 navis:
   link:  移動
-  info:  参加
+  info:  名簿
   calc:  状況
   blank: x
 
