@@ -1,0 +1,12 @@
+- content_for :head do
+  | byebye user
+
+- content_for :link do
+  h4.sayfilter_caption_enable
+    | 他のことを知りたい
+  .sayfilter_content
+    li=link_to 'あなたのトップページ', user_path(user.user_id)
+
+- content_for :log do
+  .message_filter(ng-repeat="byebye in byebyes" log="byebye")
+

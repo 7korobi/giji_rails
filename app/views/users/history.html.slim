@@ -1,0 +1,17 @@
+=render 'login'
+
+- content_for :head do
+  | history user
+
+- content_for :link do
+  h4.sayfilter_caption_enable
+    | 他のことを知りたい
+  .sayfilter_content
+    li=link_to 'あなたのトップページ', user_path(user.user_id)
+
+- content_for :log do
+  - if user.sow_auth_ids && gon.messages_raw
+    h2= "#{user.name} さんの情報"
+    .pagenavi(template="navi/page_navi" class="form-inline")
+    #messages(template="navi/messages")
+    .pagenavi(template="navi/page_navi" class="form-inline")

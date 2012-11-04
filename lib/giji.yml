@@ -7,6 +7,12 @@ link:
   wiki:     http://melon-cirrus.sakura.ne.jp/wiki/
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
+news:
+- text: バイバイリストを実装しました。あなたのアカウントに、あなたの人狼議事idと、あなたがお別れしたい人を登録しておきましょう。
+  date: 2012-11-05
+- text: アカウントに人狼議事idを登録すると、あなたの参加した村を一覧表示します。
+  date: 2012-10-10
+
 modes:
 - val: memo_all
   name: メモ全部

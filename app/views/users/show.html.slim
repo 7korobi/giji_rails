@@ -4,19 +4,15 @@
   | show user
 
 - content_for :top do
-  - if self?
-    h2= "ようこそ #{user.name} さん"
+    h2= "#{user.name} さんについて"
     .paragraph
       ul
-        li=link_to 'キャラクターに投票！', new_chr_vote_path
-        li
-          =link_to '自分のアカウントを編集する', edit_user_path(user)
-          ul
-            li お使いの人狼議事アカウントを登録して、あなたの参加履歴に簡単アクセス！
+        - if self?
+          li=link_to 'キャラクターに投票！', new_chr_vote_path
+          li
+            =link_to '自分のアカウントを編集する', edit_user_path(user)
+            ul
+              li お使いの人狼議事アカウントを登録して、あなたの参加履歴に簡単アクセス！
+          li=link_to 'ByeByeList確認', byebye_list_user_path(user)
 
-- content_for :log do
-  - if user.sow_auth_ids && gon.messages_raw
-    h2= "#{user.name} さんの情報"
-    .pagenavi(template="navi/page_navi" class="form-inline")
-    #messages(template="navi/messages")
-    .pagenavi(template="navi/page_navi" class="form-inline")
+        li=link_to '履歴を見る',     history_user_path(user)

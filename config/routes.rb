@@ -21,7 +21,12 @@ Giji::Application.routes.draw do
   resources :chr_sets
   resources :chr_votes
 
-  resources :users
+  resources :users do
+    member do
+      get  :byebye_list
+      get  :history
+    end
+  end
   root :to => 'users#index'
 
 

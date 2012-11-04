@@ -6,6 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+=begin
 module Sprockets
   class JstProcessor
     def evaluate(scope, locals, &block)
@@ -18,6 +19,7 @@ module Sprockets
 
   register_engine '.slim', Slim::Template
 end
+=end
 
 module Giji
   class Application < Rails::Application

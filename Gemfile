@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 
 # ruby on rails
-gem 'unicorn'
+gem 'unicorn', '< 4.4.0'
 gem 'rails', '3.2.7'
 
 # Gems used only for assets and not required
@@ -28,7 +28,7 @@ gem "active_decorator"
 gem "slim"
 gem 'jquery-rails'
 # gem 'jquery_mobile_rails'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '= 2.1.3'
 # gem 'spreadsheet'
 # gem 'rabl'
 gem 'codemirror-rails'

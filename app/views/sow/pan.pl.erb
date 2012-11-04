@@ -25,7 +25,7 @@ sub GetConfig {
 <%	end	%>
 	);
 
-	# 採用するゲームルール	
+	# 採用するゲームルール
 	my @gamelist = (
 <%	@games.each do |gamerule|	%>
 		'<%= gamerule %>',
@@ -298,19 +298,19 @@ sub GetConfig {
 	);
 
 	my @file_js = (
-		'data.js',
-		'giji.js',
-		'tooltip.js',
-		'teapot.js',
+		'data_pan.js',
+		'../assets/base.js',
+		'sow.js',
 	);
 	my @file_js_vil = (
-		'data.js',
-		'giji.js',
-		'tooltip.js',
-		'teapot.js',
+		'data_pan.js',
+		'../assets/base.js',
+		'sow.js',
 	);
 
 	my %cfg = (
+		THEME => 'pan',
+
 		# 1:動作停止（アップデート用）
 		ENABLED_HALT => 0,
 
@@ -319,7 +319,7 @@ sub GetConfig {
 <%	end	%>
 
 <%	@enable_order.each do |key|	%>
-		<%= "%-20s"%[key.to_s] %> => <%= @enable[key][0].inspect %>, # <%= @enable[key][1].to_s %> 
+		<%= "%-20s"%[key.to_s] %> => <%= @enable[key][0].inspect %>, # <%= @enable[key][1].to_s %>
 <%	end	%>
 		ENABLED_POPUP        => 0, # アンカーのポップアップ
 

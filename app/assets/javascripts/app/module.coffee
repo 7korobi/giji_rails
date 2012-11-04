@@ -2,7 +2,6 @@
 tokenInput = {}
 
 MODULE = ($scope)->
-  $scope.title = '人狼議事'
   $scope.face_id =
     hide:   []
     potofs: []

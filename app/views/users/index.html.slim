@@ -10,9 +10,10 @@
 
   h2 更新情報
   .paragraph
-    ul
-      li アカウントに人狼議事idを登録すると、あなたの参加した村を一覧表示します。
-
+    ul(ng-repeat="o in news() | limitTo:5")
+      li
+        span(ng-show="o.is_news" style="color:red;") New!&nbsp;
+        | {{o.text}}
   h2 アカウント一覧
   .paragraph
     = ' / '
