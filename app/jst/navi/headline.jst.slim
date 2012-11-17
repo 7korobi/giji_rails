@@ -1,0 +1,174 @@
+.choice
+  a(ng-href="{{link.wiki}}")
+    | 人狼物語専用wiki
+  | ｜
+  a(ng-href="{{link.servers}}")
+    | 人狼物語Server一覧
+  |（melonkoさん管理）
+- max_wolf    = 0
+- max_allstar = GAME[:ALLSTAR_OLD][:config][:cfg][:MAX_VILLAGES]
+- max_jksy    = GAME[:ALLSTAR][:config][:cfg][:MAX_VILLAGES]
+- max_perjury = GAME[:PERJURY_OLD][:config][:cfg][:MAX_VILLAGES]
+- max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
+- max_crazy   = GAME[:CRAZY][:config][:cfg][:MAX_VILLAGES]
+- max_xebec   = GAME[:XEBEC][:config][:cfg][:MAX_VILLAGES]
+- max_cafe    = GAME[:CABALA][:config][:cfg][:MAX_VILLAGES]
+- max_cabala  = GAME[:CABALA_OLD][:config][:cfg][:MAX_VILLAGES]
+- max_pan     = GAME[:PAN][:config][:cfg][:MAX_VILLAGES]
+- max_all     = ( max_wolf )
+- max_all    += ( max_allstar + max_jksy   )
+- max_all    += ( max_perjury + max_vage   + max_crazy + max_xebec )
+- max_all    += ( max_cafe    + max_cabala )
+.choice
+  table.board
+    tr
+      th.no_choice colspan="4" style="text-align:center;"
+        | 総合トップページはこちら
+        strong
+          a(href="#{URL[:rails]}") 人狼議事
+        | 合計#{max_all}村:を上限としています
+        .progress_log
+          strong
+            | 進行中の村　←　
+          a(onclick="$('.progress_log').hide();$('.finished_log').show();")
+            | 終了した村を見る
+        .finished_log
+          a(onclick="$('.progress_log').show();$('.finished_log').hide();")
+            | 進行中の村を見る
+          strong
+            | 　→　終了した村
+
+      td.no_choice.link rowspan="2"
+        a(href="#{GAME[:PAN][:config][:cfg][:URL_SW]}/sow.cgi")
+          | 似顔絵
+          br
+          | 人狼
+          br
+          | 　
+    tr.link
+      td.no_choice
+        | ロビー
+        br
+        | 　
+      td.no_choice
+        | 陰謀
+        br
+        | 　
+      td.no_choice
+        | 大乱闘
+        br
+        | 　
+      td.no_choice
+        | ＲＰ　
+        br
+        | :Braid
+    tr.progress_log
+      td.no_choice style="text-align:left;"
+        a(href="#{GAME[:LOBBY][:config][:cfg][:URL_SW]}/sow.cgi") lobby
+        br
+        | offparty
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+      td.no_choice style="text-align:left;"
+        == "#{max_cafe}村:"
+        a(href="#{GAME[:CABALA][:config][:cfg][:URL_SW]}/sow.cgi") cafe
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+      td.no_choice style="text-align:left;"
+        | wolf
+        br
+        | ultimate
+        br
+        == "#{max_jksy}村:"
+        a(href="#{GAME[:ALLSTAR][:config][:cfg][:URL_SW]}/sow.cgi") allstar
+        br
+        | 　　
+        br
+        | 　
+      td.no_choice style="text-align:left;"
+        | role-play
+        br
+        | RP-advance
+        br
+        == "#{max_vage}村:"
+        a(href="#{GAME[:PERJURY][:config][:cfg][:URL_SW]}/sow.cgi") perjury
+        br
+        == "#{max_xebec}村:"
+        a(href="#{GAME[:XEBEC][:config][:cfg][:URL_SW]}/sow.cgi") xebec
+        br
+        == "#{max_crazy}村:"
+        a(href="#{GAME[:CRAZY][:config][:cfg][:URL_SW]}/sow.cgi") crazy
+      td.no_choice style="text-align:left;"
+        == "#{max_pan}村:"
+        | pan
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+    tr.finished_log
+      td.no_choice style="text-align:left;"
+        a(href="/LOBBY/stories?page=1") lobby
+        br
+        a(href="/OFFPARTY/stories?page=1") offparty
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+      td.no_choice style="text-align:left;"
+        a(href="/CABALA/stories?page=1") cafe
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+      td.no_choice style="text-align:left;"
+        a(href="/WOLF/stories?page=1") wolf
+        br
+        a(href="/ULTIMATE/stories?page=1") ultimate
+        br
+        a(href="/ALLSTAR/stories?page=1") allstar
+        br
+        | 　　
+        br
+        | 　
+      td.no_choice style="text-align:left;"
+        a(href="/RP/stories?page=1") role-play
+        br
+        a(href="/PRETENSE/stories?page=1") RP-advance
+        br
+        a(href="/PERJURY/stories?page=1") perjury
+        br
+        a(href="/XEBEC/stories?page=1") xebec
+        br
+        a(href="/CRAZY/stories?page=1") crazy
+      td.no_choice style="text-align:left;"
+        a(href="/PAN/stories?page=1") pan
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+        br
+        | 　
+  script
+    | $(function(){$('.progress_log').hide()});

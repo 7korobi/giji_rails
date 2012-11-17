@@ -14,30 +14,44 @@ news:
   date: 2012-10-10
 
 modes:
-- val: memo_all
-  name: メモ全部
+- val: memo_hist_all
+  name: メモ履歴-全部
+  log: BG
   form: [entry, action, memo]
-  group: メモ
+  group: メモ履歴
+
 - val: memo_hist
   name: メモ履歴
   form: [entry, action, memo]
+  group: メモ履歴
+
+- val: memo_all
+  name: メモ全部
+  log: BG
+  form: [entry, action, memo]
   group: メモ
+
 - val: memo_open
   name: メモ
   form: [entry, action, memo]
   group: メモ
+
 - val: talk_all
   name: 全部
+  log: BG
   form: [entry, action, open, secret, silent]
   group: 議事
+
 - val: talk_think
   name: 独り言
   form: [entry, action, open, secret, silent]
   group: 議事
+
 - val: talk_clan
   name: 内緒話/狼/鳴/…
   form: [entry, action, open, secret, silent]
   group: 議事
+
 - val: talk_open
   name: 通常
   form: [entry, action, open, secret, silent]

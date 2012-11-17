@@ -2,7 +2,7 @@
 
 <%
 namespace = "this.JST"
-head = "app/assets/javascripts/"
+head = "app/jst/"
 Dir.glob(head + "**/*.jst.*") do |path|
   idx = path.match(/#{head}([^.]+)/)[1]
   Tilt.new(path).render

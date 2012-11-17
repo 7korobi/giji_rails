@@ -1,6 +1,9 @@
 #! /bin/sh
 
-cat $1 | while read LINE
+cmd="handbrake.`date +%Y-%m-%d`.$UTAGE.sh"
+test -f $cmd || mv $1 $cmd
+
+cat $cmd | while read LINE
 do
   echo "$LINE" | bash
 done

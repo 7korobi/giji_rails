@@ -67,7 +67,7 @@ class UsersController < ApplicationController
         folder: story.folder,
         vid:    story.vid,
 
-        template: "giji/action",
+        template: "message/action",
         mestype:  mestype,
         name:  "#{nation}#{story.vid} #{story.name}",
         style: '',
@@ -104,7 +104,7 @@ class UsersController < ApplicationController
       created = story.timer["updateddt"]
 
       chr.attributes.merge(
-        template: "giji/say",
+        template: "message/say",
         mestype: "SAY",
         anchor: "#{nation}#{story.vid}",
         style: 'head',

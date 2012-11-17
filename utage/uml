@@ -1,5 +1,5 @@
 #! /bin/bash
 
-java -Xms512m -Xmx1024m -jar ~/plantuml.jar -verbose -charset UTF-8 *.txt
-ls -ltra *.png
+java -Xms512m -Xmx1024m -jar ~/plantuml.jar -tsvg -verbose -charset UTF-8 *.txt
+ls -ltra *.svg *.png
 

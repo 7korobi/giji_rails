@@ -20,18 +20,37 @@ RAILS = ($scope, $filter, $compile)->
       is_cookie: false
     button: GIJI.navis
 
+  if history?.pushState?
+    $(window).on 'popstate', (e)->
+      Navi.popstate()
+  else
+    window.history = {}  unless history?
+    window.history.replaceState = (a,b,href)->
+      location.href = href
+
+  $scope.ajax_event = (turn, href, is_news)->
+    target = href + location.hash
+    if $scope.events? && $scope.event?
+      change = ->
+        $scope.event = $scope.events[turn]
+        $scope.event.is_news = is_news
+        $scope.page.value = 1
+        history.replaceState null, "#{$scope.event.name}", target
+      if $scope.events[turn].messages?
+        change()
+      else
+        $scope.get href, =>
+          $scope.event_cache gon.event  if  turn == gon.event.turn
+          change()
+          $scope.$apply()
+
+    else
+      location.href = target
+
   $scope.news = ()->
     for o in GIJI.news
       o.is_news = Date.create('3days ago') < Date.create(o.date)
     GIJI.news
-
-
-  $scope.location = window.location
-  if window.onhashchange?
-    window.onhashchange = =>
-      $scope.$digest()
-
-  $scope.$watch 'location.hash', (oldVal, newVal)->
 
   $scope.$watch 'title', (oldVal, newVal)->
     $('title').text(newVal);

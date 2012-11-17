@@ -9,13 +9,13 @@ module ApplicationHelper
     semantic_form_for obj, url: controller.send(:form, obj), &block
   end
 
-  def cfg( folder )    
+  def cfg( folder )
     GAME[folder]['config']['cfg']
   end
 
   def folder ( folder,key )
     if folder
-    then GAME[folder][key] 
+    then GAME[folder][key]
     else ""
     end
   end
@@ -39,7 +39,7 @@ q_info    = '?ua=mb&vid=%s&cmd=vinfo'
 
     def view_width
         width = 480 if css_name["480"]
-        width = 800 
+        width = 800
         width
     end
 
@@ -49,9 +49,9 @@ q_info    = '?ua=mb&vid=%s&cmd=vinfo'
     job  = if 0 == j.size then "" else j[0].job  end
     name = if 0 == n.size then "" else n[0].name end
     if user.zapcount && user.zapcount.to_i < 0
-    then 
+    then
       [job, user.clearance, name, user.zapcount, user.postfix ].join(' ')
-    else 
+    else
       [job, name ].join(' ')
     end
   end

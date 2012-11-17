@@ -9,16 +9,17 @@ MODULE = ($scope)->
     all:    []
 
   background = (log)->
-    if 'memo_all' != $scope.mode?.value and 'talk_all' != $scope.mode?.value
+    log_type = $scope.mode?.choice().log
+    if 'BG' == log_type
+      log.replace ///
+        (/\*)(.*?)(\*/|$)
+      ///g,'<em>$1$2$3</em>'
+    else
       ret = log.replace ///
         (/\*)(.*?)(\*/|$)
       ///g,'<span>$1 B.G $3</span>'
       # ret = ""  if  "" == ret.removeTags('span').trim()
       ret
-    else
-      log.replace ///
-        (/\*)(.*?)(\*/|$)
-      ///g,'<em>$1$2$3</em>'
 
   anchor = (log)->
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->

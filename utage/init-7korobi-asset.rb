@@ -7,9 +7,6 @@ open('/home/7korobi/web-env','w').puts <<-_SH_
 export LANG=ja_JP.UTF-8
 export PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/7korobi/bin
 
-test -s "$HOME/.node/nvm.sh"  && source "$HOME/.node/nvm.sh"
-test -s "$HOME/.node/nvm.sh"  && nvm use #{node}
-
 eval "$(rbenv init -)"
 _SH_
 

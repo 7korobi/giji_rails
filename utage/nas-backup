@@ -4,6 +4,10 @@ cd /c/media/Album
 git add .
 git commit -a -m "collection"
 
+cd /utage/
+git add .
+git commit -a -m "backup"
+
 for TO in 241 243 249 254
 do
 

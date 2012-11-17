@@ -36,9 +36,14 @@ FILTER = ($scope, $filter)->
       talk_open_regexp = /^[qcaAmSI][^M]/
       memo_open_regexp = /^([qcaAmSIM][M])|([AMam]S)/
 
+    mode_groups =
+      memo_all:  true
+      memo_open: true
+
     mode_filters =
-      memo_all:  /^(.M)|([AMam]S)/
+      memo_hist_all:  /^(.M)|([AMam]S)/
       memo_hist: memo_open_regexp
+      memo_all:  /^(.M)|([AMam]S)/
       memo_open: memo_open_regexp
       talk_all:   /^.[^M]/
       talk_think: /^[qcaAmSIiVG][^M]/
@@ -77,7 +82,7 @@ FILTER = ($scope, $filter)->
       filter = mode_filters[key]
       list = list.filter (o)->
         o.logid.match filter
-      if 'memo_open' == key
+      if mode_groups[key]
         result = []
         list.groupBy('face_id').keys (key, list)->
           result.push list.last()
@@ -90,9 +95,9 @@ FILTER = ($scope, $filter)->
       list.filter (o)->
         face_ids.some o.face_id
 
-    filter_filter = $filter 'filter'
-    page.filter 'search.value', (search, list)->
-      filter_filter list, search
+  filter_filter = $filter 'filter'
+  page.filter 'search.value', (search, list)->
+    filter_filter list, search
 
   page.paginate 'row.value', (page_per, list)->
     if $scope.event?.is_news
@@ -112,6 +117,9 @@ FILTER = ($scope, $filter)->
     list.to(to).from(from)
 
   page.filter 'order.value', (key, list)->
+    for log in list
+      log.text = $scope.text_decolate log.log
+
     $scope.anchors = []
     if "desc" == key
       list.reverse()

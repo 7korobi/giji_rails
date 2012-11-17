@@ -1,9 +1,7 @@
 require 'yaml'
 require 'active_support/all'
 
-LOG_DIR = '/www/giji_log/'
-
-Dir.glob('*/*.yml').each do |path|
+Dir.glob('**/*.yml').each do |path|
   file, name = /(\w+).yml/.match(path).to_a
   const = name.upcase.to_sym
 

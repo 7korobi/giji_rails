@@ -18,7 +18,7 @@ class ChrVotesController < ApplicationController
 
   def index
     gon.messages = chr_votes_comments.map do |face_id, votes|
-      { template: 'giji/say',
+      { template: 'message/say',
         mestype: 'mes_think',
         style: '',
         logid:'',

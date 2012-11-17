@@ -39,6 +39,7 @@ class PerlCgi < Thor
       end
       rsync.put(protocol, set, 'html/', :lapp, :app)
       rsync.put(protocol, set, 'lib/',  :lapp, :app)
+      rsync.put(protocol, set, 'rs/',   :lapp, :app)
     end
 
     rsync.exec

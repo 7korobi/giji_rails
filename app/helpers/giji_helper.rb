@@ -1,8 +1,4 @@
 module GijiHelper
-  def link_to_folder(title, folder)
-    link_to title, GAME[folder][:config][:cfg][:URL_SW] + "/sow.cgi"
-  end
-
   def index_parent_path
     case controller
     when TrpgEventsController, TrpgMessagesController
@@ -42,7 +38,7 @@ module GijiHelper
   def render_message(message)
     if message.template
       options = message.slice %w[logid color style img name to time text]
-      render 'giji/' + message.template, options
+      render 'message/' + message.template, options
     else
       message.attributes.inspect
     end

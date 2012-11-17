@@ -1,7 +1,7 @@
 angular.module("giji.directives").directive "log", ["$interpolate", ($interpolate)->
   if JST?
     for key,val of JST
-      if key.startsWith "giji/"
+      if key.startsWith "message/"
         GIJI.interpolates[key] or= $interpolate(val)
 
   restrict: "A"
@@ -27,7 +27,7 @@ angular.module("giji.directives").directive "log", ["$interpolate", ($interpolat
       for style in GIJI.message.template
         style.keys (target, table)->
           template or= table[log[target]]
-      log.template or= "giji/#{template}"
+      log.template or= "message/#{template}"
 
     log.date = Date.create log.date
     log.cancel_btn = ->
@@ -45,8 +45,10 @@ angular.module("giji.directives").directive "log", ["$interpolate", ($interpolat
 
     box = GIJI.interpolates[log.template]
     if box?
-      $scope.$watch attr.log + ".time()", ->
+      log_refresh = ->
         elm.html box log
+      $scope.$watch attr.log + ".time()", log_refresh
+      $scope.$watch attr.log + ".text",   log_refresh
     else
       elm.html "<hr>"
 ]

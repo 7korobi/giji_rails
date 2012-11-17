@@ -8,7 +8,7 @@ GIJI.template = ($compile, $scope, elm, name)->
 angular.module("giji.directives").directive "template", ["$interpolate","$compile", ($interpolate, $compile)->
   if JST?
     for key,val of JST
-      if key.startsWith "giji/"
+      if key.startsWith "message/"
         GIJI.interpolates[key] = $interpolate(val)
 
   for idx,val in $("script[type='text/x-tmpl']")

@@ -72,3 +72,31 @@ table(class="table table-condensed")
       td
       td
       td
+  thead
+    tr(ng-show="potofs_is_small")
+      th
+        code(ng-click="potofs_toggle()")
+          i.icon-resize-full
+          i.icon-resize-small
+        | &nbsp;{{sum.actaddpt}}促
+      th
+        code(href_eval="sort_potofs('deathday',0)") 日程
+        code(href_eval="sort_potofs('live','')") 状態
+      th(colspan="2")
+        code(href_eval="sort_potofs('role_names','')") 役割
+
+    tr(ng-hide="potofs_is_small")
+      th
+        code(ng-click="potofs_toggle()")
+          i.icon-resize-full
+          i.icon-resize-small
+        | &nbsp;{{sum.actaddpt}}促
+      th
+        code(href_eval="sort_potofs('deathday',0)") 日程
+        code(href_eval="sort_potofs('live','')") 状態
+        code(href_eval="sort_potofs('said_num',0)") 発言
+      th(colspan="2")
+        code(href_eval="sort_potofs('win_name','')") 陣営
+        code(href_eval="sort_potofs('role_names','')") 役割
+        code(href_eval="sort_potofs('select_name','')") 希望
+        code(href_eval="sort_potofs('text','')") 補足

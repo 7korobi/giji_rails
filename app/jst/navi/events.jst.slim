@@ -1,10 +1,10 @@
 ul.nav.nav-list
   li
-    a(ng-href="{{story.link}}")
+    a(ng-href="{{story.link}}" target="_blank")
       i.icon-book
       | 情報
-  li(ng-repeat="e in events")
-    a(ng-href="{{e.link}}")
+  li(ng-repeat="e in events" ng-click="ajax_event(e.turn, e.link, !!e.is_news)")
+    a
       i.icon-film( ng-show="e.turn == event.turn")
       i.icon-minus(ng-hide="e.turn == event.turn")
       | {{e.name}}

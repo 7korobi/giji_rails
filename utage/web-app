@@ -14,7 +14,7 @@ status)
   ls -ltra /utage/run/*
   ;;
 start)
-  ~/.rbenv/shims/bundle exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
+  rbenv exec unicorn_rails -c /utage/conf/$PID.rb -E production -D
   ;;
 stop)
   $0 kill QUIT "unicorn_rails master"
@@ -41,9 +41,9 @@ QUEUE)
   $0 kill QUIT "Waiting for $LIST"
   $0 kill QUIT "resque-scheduler-"
 
-  ~/.rbenv/shims/bundle exec resque-web -p $WEB_PORT config/initializers/resque.rb     1> /dev/null 2> /dev/null
-  QUEUE=$LIST PIDFILE=/utage/run/resque.pid BACKGROUND=yes rake environment resque:work  1> /dev/null 2> /dev/null
-  PIDFILE=/utage/run/resque-scheduler.pid BACKGROUND=yes rake resque:scheduler           1> /dev/null 2> /dev/null
+  rbenv exec resque-web -p $WEB_PORT config/initializers/resque.rb     1> /dev/null 2> /dev/null
+  QUEUE=$LIST PIDFILE=/utage/run/resque.pid BACKGROUND=yes rbenv exec rake environment resque:work  1> /dev/null 2> /dev/null
+  PIDFILE=/utage/run/resque-scheduler.pid BACKGROUND=yes rbenv exec rake resque:scheduler           1> /dev/null 2> /dev/null
   ;;
 
 kill)
@@ -73,7 +73,7 @@ s|server|test)
   $0 stop
   /opt/local/bin/redis-server /opt/local/etc/redis.conf  &
   /mongo/mongod  &
-  ~/.rbenv/shims/bundle exec rails s
+  rbenv exec rails s
   $0 kill TERM "redis-server"
   $0 kill TERM "/mongo/mongod"
   $0 kill TERM "redis-server"
@@ -83,7 +83,7 @@ c|console)
   shift
   /opt/local/bin/redis-server /opt/local/etc/redis.conf 1> /dev/null 2> /dev/null &
   /mongo/mongod  &
-  ~/.rbenv/shims/bundle exec rails c $*
+  rbenv exec rails c $*
   $0 kill TERM "redis-server"
   $0 kill TERM "/mongo/mongod"
   $0 kill TERM "redis-server"

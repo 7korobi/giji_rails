@@ -18,11 +18,12 @@ WSS_PORT=#{no}8
 
 export LANG=ja_JP.UTF-8
 export PATH
+export UTAGE
 export SSH_PORT
 export WEB_PORT
+export MONGO_URL="mongodb://7korobi:kotatsu3@mongo.family.jp/giji"
+export REDIS_URL="redis://utage.family.jp:6379/0"
 
-test -s "$HOME/.node/nvm.sh"  && source "$HOME/.node/nvm.sh"
-test -s "$HOME/.node/nvm.sh"  && nvm use #{node}
 eval "$(rbenv init -)"
 _SH_
 

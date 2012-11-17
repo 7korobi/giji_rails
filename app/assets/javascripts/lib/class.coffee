@@ -1,4 +1,6 @@
-angular.module("giji.config", []).value "giji.config", {}
+angular.module("giji.config", [], ($routeProvider, $locationProvider)->
+  $locationProvider.html5Mode true
+).value "giji.config", {}
 angular.module "giji.filters", ["giji.config"]
 angular.module "giji.directives", ["giji.config"]
 angular.module "giji", ["giji.filters", "giji.directives", "giji.config"]
@@ -12,6 +14,13 @@ class Navi
 
   choice: ->
     @select.find (o)=> o.val == @value
+
+  popstate: ()->
+    l = Object.fromQueryString(location[@params.location].replace(/^[#?]/,""))[@key] if location[@params.location]
+    c = document.cookie.match(@chk)?[2] if @params.is_cookie?
+    @value = @params.current_type l or c or ""
+    @value = "" if @select?.all((o)=> @value != o.val)
+    @value or= @params.current_type @params.current
 
   constructor: ($scope, key, def)->
     @scope = $scope
@@ -30,14 +39,10 @@ class Navi
     else
       @select = def.select
 
-    chk = ///
+    @chk = ///
       (^|\s)#{key}=(\w+)
     ///
-    l = Object.fromQueryString(location[@params.location].replace(/^[#?]/,""))[key] if location[@params.location]
-    c = document.cookie.match(chk)?[2] if @params.is_cookie?
-    @value = @params.current_type l or c or ""
-    @value = "" if @select?.all((o)=> @value != o.val)
-    @value or= @params.current_type @params.current
+    @popstate()
 
     @scope.$watch "#{@key}.value", (value,oldVal)=>
       @_move()
@@ -60,9 +65,17 @@ class Navi
             expire = new Date().advance OPTION.cookie.expire
             document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
 
-      list.keys (field, val)->
-        val_str = val.join "&"
-        location[field] = val_str  if  location[field].from(1) != val_str
+
+      if list.search
+        val_search = "?" + list.search.join "&"
+        if location.search != val_search
+          location.search = val_search
+
+      if list.hash
+        val_hash   = "#" + list.hash.join   "&"  if list.hash
+        if location.hash   != val_hash
+          target = location.href.replace location.hash, ""
+          history.replaceState null, null, target + val_hash
 
   _move: ()->
     if @select?
@@ -258,6 +271,10 @@ class FixedBox
         duration: 'fast'
         easing: 'swing'
         queue: false
+
+Navi.popstate = ()->
+  for navi in Navi.list
+    navi.popstate()
 
 Navi.push = ($scope, key, def)->
   navi = Navi.list[key] = new Navi $scope, key, def
