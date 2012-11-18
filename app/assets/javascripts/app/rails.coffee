@@ -4,6 +4,17 @@ GIJI.change_turn = (href, turn)->
     /\d+/messages
   ///,"/#{turn}/messages")
 
+if history?.pushState?
+  $(window).on 'popstate', (e)->
+    Navi.popstate()
+
+  GIJI.history = (title, href, hash)->
+    href || href = location.href.replace hash, ""
+    history.replaceState null, title, href + hash
+else
+  GIJI.history = (title, href, hash)->
+    location.hash = hash
+
 RAILS = ($scope, $filter, $compile)->
   LIB      $scope
 
@@ -20,14 +31,6 @@ RAILS = ($scope, $filter, $compile)->
       is_cookie: false
     button: GIJI.navis
 
-  if history?.pushState?
-    $(window).on 'popstate', (e)->
-      Navi.popstate()
-  else
-    window.history = {}  unless history?
-    window.history.replaceState = (a,b,href)->
-      location.href = href
-
   $scope.ajax_event = (turn, href, is_news)->
     target = href + location.hash
     if $scope.events? && $scope.event?
@@ -35,7 +38,7 @@ RAILS = ($scope, $filter, $compile)->
         $scope.event = $scope.events[turn]
         $scope.event.is_news = is_news
         $scope.page.value = 1
-        history.replaceState null, "#{$scope.event.name}", target
+        GIJI.history "#{$scope.event.name}", href, location.hash
       if $scope.events[turn].messages?
         change()
       else

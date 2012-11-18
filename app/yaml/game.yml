@@ -350,6 +350,7 @@ PAN:
       ENABLED_MOB_AIMING:  [0, "1:見物人が内緒話を使える。"]
 
       ENABLED_AMBIDEXTER:  [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
+      ENABLED_SEQ_EVENT:   [0, "0:ランダムイベント 1:順序通りのイベント"]
 
     cfg:
       <<: *cfg_union
@@ -365,6 +366,7 @@ PAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/pan/config.pl
+    is_angular: true
 
 SOYBEAN:
   server: soy-bean.sakura.ne.jp
@@ -398,6 +400,7 @@ SOYBEAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/soy-bean/config.pl
+    is_angular: true
 
 PERJURY:
   server: perjury.rulez.jp
@@ -468,9 +471,9 @@ CRAZY:
       BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
-      DIR_LIB:  ../giji_lobby/lobby/lib
-      DIR_HTML: ../giji_lobby/lobby/html
-      DIR_RS:   ../giji_lobby/lobby/rs
+      DIR_LIB:  ./lib
+      DIR_HTML: ./html
+      DIR_RS:   ./rs
       DIR_VIL:  ./data/vil
       DIR_USER: ./data/user
     pl:  /www/giji_log/crazy/config.pl
@@ -551,8 +554,9 @@ LOBBY:
       - lobby
     enable:
       <<: *enable
-      ENABLED_BITTY:  [1, "少女や交霊者ののぞきみがひらがなのみ。"]
-      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_BITTY:     [1, "少女や交霊者ののぞきみがひらがなのみ。"]
+      ENABLED_AIMING:    [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_SEQ_EVENT: [0, "0:ランダムイベント 1:順序通りのイベント"]
     cfg:
       <<: *cfg_braid
       USERID_NPC:    master
@@ -573,6 +577,7 @@ LOBBY:
       DIR_VIL:  ./data/vil
       DIR_USER: ../data/user
     pl:  /www/giji_log/lobby/config.pl
+    is_angular: true
 
 OFFPARTY:
   server: party.ps.land.to

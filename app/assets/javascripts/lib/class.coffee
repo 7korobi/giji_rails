@@ -74,8 +74,7 @@ class Navi
       if list.hash
         val_hash   = "#" + list.hash.join   "&"  if list.hash
         if location.hash   != val_hash
-          target = location.href.replace location.hash, ""
-          history.replaceState null, null, target + val_hash
+          GIJI.history null, null, val_hash
 
   _move: ()->
     if @select?
@@ -185,18 +184,25 @@ win =
     top:  0
     left: 0
 
+  refresh: ()->
+    win.height = window.innerHeight || $(window).height()
+    win.width = window.innerWidth || $(window).width()
+
+    base_width = document.body.clientWidth || win.width
+    win.zoom = base_width / win.width
+
+    $("#outframe").height $("#contentframe").height() + win.height / 2
+    win.max = {
+      top:  $('body').height() - win.height
+      left: $('body').width()  - win.width
+    }
+
+
 $(window).resize ->
-  win.height = window.innerHeight || $(window).height()
-  win.width = window.innerWidth || $(window).width()
+  win.refresh()
 
-  base_width = document.body.clientWidth || win.width
-  win.zoom = base_width / win.width
-
-  $("#outframe").height $("#contentframe").height() + win.height / 2
-  win.max = {
-    top:  $('body').height() - win.height
-    left: $('body').width()  - win.width
-  }
+$(window).scroll ->
+  win.refresh()
 
 $(window).bind 'devicemotion', (e)->
   win.accel   = e.originalEvent.acceleration
@@ -212,15 +218,14 @@ class FixedBox
     @box = fixed_box
 
     if @box?
-      @box.css
-        position: "absolute"
-
-      $(window).resize => @resize()
-      ###
+      if head.csstransitions
+        @box.css
+          left: 0
+          top:  0
+      $(window).resize => @scroll()
       $(window).scroll => @scroll()
-      ###
 
-  resize: ()->
+  scroll: ()->
     width  = win.width  - @box.width()
     height = win.height - @box.height()
 
@@ -228,11 +233,7 @@ class FixedBox
     @left = @dx         if   0 < @dx
     @top = @dy + height if @dy < 0
     @top = @dy          if   0 < @dy
-    @box.css
-      top:  @top  + "px"
-      left: @left + "px"
 
-  scroll: ()->
     win.left = window.pageXOffset
     win.top  = window.pageYOffset
 
@@ -241,36 +242,54 @@ class FixedBox
     win.left = 0            if                win.left  < 0
     win.top  = 0            if                win.top   < 0
 
-
     @box.to_z_front()
+
+    if win.zoom > 1
+      @box.css
+        position: "absolete"
+      left = @left + win.left
+      top  = @top  + win.top
+      @translate(left, top)
+
+    else
+      @box.css
+        position: "fixed"
+      left = @left + win.left
+      top  = @top
+      @translate(left, top)
+
+  translate: (left, top)->
     if head.csstransitions
+      transition = "all 250ms ease"
+      transform  = "translate(#{left}px, #{top}px)"
       if head.browser.webkit
-        @box.css "-webkit-transition", "all 250ms ease"
-        @box.css "-webkit-transform",  "translate(#{win.left}px, #{win.top}px)"
+        @box.css "-webkit-transition", transition
+        @box.css "-webkit-transform",  transform
 
       if head.browser.mozilla
-        @box.css "-moz-transition", "all 250ms ease"
-        @box.css "-moz-transform",  "translate(#{win.left}px, #{win.top}px)"
+        @box.css "-moz-transition", transition
+        @box.css "-moz-transform",  transform
 
       if head.browser.ie
-        @box.css "-ms-transition", "all 250ms ease"
-        @box.css "-ms-transform",  "translate(#{win.left}px, #{win.top}px)"
+        @box.css "-ms-transition", transition
+        @box.css "-ms-transform",  transform
 
       if head.browser.opera
-        @box.css "-o-transition", "all 250ms ease"
-        @box.css "-o-transform",  "translate(#{win.left}px, #{win.top}px)"
+        @box.css "-o-transition", transition
+        @box.css "-o-transform",  transform
 
-      @box.css "transition", "all 250ms ease"
-      @box.css "transform",  "translate(#{win.left}px, #{win.top}px)"
+      @box.css "transition", transition
+      @box.css "transform",  transform
 
     else
       @box.animate
-        top:  win.top  + @top  + "px"
-        left: win.left + @left + "px"
+        left: left + "px"
+        top:  top  + "px"
       ,
         duration: 'fast'
         easing: 'swing'
         queue: false
+
 
 Navi.popstate = ()->
   for navi in Navi.list

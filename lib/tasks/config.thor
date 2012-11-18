@@ -393,7 +393,7 @@ _PERL_
         config           = cfg['config'] || next
         rhtml_config_out = config['pl']  || next
 
-        @rhtml_content,@cd_default,@maxsize,@saycnt_lists,@saycnt_orders,@games,@csids,@trsids,@path,@cfg,@enable = [config['erb'], config['cd_default'], config['maxsize'], config['saycnt'], config['saycnt'], config['game'], config['csid'], config['trsid'], config['path'], config['cfg'], config['enable']]
+        @rhtml_content,@cd_default,@maxsize,@saycnt_lists,@saycnt_orders,@games,@csids,@trsids,@path,@cfg,@enable,@is_angular = [config['erb'], config['cd_default'], config['maxsize'], config['saycnt'], config['saycnt'], config['game'], config['csid'], config['trsid'], config['path'], config['cfg'], config['enable'], config['is_angular']]
         chk_braid = 0 < (@saycnt_lists & ['vulcan','infinity'] ).size
         chk_all   = 0 < (@saycnt_lists & ['wbbs','euro']       ).size
         chk_lobby = 0 < (@saycnt_lists & ['lobby']             ).size

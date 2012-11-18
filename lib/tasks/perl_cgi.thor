@@ -9,14 +9,21 @@ class PerlCgi < Thor
     end
   end
 
+  desc "push_only", "push files to other servers"
+  def push_only(*folders)
+    sync_to_servers do |folder, files|
+      folders.include? folder
+    end
+  end
+
   desc "push", "push files to other servers"
   def push
-    sync_to_servers{|files| true }
+    sync_to_servers{|folder, files| true }
   end
 
   desc "test", "push files to testbed servers"
   def test
-    sync_to_servers do |files|
+    sync_to_servers do |folder, files|
       files && files['lapp'] && files['lapp'][/testbed$/]
     end
   end
@@ -32,7 +39,7 @@ class PerlCgi < Thor
 
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
-      next unless yield(set['files'])
+      next unless yield(folder, set['files'])
 
       files.each do |fname|
         rsync.put(protocol, set, fname, :lapp, :app)

@@ -162,7 +162,6 @@ MODULE = ($scope)->
     hash = location.hash
     location.href.replace hash, "##{hash}&face_only=#{potof.face_id}"
 
-
   $scope.potof_toggle = (potof)->
     potof.is_hide = ! potof.is_hide
     calc_potof()

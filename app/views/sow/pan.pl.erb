@@ -297,16 +297,27 @@ sub GetConfig {
 		alert     => \%cd_alert,
 	);
 
+<%	if @is_angular	%>
 	my @file_js = (
-		'data_pan.js',
+		'data.js',
 		'../assets/base.js',
 		'sow.js',
 	);
 	my @file_js_vil = (
-		'data_pan.js',
+		'data.js',
 		'../assets/base.js',
 		'sow.js',
 	);
+<%	else	%>
+	my @file_js = (
+		'teapot.js',
+		'tooltip.js',
+	);
+	my @file_js_vil = (
+		'teapot.js',
+		'tooltip.js',
+	);
+<%	end	%>
 
 	my %cfg = (
 		THEME => 'pan',
