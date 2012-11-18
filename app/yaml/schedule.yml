@@ -18,3 +18,10 @@ giji_log_scanner:
   args:  log
   queue: giji_schedules
   description: giji logs get.
+
+giji_cleaner:
+  cron: '0,15,30,45 * * * *'
+  class: GijiScheduler
+  args:  clean
+  queue: giji_schedules
+  description: cleanup before vil_scanner

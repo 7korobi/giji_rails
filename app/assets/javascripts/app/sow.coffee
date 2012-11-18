@@ -92,7 +92,7 @@ CGI = ($scope, $filter, $compile)->
   $scope.write = (f, valid)->
     if valid && f.is_preview
       param =
-        cmd: f.cmd,
+        cmd: f.cmd
         turn: $scope.event.turn
         vid:  $scope.story.vid
         target:    f.target
@@ -105,7 +105,7 @@ CGI = ($scope, $filter, $compile)->
 
   $scope.action = (f, valid)->
     param =
-      cmd: "action",
+      cmd: "action"
       turn: $scope.event.turn
       vid:  $scope.story.vid
       target:     f.target

@@ -89,7 +89,7 @@ module Giji
 
       case protocol
       when 'ftp'
-        option = '-R --only-newer'
+        option = '-R'
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|-X #{name}|
         end.join(' ')

@@ -22,6 +22,9 @@ INIT = ($scope)->
   if ! gon.event?.is_news && ! gon.event?.is_deny_messages
     $scope.event_cache $scope.event
 
+  if gon.event?.is_news
+    $scope.event.merge $scope.events[$scope.event.turn]
+
   $scope.stories_is_small = true
   $scope.potofs_is_small  = true
 

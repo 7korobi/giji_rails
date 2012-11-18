@@ -9,7 +9,7 @@ if history?.pushState?
     Navi.popstate()
 
   GIJI.history = (title, href, hash)->
-    href || href = location.href.replace hash, ""
+    href || href = location.href.replace location.hash, ""
     history.replaceState null, title, href + hash
 else
   GIJI.history = (title, href, hash)->
@@ -92,13 +92,13 @@ RAILS = ($scope, $filter, $compile)->
         item.top = e.pageY + 24
         $scope.anchors.push item
         $scope.$apply()
-        drag = $(".drag [name=#{item.logid}]").parents(".drag")
+        drag = $(".drag.#{item.logid}")
         drag.prepend("""<div class="drag_head"><span class="badge" href_eval="popup(#{turn},'#{item.logid}')">―</span></div>""")
         drag.hide().fadeIn 'fast'
         $scope.boot()
 
       else
-        $(".drag [name=#{item.logid}]").parents(".drag").fadeOut 'fast', ->
+        $(".drag.#{item.logid}").fadeOut 'fast', ->
           $scope.anchors.removeAt(idx)
           $scope.$apply()
 

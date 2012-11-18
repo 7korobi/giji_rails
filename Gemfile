@@ -2,8 +2,8 @@ source 'http://rubygems.org'
 # ruby "1.9.3-p194"
 
 # ruby on rails
-gem 'unicorn', '< 4.4.0'
-gem 'rails', '3.2.9'
+gem 'unicorn'
+gem 'rails'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -80,8 +80,10 @@ gem "rdropbox"
 
 # data_base
 gem "paperclip"
-gem "mongoid", '2.4.11'
-gem "redis-store", '1.0.0.1'
+gem "mongoid"
+gem "mongoid-mapreduce"
+gem "redis-store"
+gem "redis-rails"
 gem 'sqlite3'
 gem "sqlite3-ruby"
 

@@ -39,9 +39,11 @@ class GijiVilScanner < GijiScanner
     events = sow.events.group_by(&:turn)
     event_now = events[ events.keys.max ].try(:first)
 
+    pno = 0
     source.each do |o|
       case o.class.name
       when 'Struct::SowRecordFileUser'
+        pno += 1
         story = sow
 
         face_name = Face.find(o.cid).name  rescue  '***'
@@ -56,6 +58,7 @@ class GijiVilScanner < GijiScanner
         potof ||= SowUser.new
 
         potof.update_attributes(
+          pno: pno,
           sow_auth_id: o.uid,
           face_id:  o.cid,
           csid:     o.csid.split('_')[0],
@@ -104,8 +107,9 @@ class GijiVilScanner < GijiScanner
         }
         potof.say   = say
         potof.timer = dt
-        potof.story = story
-        potof.event = event_now
+
+        potof.story_id = story.id
+        potof.event_id = event_now.id
         potof.save
       when 'Struct::SowRecordFileVil'
         sow.update_attributes(

@@ -31,7 +31,7 @@ FILTER = ($scope, $filter)->
 
     if is_mob_open
       talk_open_regexp = /^[qcaAmSIV][^M]/
-      memo_open_regexp = /^([qcaAmSIVM][M])|([AMam]S)/
+      memo_open_regexp = /^([qcaAmSIMV][M])|([AMam]S)/
     else
       talk_open_regexp = /^[qcaAmSI][^M]/
       memo_open_regexp = /^([qcaAmSIM][M])|([AMam]S)/
@@ -46,7 +46,7 @@ FILTER = ($scope, $filter)->
       memo_all:  /^(.M)|([AMam]S)/
       memo_open: memo_open_regexp
       talk_all:   /^.[^M]/
-      talk_think: /^[qcaAmSIiVG][^M]/
+      talk_think: /^[qcaAmSIiTVG][^M]/
       talk_clan:  /^[qcaAmSIiWPX][^M]/
       talk_open:  talk_open_regexp
 
