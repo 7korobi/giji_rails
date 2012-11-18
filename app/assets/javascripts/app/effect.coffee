@@ -8,14 +8,6 @@ angular.module("giji.directives").directive "accordion", [->
 ]
 
 EFFECT = ($scope)->
-  $(window).scroll ->
-    hide = ->
-      $scope.navi.value = 'blank'
-      $scope.$apply()
-
-    if $scope.is_shy
-      hide.delay(1)
-
   $(window).resize ->
     return unless $scope.navi? && $scope.width?
     height = win.height
@@ -35,10 +27,10 @@ EFFECT = ($scope)->
         info_left = width - 462
         if      small < info_left
           info_width  = info_left
-          $scope.is_shy = false
+          $scope.is_fullwidth = false
         else
           info_width = FixedBox.list["#buttons"].left - 8
-          $scope.is_shy = true
+          $scope.is_fullwidth = true
         content  = "contentframe"
         outframe = "outframe"
 
@@ -47,12 +39,12 @@ EFFECT = ($scope)->
         info_left  = (width - 770)/2 + 189
         if     small  < info_left
           info_width  = info_left
-          $scope.is_shy = false
+          $scope.is_fullwidth = false
           content  = "contentframe_navileft"
           outframe = "outframe_navimode"
         else
           info_width = FixedBox.list["#buttons"].left - 8
-          $scope.is_shy = true
+          $scope.is_fullwidth = true
           content  = "contentframe"
           outframe = "outframe"
 
