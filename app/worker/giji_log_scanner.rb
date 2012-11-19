@@ -21,7 +21,6 @@ class GijiLogScanner < GijiScanner
     end
 
     open( WATCH[:log][:file], "w" ).puts SowVillage.gaps.inspect
-    STDERR.puts SowVillage.gaps.inspect
   end
 
   def enqueue  type

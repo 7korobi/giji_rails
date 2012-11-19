@@ -50,6 +50,7 @@ module Giji
   def self.included(base)
     base.class_eval do
       include Mongoid::Document
+      include Mongoid::MapReduce
     end
   end
 end

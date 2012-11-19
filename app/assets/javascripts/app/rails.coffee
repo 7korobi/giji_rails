@@ -16,6 +16,9 @@ else
     location.hash = hash
 
 RAILS = ($scope, $filter, $compile)->
+  $scope.head = head;
+  $scope.win  = win;
+
   LIB      $scope
 
   MODULE   $scope

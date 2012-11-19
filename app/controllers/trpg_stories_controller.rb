@@ -37,7 +37,7 @@ class TrpgStoriesController < ApplicationController
 
   protected
   def self?
-    trpg_story.user_id == current.user.try(:id)
+    super || trpg_story.user_id == current.user.try(:id)
   end
   def sign
     trpg_story.user_id = current.user.id

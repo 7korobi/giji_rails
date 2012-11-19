@@ -6,7 +6,7 @@ module CurrentAuthenticated
     login? && current.user.try(:admin?)
   end
   def self?
-    false
+    admin?
   end
   def user?
     current.user.try(:login?)

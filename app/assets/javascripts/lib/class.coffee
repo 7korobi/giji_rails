@@ -192,22 +192,33 @@ win =
     win.zoom = base_width / win.width
 
     $("#outframe").height $("#contentframe").height() + win.height / 2
-    win.max = {
+    win.max =
       top:  $('body').height() - win.height
       left: $('body').width()  - win.width
-    }
 
+$(window).on 'resize', -> win.refresh()
+$(window).on 'scroll', -> win.refresh()
 
-$(window).resize ->
-  win.refresh()
+if onorientationchange?
+  $(window).on 'orientationchange', -> win.refresh()
 
-$(window).scroll ->
-  win.refresh()
+if ontouchstart?
+  $(window).on 'touchstart', ->
+  $(window).on 'touchmove', ->
+  $(window).on 'touchend', ->
+else
+  $(window).on 'mousedown', ->
+  $(window).on 'mouseup', ->
+  $(window).on 'mousemove', ->
 
-$(window).bind 'devicemotion', (e)->
+$(window).on 'devicemotion', (e)->
   win.accel   = e.originalEvent.acceleration
   win.gravity = e.originalEvent.accelerationIncludingGravity
   win.rotate  = e.originalEvent.rotationRate
+
+if navigator.userAgent.toLowerCase().indexOf('android') != -1
+  head.browser?.android = true
+head.useragent = navigator.userAgent
 
 class FixedBox
   @list = {}
@@ -218,12 +229,11 @@ class FixedBox
     @box = fixed_box
 
     if @box?
-      if head.csstransitions
-        @box.css
-          left: 0
-          top:  0
-      $(window).resize => @scroll()
-      $(window).scroll => @scroll()
+      @box.css
+        left: 0
+        top:  0
+      $(window).on 'resize', => @scroll()
+      $(window).on 'scroll', => @scroll()
 
   scroll: ()->
     width  = win.width  - @box.width()
@@ -244,19 +254,19 @@ class FixedBox
 
     @box.to_z_front()
 
-    if win.zoom > 1
-      @box.css
-        position: "absolete"
-      left = @left + win.left
-      top  = @top  + win.top
-      @translate(left, top)
-
-    else
+    if 1 == win.zoom  &&  ! head.browser.android
       @box.css
         position: "fixed"
       left = @left + win.left
       top  = @top
       @translate(left, top)
+    else
+      @box.css
+        position: "absolute"
+      left = @left + win.left
+      top  = @top  + win.top
+      @translate(left, top)
+
 
   translate: (left, top)->
     if head.csstransitions

@@ -1,6 +1,5 @@
 class SowUser < Potof
   include Giji
-  include Mongoid::MapReduce
   cache
 
   field :pno,  type: Integer

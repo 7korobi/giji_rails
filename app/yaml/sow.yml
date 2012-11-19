@@ -110,6 +110,9 @@ roles:
   seerwin:
     name: 信仰占師
     win: HUMAN
+  oura:
+    name: 気占師
+    win: HUMAN
   aura:
     name: 気占師
     win: HUMAN

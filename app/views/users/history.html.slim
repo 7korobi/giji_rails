@@ -7,7 +7,7 @@
   h4.sayfilter_caption_enable
     | 他のことを知りたい
   .sayfilter_content
-    li=link_to 'あなたのトップページ', user_path(user.user_id)
+    li=link_to 'あなたのトップページ', user_path(user.id)
 
 - content_for :log do
   - if user.sow_auth_ids && gon.messages_raw

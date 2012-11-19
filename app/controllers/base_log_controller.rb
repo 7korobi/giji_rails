@@ -3,6 +3,6 @@ class BaseLogController < ApplicationController
 
   protected
   def self?
-    story.user_id == current.user.try(:id)
+    super || story.user_id == current.user.try(:id)
   end
 end

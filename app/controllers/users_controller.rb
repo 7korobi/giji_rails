@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 
   respond_to :html, :json
 
+  # show history
   before_filter :auth_require, only:%w[new  create]
   before_filter :self_require, only:%w[edit update byebye_list]
 
@@ -150,6 +151,6 @@ _HTML_
 
 
   def self?
-    user.id == current.user.try(:id)
+    super || user.id == current.user.try(:id)
   end
 end
