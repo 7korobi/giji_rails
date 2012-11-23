@@ -5,6 +5,7 @@ Giji::Application.routes.draw do
 
   resources :trpg_stories, except:%w[show]
 
+  resources :stories, only:%w[index]
   scope ':folder' do
     resources :stories, only:%w[index]
   end

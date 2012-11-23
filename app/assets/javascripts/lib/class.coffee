@@ -74,7 +74,7 @@ class Navi
       if list.hash
         val_hash   = "#" + list.hash.join   "&"  if list.hash
         if location.hash   != val_hash
-          GIJI.history null, null, val_hash
+          win.history null, null, val_hash
 
   _move: ()->
     if @select?
@@ -171,54 +171,6 @@ class PageNavi extends Navi
       @[key].class = null          if is_show
       @[key].class = 'btn-success' if is_show && @value == n[key]
 
-win =
-  top:    0
-  left:   0
-  width:  0
-  height: 0
-  zoom:   0
-  accel:   0
-  gravity: 0
-  rotate:  0
-  max:
-    top:  0
-    left: 0
-
-  refresh: ()->
-    win.height = window.innerHeight || $(window).height()
-    win.width = window.innerWidth || $(window).width()
-
-    base_width = document.body.clientWidth || win.width
-    win.zoom = base_width / win.width
-
-    $("#outframe").height $("#contentframe").height() + win.height / 2
-    win.max =
-      top:  $('body').height() - win.height
-      left: $('body').width()  - win.width
-
-$(window).on 'resize', -> win.refresh()
-$(window).on 'scroll', -> win.refresh()
-
-if onorientationchange?
-  $(window).on 'orientationchange', -> win.refresh()
-
-if ontouchstart?
-  $(window).on 'touchstart', ->
-  $(window).on 'touchmove', ->
-  $(window).on 'touchend', ->
-else
-  $(window).on 'mousedown', ->
-  $(window).on 'mouseup', ->
-  $(window).on 'mousemove', ->
-
-$(window).on 'devicemotion', (e)->
-  win.accel   = e.originalEvent.acceleration
-  win.gravity = e.originalEvent.accelerationIncludingGravity
-  win.rotate  = e.originalEvent.rotationRate
-
-if navigator.userAgent.toLowerCase().indexOf('android') != -1
-  head.browser?.android = true
-head.useragent = navigator.userAgent
 
 class FixedBox
   @list = {}
@@ -254,19 +206,18 @@ class FixedBox
 
     @box.to_z_front()
 
-    if 1 == win.zoom  &&  ! head.browser.android
-      @box.css
-        position: "fixed"
-      left = @left + win.left
-      top  = @top
-      @translate(left, top)
-    else
+    if 1 < win.zoom  or  head.browser.android
       @box.css
         position: "absolute"
       left = @left + win.left
       top  = @top  + win.top
       @translate(left, top)
-
+    else
+      @box.css
+        position: "fixed"
+      left = @left + win.left
+      top  = @top
+      @translate(left, top)
 
   translate: (left, top)->
     if head.csstransitions

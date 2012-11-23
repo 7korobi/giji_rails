@@ -22,7 +22,7 @@ export UTAGE
 export SSH_PORT
 export WEB_PORT
 export MONGO_URL="mongodb://7korobi:kotatsu3@mongo.family.jp/giji"
-export REDIS_URL="redis://utage.family.jp:6379/0"
+export REDIS_URL="redis://mongo.family.jp:6379/0"
 
 eval "$(rbenv init -)"
 _SH_
@@ -37,9 +37,5 @@ _SH_
 
 commands = <<-_SH_
 chmod 755  ~/web-env ~/.bash_profile
-
-test -d ~/.node  ||  git clone git://github.com/creationix/nvm.git ~/.node
-test -d ~/.node/#{node}           || nvm install #{node}
-test -d ~/.npm/socketstream/#{ss} || npm install -g socketstream
 _SH_
 commands.each_line {|sh| system sh}

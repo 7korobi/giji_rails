@@ -44,16 +44,43 @@ face_titles:
 
 
 page:
+  folder:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+      ALL:       "- すべて -"
+      PAN:       "似顔絵人狼:"
+      WOLF:      "人狼議事標準:"
+      RP:        "人狼議事RP:"
+      PRETENSE:  "人狼議事RP:A"
+      PERJURY:   "人狼議事RP:Bp"
+      XEBEC:     "人狼議事RP:Bx"
+      CRAZY:     "人狼議事RP:Bc"
+      CABALA:    "人狼議事CabalaCafe:"
+      ULTIMATE:  "人狼議事大乱闘:"
+      ALLSTAR:   "人狼議事大乱闘:A"
+      LOBBY:     "人狼議事ロビー"
+      OFFPARTY:  "人狼議事オフ相談所"
+
+  game_rule:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
   page:
     options:
       current: 1
-      location: 'hash'
+      location: hash
       is_cookie: false
 
   order:
     options:
-      current: 'asc'
-      location: 'hash'
+      current: asc
+      location: hash
       is_cookie: true
     button:
       asc:  上から下へ
@@ -62,7 +89,7 @@ page:
   row:
     options:
       current: 50
-      location: 'hash'
+      location: hash
       is_cookie: true
     button:
       10:  10行

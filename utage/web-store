@@ -1,0 +1,36 @@
+#!/bin/sh
+
+mongod=/etc/init.d/mongod
+redis=/usr/local/bin/redis-server
+conf=/utage/conf/redis.conf
+pid=/var/run/redis.pid
+
+case "$1" in
+status)
+  echo
+  ls /var/run/redis.pid && echo "redis (pid "`cat $pid`") を実行中..."
+  $mongod status
+  ps -A | grep $conf
+  ;;
+start-redis)
+  $redis $conf
+  ;;
+start-mongo)
+  $mongod start
+  ;;
+start)
+  $redis $conf
+  $mongod start
+  ;;
+stop)
+  cat $pid | xargs sudo kill -QUIT
+  $mongod stop
+  ;;
+restart|reload)
+  cat $pid | xargs sudo kill -HUP
+  $mongod reload
+  ;;
+*)
+  echo $"Usage: $0 {start|start-redis|start-mongo|stop|restart|reload}"
+esac
+

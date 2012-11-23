@@ -109,7 +109,7 @@ class GijiVilScanner < GijiScanner
         potof.timer = dt
 
         potof.story_id = story.id
-        potof.event_id = event_now.id
+        potof.event_id = event_now.id  if  event_now
         potof.save
       when 'Struct::SowRecordFileVil'
         sow.update_attributes(
@@ -166,6 +166,9 @@ class GijiVilScanner < GijiScanner
         sow.timer  = dt
         sow.is_finish = (o.epilogue.to_i <= o.turn.to_i)
         sow.save
+
+        sow = SowVillage.where( folder: folder, vid: vid ).first
+        events = sow.events.group_by(&:turn)
 
         o.turn.to_i.times do |turn_no|
           event = events[turn_no].try(:first) || SowTurn.new(story_id: sow.id, turn: turn_no)

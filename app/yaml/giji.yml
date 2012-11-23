@@ -8,6 +8,10 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 news:
+- text: 名簿タブの表示を調整しました。陣営表示の不具合などもあったので訂正。
+  date: 2012-11-23
+- text: 過去ログ一覧ページを全体検索できるように変更
+  date: 2012-11-23
 - text: Androidでのフォームのアニメーションを調整しました。
   date: 2012-11-19
 - text: アカウント一覧を、管理者用（一般には見えない）の扱いとしました。

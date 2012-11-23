@@ -12,8 +12,6 @@ group :assets do
   gem 'uglifier',     ">= 1.0.3"
 
   #gem 'sass'
-  #gem 'coffee-script'
-  #gem 'uglifier'
   #gem 'execjs'
   #gem 'therubyracer'
 end

@@ -382,9 +382,14 @@ live:
 
 live_caption:
   live:       生存者
+  executed:   処刑
   victim:     犠牲者
-  mob:        見物人
+  cursed:     犠牲者
+  droop:      犠牲者
+  suicide:    犠牲者
+  feared:     犠牲者
   suddendead: 突然死
+  mob:        見物人
 
 mob:
   visiter:

@@ -12,28 +12,36 @@
   hr.invisible_hr
   h2= params[:folder]
 
+  .pagenavi.form-inline.input-prepend(template="navi/page_navi")
+  .pagenavi.form-inline.input-prepend
+    select.input-small( ng-model="folder.value"  ng-options="o.val as o.name for o in folder.select")
+    select.input-small( ng-model="game_rule.value"  ng-options="o.val as o.name for o in game_rule.select")
+
+
+
   table.vindex(border="1" summary="物語の一覧")
     thead
       tr
         th(scope="col")
           code(ng-click="stories_is_small = ! stories_is_small") スタイル
-        th(scope="col") 人数
-        th(scope="col") ルール
+        th(scope="col" ng-hide="stories_is_small") 人数
+        th(nowrap="" scope="col") ルール
     tbody
-      - stories.each do |story|
-        tr
-          td
-            = story.vid
-            | &nbsp;
-            = link_to story.name.html_safe, show_path(story)
-            = image_tag "/images/icon/cd_#{story.rating}.png"
-            - if SowVillage === story
-              span.note(ng-show="stories_is_small")
-                br= "　　更新 : #{"%02d:%02d"%[story.upd['hour'], story.upd['minute']]} #{24 * story.upd['interval']}h毎"
-          - if SowVillage === story
-            td.small= "%02d人"%[story.vpl.last]
-            td
-              span.note(ng-show="stories_is_small")
-                = SOW[:saycnt][story.type['say']][:CAPTION] rescue story.type['say']
-                br
-              = SOW[:game_rule][story.type['game'] || 'TABULA'][:CAPTION] rescue story.type['game']
+      tr(ng-repeat="story in stories_find")
+        td
+          | {{story._id}} &nbsp;
+          a(ng-href="{{story.link}}") {{story.name}}
+          img(ng-src="/images/icon/cd_{{story.rating}}.png")
+          span.note(ng-hide="stories_is_small || story._type != 'SowVillage'")
+            br
+            | 　　更新 : {{story.upd.time_text}} {{story.upd.interval_text}}
+            br
+            | {{story.card.config_names}}
+
+        td.small(ng-hide="stories_is_small")
+          | {{story.vpl.last()}}人
+        td(nowrap="")
+          span.note(ng-hide="stories_is_small || story._type != 'SowVillage'")
+            | {{story.type.saycnt.CAPTION}}
+            br
+          | {{story.type.game_rule.CAPTION}}

@@ -6,8 +6,8 @@ if SOW_RECORD.CABALA.events?
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
-CGI = ($scope, $filter, $compile)->
-  RAILS $scope, $filter, $compile
+CGI = ($scope, $filter)->
+  MODULE $scope, $filter
 
   length = (text, unit)->
     switch unit
@@ -127,7 +127,3 @@ CGI = ($scope, $filter, $compile)->
     $scope.confirm_complete = ->
       $scope.form.confirm = null
       $("#" + f.cmd).submit()
-
-  if $scope.story?
-    $scope.story.upd.time_text = "#{$scope.story.upd.hour}時#{$scope.story.upd.minute}分"
-    $scope.story.upd.interval_text = "#{$scope.story.upd.interval * 24}時間"

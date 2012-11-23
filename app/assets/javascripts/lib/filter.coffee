@@ -1,6 +1,9 @@
 
 FILTER = ($scope, $filter)->
-  has_messages =  $scope.event?.messages?  ||  $scope.messages_raw?
+  has_messages = false
+  has_messages or= $scope.event?.messages?
+  has_messages or= $scope.messages_raw?
+  has_messages or= $scope.stories?
   return unless has_messages
 
   row = OPTION.page.row
@@ -11,13 +14,45 @@ FILTER = ($scope, $filter)->
   PageNavi.push $scope, 'page',  OPTION.page.page
 
   page = $scope.page
-  page.filter_to 'messages'
+
+  filter_filter = $filter 'filter'
+
+  if $scope.stories?
+    page.filter_by 'stories'
+    page.filter_to 'stories_find'
+
+    game_rule =
+      options: OPTION.page.game_rule.options
+      button:
+        ALL: "- すべて -"
+
+    SOW.game_rule.keys (key,o)->
+      game_rule.button[key] = o.CAPTION
+
+    Navi.push $scope, 'folder',   OPTION.page.folder
+    Navi.push $scope, 'game_rule', game_rule
+
+    page.filter 'folder.value', (key, list)->
+      if 'ALL' == $scope.folder.value
+        list
+      else
+        list.filter (o)->
+          o.folder == $scope.folder.value
+
+    page.filter 'game_rule.value', (key, list)->
+      if 'ALL' == $scope.game_rule.value
+        list
+      else
+        list.filter (o)->
+          o.type.game == $scope.game_rule.value
 
   if $scope.messages_raw?
     page.filter_by 'messages_raw'
+    page.filter_to 'messages'
 
   if $scope.event?.messages?
     page.filter_by 'event.messages'
+    page.filter_to 'messages'
     page.filter 'event.is_news'
     mode_current = 'talk_all'
     unless $scope.event.is_news
@@ -95,7 +130,6 @@ FILTER = ($scope, $filter)->
       list.filter (o)->
         face_ids.some o.face_id
 
-  filter_filter = $filter 'filter'
   page.filter 'search.value', (search, list)->
     filter_filter list, search
 

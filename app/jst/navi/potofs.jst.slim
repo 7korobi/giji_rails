@@ -1,37 +1,42 @@
 table(class="table table-condensed")
-  thead
+  thead.head
     tr(ng-show="potofs_is_small")
       th
         code(ng-click="potofs_toggle()")
-          i.icon-resize-full
-          i.icon-resize-small
+          i.icon-resize-full(ng-show="potofs_is_small")
+          i.icon-resize-small(ng-hide="potofs_is_small")
         | &nbsp;{{sum.actaddpt}}促
       th
-        code(href_eval="sort_potofs('deathday',0)") 日程
-        code(href_eval="sort_potofs('live','')") 状態
+        code(href_eval="sort_potofs('stat_at',0)") 日程
+        code(href_eval="sort_potofs('stat_type','')") 状態
       th(colspan="2")
-        code(href_eval="sort_potofs('role_names','')") 役割
+        code(href_eval="sort_potofs('win_name','')") 陣営
 
     tr(ng-hide="potofs_is_small")
       th
         code(ng-click="potofs_toggle()")
-          i.icon-resize-full
-          i.icon-resize-small
+          i.icon-resize-full(ng-show="potofs_is_small")
+          i.icon-resize-small(ng-hide="potofs_is_small")
         | &nbsp;{{sum.actaddpt}}促
       th
-        code(href_eval="sort_potofs('deathday',0)") 日程
-        code(href_eval="sort_potofs('live','')") 状態
+        code(href_eval="sort_potofs('stat_at',0)") 日程
+        code(href_eval="sort_potofs('stat_type','')") 状態
         code(href_eval="sort_potofs('said_num',0)") 発言
       th(colspan="2")
         code(href_eval="sort_potofs('win_name','')") 陣営
         code(href_eval="sort_potofs('role_names','')") 役割
         code(href_eval="sort_potofs('select_name','')") 希望
         code(href_eval="sort_potofs('text','')") 補足
-  tbody(ng-show="potofs_is_small")
-    tr(ng-repeat="potof in potofs" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'")
+  tbody(ng-repeat="key in potofs_keys")
+    tr.head
+      th(colspan="4")
+        | {{potofs_groups[key].head}}
+        sub(ng-show="potofs_groups[key].has_head")
+          | ({{potofs_groups[key].length}}人)
+    tr(ng-repeat="potof in potofs_groups[key]" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'" ng-show="potofs_is_small")
       td
         a(href="{{potof_href(potof)}}" target="_blank")
-          i.icon-resize-full
+          | ≡
         | {{potof.name}}
       td(style="text-align: right;")
         | {{potof.stat}}
@@ -39,17 +44,10 @@ table(class="table table-condensed")
         | {{potof.role_names.join('、')}}
       td
         span(ng-bind-html-unsafe="potof.text.join(' ')")
-    tr(ng-click="other_toggle()" ng-class="others_hide && 'btn-inverse'")
-      td 他の人々
-      td
-      td
-      td
-
-  tbody(ng-hide="potofs_is_small")
-    tr(ng-repeat="potof in potofs" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'")
+    tr(ng-repeat="potof in potofs_groups[key]" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'" ng-hide="potofs_is_small")
       td
         a(href="{{potof_href(potof)}}" target="_blank")
-          i.icon-resize-full
+          | ≡
         | {{potof.longname || potof.name}}
         .note(ng-show="potof.auth")
           i(class="icon-user")
@@ -67,33 +65,36 @@ table(class="table table-condensed")
         span(ng-bind-html-unsafe="potof.text.join(' ')")
         .note(ng-show="potof.bond_names")
           | {{potof.bond_names.join('、')}}
+  tbody
+    tr.head
+      th(colspan="4")
     tr(ng-click="other_toggle()" ng-class="others_hide && 'btn-inverse'")
       td 他の人々
       td
       td
       td
-  thead
+  thead.head
     tr(ng-show="potofs_is_small")
       th
         code(ng-click="potofs_toggle()")
-          i.icon-resize-full
-          i.icon-resize-small
+          i.icon-resize-full(ng-show="potofs_is_small")
+          i.icon-resize-small(ng-hide="potofs_is_small")
         | &nbsp;{{sum.actaddpt}}促
       th
-        code(href_eval="sort_potofs('deathday',0)") 日程
-        code(href_eval="sort_potofs('live','')") 状態
+        code(href_eval="sort_potofs('stat_at',0)") 日程
+        code(href_eval="sort_potofs('stat_type','')") 状態
       th(colspan="2")
-        code(href_eval="sort_potofs('role_names','')") 役割
+        code(href_eval="sort_potofs('win_name','')") 陣営
 
     tr(ng-hide="potofs_is_small")
       th
         code(ng-click="potofs_toggle()")
-          i.icon-resize-full
-          i.icon-resize-small
+          i.icon-resize-full(ng-show="potofs_is_small")
+          i.icon-resize-small(ng-hide="potofs_is_small")
         | &nbsp;{{sum.actaddpt}}促
       th
-        code(href_eval="sort_potofs('deathday',0)") 日程
-        code(href_eval="sort_potofs('live','')") 状態
+        code(href_eval="sort_potofs('stat_at',0)") 日程
+        code(href_eval="sort_potofs('stat_type','')") 状態
         code(href_eval="sort_potofs('said_num',0)") 発言
       th(colspan="2")
         code(href_eval="sort_potofs('win_name','')") 陣営

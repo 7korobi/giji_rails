@@ -1,12 +1,7 @@
-
-tokenInput = {}
-
-MODULE = ($scope)->
-  $scope.face_id =
-    hide:   []
-    potofs: []
-    others: []
-    all:    []
+MODULE = ($scope, $filter)->
+  $scope.head = head;
+  $scope.win  = win;
+  $scope.link = GIJI.link
 
   background = (log)->
     log_type = $scope.mode?.choice().log
@@ -75,25 +70,13 @@ MODULE = ($scope)->
     else
       return "....-..-..(？？？) --..時頃"
 
-  # page requesting
-  replace_gon = (data)->
-    codes = data.match ///
-      <script.*?>[\s\S]*?</script>
-    ///ig
-    for dom in codes
-      code = $(dom).text()
-      if code.match(/gon/)?
-        eval code
+  $scope.news = ()->
+    for o in GIJI.news
+      o.is_news = Date.create('3days ago') < Date.create(o.date)
+    GIJI.news
 
-  $scope.post = (href, form, func)->
-    $.post href, form, (data)->
-      replace_gon data
-      func()
-
-  $scope.get = (href, func)->
-    $.get href, {}, (data)->
-      replace_gon data
-      func()
+  $scope.$watch 'title', (oldVal, newVal)->
+    $('title').text(newVal);
 
   # face_id support
   $scope.img_csid_cid = (csid_cid)->
@@ -129,66 +112,111 @@ MODULE = ($scope)->
   $scope.remove_card = (at, idx)->
     $scope.story.card[at].removeAt idx
 
-  # events support
-  $scope.event_merge = (event)->
-    if $scope.events? && event?.messages? && event?.turn?
-      cache = $scope.events[event.turn]
-      if cache?
-        event.merge
-          name: cache.name
-          link: cache.link
-    else
-      null
+  navi =
+    options:
+      current: 'link'
+      location: 'hash'
+      is_cookie: false
+    button: GIJI.navis
 
-  $scope.event_cache = (event)->
-    event = $scope.event_merge event
-    if 0 < event?.messages.length
-      $scope.events[event.turn] = event
-    else
-      null
+  href_eval = (e)->
+    init_gon = (href)->
+      $scope.gon(href)
 
-  # potofs support
-  calc_potof = ->
-    hides = $scope.potofs.filter((o)-> o.is_hide ).map (o)-> o.face_id
-    hides.add $scope.face_id.others if $scope.others_hide
-    hides.remove '_none_'
-    $scope.face_id.hide = hides
+    sort_potofs = (tgt, zero)->
+      reverse = (tgt == @tgt)
+      $scope.potofs_sortBy tgt, reverse, zero
+      $scope.$apply()
+      @tgt = reverse || tgt
 
-  $scope.other_toggle = ->
-    $scope.others_hide = ! $scope.others_hide
-    calc_potof()
+    navi = (link)->
+      $scope.navi.move link
+      if $scope.potofs?
+        $scope.potofs_is_small = false
+      $scope.$apply()
 
-  $scope.potof_href = (potof)->
-    hash = location.hash
-    location.href.replace hash, "##{hash}&face_only=#{potof.face_id}"
+    cancel_say = (logid)->
+      params = Object.fromQueryString(location.search)
+      params.cmd   = 'cancel'
+      params.queid = logid
+      GIJI.cancel_log = $.param params
+      location.search = GIJI.cancel_log
 
-  $scope.potof_toggle = (potof)->
-    potof.is_hide = ! potof.is_hide
-    calc_potof()
+    popup_apply = (e, item, turn)->
+      idx = $scope.anchors.indexOf item
+      if idx < 0
+        item.z = Date.now()
+        item.top = e.pageY + 24
+        $scope.anchors.push item
+        $scope.$apply()
+        drag = $(".drag.#{item.logid}")
+        drag.prepend("""<div class="drag_head"><span class="badge" href_eval="popup(#{turn},'#{item.logid}')">≡</span></div>""")
+        drag.hide().fadeIn 'fast'
+        $scope.boot()
 
-  $scope.potofs_toggle = ->
-    $scope.potofs_is_small = ! $scope.potofs_is_small
+      else
+        $(".drag.#{item.logid}").fadeOut 'fast', ->
+          $scope.anchors.removeAt(idx)
+          $scope.$apply()
+
+    popup = (turn, ank)->
+      href = location.href.replace location.hash, ""
+
+      popup_find = ()->
+        has_messages = 0 < $scope.events[turn]?.messages?.length
+        return null unless has_messages
+
+        item = $scope.events[turn].messages.find (log)->
+          log.logid == ank
+        if item
+          popup_apply e, item, turn
+        item
+
+      popup_ajax = (turn)->
+        return null if turn < 0
+        has_messages = 0 < $scope.events[turn]?.messages?.length
+        return null if has_messages
+
+        href = GIJI.change_turn href, turn
+        $scope.get href, =>
+          $scope.event_cache gon.event  if  turn == gon.event.turn
+          return  if  popup_find()
+        href
+
+      return  if  popup_ajax turn
+      return  if  popup_find()
+      return  if  popup_ajax turn - 1
+
+    eval $(e.target).attr('href_eval')
+    $scope.adjust()
+
+  foreground = (e)->
+    logid = $(e.target).find("[name]").attr('name')
+    item  = $scope.anchors.find (o)-> logid = o.logid
+    item.z = Date.now()
+    $scope.$apply()
+
+  # use in interpolate
+  $('#messages').on  'click', '.drag',      foreground
+  $('#messages').on  'click', '[href_eval]', href_eval
+  $('#sayfilter').on 'click', '[href_eval]', href_eval
+
+  Navi.push $scope, 'navi',  navi
+  $scope.navi.watch.push ->
     $scope.boot()
 
-  # token input support
 
-  $scope.tokenInput = (target, all, obj)->
-    event_value = (key)-> SOW[all][key]
-    event_add   = (key)-> $(target).tokenInput 'add', event_value(key)
-    sel_values = obj.map event_value
-    all_values = SOW[all].keys().map event_value
+  TOKEN_INPUT  $scope
+  AJAX    $scope
+  CACHE   $scope
+  EFFECT  $scope
+  POTOFS  $scope
 
-    tokenInput[target] =
-      selValue: sel_values.compact()
-      allValue: all_values
-      eventAdd:   event_add
-      eventValue: event_value
+  # INIT FILTER POOL sequence
+  INIT    $scope
+  FILTER  $scope, $filter
+  POOL    $scope
 
-    $(target).tokenInput all_values,
-      prePopulate: sel_values.compact()
-      tokenDelimiter:   "/"
-      propertyToSearch: "name"
-      resultsFormatter: (item)-> "<li>#{item.name}</li>"
-      tokenFormatter:   (item)-> "<li>#{item.name}</li>"
-
+  $scope.potofs_sortBy 'stat_at',   true
+  $scope.potofs_sortBy 'stat_type', true
 
