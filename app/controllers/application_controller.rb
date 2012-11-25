@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :gon
+  helper_method :theme
 
   protect_from_forgery
   include CurrentAuthenticated
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+  def theme
+    "giji"
+  end
+
   def form obj
     url = [:story].each_with_object controller: obj.class.name.collectionize do |symbol, hash|
       hash[:"#{symbol}_id"] = send(symbol)

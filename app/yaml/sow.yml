@@ -217,7 +217,7 @@ roles:
     win: EVIL
   headless:
     name: 首無騎士
-    win: EVIL
+    win: WOLF
   wolf:
     name: 人狼
     win: WOLF
@@ -352,22 +352,6 @@ maskstates:
   0b000000011: 能力枯渇
   0b000000010: 毒薬枯渇
   0b000000001: 蘇生薬枯渇
-
-live_list:
-  live:
-    - live
-  victim:
-    - victim
-    - cursed
-    - droop
-    - suicide
-    - feared
-  executed:
-    - executed
-  suddendead:
-    - suddendead
-  mob:
-    - mob
 
 live:
   live:       生存者

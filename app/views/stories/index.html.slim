@@ -23,7 +23,9 @@
     thead
       tr
         th(scope="col")
-          code(ng-click="stories_is_small = ! stories_is_small") スタイル
+          code(ng-click="stories_toggle()")
+            i.icon-resize-full(ng-show="stories_is_small")
+            i.icon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
         th(nowrap="" scope="col") ルール
     tbody
@@ -45,3 +47,12 @@
             | {{story.type.saycnt.CAPTION}}
             br
           | {{story.type.game_rule.CAPTION}}
+    thead
+      tr
+        th(scope="col")
+          code(ng-click="stories_toggle()")
+            i.icon-resize-full(ng-show="stories_is_small")
+            i.icon-resize-small(ng-hide="stories_is_small")
+        th(scope="col" ng-hide="stories_is_small") 人数
+        th(nowrap="" scope="col") ルール
+

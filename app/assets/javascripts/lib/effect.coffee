@@ -16,10 +16,13 @@ EFFECT = ($scope)->
     switch $scope.navi.value
       when 'info'
         if $scope.potofs?
-          if $scope.potofs_is_small
-            small = 300
+          if $scope.secret_is_open
+            if $scope.potofs_is_small
+              small = 300
+            else
+              small = 450
           else
-            small = 460
+              small = 200
 
     switch $scope.width.value
       when 480

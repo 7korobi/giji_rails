@@ -54,7 +54,7 @@ MODULE = ($scope, $filter)->
     date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
 
   $scope.lax_time = (date)->
-    if date?
+    if date? && date.addMinutes?
       timespan = (new Date() - date)/1000
       limit = 3 * 60 * 60
       if - limit < timespan < limit
@@ -77,6 +77,11 @@ MODULE = ($scope, $filter)->
 
   $scope.$watch 'title', (oldVal, newVal)->
     $('title').text(newVal);
+
+  # stories support
+  $scope.stories_toggle = ->
+    $scope.stories_is_small = ! $scope.stories_is_small
+    $scope.boot()
 
   # face_id support
   $scope.img_csid_cid = (csid_cid)->
@@ -133,6 +138,7 @@ MODULE = ($scope, $filter)->
       $scope.navi.move link
       if $scope.potofs?
         $scope.potofs_is_small = false
+        $scope.secret_is_open  = false
       $scope.$apply()
 
     cancel_say = (logid)->

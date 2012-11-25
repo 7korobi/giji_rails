@@ -12,10 +12,7 @@ html(lang="ja" ng-controller="RAILS")
           img(ng-src="{{h1.path}}" ng-cloak)
         =render partial: 'layouts/titles'
         .choice
-          - if 'PAN' == params[:folder]
-            p(theme="pan")
-          - else
-            p(theme="giji")
+            p(theme="#{theme}")
         .inframe.toppage
           hr.invisible_hr
           = yield :top

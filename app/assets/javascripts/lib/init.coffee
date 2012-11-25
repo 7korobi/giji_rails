@@ -92,12 +92,34 @@ INIT = ($scope)->
 
           zombie = 0x040
           win_zombie = 'WOLF' if ('TROUBLE' == story.type.game) && 0 == (potof.rolestate & zombie)
-          win_love   = SOW.loves[potof.love]?.win
+          win_juror = 'HUMAN' if ('juror' == story.type.mob) && ('mob' == potof.live)
+          win_love = SOW.loves[potof.love]?.win
 
-          win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
+          win_juror || win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
         potof.win = win_check potof, gon.story
-        potof.win_name = SOW.wins[potof.win]?.name
+        if ["PAN WOLF RP PRETENSE PERJURY XEBEC CRAZY"].find gon.story.folder
+          potof.win = 'WOLF' if potof.win == 'EVIL'
 
+        if gon.story.is_finish
+          if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA"].find gon.story.folder
+            is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].find gon.story.type.game
+            is_dead_lose = 1 if "LONEWOLF" == potof.win
+            is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
+            is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.find "HATEDEVIL"
+            is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.find "LOVEANGEL"
+            potof.win_result = "敗北"
+            potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
+            potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && "EVIL" == potof.win
+            potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
+            potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.find potof.pno
+            potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
+            potof.win_result = "参加" if "NONE" == potof.win
+          else
+            potof.win_result = "参加"
+        potof.win_result = "" if "suddendead" == potof.live
+
+
+        potof.win_name = SOW.wins[potof.win]?.name
         potof.role_names  = potof.role.map $scope.rolename
 
       if potof.select?

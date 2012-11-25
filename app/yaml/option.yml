@@ -135,11 +135,18 @@ css:
         star:   蒼穹
         wa:     和の国
 
-form:
-  styles:
-  - name: "(通常)"
-    val:  ""
-  - name: "等幅"
-    val:  "mono"
-  - name: "見出し"
-    val:  "head"
+gon:
+  cautions: []
+  form:
+    side: []
+    links: []
+    texts: []
+    secrets: []
+    commands: {}
+    styles:
+    - name: "(通常)"
+      val:  ""
+    - name: "等幅"
+      val:  "mono"
+    - name: "見出し"
+      val:  "head"

@@ -13,4 +13,14 @@ class EventsController < BasePastLogController
     end
     gon.potofs = story.potofs.cache.map(&:attributes)
   end
+
+  protected
+  def theme
+    case story.folder
+    when "PAN"
+      "pan"
+    else
+      "giji"
+    end
+  end
 end

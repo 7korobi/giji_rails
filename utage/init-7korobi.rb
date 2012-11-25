@@ -21,6 +21,7 @@ export PATH
 export UTAGE
 export SSH_PORT
 export WEB_PORT
+export RBENV_VERSION=2.0.0-preview1
 export MONGO_URL="mongodb://7korobi:kotatsu3@mongo.family.jp/giji"
 export REDIS_URL="redis://mongo.family.jp:6379/0"
 

@@ -20,12 +20,25 @@ POTOFS = ($scope)->
     hash = location.hash
     location.href.replace hash, "##{hash}&face_only=#{potof.face_id}"
 
+  $scope.potof_only = (potofs)->
+    $scope.others_hide = potofs != $scope.potofs
+    for potof in $scope.potofs
+      potof.is_hide = true
+
+    for potof in potofs
+      potof.is_hide = false
+    calc_potof()
+
   $scope.potof_toggle = (potof)->
     potof.is_hide = ! potof.is_hide
     calc_potof()
 
   $scope.potofs_toggle = ->
     $scope.potofs_is_small = ! $scope.potofs_is_small
+    $scope.boot()
+
+  $scope.secret_toggle = ->
+    $scope.secret_is_open = ! $scope.secret_is_open
     $scope.boot()
 
   head_mode =

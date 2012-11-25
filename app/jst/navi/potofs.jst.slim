@@ -1,103 +1,134 @@
 table(class="table table-condensed")
   thead.head
-    tr(ng-show="potofs_is_small")
+    tr
       th
         code(ng-click="potofs_toggle()")
           i.icon-resize-full(ng-show="potofs_is_small")
           i.icon-resize-small(ng-hide="potofs_is_small")
-        | &nbsp;{{sum.actaddpt}}促
-      th
+        wbr
+        span.name
+          | &nbsp;{{sum.actaddpt}}促
+      th(colspan="2" style="text-align: right;")
         code(href_eval="sort_potofs('stat_at',0)") 日程
+        wbr
         code(href_eval="sort_potofs('stat_type','')") 状態
-      th(colspan="2")
-        code(href_eval="sort_potofs('win_name','')") 陣営
+      th(colspan="2" ng-show="potofs_is_small")
+        div(ng-show="secret_is_open")
+          code(href_eval="sort_potofs('win_result','')") 勝敗
+          wbr
+          code(href_eval="sort_potofs('win_name','')") 陣営
+      th(colspan="2" ng-hide="potofs_is_small")
+        div(ng-show="secret_is_open")
+          code(href_eval="sort_potofs('said_num',0)") 発言
+          wbr
+          code(href_eval="sort_potofs('win_result','')") 勝敗
+          wbr
+          code(href_eval="sort_potofs('win_name','')") 陣営
+          wbr
+          code(href_eval="sort_potofs('role_names','')") 役割
+          wbr
+          code(href_eval="sort_potofs('select_name','')") 希望
+          wbr
+          code(href_eval="sort_potofs('text','')") 補足
+      th(style="width: 17px")
+        a(ng-click="potof_only(potofs)")
+          i.icon-share-alt
 
-    tr(ng-hide="potofs_is_small")
-      th
-        code(ng-click="potofs_toggle()")
-          i.icon-resize-full(ng-show="potofs_is_small")
-          i.icon-resize-small(ng-hide="potofs_is_small")
-        | &nbsp;{{sum.actaddpt}}促
-      th
-        code(href_eval="sort_potofs('stat_at',0)") 日程
-        code(href_eval="sort_potofs('stat_type','')") 状態
-        code(href_eval="sort_potofs('said_num',0)") 発言
-      th(colspan="2")
-        code(href_eval="sort_potofs('win_name','')") 陣営
-        code(href_eval="sort_potofs('role_names','')") 役割
-        code(href_eval="sort_potofs('select_name','')") 希望
-        code(href_eval="sort_potofs('text','')") 補足
+
   tbody(ng-repeat="key in potofs_keys")
     tr.head
-      th(colspan="4")
+      th(colspan="5")
         | {{potofs_groups[key].head}}
         sub(ng-show="potofs_groups[key].has_head")
           | ({{potofs_groups[key].length}}人)
-    tr(ng-repeat="potof in potofs_groups[key]" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'" ng-show="potofs_is_small")
-      td
-        a(href="{{potof_href(potof)}}" target="_blank")
-          | ≡
-        | {{potof.name}}
-      td(style="text-align: right;")
+      th(style="width: 17px")
+        div(ng-show="potofs_groups[key].has_head")
+          a(ng-click="potof_only(potofs_groups[key])")
+            i.icon-share-alt
+
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="potof.is_hide && 'btn-inverse'" ng-show="potofs_is_small")
+      td(ng-click="potof_toggle(potof)")
+        span.name
+          | {{potof.name}}
+      td(ng-click="potof_toggle(potof)" colspan="2" style="text-align: right;")
         | {{potof.stat}}
-      td
-        | {{potof.role_names.join('、')}}
-      td
-        span(ng-bind-html-unsafe="potof.text.join(' ')")
-    tr(ng-repeat="potof in potofs_groups[key]" ng-click="potof_toggle(potof)" ng-class="potof.is_hide && 'btn-inverse'" ng-hide="potofs_is_small")
-      td
-        a(href="{{potof_href(potof)}}" target="_blank")
-          | ≡
-        | {{potof.longname || potof.name}}
-        .note(ng-show="potof.auth")
-          i(class="icon-user")
+      td(ng-click="potof_toggle(potof)")
+        span(ng-show="secret_is_open")
+          | {{potof.role_names.join('、')}}
+      td(ng-click="potof_toggle(potof)")
+        span(ng-show="secret_is_open" ng-bind-html-unsafe="potof.text.join('')")
+      td(style="width: 17px")
+        a(ng-click="potof_only([potof])")
+          i.icon-share-alt
+
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="potof.is_hide && 'btn-inverse'" ng-hide="potofs_is_small")
+      td(ng-click="potof_toggle(potof)")
+        span.name
+          | {{potof.longname || potof.name}}
+        .note.name(ng-show="potof.auth")
+          i.icon-user
           | {{potof.auth}}
-      td(style="text-align: right;")
+      td(ng-click="potof_toggle(potof)" colspan="2" style="text-align: right;")
         | {{potof.stat}}
         .note(ng-show="potof.said")
           i(class='icon-comment')
           | {{potof.said}}
-      td
-        | {{potof.win_name}}::{{potof.role_names.join('、')}}
-        .note(ng-show="potof.select_name")
-          | {{potof.select_name}}
-      td
-        span(ng-bind-html-unsafe="potof.text.join(' ')")
-        .note(ng-show="potof.bond_names")
+      td(ng-click="potof_toggle(potof)")
+        span(ng-show="secret_is_open")
+          | {{potof.win_name}}::{{potof.role_names.join('、')}}
+        .note(ng-show="secret_is_open")
+          strong {{potof.win_result}}
+          span.name(ng-show="potof.select_name")
+            | &nbsp; {{potof.select_name}} を希望
+      td(ng-click="potof_toggle(potof)")
+        span(ng-show="secret_is_open" ng-bind-html-unsafe="potof.text.join('')")
+        .note(ng-show="secret_is_open && potof.bond_names")
           | {{potof.bond_names.join('、')}}
+      td(style="width: 17px")
+        a(ng-click="potof_only([potof])")
+          i.icon-share-alt
+
+
   tbody
     tr.head
-      th(colspan="4")
-    tr(ng-click="other_toggle()" ng-class="others_hide && 'btn-inverse'")
-      td 他の人々
-      td
-      td
-      td
-  thead.head
-    tr(ng-show="potofs_is_small")
-      th
-        code(ng-click="potofs_toggle()")
-          i.icon-resize-full(ng-show="potofs_is_small")
-          i.icon-resize-small(ng-hide="potofs_is_small")
-        | &nbsp;{{sum.actaddpt}}促
-      th
-        code(href_eval="sort_potofs('stat_at',0)") 日程
-        code(href_eval="sort_potofs('stat_type','')") 状態
-      th(colspan="2")
-        code(href_eval="sort_potofs('win_name','')") 陣営
+      th(colspan="6")
+    tr(ng-class="others_hide && 'btn-inverse'")
+      td(ng-click="other_toggle()" colspan="2")
+        span.name 他の人々
+      td(colspan="4" style="text-align: right;")
+        code(ng-click="secret_toggle()") ネタバレ
 
-    tr(ng-hide="potofs_is_small")
+
+  thead.head
+    tr
       th
         code(ng-click="potofs_toggle()")
           i.icon-resize-full(ng-show="potofs_is_small")
           i.icon-resize-small(ng-hide="potofs_is_small")
-        | &nbsp;{{sum.actaddpt}}促
-      th
+        wbr
+        span.name
+          | &nbsp;{{sum.actaddpt}}促
+      th(colspan="2" style="text-align: right;")
         code(href_eval="sort_potofs('stat_at',0)") 日程
+        wbr
         code(href_eval="sort_potofs('stat_type','')") 状態
-        code(href_eval="sort_potofs('said_num',0)") 発言
-      th(colspan="2")
-        code(href_eval="sort_potofs('win_name','')") 陣営
-        code(href_eval="sort_potofs('role_names','')") 役割
-        code(href_eval="sort_potofs('select_name','')") 希望
-        code(href_eval="sort_potofs('text','')") 補足
+      th(colspan="2" ng-show="potofs_is_small")
+        div(ng-show="secret_is_open")
+          code(href_eval="sort_potofs('win_result','')") 勝敗
+          wbr
+          code(href_eval="sort_potofs('win_name','')") 陣営
+      th(colspan="2" ng-hide="potofs_is_small")
+        div(ng-show="secret_is_open")
+          code(href_eval="sort_potofs('said_num',0)") 発言
+          wbr
+          code(href_eval="sort_potofs('win_result','')") 勝敗
+          wbr
+          code(href_eval="sort_potofs('win_name','')") 陣営
+          wbr
+          code(href_eval="sort_potofs('role_names','')") 役割
+          wbr
+          code(href_eval="sort_potofs('select_name','')") 希望
+          wbr
+          code(href_eval="sort_potofs('text','')") 補足
+      th(style="width: 17px")
+
