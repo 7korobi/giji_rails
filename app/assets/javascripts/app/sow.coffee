@@ -126,4 +126,9 @@ CGI = ($scope, $filter)->
       $scope.form.confirm = null
     $scope.confirm_complete = ->
       $scope.form.confirm = null
-      $("#" + f.cmd).submit()
+      param =
+        cmd: f.cmd
+        turn: $scope.event.turn
+        vid:  $scope.story.vid
+        target:    f.target
+      $scope.submit param

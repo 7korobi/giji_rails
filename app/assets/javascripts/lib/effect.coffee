@@ -18,9 +18,9 @@ EFFECT = ($scope)->
         if $scope.potofs?
           if $scope.secret_is_open
             if $scope.potofs_is_small
-              small = 300
+              small = 250
             else
-              small = 450
+              small = 340
           else
               small = 200
 

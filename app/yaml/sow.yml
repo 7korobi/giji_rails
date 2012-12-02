@@ -13,6 +13,8 @@ options:
     help: 投票・能力の対象に「ランダム」を含める
   undead-talk:
     help: 狼・妖精と死者との間で、会話ができる
+  aiming-talk:
+    help: ふたりだけの内緒話をすることができる
 
 roletable:
   custom:   自由設定

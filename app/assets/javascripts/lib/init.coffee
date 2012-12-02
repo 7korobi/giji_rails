@@ -140,13 +140,14 @@ INIT = ($scope)->
       potof.stat = "#{potof.stat_at} #{potof.live_name}"
 
       potof.text = []
-      rolestate = potof.rolestate
-      SOW.maskstates.keys (mask, text)->
-        potof.text.push " #{text}" if 0 == (rolestate & mask)
-        rolestate |= mask
       potof.text.push " <i class='icon-check'></i>"       if 'pixi' == potof.sheep
       potof.text.push " <i class='icon-heart'></i>"       if 'love' == potof.love
       potof.text.push " <i class='icon-thumbs-down'></i>" if 'hate' == potof.love
+      if potof.rolestate?
+        rolestate = potof.rolestate
+        SOW.maskstates.keys (mask, text)->
+          potof.text.push " #{text}" if 0 == (rolestate & mask)
+          rolestate |= mask
 
       potof.said = ""
       potof.said_num = 0

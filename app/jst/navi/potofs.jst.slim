@@ -51,9 +51,10 @@ table(class="table table-condensed")
         span.name
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" colspan="2" style="text-align: right;")
-        | {{potof.stat}}
+        span.nowrap
+          | {{potof.stat}}
       td(ng-click="potof_toggle(potof)")
-        span(ng-show="secret_is_open")
+        span.nowrap(ng-show="secret_is_open")
           | {{potof.role_names.join('、')}}
       td(ng-click="potof_toggle(potof)")
         span(ng-show="secret_is_open" ng-bind-html-unsafe="potof.text.join('')")
@@ -69,14 +70,15 @@ table(class="table table-condensed")
           i.icon-user
           | {{potof.auth}}
       td(ng-click="potof_toggle(potof)" colspan="2" style="text-align: right;")
-        | {{potof.stat}}
-        .note(ng-show="potof.said")
+        span.nowrap
+          | {{potof.stat}}
+        .note.nowrap(ng-show="potof.said")
           i(class='icon-comment')
           | {{potof.said}}
       td(ng-click="potof_toggle(potof)")
-        span(ng-show="secret_is_open")
+        span.nowrap(ng-show="secret_is_open")
           | {{potof.win_name}}::{{potof.role_names.join('、')}}
-        .note(ng-show="secret_is_open")
+        .note.nowrap(ng-show="secret_is_open")
           strong {{potof.win_result}}
           span.name(ng-show="potof.select_name")
             | &nbsp; {{potof.select_name}} を希望
