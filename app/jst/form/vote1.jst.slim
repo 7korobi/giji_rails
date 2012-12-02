@@ -1,8 +1,5 @@
-form.form-inline(action="{{form.uri}}" method="get")
-  input(type="hidden" name="turn" value="{{event.turn}}")
-  input(type="hidden" name="vid"  value="{{story.vid}}")
-  input(type="hidden" name="cmd"  value="{{f.cmd}}")
+form.form-inline
   label.control-label {{f.title}}
   .controls
     select.input-medium(name="target" ng-model="f.target1" ng-options="o.val as o.name for o in f.targets")
-    input.btn(type="submit" value="変更")
+    a.btn(ng-click="vote(f)") 変更

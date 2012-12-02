@@ -1,7 +1,4 @@
-form.form-inline(action="{{form.uri}}" method="get")
-  input(type="hidden" name="turn" value="{{event.turn}}")
-  input(type="hidden" name="vid"  value="{{story.vid}}")
-  input(type="hidden" name="cmd"  value="{{f.cmd}}")
+form.form-inline
   select.input-medium(name="commit"  ng-model="f.commit" ng-options="o.val as o.name for o in f.commits")
-  input.btn(type="submit" value="{{f.title}}")
+  a.btn(ng-click="commit(f)") 変更
 p.formpl_content(ng-bind-html-unsafe="f.caption")

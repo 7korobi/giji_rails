@@ -113,6 +113,23 @@ CGI = ($scope, $filter)->
       actiontext: f.text
     $scope.submit param
 
+  $scope.vote = (f)->
+    param =
+      cmd: f.cmd
+      vid:  $scope.story.vid
+      target:    f.target1
+      target2:   f.target2
+
+    $scope.submit param
+
+  $scope.commit = (f)->
+    param =
+      cmd: f.cmd
+      vid:  $scope.story.vid
+      commit:    f.commit
+
+    $scope.submit param
+
   $scope.confirm = (f)->
     if f.targets
       target_name = $scope.option(f.targets, f.target).name
@@ -122,13 +139,14 @@ CGI = ($scope, $filter)->
       return if f.targets?
       $scope.form.confirm = f.title
 
+    param =
+      cmd: f.cmd
+      vid:  $scope.story.vid
+      target:    f.target
+      target2:   f.target2
+
     $scope.confirm_cancel = ->
       $scope.form.confirm = null
     $scope.confirm_complete = ->
       $scope.form.confirm = null
-      param =
-        cmd: f.cmd
-        turn: $scope.event.turn
-        vid:  $scope.story.vid
-        target:    f.target
       $scope.submit param
