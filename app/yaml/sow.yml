@@ -38,6 +38,10 @@ mes_text:
   - mes_text_monospace
   - mes_text_report
 
+monospace:
+  mono: 1
+  head: 2
+
 n_rule_name:
   - 短期はここではできない。
   - 情報ページ（ここ）を熟読する。
@@ -93,6 +97,9 @@ roles:
     win:
   robber:
     name: 盗賊
+    win:
+  tangle:
+    name: 怨念
     win:
   villager:
     name: 村人
@@ -217,6 +224,9 @@ roles:
   sorcerer:
     name: 魔術師
     win: EVIL
+  walpurgis:
+    name: 魔法少年
+    win:  EVIL
   headless:
     name: 首無騎士
     win: WOLF

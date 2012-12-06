@@ -63,7 +63,7 @@ CGI = ($scope, $filter)->
       {}
 
   $scope.submit = (param)->
-    form = $("""<form action="#{$scope.form.uri.escapeURL()}" method="post"></form>""")
+    form = $("""<form action="#{$scope.form.uri.escapeURL()}##{location.href}" method="post"></form>""")
     $('body').append form
 
     param.keys (key,val)->
@@ -83,6 +83,7 @@ CGI = ($scope, $filter)->
         target:    -1
         monospace: f.style
         csid_cid:  f.csid_cid
+        role:      f.role
         mes:       f.text
         entrypwd:  f.password
       $scope.submit param
@@ -96,8 +97,9 @@ CGI = ($scope, $filter)->
         turn: $scope.event.turn
         vid:  $scope.story.vid
         target:    f.target
-        monospace: f.style
         mes:       f.text
+        monospace: 0
+      param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       param[f.switch] = "on"  if  f.switch
       $scope.submit param
     else

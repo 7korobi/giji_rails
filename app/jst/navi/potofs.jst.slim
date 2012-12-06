@@ -48,8 +48,7 @@ table(class="table table-condensed")
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="potof.is_hide && 'btn-inverse'" ng-show="potofs_is_small")
       td(ng-click="potof_toggle(potof)")
-        span.name
-          | {{potof.name}}
+        | {{potof.name}}
       td(ng-click="potof_toggle(potof)" colspan="2" style="text-align: right;")
         span.nowrap
           | {{potof.stat}}
@@ -64,8 +63,7 @@ table(class="table table-condensed")
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="potof.is_hide && 'btn-inverse'" ng-hide="potofs_is_small")
       td(ng-click="potof_toggle(potof)")
-        span.name
-          | {{potof.longname || potof.name}}
+        | {{potof.longname || potof.name}}
         .note.name(ng-show="potof.auth")
           i.icon-user
           | {{potof.auth}}

@@ -3,7 +3,7 @@ div(class="{{mestype}}")
     h3.mesname
       a(name="{{logid}}")
         | {{name}}
-    p.text
+    p(class="{{style}} text")
       | {{text}}
     p.mes_date
       | {{anchor}} {{time()}} {{cancel_btn()}}
