@@ -128,6 +128,16 @@ MODULE = ($scope, $filter)->
     init_gon = (href)->
       $scope.gon(href)
 
+    refresh_event = ()->
+      href = location.href.replace location.hash, ""
+      turn = $scope.event.turn
+      href = GIJI.change_turn href, turn
+      $scope.get href, =>
+        $scope.top.set()
+        $scope.events[turn].messages = []
+        INIT $scope
+        $scope.top.count()
+
     sort_potofs = (tgt, zero)->
       reverse = (tgt == @tgt)
       $scope.potofs_sortBy tgt, reverse, zero
@@ -185,7 +195,7 @@ MODULE = ($scope, $filter)->
 
         href = GIJI.change_turn href, turn
         $scope.get href, =>
-          $scope.event_cache gon.event  if  turn == gon.event.turn
+          $scope.events_join gon.event  if  turn == gon.event.turn
           return  if  popup_find()
         href
 
@@ -223,6 +233,8 @@ MODULE = ($scope, $filter)->
   FILTER  $scope, $filter
   POOL    $scope
 
+  $scope.stories_is_small = true
+  $scope.potofs_is_small  = true
   $scope.potofs_sortBy 'stat_at',   true
   $scope.potofs_sortBy 'stat_type', true
 

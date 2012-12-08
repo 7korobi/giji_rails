@@ -30,7 +30,8 @@ AJAX = ($scope)->
         change()
       else
         $scope.get href, =>
-          $scope.event_cache gon.event  if  turn == gon.event.turn
+          if turn == gon.event.turn
+            INIT $scope
           change()
           $scope.$apply()
 

@@ -2,41 +2,47 @@
 INIT = ($scope)->
   return unless gon?
 
-  cache_events   = $scope.events
-  cache_event    = $scope.event
 
   # autoload news merge
-  if gon.event?.is_news && 0 < cache_event?.messages?.length
-    msgs  = cache_event.messages
-    news  = gon.event.messages
-    idx   = msgs.findIndex (log)-> log.logid == news[0].logid
-    cache = msgs.length - 1
-    last  = idx + news.length - 1
+  cache_events = $scope.events
+  cache_event  = $scope.event
 
-    for i in [idx..last]
-      if msgs[i]?
-        msgs[i].merge news[i - idx]
-        msgs[i].anchor = null
-      else
-        msgs[i] = news[i - idx]
+  if gon.event?.is_news && 0 < cache_event?.messages?.length
+    olds  = cache_event.messages
+    news  =   gon.event.messages
+    $scope.event_merge olds, news
+
+    gon.event.messages = $scope.event.messages
+
+
+  # autoload forms merge
+  cache_forms = $scope.forms
+  cache_form  = $scope.form
+
+  if gon.form?.texts? && cache_form?.texts?
+    olds = cache_form.texts
+    news =   gon.form.texts
+    $scope.form_merge olds, news
+
+    gon.form.texts = $scope.form.texts
+
 
   gon.keys (key, news)->
     $scope[key] = news
 
+
   # events join legacy cache
   if cache_events?
     for cache in cache_events
-      $scope.event_cache cache
+      $scope.events_join cache
 
   # events join new one-day log
-  if ! gon.event?.is_news && ! gon.event?.is_deny_messages
-    $scope.event_cache $scope.event
+  if gon.event?
+    if ! gon.event.is_news && ! gon.event.is_deny_messages
+      $scope.events_join $scope.event
+    if gon.event.is_news
+      $scope.event.merge $scope.events[$scope.event.turn]
 
-  if gon.event?.is_news
-    $scope.event.merge $scope.events[$scope.event.turn]
-
-  $scope.stories_is_small = true
-  $scope.potofs_is_small  = true
 
   gon_story = (story)->
     story.card.discard_names = $scope.countup(story.card.discard).join '、'
@@ -83,41 +89,42 @@ INIT = ($scope)->
           gon.potofs[pid]
 
       if potof.role?
-        win_check = (potof, story)->
-          win_by_role = (list)->
-            for role in potof.role
-              win = list[role]?.win
-              return win if win
-            null
+        potof.win_result = "参加"
+        if gon.story?
+          win_check = (potof, story)->
+            win_by_role = (list)->
+              for role in potof.role
+                win = list[role]?.win
+                return win if win
+              null
 
-          zombie = 0x040
-          win_zombie = 'WOLF' if ('TROUBLE' == story.type.game) && 0 == (potof.rolestate & zombie)
-          win_juror = 'HUMAN' if ('juror' == story.type.mob) && ('mob' == potof.live)
-          win_love = SOW.loves[potof.love]?.win
+            zombie = 0x040
+            win_zombie = 'WOLF' if ('TROUBLE' == story.type.game) && 0 == (potof.rolestate & zombie)
+            win_juror = 'HUMAN' if ('juror' == story.type.mob) && ('mob' == potof.live)
+            win_love = SOW.loves[potof.love]?.win
 
-          win_juror || win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
-        potof.win = win_check potof, gon.story
-        if ["PAN WOLF RP PRETENSE PERJURY XEBEC CRAZY"].find gon.story.folder
-          potof.win = 'WOLF' if potof.win == 'EVIL'
+            win = win_juror || win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
+            if ["PAN","WOLF","RP","PRETENSE","PERJURY","XEBEC","CRAZY"].any story.folder
+              win = 'WOLF' if win == 'EVIL'
+            win
 
-        if gon.story.is_finish
-          if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA"].find gon.story.folder
-            is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].find gon.story.type.game
-            is_dead_lose = 1 if "LONEWOLF" == potof.win
-            is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
-            is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.find "HATEDEVIL"
-            is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.find "LOVEANGEL"
-            potof.win_result = "敗北"
-            potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
-            potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && "EVIL" == potof.win
-            potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
-            potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.find potof.pno
-            potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
-            potof.win_result = "参加" if "NONE" == potof.win
-          else
-            potof.win_result = "参加"
+          potof.win = win_check potof, gon.story
+
+          if gon.story.is_finish
+            if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA"].any gon.story.folder
+              is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].any gon.story.type.game
+              is_dead_lose = 1 if "LONEWOLF" == potof.win
+              is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
+              is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.any "HATEDEVIL"
+              is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.any "LOVEANGEL"
+              potof.win_result = "敗北"
+              potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
+              potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && "EVIL" == potof.win
+              potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
+              potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.any potof.pno
+              potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
+              potof.win_result = "参加" if "NONE" == potof.win
         potof.win_result = "" if "suddendead" == potof.live
-
 
         potof.win_name = SOW.wins[potof.win]?.name
         potof.role_names  = potof.role.map $scope.rolename

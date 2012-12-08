@@ -14,17 +14,24 @@ POOL = ($scope)->
   refresh.delay message_timer
 
 
-  last_id = null
+  $scope.top =
+    id: null
+    gap: null
+    set: ->
+      $scope.top.id or= $scope.event.messages[0].logid
+      $scope.top.gap or= $scope.event.messages.length
+    count: ->
+      top_idx = $scope.event.messages.findIndex (o)-> $scope.top.id == o.logid
+      news_size = $scope.event.messages.length - top_idx - $scope.top.gap
+      if $scope.story? && 0 < news_size
+        $("title").text "(#{news_size}) #{$scope.story.name}"
   pool = ->
     href = location.href
     if $scope.event?.is_news
-      last_id or= $scope.event.messages.last().logid
       $scope.get href, =>
+        $scope.top.set()
         INIT $scope
-        last_idx  = $scope.event.messages.findIndex (o)-> last_id == o.logid
-        news_size = $scope.event.messages.length - last_idx
-        if $scope.story? && 0 < news_size
-          $scope.title = "(#{news_size}) #{$scope.story.name}"
+        $scope.top.count()
         $scope.$apply()
 
         pool.delay ajax_timer
