@@ -509,7 +509,7 @@ sub GetConfig {
 
 		# ランダム表示機能
 		ENABLED_RANDOMTEXT => 1,
-		RANDOMTEXT_DICE    => '([0-9]+)d([0-9]+)',
+		RANDOMTEXT_DICE    => '([0-9]{1,2})d([0-9]{1,6})',
 		RANDOMTEXT_1D6     => '1d6',
 		RANDOMTEXT_1D10    => '1d10',
 		RANDOMTEXT_1D20    => '1d20',
@@ -517,6 +517,12 @@ sub GetConfig {
 		RANDOMTEXT_LIVES   => 'who',
 		RANDOMTEXT_MIKUJI  => 'omikuji',
 		RANDOMTEXT_ROLE    => 'role',
+		RANDOMTEXT_GIFT    => 'gift',
+		RANDOMTEXT_EVENT   => 'event',
+		RANDOMTEXT_PL_WHO   => 'vil who',
+		RANDOMTEXT_PL_ROLE  => 'vil role',
+		RANDOMTEXT_PL_GIFT  => 'vil gift',
+		RANDOMTEXT_PL_EVENT => 'vil event',
 
 		# アプリケーションログ
 		ENABLED_APLOG   => 0,

@@ -2,7 +2,7 @@ div(class="{{f.mestype}}" ng-show="form_show.find('action')")
   form.form-inline(name="action_form")
     .action
       .controls.controls-row.formpl_content
-        select.input-medium(name="target"   ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
+        select.input-medium(name="target"   ng-model="f.target" ng-options="o.val as o.longname for o in f.targets")
         select.input-medium(name="actionno" ng-model="f.action" ng-options="o.val as o.name for o in f.actions")
         input.input-block-level(type="text" name="actiontext" ng-model="f.text")
 

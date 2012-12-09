@@ -145,7 +145,7 @@ FILTER = ($scope, $filter)->
       $scope.page.value = $scope.page.length if $scope.page.value > $scope.page.length
       $scope.page.value = 1 if $scope.page.value < 1
       page_no = $scope.page.value
-      to   =  page_no      * page_per - 1
+      to   =  page_no      * page_per + OPTION.page.pile
       from = (page_no - 1) * page_per
 
     list.to(to).from(from)
