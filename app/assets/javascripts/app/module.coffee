@@ -137,6 +137,7 @@ MODULE = ($scope, $filter)->
         $scope.events[turn].messages = []
         INIT $scope
         $scope.top.count()
+        $scope.face_id.scan()
 
     sort_potofs = (tgt, zero)->
       reverse = (tgt == @tgt)

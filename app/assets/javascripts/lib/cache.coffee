@@ -17,19 +17,38 @@ CACHE = ($scope)->
     else
       null
 
-  $scope.event_merge = (olds, news)->
+  $scope.messages_merge = (old_base, new_base)->
+    guard = (key)-> false
     filter = (o)-> o.logid
-    base_id = filter news[0]
-    idx = olds.findIndex (o)-> filter(o) == base_id
-    $scope.gon_merge olds, news, idx, [], filter
+    target = 'messages'
+    if old_base? && new_base?
+      olds = old_base[target]
+      news = new_base[target]
 
-  $scope.form_merge = (olds, news)->
+    if news? && olds? && news[0]?
+      base_id = filter news[0]
+      idx = olds.findIndex (o)-> filter(o) == base_id
+      $scope.gon_merge old_base, new_base, target, idx, guard, filter
+
+  $scope.form_text_merge = (old_base, new_base)->
+    guard = (key)-> ["text","action","style","target"].any key
     filter = (o)-> o.jst + o.switch
-    guards = ["text","action","style","target"]
-    $scope.gon_merge olds, news, 0, guards, filter
+    target = 'texts'
+    $scope.gon_merge old_base, new_base, target, 0, guard, filter
 
-  $scope.gon_merge = (olds, news, idx, guards, filter)->
-    if news[0]
+  $scope.potofs_merge = (old_base, new_base)->
+    guard = (key)-> false
+    filter = (o)-> o.pno
+    target = 'potofs'
+    $scope.gon_merge old_base, new_base, target, 0, guard, filter
+
+
+  $scope.gon_merge = (old_base, new_base, target, idx, guard, filter)->
+    if old_base? && new_base?
+      olds = old_base[target]
+      news = new_base[target]
+
+    if news? && olds? && news[0]?
       old_hash = olds[idx..].groupBy filter
       new_hash = news.groupBy filter
 
@@ -42,8 +61,9 @@ CACHE = ($scope)->
         old_item = old_hash[key]
         if old_item?
           new_item[0].keys (key, o)->
-            return if guards.any key
+            return if guard(key)
             old_item[0][key] = o
         else
           olds.push new_item[0]
+      new_base[target] = old_base[target]
 

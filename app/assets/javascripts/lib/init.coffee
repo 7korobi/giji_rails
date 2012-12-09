@@ -2,34 +2,17 @@
 INIT = ($scope)->
   return unless gon?
 
-
   # autoload news merge
   cache_events = $scope.events
-  cache_event  = $scope.event
+  if cache_events
+    cache_event = $scope.events[gon.event.turn]
 
-  if gon.event?.is_news && 0 < cache_event?.messages?.length
-    olds  = cache_event.messages
-    news  =   gon.event.messages
-    $scope.event_merge olds, news
-
-    gon.event.messages = $scope.event.messages
-
-
-  # autoload forms merge
-  cache_forms = $scope.forms
-  cache_form  = $scope.form
-
-  if gon.form?.texts? && cache_form?.texts?
-    olds = cache_form.texts
-    news =   gon.form.texts
-    $scope.form_merge olds, news
-
-    gon.form.texts = $scope.form.texts
-
+  $scope.potofs_merge $scope, gon
+  $scope.form_text_merge $scope.form, gon.form
+  $scope.messages_merge cache_event, gon.event
 
   gon.keys (key, news)->
     $scope[key] = news
-
 
   # events join legacy cache
   if cache_events?
@@ -39,10 +22,9 @@ INIT = ($scope)->
   # events join new one-day log
   if gon.event?
     if ! gon.event.is_news && ! gon.event.is_deny_messages
-      $scope.events_join $scope.event
+      $scope.events_join  $scope.event
     if gon.event.is_news
-      $scope.event.merge $scope.events[$scope.event.turn]
-
+      $scope.events_merge $scope.event
 
   gon_story = (story)->
     story.card.discard_names = $scope.countup(story.card.discard).join '、'
@@ -175,13 +157,7 @@ INIT = ($scope)->
       actaddpt: (live_potofs.sum (o)-> o.point.actaddpt)
 
   # for face_ids
-  if gon.potofs?
-    $scope.face_id.potofs = $scope.potofs.map (o)-> o.face_id
-
-  if $scope.event?.messages?
-    $scope.face_id.all = $scope.event.messages.map((o)-> o.face_id).unique()
-    if $scope.face_id.potofs?
-      $scope.face_id.others = $scope.face_id.all.subtract $scope.face_id.potofs
+  $scope.face_id.scan()
 
   if gon.pages?
     PageNavi.push $scope, 'page'
