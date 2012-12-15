@@ -81,7 +81,7 @@ FILTER = ($scope, $filter)->
       memo_open: memo_open_regexp
       talk_all:   /^.[^M]/
       talk_think: /^[qcaAmSIiTVG][^M]/
-      talk_clan:  /^[qcaAmSIiWPX][^M]/
+      talk_clan:  /^[qcaAmSIi\-WPX][^M]/
       talk_open:   talk_open_regexp
       talk_newest: talk_news_regexp
 

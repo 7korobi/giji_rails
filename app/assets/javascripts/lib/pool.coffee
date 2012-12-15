@@ -15,21 +15,16 @@ POOL = ($scope)->
 
 
   $scope.top =
-    id: null
-    gap: null
-    set: ->
-      $scope.top.id or= $scope.event.messages[0].logid
-      $scope.top.gap or= $scope.event.messages.length
+    id: "IX99999"
     count: ->
       top_idx = $scope.event.messages.findIndex (o)-> $scope.top.id == o.logid
-      news_size = $scope.event.messages.length - top_idx - $scope.top.gap
-      if $scope.story? && 0 < news_size
-        $("title").text "(#{news_size}) #{$scope.story.name}"
+      news_size = $scope.event.messages.length - 1 - top_idx
+      if $scope.story? && 0 < top_idx && 0 < news_size
+        $("title").text "(#{news_size}) #{$scope.title}"
   pool = ->
     href = location.href
     if $scope.event?.is_news
       $scope.get href, =>
-        $scope.top.set()
         INIT $scope
         $scope.top.count()
         $scope.face.scan()

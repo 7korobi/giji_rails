@@ -108,6 +108,13 @@ message:
     CAUTION: 9
 
   template:
+    - mestype:
+        CAST: cast
+        INFOSP: info
+        INFONOM: info
+        INFOWOLF: info
+        CAUTION: caution
+
     - subid:
         A: action
 
@@ -116,11 +123,6 @@ message:
         MAKER: admin
         ADMIN: admin
         AIM: aim
-        CAST: cast
-        CAUTION: caution
-        INFOSP: info
-        INFONOM: info
-        INFOWOLF: info
         ANONYMOUS: info
 
     - subid:

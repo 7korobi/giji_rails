@@ -136,7 +136,6 @@ MODULE = ($scope, $filter)->
       turn = $scope.event.turn
       href = GIJI.change_turn href, turn
       $scope.get href, =>
-        $scope.top.set()
         $scope.events[turn].messages = []
         INIT $scope
         $scope.top.count()
@@ -152,7 +151,7 @@ MODULE = ($scope, $filter)->
       $scope.navi.move link
       if $scope.potofs?
         $scope.potofs_is_small = false
-        $scope.secret_is_open  = false
+        $scope.secret_is_open  = true
       $scope.$apply()
 
     cancel_say = (logid)->
