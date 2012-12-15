@@ -140,6 +140,7 @@ MODULE = ($scope, $filter)->
         INIT $scope
         $scope.top.count()
         $scope.face.scan()
+        $scope.$apply()
 
     sort_potofs = (tgt, zero)->
       reverse = (tgt == @tgt)
