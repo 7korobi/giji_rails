@@ -26,6 +26,7 @@ FILTER = ($scope, $filter)->
       button:
         ALL: "- すべて -"
 
+
     SOW.game_rule.keys (key,o)->
       game_rule.button[key] = o.CAPTION
 
@@ -65,15 +66,13 @@ FILTER = ($scope, $filter)->
       is_mob_open = true if $scope.story.is_epilogue
 
     if is_mob_open
+      talk_news_regexp = /^[qcaAmSIV][SX]/
       talk_open_regexp = /^[qcaAmSIV][^M]/
-      memo_open_regexp = /^([qcaAmSIMV][M])|([AMam]S)/
+      memo_open_regexp = /^([qcaAmSIMV][MX])|([AMam]S)/
     else
+      talk_news_regexp = /^[qcaAmSI][SX]/
       talk_open_regexp = /^[qcaAmSI][^M]/
-      memo_open_regexp = /^([qcaAmSIM][M])|([AMam]S)/
-
-    mode_groups =
-      memo_all:  true
-      memo_open: true
+      memo_open_regexp = /^([qcaAmSIM][MX])|([AMam]S)/
 
     mode_filters =
       memo_hist_all:  /^(.M)|([AMam]S)/
@@ -83,7 +82,10 @@ FILTER = ($scope, $filter)->
       talk_all:   /^.[^M]/
       talk_think: /^[qcaAmSIiTVG][^M]/
       talk_clan:  /^[qcaAmSIiWPX][^M]/
-      talk_open:  talk_open_regexp
+      talk_open:   talk_open_regexp
+      talk_newest: talk_news_regexp
+
+    mode_params = GIJI.modes.groupBy('val')
 
     Navi.push $scope, 'face_only'
       options:
@@ -117,11 +119,13 @@ FILTER = ($scope, $filter)->
       filter = mode_filters[key]
       list = list.filter (o)->
         o.logid.match filter
-      if mode_groups[key]
+      if mode_params[key][0].newest
         result = []
-        list.groupBy('face_id').keys (key, list)->
+        keyword = (o)-> [o.csid || '*', o.face_id || '*']
+        order   = (o)-> [GIJI.message.order[o.mestype] || 8, o.date || (new Date)]
+        list.groupBy(keyword).keys (key, list)->
           result.push list.last()
-        result
+        result.sortBy(order)
       else
         list
 

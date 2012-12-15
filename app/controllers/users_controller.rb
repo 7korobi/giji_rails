@@ -28,17 +28,18 @@ class UsersController < ApplicationController
     maker_stories = story_in user_story_ids
     maker_stories.each do |story_id, stories|
       story = stories.first
+      maker = story.sow_auth_id
       sow_auth_ids = story.potofs.only(:sow_auth_id).map(&:sow_auth_id)
-      byebyes = User.where.in(sow_auth_ids: sow_auth_ids).only(:byebye_ids).map(&:byebye_ids).flatten
+      byebyes_by_potof = User.where.in(sow_auth_ids: sow_auth_ids).only(:byebye_ids).map(&:byebye_ids).flatten
+      byebyes_by_maker = User.where.in(sow_auth_ids:      [maker]).only(:byebye_ids).map(&:byebye_ids).flatten
 
       # ５人以上からバイバイされている人
-      (byebyes & sow_auth_ids).each do |byebye_id|
-        p [:count, story_id, byebye_id, byebyes.count(byebye_id)]
-        kick_ids[story_id].push byebye_id if 4 < byebyes.count(byebye_id)
+      (byebyes_by_potof & sow_auth_ids).each do |byebye_id|
+        kick_ids[story_id].push byebye_id if 4 < byebyes_by_potof.count(byebye_id)
       end
 
       # 村建て人からバイバイされている人
-      (user.byebye_ids & sow_auth_ids).each do |byebye_id|
+      (byebyes_by_maker & sow_auth_ids).each do |byebye_id|
         kick_ids[story_id].push byebye_id
       end
     end
