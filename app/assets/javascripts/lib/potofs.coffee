@@ -1,45 +1,42 @@
 POTOFS = ($scope)->
-  $scope.face_id =
+  $scope.face =
     hide:   []
     potofs: []
     others: []
     all:    []
     scan: ->
       if $scope.potofs?
-        $scope.face_id.potofs = $scope.potofs.map (o)-> o.face_id
+        $scope.face.potofs = $scope.potofs.map $scope.potof_key
       if $scope.event?.messages?
-        log_face_ids = $scope.event.messages.map (o)-> o.face_id
-        $scope.face_id.all = ($scope.face_id.all.concat(log_face_ids)).unique()
-        $scope.face_id.all.remove undefined
-      if $scope.face_id.potofs?
-        $scope.face_id.others = $scope.face_id.all.subtract $scope.face_id.potofs
-        $scope.face_id.others.remove '_none_'
+        log_faces = $scope.event.messages.map $scope.potof_key
+        $scope.face.all = ($scope.face.all.concat(log_faces)).unique()
+        $scope.face.all.remove undefined
+      if $scope.face.potofs?
+        $scope.face.others = $scope.face.all.subtract $scope.face.potofs
+        $scope.face.others.remove '_none_'
 
   # potofs support
   calc_potof = ->
-    hides = $scope.potofs.filter((o)-> o.is_hide ).map (o)-> o.face_id
-    hides.add $scope.face_id.others if $scope.others_hide
-    $scope.face_id.hide = hides
+    hides = $scope.potofs.filter((o)-> o.is_hide ).map $scope.potof_key
+    hides.add $scope.face.others if $scope.others_hide
+    $scope.face.hide = hides
 
   $scope.other_toggle = ->
     $scope.others_hide = ! $scope.others_hide
     calc_potof()
 
-  $scope.potof_href = (potof)->
-    hash = location.hash
-    location.href.replace hash, "##{hash}&face_only=#{potof.face_id}"
-
   $scope.potof_only = (potofs)->
     $scope.others_hide = potofs != $scope.potofs
-    only = potofs.map (o)-> o.face_id
+    only = potofs.map $scope.potof_key
     for potof in $scope.potofs
-      potof.is_hide = ! only.any potof.face_id
+      potof.is_hide = ! only.any $scope.potof_key potof
 
     calc_potof()
 
   $scope.potof_toggle = (select_potof)->
+    select_face = $scope.potof_key select_potof
     for potof in $scope.potofs
-      if select_potof.face_id == potof.face_id
+      if select_face == $scope.potof_key potof
         potof.is_hide = ! potof.is_hide
     calc_potof()
 

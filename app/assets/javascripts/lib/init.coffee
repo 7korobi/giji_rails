@@ -157,7 +157,7 @@ INIT = ($scope)->
       actaddpt: (live_potofs.sum (o)-> o.point.actaddpt)
 
   # for face_ids
-  $scope.face_id.scan()
+  $scope.face.scan()
 
   if gon.pages?
     PageNavi.push $scope, 'page'

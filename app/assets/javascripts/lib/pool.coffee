@@ -32,7 +32,7 @@ POOL = ($scope)->
         $scope.top.set()
         INIT $scope
         $scope.top.count()
-        $scope.face_id.scan()
+        $scope.face.scan()
         $scope.$apply()
 
         pool.delay ajax_timer

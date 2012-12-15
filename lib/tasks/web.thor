@@ -41,6 +41,7 @@ _HOSTS_
 183.181.24.203  giji.sytes.net
 192.168.0.101     tv.family.jp
 192.168.0.100   7korobi.ddo.jp
+192.168.0.249  mongo.family.jp
 192.168.0.100  utage.family.jp
 _HOSTS_
 

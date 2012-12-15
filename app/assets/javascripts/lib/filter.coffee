@@ -95,7 +95,7 @@ FILTER = ($scope, $filter)->
 
     $scope.face_only.watch.push (face_id)->
       if face_id
-        $scope.face_id.hide = $scope.face_id.all.subtract [face_id]
+        $scope.face.hide = $scope.face.all.subtract [face_id]
         if $scope.potofs?
           for potof in $scope.potofs
               potof.is_hide = face_id != potof.face_id
@@ -121,18 +121,17 @@ FILTER = ($scope, $filter)->
         o.logid.match filter
       if mode_params[key][0].newest
         result = []
-        keyword = (o)-> [o.csid || '*', o.face_id || '*']
         order   = (o)-> [GIJI.message.order[o.mestype] || 8, o.date || (new Date)]
-        list.groupBy(keyword).keys (key, list)->
+        list.groupBy($scope.potof_key).keys (key, list)->
           result.push list.last()
         result.sortBy(order)
       else
         list
 
-    page.filter 'face_id.hide', (hide_ids, list)->
-      face_ids = $scope.face_id.all.subtract $scope.face_id.hide
+    page.filter 'face.hide', (hide_ids, list)->
+      faces = $scope.face.all.subtract $scope.face.hide
       list.filter (o)->
-        face_ids.some o.face_id
+        faces.some $scope.potof_key(o)
 
   page.filter 'search.value', (search, list)->
     filter_filter list, search

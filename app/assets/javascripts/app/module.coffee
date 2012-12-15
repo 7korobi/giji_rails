@@ -96,6 +96,9 @@ MODULE = ($scope, $filter)->
     csid or= 'portrate'
     "#{URL.resource}/images/#{csid}/#{face_id}.jpg"
 
+  $scope.potof_key = (o)->
+    "#{o.csid || '*'}-#{o.face_id || '*'}"
+
   # role support
   $scope.rolename = (o)->
     SOW.roles[o]?.name || SOW.gifts[o]?.name || SOW.events[o]?.name || o || ""
@@ -137,7 +140,7 @@ MODULE = ($scope, $filter)->
         $scope.events[turn].messages = []
         INIT $scope
         $scope.top.count()
-        $scope.face_id.scan()
+        $scope.face.scan()
 
     sort_potofs = (tgt, zero)->
       reverse = (tgt == @tgt)

@@ -23,7 +23,7 @@ AJAX = ($scope)->
     if $scope.events? && $scope.event?
       change = ->
         $scope.event.is_news = is_news
-        $scope.face_id.scan()
+        $scope.face.scan()
         $scope.page.value = 1
         win.history "#{$scope.event.name}", href, location.hash
       if $scope.events[turn].messages?
