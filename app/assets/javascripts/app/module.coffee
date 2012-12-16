@@ -97,7 +97,9 @@ MODULE = ($scope, $filter)->
     "#{URL.resource}/images/#{csid}/#{face_id}.jpg"
 
   $scope.potof_key = (o)->
-    "#{o.csid || '*'}-#{o.face_id || '*'}"
+    csid   = (o.csid || '*').split('_')[0]
+    face_id = o.face_id || '*'
+    "#{csid}-#{face_id}"
 
   # role support
   $scope.rolename = (o)->

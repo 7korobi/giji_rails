@@ -165,7 +165,7 @@ FILTER = ($scope, $filter)->
 
   page.refresh = ()->
     $('div.popover').remove()
-    if $scope.top.item?
+    if $scope.top.id?
       target = $(".message_filter.#{$scope.top.id}")
 
     if target?.offset()?

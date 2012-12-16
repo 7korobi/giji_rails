@@ -35,6 +35,7 @@ class Web < Thor
 ::1             localhost
 fe80::1%lo0 localhost
 
+113.151.60.93  mongo.family.jp
 _HOSTS_
 
   HOST_HOME = <<'_HOSTS_'

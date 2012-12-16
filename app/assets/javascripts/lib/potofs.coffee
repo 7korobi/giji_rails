@@ -10,10 +10,10 @@ POTOFS = ($scope)->
       if $scope.event?.messages?
         log_faces = $scope.event.messages.map $scope.potof_key
         $scope.face.all = ($scope.face.all.concat(log_faces)).unique()
-        $scope.face.all.remove undefined
       if $scope.face.potofs?
         $scope.face.others = $scope.face.all.subtract $scope.face.potofs
-        $scope.face.others.remove '_none_'
+        $scope.face.others.remove '-_none_'
+        $scope.face.others.remove $scope.potof_key({})
 
   # potofs support
   calc_potof = ->
