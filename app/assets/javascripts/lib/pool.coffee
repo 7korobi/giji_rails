@@ -21,6 +21,7 @@ POOL = ($scope)->
       news_size = $scope.event.messages.length - 1 - top_idx
       if $scope.story? && 0 < top_idx && 0 < news_size
         $("title").text "(#{news_size}) #{$scope.title}"
+
   pool = ->
     href = location.href
     if $scope.event?.is_news

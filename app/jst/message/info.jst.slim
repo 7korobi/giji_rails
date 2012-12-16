@@ -1,4 +1,3 @@
-p(class="text {{mestype}}")
-  | {{text}}
+p.text(ng-class="message.mestype" ng-bind-html-unsafe="message.text")
 hr.invisible_hr
 

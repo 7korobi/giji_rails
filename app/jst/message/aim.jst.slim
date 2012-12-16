@@ -1,15 +1,16 @@
-table(class="say {{mestype}}")
+table.say(ng-class="message.mestype")
   tbody
     tr
       td.img
-        img(src="{{img}}")
+        img(ng-src="{{message.img}}")
       td.field
         .msg
           h3.mesname
-            | {{mesicon}}&nbsp;
-            a(name="{{logid}}")
-              | {{name}} → {{to}}
-          p(class="{{style}} text")
-            | {{text}}
+            | {{message.mesicon}}&nbsp;
+            a(name="{{message.logid}}")
+              | {{message.name}} → {{message.to}}
+          p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
           p.mes_date
-            | {{anchor}} {{time()}} {{cancel_btn()}}
+            | {{message.anchor}} {{message.time()}}
+            span(ng-bind-html-unsafe="message.cancel_btn()")
+

@@ -165,8 +165,8 @@ FILTER = ($scope, $filter)->
 
   page.refresh = ()->
     $('div.popover').remove()
-    if $scope.event?.is_news && $scope.page.item_last?
-      target = $("a[name=#{$scope.page.item_last.logid}]")
+    if $scope.top.item?
+      target = $(".message_filter.#{$scope.top.id}")
 
     if target?.offset()?
     else

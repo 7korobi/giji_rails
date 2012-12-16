@@ -1,4 +1,4 @@
-angular.module("giji.directives").directive "log", ["$interpolate", ($interpolate)->
+angular.module("giji.directives").directive "log", ["$compile", ($compile)->
   if JST?
     for key,val of JST
       if key.startsWith "message/"
@@ -32,27 +32,20 @@ angular.module("giji.directives").directive "log", ["$interpolate", ($interpolat
         ""
     log.time = -> $scope.lax_time log.updated_at
 
-    box = GIJI.interpolates[log.template]
-    if box?
-      log_refresh = ->
-        if ! log.anchor? && log.logid?
-          [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
-          anchor_ok = false
-          anchor_ok ||= (mark != 'T')
-          anchor_ok ||= $scope.story?.is_epilogue
-          if SOW.log.anchor[mark]? && anchor_ok
-            log.anchor or= "(#{SOW.log.anchor[mark]}#{Number(num)})"
-          else
-            log.anchor or= " "
+    if ! log.anchor? && log.logid?
+      [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
+      anchor_ok = false
+      anchor_ok ||= (mark != 'T')
+      anchor_ok ||= $scope.story?.is_epilogue
+      if SOW.log.anchor[mark]? && anchor_ok
+        log.anchor or= "(#{SOW.log.anchor[mark]}#{Number(num)})"
+      else
+        log.anchor or= " "
 
-        log.text = $scope.text_decolate log.log
-        elm.html box log
-      log_refresh()
-      $scope.$watch attr.log + ".time()", log_refresh
-      $scope.$watch attr.log + ".text",   log_refresh
-      $scope.$watch attr.log + ".anchor", log_refresh
-    else
-      elm.html "<hr>"
+    log.text = $scope.text_decolate log.log
+
+    GIJI.template $compile, $scope, elm, log.template
+
 ]
 
 angular.module("giji.directives").directive "drag", [->

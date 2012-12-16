@@ -1,9 +1,8 @@
-table(class="memo {{mestype}}")
+table.memo(ng-class="message.mestype")
   tbody
     tr
       td.memoleft
-        h4 {{name}}
+        h4 {{message.name}}
       td.memoright
-        p(class="{{style}} text")
-          | {{text}}
-        p.mes_date {{time()}}
+        p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
+        p.mes_date {{message.time()}}

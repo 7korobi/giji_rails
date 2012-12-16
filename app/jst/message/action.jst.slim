@@ -1,8 +1,9 @@
-div(class="{{mestype}}")
+div(ng-class="message.mestype")
   .action
-    p(class="{{style}} text")
-      a(name="{{logid}}")
-        | {{name}}
-      | は、{{text}}
-    p.mes_date  {{anchor}} {{time()}}
+    p.text(ng-class="message.style")
+      a(name="{{message.logid}}")
+        | {{message.name}}
+      | は、
+      span(ng-bind-html-unsafe="message.text")
+    p.mes_date  {{message.anchor}} {{message.time()}}
     hr.invisible_hr

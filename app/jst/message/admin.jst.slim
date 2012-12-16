@@ -1,10 +1,10 @@
-div(class="{{mestype}}")
+div(ng-class="message.mestype")
   .guide
     h3.mesname
-      a(name="{{logid}}")
-        | {{name}}
-    p(class="{{style}} text")
-      | {{text}}
+      a(name="{{message.logid}}")
+        | {{message.name}}
+    p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
     p.mes_date
-      | {{anchor}} {{time()}} {{cancel_btn()}}
+      | {{message.anchor}} {{message.time()}}
+      span(ng-bind-html-unsafe="message.cancel_btn()")
     hr.invisible_hr
