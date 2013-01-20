@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-# ruby "1.9.3-p194"
+# ruby "2.0.0-rc1"
 
 # ruby on rails
 gem 'unicorn'
@@ -18,15 +18,16 @@ end
 
 # DCI
 gem 'gon'
-gem "decent_exposure"
 gem "cells"
+gem "decent_exposure"
 gem "active_decorator"
 
 # view environment
 gem "slim"
+gem "less-rails"
 gem 'jquery-rails'
 # gem 'jquery_mobile_rails'
-gem 'twitter-bootstrap-rails', '= 2.1.3'
+gem 'twitter-bootstrap-rails' #, '= 2.1.3'
 # gem 'spreadsheet'
 # gem 'rabl'
 gem 'codemirror-rails'
@@ -66,7 +67,6 @@ gem "hpricot"
 # giji support
 gem "net-ssh"
 gem "net-sftp"
-gem "whenever", :require => false
 
 # javascript
 gem "therubyracer"
@@ -98,17 +98,15 @@ gem "model_manage"
 
 group :development do
 # documentation
+  gem 'better_errors'
   gem 'rails-erd'
 
 # To use debugger
   gem 'pry'
   gem 'pry-doc'
-  gem "factory_girl_rails", :require => nil
-  gem 'rspec-rails', '>= 2.6.1'
 end
 
 group :test do
   # Pretty printed test output
-  gem 'turn', :require => false
-  gem 'rspec-rails', '>= 2.6.1'
+  gem 'turn' #, :require => false
 end

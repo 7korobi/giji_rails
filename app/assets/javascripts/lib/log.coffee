@@ -6,7 +6,7 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
 
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    log = $scope.$eval attr.log
+    log = $scope.message = $scope.$eval attr.log
     if ! log.template? && log.logid? && log.mestype? && log.subid?
       log.sub1id = log.logid[0]
       log.sub2id = log.logid[1]
