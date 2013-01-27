@@ -1,4 +1,4 @@
-RUBY="~/.rbenv/bin/rbenv exec ruby "
+RUBY="/home/7korobi/.rbenv/bin/rbenv exec ruby "
 APP=/www/giji_rails
 
 /utage/asset-compile

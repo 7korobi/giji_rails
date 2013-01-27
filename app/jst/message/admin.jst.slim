@@ -1,8 +1,7 @@
 div(ng-class="message.mestype")
   .guide
     h3.mesname
-      a(name="{{message.logid}}")
-        | {{message.name}}
+      b(ng-bind-html-unsafe="message.name")
     p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
     p.mes_date
       | {{message.anchor}} {{message.time()}}
