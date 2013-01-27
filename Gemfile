@@ -19,6 +19,7 @@ end
 # DCI
 gem 'gon'
 gem "cells"
+gem "cancan"
 gem "decent_exposure"
 gem "active_decorator"
 
@@ -79,14 +80,12 @@ gem "rdropbox"
 # data_base
 gem "paperclip"
 gem "mongoid"
-gem "mongoid-mapreduce"
 gem "redis-store"
 gem "redis-rails"
 gem 'sqlite3'
 gem "sqlite3-ruby"
 
 # model support
-gem "model_manage"
 # gem "pattern-match"
 
 # management

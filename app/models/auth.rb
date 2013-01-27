@@ -2,16 +2,15 @@ class Auth
   include Giji
   include Mongoid::Timestamps
   
-  key :provider, :uid
-  field :provider,     hidden: true
-  field :uid,          hidden: true
+  field :provider
+  field :uid
 
-  field :oauth_token,  hidden: true
-  field :oauth_secret, hidden: true
+  field :oauth_token
+  field :oauth_secret
 
-  field :name,         hidden: true
-  field :nickname,     hidden: true
-  field :image,        hidden: true
+  field :name
+  field :nickname
+  field :image
 
   belongs_to :user, inverse_of: :auths
 

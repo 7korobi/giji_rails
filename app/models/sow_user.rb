@@ -1,6 +1,5 @@
 class SowUser < Potof
   include Giji
-  cache
 
   field :pno,  type: Integer
 

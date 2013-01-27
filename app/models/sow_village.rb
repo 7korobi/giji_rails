@@ -1,6 +1,5 @@
 class SowVillage < Story
   include Giji
-  cache
 
   field :sow_auth_id
   field :password
@@ -18,7 +17,7 @@ class SowVillage < Story
   field :timer, type:Hash
 
   def self.gaps
-    only(:folder, :vid).group_by(&:folder).map do |folder,v|
+    only(:_type, :folder, :vid).group_by(&:folder).map do |folder,v|
       out = []
       Giji::RSync.new.in_folder(folder) do |folder, protocol, set|
         good = v.map(&:vid).sort
@@ -39,7 +38,7 @@ class SowVillage < Story
 
   def self.not_finished
     ids = SowTurn.where("this.epilogue && this.turn == this.epilogue[0]").only([:story_id]).map(&:story_id)
-    only(:folder, :vid).not_in(:_id => ids).group_by(&:folder)
+    only(:_type, :folder, :vid).not_in(:_id => ids).group_by(&:folder)
   end
 
   def self.update_not_finished

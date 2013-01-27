@@ -39,20 +39,9 @@ end
 
 # todo : Hash value, Range exp, Array exp
 # encoding: utf-8
-class Mongoid::Fields::Serializable::DateTime
-  def deserialize(object)
+class DateTime
+  def self.demongoize(object)
     object = object.to_time.getlocal rescue object if Mongoid::Config.use_utc?
     object.to_datetime
   end
 end
-
-class Mongoid::Fields::Serializable::Range
-  def deserialize(object)
-    object.nil? ? nil : ::Range.new(object["min"], object["max"], object["exclude_end"])
-  end
-
-  def serialize(object)
-    object.nil? ? nil : { "min" => object.min, "max" => object.max }
-  end
-end
-

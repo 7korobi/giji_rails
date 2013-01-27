@@ -63,8 +63,25 @@ CGI = ($scope, $filter)->
       {}
 
   $scope.submit = (param)->
-    form = $("""<form action="#{$scope.form.uri.escapeURL()}##{location.href}" method="post"></form>""")
-    $('body').append form
+    iframe = $('iframe')
+    if 0 == iframe.length
+      iframe = $("""<iframe style="display: none;" name="submit_result"></iframe>""") 
+      $('body').append iframe
+      iframe = $('iframe')
+
+    iframe.load ->
+      $scope.form = null
+
+      data = $(@).contents().find("body").html()
+      $scope.replace_gon data
+
+      INIT $scope
+      $scope.top.count()
+      $scope.face.scan()
+      $scope.$apply()
+
+
+    form = $("""<form target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
 
     param.keys (key,val)->
       return unless val?
@@ -72,7 +89,7 @@ CGI = ($scope, $filter)->
       tag.attr "value", val
       form.append tag
 
-    form.submit()
+    form[0].submit()
 
   $scope.entry = (f, valid)->
     if valid && f.is_preview

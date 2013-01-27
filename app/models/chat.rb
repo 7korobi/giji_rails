@@ -2,7 +2,7 @@ class Chat
   include Giji
   include Mongoid::Timestamps::Created
 
-  key   :logid
+  field :_id, default: ->{ logid }
   field :logid
   field :to
   field :log

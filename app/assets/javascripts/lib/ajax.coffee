@@ -1,5 +1,5 @@
 AJAX = ($scope)->
-  replace_gon = (data)->
+  $scope.replace_gon = (data)->
     codes = data.match ///
       <script.*?>[\s\S]*?</script>
     ///ig
@@ -10,12 +10,12 @@ AJAX = ($scope)->
 
   $scope.post = (href, form, func)->
     $.post href, form, (data)->
-      replace_gon data
+      $scope.replace_gon data
       func()
 
   $scope.get = (href, func)->
     $.get href, {}, (data)->
-      replace_gon data
+      $scope.replace_gon data
       func()
 
   $scope.ajax_event = (turn, href, is_news)->

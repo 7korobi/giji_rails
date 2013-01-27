@@ -2,7 +2,7 @@ class TrpgEvent < Event
   include Mongoid::Timestamps
 
   field :state
-  field :closed_at, type: Time, hidden: true
+  field :closed_at, type: Time
   has_many :potofs,  inverse_of: :event,  class_name:'TrpgPotof'
 
   def closed?

@@ -9,6 +9,7 @@ require 'omniauth-openid'
 require 'openid/fetchers'
 require 'openid/store/filesystem'
 require "redis-store"
+require "model_manage"
 
 module RedisStore
   module Rack
@@ -50,7 +51,6 @@ module Giji
   def self.included(base)
     base.class_eval do
       include Mongoid::Document
-      include Mongoid::MapReduce
     end
   end
 end

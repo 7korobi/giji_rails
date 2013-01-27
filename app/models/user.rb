@@ -1,17 +1,19 @@
 class User
   include Giji
 
-  key   :user_id
-  field :user_id,    limit: 30
-  field :name,       limit: 30
-  field :email,      limit: 30, allow_blank: true, allow_nil: true
-  field :is_admin, type: Boolean,   hidden: true
-  field :rails_token,               hidden: true
-  field :sow_auth_ids, type: Array, hidden: true
-  field :byebye_ids,   type: Array, hidden: true
+  field :_id, default: ->{ user_id }
+  field :user_id
+  field :name
+  field :email
+  field :is_admin, type: Boolean
+  field :rails_token
+  field :sow_auth_ids, type: Array
+  field :byebye_ids,   type: Array
 
   devise :trackable, :omniauthable
   has_many :auths,    inverse_of: :user
+
+  default_scope where(services:nil)
 
   validates_each :sow_auth_ids do |record, field, value|
     if 0 < where(field.in => value.to_a, :user_id.ne => record.user_id).count
@@ -20,6 +22,10 @@ class User
   end
   validates_uniqueness_of :user_id
   validates_uniqueness_of :email, allow_blank:true
+
+  validates_length_of :user_id, in: 1..30, allow_blank: true, allow_nil: true
+  validates_length_of :name,    in: 1..30
+  validates_length_of :email,   in: 1..30
 
   def admin?
     is_admin

@@ -2,8 +2,6 @@
 
 class SowTurn < Event
   include Giji
-  cache
-
   field :winner
   field :event
 
@@ -35,10 +33,10 @@ class SowTurn < Event
   end
 
   def self.gaps
-    SowVillage.only(:folder).group_by(&:folder).map do |folder,v|
+    SowVillage.only(:_type, :folder).group_by(&:folder).map do |folder,v|
       out = []
       Giji::RSync.new.in_folder(folder) do |folder, protocol, set|
-        good = SowTurn.only(:story_id).where(story_id:/^#{folder.downcase}/).map(&:id)
+        good = SowTurn.only(:_type, :story_id).where(story_id:/^#{folder.downcase}/).map(&:id)
         list = []
 
         path = set[:files][:ldata] + "/data/vil"

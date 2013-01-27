@@ -1,7 +1,5 @@
-//= require jquery
-//= require jquery_ujs
+//= require_tree ./base
 //= require twitter/bootstrap
 //= require twitter/bootstrap_ujs
-//= require_tree ./base
 
 Object.extend();

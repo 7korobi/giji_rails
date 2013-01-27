@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 class Message < Chat
-  key :subid, :logid
+  field :_id, default: ->{ [subid, logid].join("-") }
   field :color
   field :style
   field :subid

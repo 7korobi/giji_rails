@@ -3,7 +3,7 @@ class Tag
   include Giji
   include Mongoid::Timestamps::Created
 
-  key :name
+  field :_id, default: ->{ name }
   field :name
 
   YAHOO_AID   = OMNI_AUTH['ride']['yahoo']['aid']
