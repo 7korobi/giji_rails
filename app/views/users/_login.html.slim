@@ -1,4 +1,13 @@
 - content_for :link do
+  -if user?
+    h4.sayfilter_caption_enable
+      = "login with #{current.auth.provider} account."
+    li
+      label.label = link_to current.user.name, user_path(current.user.id)
+  -if login?
+    li
+      label.label = link_to '  click to logout', destroy_user_session_path
+
   h4.sayfilter_caption_enable
     | Choice open id
   .sayfilter_content
@@ -15,6 +24,3 @@
       label.label = link_to 'google', '/users/auth/google'
     li
       label.label = link_to 'yahoo',  '/users/auth/yahoo'
-    -if login?
-      li
-        label.label = link_to 'click to logout', destroy_user_session_path

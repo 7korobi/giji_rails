@@ -53,7 +53,7 @@ module CurrentAuthenticated
       end
     end
     current.auth = auth.dup
-    current.user = auth.user.dup
+    current.user = auth.user && auth.user.dup
   end
 
   def current_save

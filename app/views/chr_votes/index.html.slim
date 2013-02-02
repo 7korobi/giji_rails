@@ -14,7 +14,7 @@
 - content_for :log do
   - if admin?
     -chr_vote_phases.each do |phase|
-      - groups = chr_vote_phases_faces[phase].sort_by{|o| - o['group'].size }
+      - groups = chr_vote_phases_faces[phase]
       h2=phase
       .chrlist
         hr(style="border-color:black;")
@@ -22,7 +22,7 @@
           .chrbox
             img(ng-src="/images/portrate/#{group['face_id']}.jpg")
             .chrblank
-              =group['group'].size
+              =group['value'].to_i
               | 票
               br
         hr(style="border-color:black;")

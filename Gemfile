@@ -97,12 +97,13 @@ gem "sqlite3-ruby"
 
 group :development do
 # documentation
-  gem 'better_errors'
   gem 'rails-erd'
 
 # To use debugger
   gem 'pry'
   gem 'pry-doc'
+  gem 'better_errors'
+  # gem 'binding_of_caller'
 end
 
 group :test do

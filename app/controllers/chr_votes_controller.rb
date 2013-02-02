@@ -1,12 +1,12 @@
 class ChrVotesController < ApplicationController
   expose(:face_groups){ faces.group_by_type }
   expose(:chr_vote_phases){ ChrVote.phases }
-  expose(:chr_vote_phases_faces){ ChrVote.only(:phase,:face_id).group.group_by{|h|h['phase']} }
+  expose(:chr_vote_phases_faces){ ChrVote.count_by_face_id }
 
   expose(:faces){ Face.all }
   expose(:face_titles){ Face.titles }
 
-  expose(:chr_votes_in_phase){ chr_votes.group_by(&:phase) }
+  expose(:chr_votes_in_phase){ chr_votes.desc(:created_at).group_by(&:phase) }
   expose(:chr_votes){ ChrVote.where(user_id: current.user.id) }
   expose(:chr_vote)
 
@@ -36,10 +36,11 @@ class ChrVotesController < ApplicationController
   end
 
   def create
-    chr_vote.user = current.user
+    chr_vote.user_id = current.user.id
     chr_vote.phase = params[:phase_input]  if  params[:phase_input].presence
+    @chr_vote = ChrVote.new chr_vote.attributes
 
-    if chr_vote.face_id && chr_vote.save
+    if @chr_vote.face_id && @chr_vote.save
       flash[:notice] = "successfully #{action_name}d."
 
       chr_list = chr_votes_in_phase[chr_vote.phase]
