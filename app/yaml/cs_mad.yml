@@ -1,0 +1,23 @@
+---
+chr_set_id: mad
+maker: 天上の調べ
+admin: 闇の呟き
+chr_npcs:
+- caption: エクスパンション・セット「狂騒議事」
+  csid: mad
+  face_id: c83
+  say_0: どうせ、殺されるわみんな。…みんな<br><br><br>/* 死ねばいいのに */
+  say_1: １人になるのゎ私ばっか。どっちの道ぉ選んでも、<br>私ゎ十分です。明日も待っててね。お願いだから、<br>離れて行かないで？<br>いつまでも、<br>なんで私ばっか<br><br><b>日記はそこで途切れ、発見されるまで打ち捨てられていた。</b>
+chr_jobs:
+- face_id: c103
+  job: 厭世家
+- face_id: c83
+  job: 虹追い
+- face_id: mad01
+  job: 青い鳥
+- face_id: mad02
+  job: 蟻塚崩し
+- face_id: mad03
+  job: 露店巡り
+- face_id: mad04
+  job: 酸味探し

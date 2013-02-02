@@ -102,3 +102,5 @@ chr_jobs:
   job: 座敷守
 - face_id: w46
   job: 屍漁り
+- face_id: w47
+  job: 肥代取り

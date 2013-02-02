@@ -28,10 +28,10 @@ gem "slim"
 gem "less-rails"
 gem 'jquery-rails'
 # gem 'jquery_mobile_rails'
-gem 'twitter-bootstrap-rails' #, '= 2.1.3'
 # gem 'spreadsheet'
 # gem 'rabl'
-gem 'codemirror-rails'
+# gem 'codemirror-rails'
+gem 'twitter-bootstrap-rails', '= 2.1.4'
 
 # queue
 gem 'resque'

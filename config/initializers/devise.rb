@@ -1,3 +1,6 @@
+Rails.application.config.to_prepare do
+  DeviseController.respond_to :html, :json  
+end
 
 Devise.setup do |config|
   require 'devise/orm/mongoid'

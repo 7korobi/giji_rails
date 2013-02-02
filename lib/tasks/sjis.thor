@@ -9,7 +9,7 @@ class Sjis < Thor
       puts "#{src} → #{tgt}"
       File.open(tgt ,'w:sjis:utf-8') do |f|
         text = File.open(src ,'r').read
-        f.write text
+        f.write(text.encode("sjis", :undef => :replace, :replace => "＠"))
       end
     end
   end

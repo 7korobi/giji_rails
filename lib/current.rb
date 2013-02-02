@@ -52,8 +52,8 @@ module CurrentAuthenticated
         redirect_to new_user_path
       end
     end
-    current.auth = auth
-    current.user = auth.user
+    current.auth = auth.dup
+    current.user = auth.user.dup
   end
 
   def current_save

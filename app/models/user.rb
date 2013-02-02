@@ -17,7 +17,7 @@ class User
 
   validates_each :sow_auth_ids do |record, field, value|
     if 0 < where(field.in => value.to_a, :user_id.ne => record.user_id).count
-      record.errors.add field, "already in use."
+      record.errors.add :sow_auths, "already in use."
     end
   end
   validates_uniqueness_of :user_id

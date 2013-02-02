@@ -1,0 +1,23 @@
+---
+chr_set_id: time
+maker: 次元X式コンピューター 
+admin: 第四の壁の深奥
+chr_npcs:
+- caption: エクスパンション・セット「帰還者議事」
+  csid: time
+  face_id: c10
+  say_0: "M4ライフルを持ってさえいれば…、なーんて、思っててもしょうがないね。鍵かけとこう。"
+  say_1: "やっぱさ、銃を持った善人がいないとさ。<br><br>ちょっと出かけてくる！プリン食べちゃダメだよ！"
+chr_jobs:
+- face_id: c10
+  job: 小銃協会
+- face_id: t01
+  job: 友愛組合
+- face_id: t02
+  job: 幸運の科学
+- face_id: t03
+  job: FSM団
+- face_id: t04
+  job: 截拳道
+- face_id: t05
+  job: 開放的市民

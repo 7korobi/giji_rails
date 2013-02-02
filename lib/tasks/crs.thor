@@ -47,7 +47,7 @@ class Crs < Thor
       @chrset = params[:set]
       @chrnpc = params[:npc]
 
-      perl_change = -> s { s.inspect.gsub(/[噂]/){ $& + '\\' }}
+      perl_change = -> s { s.inspect.gsub(/[噂十]/){ $& + '\\' }}
       @chrnpc.say_0 = perl_change.call @chrnpc.say_0
       @chrnpc.say_1 = perl_change.call @chrnpc.say_1
 

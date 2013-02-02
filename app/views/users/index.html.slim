@@ -12,7 +12,7 @@
   .paragraph
     ul(ng-repeat="o in news() | limitTo:5")
       li
-        span(ng-show="o.is_news" style="color:red;") New!&nbsp;
+        span(ng-show="o.is_news" style="color:#b94a48;") New!&nbsp;
         | {{o.text}}
   - if admin?
     h2 アカウント一覧
