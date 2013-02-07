@@ -45,7 +45,8 @@ POTOFS = ($scope)->
     $scope.boot()
 
   $scope.secret_toggle = ->
-    $scope.secret_is_open = ! $scope.secret_is_open
+    if $scope.secret_is_open = ! $scope.secret_is_open
+      $scope.mode_d = "all"
     $scope.boot()
 
   head_mode =

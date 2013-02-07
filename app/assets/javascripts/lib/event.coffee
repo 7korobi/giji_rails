@@ -15,6 +15,7 @@ win =
   max:
     top:  0
     left: 0
+  _zoom: 0
 
   refresh: ()->
     win.height = window.innerHeight || $(window).height()
@@ -27,6 +28,13 @@ win =
     win.max =
       top:  $('body').height() - win.height
       left: $('body').width()  - win.width
+
+    win.zoom_start() if win.zoom != 1 && win._zoom == 1
+    win.zoom_end()   if win.zoom == 1 && win._zoom != 1
+    win._zoom = win.zoom
+
+  zoom_start: ->
+  zoom_end: ->
 
   history: (title, href, hash)->
 

@@ -8,6 +8,10 @@ angular.module("giji.directives").directive "accordion", [->
 ]
 
 EFFECT = ($scope)->
+  win.zoom_start = ->
+    $scope.navi.value = "blank"
+    $scope.$apply()
+
   $(window).resize ->
     return unless $scope.navi? && $scope.width?
     height = win.height

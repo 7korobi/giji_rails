@@ -1,7 +1,16 @@
-select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select" ng-hide="event.is_news")
-select.input-small(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
-select.input-small(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
+label.inline.radio
+  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+label.inline.radio
+  span.add-on
+    i.icon-search
+  input.input-medium(type="text" ng-model="search.value" placeholder="ログを探す")
 
-span.add-on
-  i.icon-search
-input.input-small(type="text" ng-model="search.value" placeholder="ログを探す")
+br
+
+label.inline.radio
+  select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select" ng-hide="event.is_news")
+label.inline.radio
+  select.input-small(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
+label.inline.radio
+  select.input-small(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
+

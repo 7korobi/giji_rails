@@ -55,35 +55,10 @@ FILTER = ($scope, $filter)->
     page.filter_by 'event.messages'
     page.filter_to 'messages'
     page.filter 'event.is_news'
-    mode_current = 'talk_all'
+
+    mode_current = 'talk_all_open'
     unless $scope.event.is_news
       mode_current = 'talk_open'
-
-    is_mob_open = false
-    if $scope.story?
-      is_mob_open = true if 'alive' == $scope.story.type.mob
-      is_mob_open = true if $scope.story.turn == 0
-      is_mob_open = true if $scope.story.is_epilogue
-
-    if is_mob_open
-      talk_news_regexp = /^[qcaAmSIV][SX]/
-      talk_open_regexp = /^[qcaAmSIV][^M]/
-      memo_open_regexp = /^([qcaAmSIMV][MX])|([AMam]S)/
-    else
-      talk_news_regexp = /^[qcaAmSI][SX]/
-      talk_open_regexp = /^[qcaAmSI][^M]/
-      memo_open_regexp = /^([qcaAmSIM][MX])|([AMam]S)/
-
-    mode_filters =
-      memo_hist_all:  /^(.M)|([AMam]S)/
-      memo_hist: memo_open_regexp
-      memo_all:  /^(.M)|([AMam]S)/
-      memo_open: memo_open_regexp
-      talk_all:   /^.[^M]/
-      talk_think: /^[qcaAmSIiTVG][^M]/
-      talk_clan:  /^[qcaAmSIi\-WPX][^M]/
-      talk_open:   talk_open_regexp
-      talk_newest: talk_news_regexp
 
     mode_params = GIJI.modes.groupBy('val')
 
@@ -113,13 +88,72 @@ FILTER = ($scope, $filter)->
         is_cookie: false
       select: GIJI.modes
 
-    page.filter 'mode.value', (key, list)->
-      $scope.form_show = $scope.mode.choice().form
+    $scope.modes = $scope.mode.choice()
 
-      filter = mode_filters[key]
+    modes_change = (oldVal, newVal)->
+      if "memo" == $scope.modes.face
+        $scope.modes.open = true
+      if "open" == $scope.modes.view
+        $scope.modes.open = true
+      if "all" != $scope.modes.view
+        if "memo" == $scope.modes.face
+          $scope.modes.open = true
+          $scope.modes.view = "open"
+      $scope.mode.value = [ 
+        $scope.modes.face
+        $scope.modes.view
+        'open'   if $scope.modes.open
+        'last'   if $scope.modes.last
+        'player' if $scope.modes.player
+      ].unique().compact(true).join("_")
+    $scope.$watch 'modes.face',   modes_change
+    $scope.$watch 'modes.view',   modes_change
+    $scope.$watch 'modes.open',   modes_change
+    $scope.$watch 'modes.last',   modes_change
+    $scope.$watch 'modes.player', modes_change
+
+    page.filter 'mode.value', (key, list)->
+      $scope.modes = $scope.mode.choice().clone()
+      $scope.form_show = $scope.modes.form
+
+      is_mob_open = false
+      if $scope.story?
+        is_mob_open = true if 'alive' == $scope.story.type.mob
+        is_mob_open = true if $scope.story.turn == 0
+        is_mob_open = true if $scope.story.is_epilogue
+
+      if is_mob_open
+        talk_news_regexp = /^[qcaAmIVS][SX]/
+        talk_open_regexp = /^[qcaAmIVS][^M]/
+        memo_open_regexp = /^([qcaAmIMVS][MX])|([AMam]S)/
+      else
+        talk_news_regexp = /^[qcaAmIS][SX]/
+        talk_open_regexp = /^[qcaAmIS][^M]/
+        memo_open_regexp = /^([qcaAmIMS][MX])|([AMam]S)/
+
+      mode_filters_memo = 
+      mode_filters =
+        memo_all:  /^(.M)|([AMam]S)/
+        memo_open: memo_open_regexp
+        talk_all:   /^[^S][^M]/
+        talk_think: /^[qcaAmIiTVG][^M]/
+        talk_clan:  /^[qcaAmIi\-WPX][^M]/
+        talk_all_open:   /^.[^M]/
+        talk_think_open: /^[qcaAmIiTVGS][^M]/
+        talk_clan_open:  /^[qcaAmIi\-WPXS][^M]/
+        talk_all_last:   /^[^S][SX]/
+        talk_think_last: /^[qcaAmIiTVG][SX]/
+        talk_clan_last:  /^[qcaAmIi\-WPX][SX]/
+        talk_all_open_last:   /^.[SX]/
+        talk_think_open_last: /^[qcaAmIiTVGS][SX]/
+        talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]/
+        talk_open:      talk_open_regexp
+        talk_open_last: talk_news_regexp
+
+      filter = mode_filters[$scope.modes.regexp]
       list = list.filter (o)->
         o.logid.match filter
-      if mode_params[key][0].newest
+      if $scope.modes.last
         result = []
         order   = (o)-> [GIJI.message.order[o.mestype] || 8, o.date || (new Date)]
         list.groupBy($scope.potof_key).keys (key, list)->

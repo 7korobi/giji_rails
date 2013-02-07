@@ -4,8 +4,7 @@ MODULE = ($scope, $filter)->
   $scope.link = GIJI.link
 
   background = (log)->
-    log_type = $scope.mode?.choice().log
-    if 'BG' == log_type
+    if $scope.modes?.player
       log.replace ///
         (/\*)(.*?)(\*/|$)
       ///g,'<em>$1$2$3</em>'
