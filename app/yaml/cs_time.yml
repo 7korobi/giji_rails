@@ -21,3 +21,5 @@ chr_jobs:
   job: 截拳道
 - face_id: t05
   job: 開放的市民
+- face_id: c09
+  job: 暗殺教団

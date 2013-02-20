@@ -21,3 +21,7 @@ chr_jobs:
   job: 露店巡り
 - face_id: mad04
   job: 酸味探し
+- face_id: mad05
+  job: 天井手繰り
+- face_id: mad06
+  job: 隠れん坊

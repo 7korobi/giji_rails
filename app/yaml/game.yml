@@ -22,6 +22,7 @@ PERL_DEFAULT:
       - SF_sf10
       - mad
       - time
+      - ger
 
       # SFが大文字なのは、従来との互換性を保つため。たぶん変更不能。
     path: &GIJI_PATH

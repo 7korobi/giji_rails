@@ -358,6 +358,25 @@ Face:
   name: "ラディスラヴァ"
   comment: "年末カウントダウン♪"
   order: 163
+- order: 1
+  face_id: g01
+  name: 露蝶
+  comment: "中国女性名"
+- order: 2
+  face_id: g02
+  name: 晋鈺
+  comment: "台湾男性名 越南の名前も探したかったが、見つからぬ…"
+- order: 3
+  face_id: g03
+  name: 芙蓉
+  comment: "里帰り"
+- order: 4
+  face_id: gc61
+  name: 沼太郎
+  comment: "里帰り"
+# 露蝶 ru die
+# 冰露 bing ru
+# 晋鈺 Chin-yü
 - order: 7
   face_id: m01
   name: "ケムシ"
@@ -423,6 +442,16 @@ Face:
   face_id: mad04
   comment: "阿片窟からきました"
   order: 4
+- name: ヤヘイ
+  face_id: mad05
+  comment: "阿片窟からきました"
+  order: 5
+- name: アヤワスカ
+  face_id: mad06
+  comment: "阿片窟からきました"
+  order: 6
+#　ドッツ　イボテン　ダイミ　ムッシモール　ムスカゾン　クベンシス
+#　リゼル　ペヨーテ　アヤワスカ　カーピ　シポ　オアスカ　
 - order: 12
   face_id: r12
   name: "バーナバス"

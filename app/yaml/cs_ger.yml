@@ -1,0 +1,20 @@
+---
+chr_set_id: ger
+maker: 馬頭琴の調
+admin: 闇の呟き
+chr_npcs:
+- caption: エクスパンション・セット「大陸議事」
+  csid: ger
+  face_id: g03
+  say_0: まさか……これは……？<br><br>真相が分かったわ！<br>日が出たらすぐ、麓の皆に知らせないと！
+  say_1: 飛車が…壊れてる……<br>葛橋が…焼けてる……<br><br>！　なんだ、猫か……。おどかさないでよ。<br>ん？
+# 三合派 八宅派 紫白九星派 玄空飛星派 玄空大卦派 八字派
+chr_jobs:
+- face_id: g01
+  job: 三元道士
+- face_id: g02
+  job: 白鶴拳
+- face_id: g03
+  job: 吹牛方士
+- face_id: gc61
+  job: 釣り師
