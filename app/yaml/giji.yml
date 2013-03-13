@@ -8,6 +8,10 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 news:
+- text: バイバイリストが故障して、ページが開きませんでしたが、直しました。
+  date: 2013-02-27
+- text: 発言フィルタを調整。
+  date: 2013-02-27
 - text: 発言フィルタを調整。
   date: 2013-02-04
 - text: ズームインしたとき、左ウィンドウが邪魔にならないよう消去します。右ボタンで再表示できます。

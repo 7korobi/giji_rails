@@ -63,25 +63,40 @@ CGI = ($scope, $filter)->
       {}
 
   $scope.submit = (param)->
+    iframe_load = (doc)->
+      $scope.form = null
+      console.log doc
+
+      if 20 < doc.length
+        $scope.replace_gon doc
+
+        INIT $scope
+        $scope.top.count()
+        $scope.face.scan()
+        $scope.pool_start()
+        $scope.$apply()
+
     iframe = $('iframe')
     if 0 == iframe.length
-      iframe = $("""<iframe style="display: none;" name="submit_result"></iframe>""") 
-      $('body').append iframe
+      dynamic_div = document.createElement 'DIV'
+      dynamic_div.innerHTML = """<iframe name = "submit_result" style="display: none;"></iframe>"""
+      document.body.appendChild dynamic_div 
+
       iframe = $('iframe')
+      iframe[0].contentWindow.name = "submit_result"
 
-    iframe.load ->
-      $scope.form = null
+    if head.browser.ie
+      iframe[0].onreadystatechange = ()->
+        if @readyState == "complete"
+          iframe_load @contentWindow.document.XMLDocument
+          @onreadystatechange = null
+    else
+      iframe.load ->
+        iframe_load $(@).contents().find("body").html()
+    
 
-      data = $(@).contents().find("body").html()
-      $scope.replace_gon data
 
-      INIT $scope
-      $scope.top.count()
-      $scope.face.scan()
-      $scope.$apply()
-
-
-    form = $("""<form target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
+    form = $("""<form id="submit_request" target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
 
     param.keys (key,val)->
       return unless val?

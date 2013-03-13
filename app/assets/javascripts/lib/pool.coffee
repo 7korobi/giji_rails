@@ -34,6 +34,10 @@ POOL = ($scope)->
         pool.delay ajax_timer
   pool.delay ajax_timer
 
+  $scope.pool_start = ->
+    apply.delay message_first
+    refresh.delay message_timer
+
   $scope.adjust = ->
     popover = $('a[title]')
     popover.each (idx, dom)->

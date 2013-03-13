@@ -62,7 +62,7 @@ FILTER = ($scope, $filter)->
 
     mode_params = GIJI.modes.groupBy('val')
 
-    Navi.push $scope, 'face_only'
+    Navi.push $scope, 'face_only',
       options:
         current: ""
         location: 'hash'
@@ -75,13 +75,13 @@ FILTER = ($scope, $filter)->
           for potof in $scope.potofs
               potof.is_hide = face_id != potof.face_id
 
-    Navi.push $scope, 'search'
+    Navi.push $scope, 'search',
       options:
         current: ""
         location: 'hash'
         is_cookie: false
 
-    Navi.push $scope, 'mode'
+    Navi.push $scope, 'mode',
       options:
         current: mode_current
         location: 'hash'
@@ -197,7 +197,7 @@ FILTER = ($scope, $filter)->
     else
       list
 
-  page.refresh = ()->
+  scroll = ()->
     $('div.popover').remove()
     if $scope.top.id?
       target = $(".message_filter.#{$scope.top.id}")
@@ -207,5 +207,10 @@ FILTER = ($scope, $filter)->
       target = $(".inframe")
 
     $(window).scrollTop  target.offset().top - 20
+
+  $scope.$watch 'order.value', scroll
+  $scope.$watch 'page.value',  scroll
+  $scope.$watch 'event.turn',  scroll
+  page.refresh = ()->
     $scope.boot()
 

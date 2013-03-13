@@ -36,3 +36,19 @@ chr_jobs:
   job: 保安技師
 - face_id: sf11
   job: 艇長
+- face_id: sf12
+  job: 廃神
+- face_id: sf13
+  job: 消防隊長
+- face_id: sf14
+  job: 対面販売
+- face_id: sf15
+  job: 忍者隊
+- face_id: sf16
+  job: 保険調査
+- face_id: sf17
+  job: 幽閉児
+- face_id: sf18
+  job: 感性子
+- face_id: sf19
+  job: 理性子

@@ -29,7 +29,7 @@ Giji::Application.configure do
   # config.log_level = :debug
 
   # Use a different logger for distributed setups
-  # config.logger = SyslogLogger.new
+  config.logger = Logger.new(Rails.root + 'log/production.log', 10, 1.megabytes)
 
   # Use a different cache store in production
 

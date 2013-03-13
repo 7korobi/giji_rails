@@ -364,7 +364,7 @@ Face:
   comment: "中国女性名"
 - order: 2
   face_id: g02
-  name: 晋鈺
+  name: 志偉
   comment: "台湾男性名 越南の名前も探したかったが、見つからぬ…"
 - order: 3
   face_id: g03
@@ -502,6 +502,38 @@ Face:
   face_id: sf11
   name: "イワノフ"
   comment: "かれやなぎさん＆りちゃさん"
+- order: 12
+  face_id: sf12
+  name: "†ルシフェル†"
+  comment: 
+- order: 13
+  face_id: sf13
+  name: "トルドヴィン"
+  comment: 
+- order: 14
+  face_id: sf18
+  name: "玖休"
+  comment:
+- order: 15
+  face_id: sf19
+  name: "参休"
+  comment:
+- order: 16
+  face_id: sf14
+  name: "クリスマス"
+  comment: 
+- order: 17
+  face_id: sf15
+  name: "ジェームス"
+  comment: 
+- order: 18
+  face_id: sf16
+  name: "ライジ"
+  comment:
+- order: 19
+  face_id: sf17
+  name: "ジャック"
+  comment:
 - name: "チアキ"
   face_id: t01
   comment: "時をかける少女"

@@ -20,8 +20,8 @@ class UsersController < ApplicationController
     return unless user.sow_auths.present? && user.byebyes.present?
 
     active_story_ids = SowVillage.where(is_finish:false).only(:_id).map(&:_id)
-    user_story_ids   = SowUser.where.in(sow_auth_id: user.sow_auth_ids ).in(story_id: active_story_ids ).only(:story_id).map(&:story_id)
-    byebye_story_ids = SowUser.where.in(sow_auth_id: user.byebye_ids   ).in(story_id: user_story_ids   ).only(:story_id).map(&:story_id)
+    user_story_ids   = SowUser.all.in(sow_auth_id: user.sow_auth_ids ).in(story_id: active_story_ids ).only(:story_id).map(&:story_id)
+    byebye_story_ids = SowUser.all.in(sow_auth_id: user.byebye_ids   ).in(story_id: user_story_ids   ).only(:story_id).map(&:story_id)
 
     kick_ids = Hash.new {|hash, key| hash[key] = [] }
     maker_story_ids  = SowVillage.where(is_finish:false).in(sow_auth_id: user.sow_auth_ids ).only(:_id).map(&:_id)
@@ -30,8 +30,8 @@ class UsersController < ApplicationController
       story = stories.first
       maker = story.sow_auth_id
       sow_auth_ids = story.potofs.only(:sow_auth_id).map(&:sow_auth_id)
-      byebyes_by_potof = User.where.in(sow_auth_ids: sow_auth_ids).only(:byebye_ids).map(&:byebye_ids).flatten
-      byebyes_by_maker = User.where.in(sow_auth_ids:      [maker]).only(:byebye_ids).map(&:byebye_ids).flatten
+      byebyes_by_potof = User.all.in(sow_auth_ids: sow_auth_ids).only(:byebye_ids).map(&:byebye_ids).flatten
+      byebyes_by_maker = User.all.in(sow_auth_ids:      [maker]).only(:byebye_ids).map(&:byebye_ids).flatten
 
       # ５人以上からバイバイされている人
       (byebyes_by_potof & sow_auth_ids).each do |byebye_id|

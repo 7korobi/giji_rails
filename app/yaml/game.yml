@@ -507,6 +507,7 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
+#    is_angular: true
 
 ALLSTAR:
   server: jinro.jksy.org
