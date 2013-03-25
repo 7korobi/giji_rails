@@ -8,6 +8,8 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 news:
+- text: 右下ボタンを調整しました。
+  date: 2013-03-25
 - text: バイバイリストが故障して、ページが開きませんでしたが、直しました。
   date: 2013-02-27
 - text: 発言フィルタを調整。
@@ -405,9 +407,9 @@ modes:
 
 navis:
   link:  移動
+  page:  場面
   info:  名簿
   calc:  状況
-  blank: x
 
 csids:
   15girls: 15girls

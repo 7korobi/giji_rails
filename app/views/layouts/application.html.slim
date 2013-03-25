@@ -35,21 +35,25 @@ html(lang="ja" ng-controller="RAILS")
       #footer
       #tab(ng-cloak)
         #sayfilter.sayfilter
-          h4.sayfilter_heading(ng-show="! navi.show.blank")
+          h4.sayfilter_heading#navi_head(ng-hide="navi.hide")
             = yield :head
           - if flash[:error]
             .insayfilter.paragraph.sayfilter_content
               = ERROR[flash[:error]]
 
-          .insayfilter(ng-show="navi.show.link")
+          .insayfilter#navi_link(ng-show="navi.show.link")
             .paragraph
               = yield :link_caption
               = yield :link
-          .insayfilter(ng-show="navi.show.info")
+          .insayfilter#navi_page(ng-show="navi.show.page")
+            .paragraph
+              = yield :page_caption
+              = yield :page
+          .insayfilter#navi_info(ng-show="navi.show.info")
             .paragraph
               = yield :info_caption
               = yield :info
-          .insayfilter(ng-show="navi.show.calc")
+          .insayfilter#navi_calc(ng-show="navi.show.calc")
             .paragraph
               = yield :calc_caption
               = yield :calc
@@ -58,3 +62,6 @@ html(lang="ja" ng-controller="RAILS")
             div(ng-repeat="o in navi.select")
               a.btn(ng-click="navi.move(o.val)"  ng-class="o.class")
                 | {{o.name}}
+            div
+              a.btn(ng-click="navi.blank()")
+                | ✘

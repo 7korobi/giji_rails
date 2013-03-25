@@ -1,7 +1,7 @@
 - content_for :head do
   | ページをめくる
 
-- content_for :link do
+- content_for :page do
   h4.sayfilter_caption_enable
     | 他の場面へ
   .sayfilter_content
@@ -9,6 +9,7 @@
     nav(template="navi/page_filter")
     br
 
+- content_for :link do
   h4.sayfilter_caption_enable
     | 他の章へ
   .sayfilter_content(template="navi/events")

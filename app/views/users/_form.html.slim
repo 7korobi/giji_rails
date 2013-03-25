@@ -14,7 +14,7 @@
   .sayfilter_content
     =semantic_form_for user do |f|
       - f.semantic_errors :sow_auths, :byebyes
-      .form-horizontal(ng-init="navi.value='info'")
+      .form-horizontal(ng-init="navi.value=['info']")
         = f.inputs
         = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "人狼議事で使っているID"
         = f.input :byebyes, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "Bye-Bye List"

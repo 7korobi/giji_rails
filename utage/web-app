@@ -30,6 +30,10 @@ reload)
   ;;
 
 
+bundle-install)
+  ~/.rbenv/shims/bundle install
+  ;;
+
 bundle-update)
   ~/.rbenv/shims/bundle update
   ;;
@@ -99,7 +103,7 @@ tail-log)
   echo  "Usage: $0 command"
   echo
   echo  "  command : status start stop restart reload"
-  echo  "          : bundle-update QUEUE time"
+  echo  "          : bundle-update bundle-install QUEUE time"
   echo  "          : kill exec  s server test  c console  tail-log"
   echo  "  product : $APP"
 esac

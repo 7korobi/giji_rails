@@ -123,9 +123,9 @@ MODULE = ($scope, $filter)->
 
   navi =
     options:
-      current: 'link'
+      current: ['link']
       location: 'hash'
-      is_cookie: false
+      is_cookie: true
     button: GIJI.navis
 
   href_eval = (e)->
@@ -222,7 +222,7 @@ MODULE = ($scope, $filter)->
   $('#messages').on  'click', '[href_eval]', href_eval
   $('#sayfilter').on 'click', '[href_eval]', href_eval
 
-  Navi.push $scope, 'navi',  navi
+  ArrayNavi.push $scope, 'navi',  navi
   $scope.navi.watch.push ->
     $scope.boot()
 

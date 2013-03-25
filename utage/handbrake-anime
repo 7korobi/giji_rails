@@ -2,7 +2,7 @@
 
 STYLE="m4v"
 AUDIO="-N jpn -E faac  -6 dpl2 -R Auto -B 160 -D 0.0"
-GRAPH=" -l 544  -e x264 -q 25 -r 29.97 --pfr --detelecine --decomb"
+GRAPH=" -l 544  -e x264 -q 25 -r 29.97 --pfr --detelecine --decomb --encopts ref=6:weightp=1:subq=2:rc-lookahead=10:trellis=2:8x8dct=0:bframes=5:b-adapt=2"
 HANDBRAKE="/usr/bin/HandBrakeCLI  -f mp4 -4  --verbose=1 "
 OUT="/c/media/PSV/Videos"
 EXT="$*"

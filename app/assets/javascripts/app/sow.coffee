@@ -65,8 +65,6 @@ CGI = ($scope, $filter)->
   $scope.submit = (param)->
     iframe_load = (doc)->
       $scope.form = null
-      console.log doc
-
       if 20 < doc.length
         $scope.replace_gon doc
 
@@ -76,27 +74,25 @@ CGI = ($scope, $filter)->
         $scope.pool_start()
         $scope.$apply()
 
-    iframe = $('iframe')
-    if 0 == iframe.length
-      dynamic_div = document.createElement 'DIV'
-      dynamic_div.innerHTML = """<iframe name = "submit_result" style="display: none;"></iframe>"""
-      document.body.appendChild dynamic_div 
-
-      iframe = $('iframe')
-      iframe[0].contentWindow.name = "submit_result"
 
     if head.browser.ie
-      iframe[0].onreadystatechange = ()->
-        if @readyState == "complete"
-          iframe_load @contentWindow.document.XMLDocument
-          @onreadystatechange = null
+      form = $("""<form id="submit_request" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
+
     else
+      iframe = $('iframe')
+      if 0 == iframe.length
+        dynamic_div = document.createElement 'DIV'
+        dynamic_div.innerHTML = """<iframe name="submit_result" style="display: none;"></iframe>"""
+        document.body.appendChild dynamic_div 
+
+        iframe = $('iframe')
+        iframe[0].contentWindow.name = "submit_result"
+
       iframe.load ->
-        iframe_load $(@).contents().find("body").html()
+        new_item = $(@).contents().find("body")
+        iframe_load new_item.html()
     
-
-
-    form = $("""<form id="submit_request" target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
+      form = $("""<form id="submit_request" target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
 
     param.keys (key,val)->
       return unless val?

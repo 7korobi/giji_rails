@@ -33,7 +33,7 @@ class Navi
       @select = def.select
 
     @chk = ///
-      (^|\s)#{key}=(\w+)
+      (^|\s)#{key}=([^;]+)
     ///
     @popstate()
 

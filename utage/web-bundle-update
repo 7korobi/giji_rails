@@ -7,6 +7,6 @@ bundle update | grep -v Using
 /utage/web-release-to 241 &
 /utage/web-release-front &
 /utage/web-release-worker &
-/utage/ssh-254 /utage/web-app bundle-update | grep -v Using &
-/utage/ssh-249 /utage/web-app bundle-update | grep -v Using &
+/utage/ssh-254 /utage/web-app bundle-install | grep -v Using &
+/utage/ssh-249 /utage/web-app bundle-install | grep -v Using &
 

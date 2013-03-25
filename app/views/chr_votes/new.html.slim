@@ -12,7 +12,7 @@
   h4.sayfilter_caption_enable
     | 顔をクリックして投票！
     =semantic_form_for chr_vote do |f|
-      .form-horizontal(ng-init="phase_input = #{chr_vote.phase.to_json};  navi.value='info'")
+      .form-horizontal(ng-init="phase_input = #{chr_vote.phase.to_json};  navi.value=['info']")
         =f.input :face_id, as: :hidden
         =f.input :vote,    as: :hidden
         =f.input :comment

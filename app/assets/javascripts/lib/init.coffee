@@ -160,7 +160,7 @@ INIT = ($scope)->
   $scope.face.scan()
 
   if gon.pages?
-    PageNavi.push $scope, 'page'
+    PageNavi.push $scope, 'page',
       options:
         current: 1
         location: 'search'

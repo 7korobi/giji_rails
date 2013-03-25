@@ -5,6 +5,8 @@ AUDIO="-a 1 -E faac  -6 dpl2 -R Auto -B 96 -D 0.0"
 GRAPH="-e x264 -q 25 -r 29.97 --pfr"
 HANDBRAKE="/usr/bin/HandBrakeCLI  -f mp4 -4  --verbose=1  --decomb"
 OUT="/c/media/PSV/Videos"
+EXT="$*"
+# --encopts ref=6:weightp=1:subq=2:rc-lookahead=10:trellis=2:8x8dct=0:bframes=5:b-adapt=2
 
 export STYLE
 export AUDIO
