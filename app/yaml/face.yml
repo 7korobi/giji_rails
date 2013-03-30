@@ -374,9 +374,6 @@ Face:
   face_id: gc61
   name: 沼太郎
   comment: "里帰り"
-# 露蝶 ru die
-# 冰露 bing ru
-# 晋鈺 Chin-yü
 - order: 7
   face_id: m01
   name: "ケムシ"
@@ -450,8 +447,7 @@ Face:
   face_id: mad06
   comment: "阿片窟からきました"
   order: 6
-#　ドッツ　イボテン　ダイミ　ムッシモール　ムスカゾン　クベンシス
-#　リゼル　ペヨーテ　アヤワスカ　カーピ　シポ　オアスカ　
+
 - order: 12
   face_id: r12
   name: "バーナバス"
@@ -710,3 +706,72 @@ Face:
   name: "置壱"
   comment: "日本の美徳強化月間"
   order: 45
+
+######################### 
+# 2013-04-01 update
+- order: 5
+  face_id: g04
+  name: 攻芸
+  comment: "台湾男性名"
+- order: 6
+  face_id: g05
+  name: 麻雀
+  comment: "中国女性名"
+- order: 7
+  face_id: g06
+  name: 黍炉
+  comment: "ダリダイ・オッチギン（Daridai Otčigin）"
+# 露蝶 ru die
+# 冰露 bing ru
+# 晋鈺 Chin-yü
+# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
+
+- name: ダイミ
+  face_id: mad07
+  comment: "阿片窟からきました"
+  order: 7
+- name: エフェドラ
+  face_id: mad08
+  comment: "阿片窟からきました"
+  order: 8
+#　ドッツ　イボテン　ムッシモール　ムスカゾン　クベンシス
+#　リゼル　ペヨーテ　カーピ　シポ　オアスカ　アミン
+
+- name: サミュエル
+  face_id: t06
+  comment: "トランスフォーマー"
+  order: 106
+- name: アカリ
+  face_id: t07
+  comment: "時をかける少女"
+  order: 107
+- name: ミルフィ
+  face_id: t08
+  comment: "海賊戦隊ゴーカイジャー"
+  order: 108
+- name: ゴロウ
+  face_id: t09
+  comment: "時をかける少女"
+  order: 109
+- name: トレイル
+  face_id: t10
+  comment: "ゼルダの伝説 ムジュラの仮面"
+  order: 110
+- name: マドカ
+  face_id: t11
+  comment: "宇宙戦艦ヤマモト・ヨーコ"
+  order: 111
+- name: フランク
+  face_id: t12
+  comment: "オーロラの彼方へ"
+  order: 112
+- name: ジャニス
+  face_id: t13
+  comment: "フラッシュフォワード"
+  order: 113
+# 少年探偵団、覇権政府、猫の集会、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
+# 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
+

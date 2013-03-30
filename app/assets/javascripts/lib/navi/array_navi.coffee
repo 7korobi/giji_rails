@@ -10,7 +10,7 @@ class ArrayNavi extends Navi
       return if @select?.all((s)=> o != s.val)
       value.push @params.current_type o
     @value = value
-    @value = @params.current_type @params.current if @value.length < 1
+    @value = @params.current if @value.length < 1
 
   blank: ()->
     @value = []

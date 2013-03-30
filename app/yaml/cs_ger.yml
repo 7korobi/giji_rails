@@ -18,3 +18,9 @@ chr_jobs:
   job: 吹牛方士
 - face_id: gc61
   job: 釣り師
+- face_id: g04
+  job: 心意六合拳
+- face_id: g05
+  job: 本草方士
+- face_id: g06
+  job: 宝飾交易

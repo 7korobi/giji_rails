@@ -25,3 +25,7 @@ chr_jobs:
   job: 天井手繰り
 - face_id: mad06
   job: 隠れん坊
+- face_id: mad07
+  job: 早口言葉
+- face_id: mad08
+  job: 妄執の誓い

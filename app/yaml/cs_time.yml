@@ -23,3 +23,19 @@ chr_jobs:
   job: 開放的市民
 - face_id: c09
   job: 暗殺教団
+- face_id: t06
+  job: 死ね死ね団
+- face_id: t07
+  job: 勧善懲悪委
+- face_id: t08
+  job: 覆面嫉妬団
+- face_id: t09
+  job: 匿名軍団
+- face_id: t10
+  job: 営利政府
+- face_id: t11
+  job: 鷹の爪団
+- face_id: t12
+  job: 地下鉄道
+- face_id: t13
+  job: MNU機関
