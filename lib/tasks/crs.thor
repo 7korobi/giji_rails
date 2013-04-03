@@ -9,7 +9,18 @@ class Crs < Thor
 
     rsync = Giji::RSync.new
 
-    ChrSet.all.map do |set|
+    chr_sets = ChrSet.all
+
+    chr_jobs_hash = chr_sets.each_with_object({}) do |chr_set,o|
+      o[chr_set.chr_set_id] = chr_set.chr_jobs
+    end
+
+    all_set = ChrSet.new(CS_ALL)
+    append  = [ChrJob.new(face_id:"all", job:"かみさま")]
+    rejects = %w[r12 gc61].map{|o|ChrJob.new(face_id:o)}
+    all_set.chr_jobs = (chr_jobs_hash["ririnra"] | chr_jobs_hash.values.flatten | append) - rejects
+
+    ([all_set] + chr_sets).map do |set|
       faces = set.faces.to_a
       set.chr_npcs.map do |npc|
         {:csid => npc.csid, :set => set, :npc => npc, :faces => faces }

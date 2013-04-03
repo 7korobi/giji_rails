@@ -358,366 +358,365 @@ Face:
   name: "ラディスラヴァ"
   comment: "年末カウントダウン♪"
   order: 163
-- order: 1
+- order: 10001
   face_id: g01
   name: 露蝶
   comment: "中国女性名"
-- order: 2
+- order: 10002
   face_id: g02
   name: 志偉
   comment: "台湾男性名 越南の名前も探したかったが、見つからぬ…"
-- order: 3
+- order: 10003
   face_id: g03
   name: 芙蓉
   comment: "里帰り"
-- order: 4
+- order: 10004
   face_id: gc61
   name: 沼太郎
   comment: "里帰り"
-- order: 7
+- order: 70007
   face_id: m01
   name: "ケムシ"
-- order: 8
+- order: 70008
   face_id: m02
   name: "ポプラ"
-- order: 3
+- order: 70003
   face_id: m03
   name: "トノサマ"
-- order: 9
+- order: 70009
   face_id: m04
   name: "アオイ"
-- order: 4
+- order: 70004
   face_id: m05
   name: "ナナコロ"
-- order: 2
+- order: 70002
   face_id: m06
   name: "リリンラ"
-- order: 6
+- order: 70006
   face_id: m07
   name: "アリス"
-- order: 11
+- order: 70011
   face_id: m08
   name: "おっぱい"
-- order: 12
+- order: 70012
   face_id: m09
   name: "カミジャー"
-- order: 13
+- order: 70013
   face_id: m10
   name: "アチャポ"
-- order: 15
+- order: 70015
   face_id: m11
   name: "ライトニング"
-- comment: ''
+- order: 70014
   face_id: m12
   name: "トルニトス"
-  order: 14
-- order: 16
+- order: 70016
   face_id: m13
   name: "ミケ"
-- order: 17
+- order: 70017
   face_id: m14
   name: "カリュクス"
-- order: 5
+- order: 70005
   face_id: m15
   name: "ミソチャ"
-- order: 1
+- order: 70001
   face_id: m99
   name: "パルック"
 - name: "デメテル"
   face_id: mad01
   comment: "阿片窟からきました"
-  order: 1
+  order: 20001
 - name: "エルゴット"
   face_id: mad02
   comment: "阿片窟からきました"
-  order: 2
+  order: 20002
 - name: "シーシャ"
   face_id: mad03
   comment: "阿片窟からきました"
-  order: 3
+  order: 20003
 - name: "ドリベル"
   face_id: mad04
   comment: "阿片窟からきました"
-  order: 4
+  order: 20004
 - name: ヤヘイ
   face_id: mad05
   comment: "阿片窟からきました"
-  order: 5
+  order: 20005
 - name: アヤワスカ
   face_id: mad06
   comment: "阿片窟からきました"
-  order: 6
+  order: 20006
 
-- order: 12
+- order: 70012
   face_id: r12
   name: "バーナバス"
-- order: 6
+- order: 70006
   face_id: r30
   name: "トリ"
-- order: 1
+- order: 80001
   face_id: sf01
   name: "ラッシード"
   comment: "りしあさん＆かれやなぎさん"
-- order: 2
+- order: 80002
   face_id: sf02
   name: "エスペラント"
   comment: "ふらぅさん＆かれやなぎさん"
-- order: 3
+- order: 80003
   face_id: sf03
   name: "ピート"
   comment: "たるっとさん＆りちゃさん"
-- order: 4
+- order: 80004
   face_id: sf04
   name: "アシモフ"
   comment: "あすたん＆りりんら"
-- order: 5
+- order: 80005
   face_id: sf05
   name: "モナリザ"
   comment: "ななころび＆りりんら"
-- order: 6
+- order: 80006
   face_id: sf06
   name: "ワレンチナ"
   comment: "まりもさん＆あずまさん"
-- order: 7
+- order: 80007
   face_id: sf07
   name: "ヤンファ"
   comment: "りしあさん＆はむおくん"
-- order: 8
+- order: 80008
   face_id: sf08
   name: "ＰＪ"
   comment: "りしあさん＆ふらぅさん"
-- order: 9
+- order: 80009
   face_id: sf09
   name: "キリシマ"
   comment: "ななころび＆ふらぅさん"
-- order: 10
+- order: 80010
   face_id: sf10
   name: "ナユタ"
   comment: "かれやなぎさん＆かいさん"
-- order: 11
+- order: 80011
   face_id: sf11
   name: "イワノフ"
   comment: "かれやなぎさん＆りちゃさん"
-- order: 12
+- order: 80012
   face_id: sf12
   name: "†ルシフェル†"
   comment: 
-- order: 13
+- order: 80013
   face_id: sf13
   name: "トルドヴィン"
   comment: 
-- order: 14
+- order: 80014
   face_id: sf18
   name: "玖休"
   comment:
-- order: 15
+- order: 80015
   face_id: sf19
   name: "参休"
   comment:
-- order: 16
+- order: 80016
   face_id: sf14
   name: "クリスマス"
   comment: 
-- order: 17
+- order: 80017
   face_id: sf15
   name: "ジェームス"
   comment: 
-- order: 18
+- order: 80018
   face_id: sf16
   name: "ライジ"
   comment:
-- order: 19
+- order: 80019
   face_id: sf17
   name: "ジャック"
   comment:
 - name: "チアキ"
   face_id: t01
   comment: "時をかける少女"
-  order: 101
+  order: 30001
 - name: "リッキィ"
   face_id: t02
   comment: "夏への扉"
-  order: 102
+  order: 30002
 - name: "ミナカタ"
   face_id: t03
   comment: "ー仁ー"
-  order: 103
+  order: 30003
 - name: "カイル"
   face_id: t04
   comment: "サラ・コナー・クロニクルズ"
-  order: 104
+  order: 30004
 - name: "ジェニファー"
   face_id: t05
   comment: "バック・トゥ・ザ・フューチャー"
-  order: 105
-- order: 38
+  order: 30005
+- order: 90038
   face_id: w01
   name: "鏡花"
   comment: "輝く月に未来を託す　暁月商事"
-- order: 41
+- order: 90041
   face_id: w02
   name: "慶三郎"
   comment: "カメラのことなら　MISEKI"
-- order: 22
+- order: 90022
   face_id: w03
   name: "朔"
   comment: "新しい議事をつくる　たき学会"
-- order: 34
+- order: 90034
   face_id: w04
   name: "小鈴"
   comment: "お口の愛人　タルッティ・タルット"
-- order: 1
+- order: 90001
   face_id: w05
   name: "定吉"
   comment: "ぷえるとりこの旅人　エージ―エー"
-- order: 35
+- order: 90035
   face_id: w06
   name: "ゆり"
   comment: "道を外して60年　GEDOU協会"
-- order: 30
+- order: 90030
   face_id: w07
   name: "夕顔"
-- order: 28
+- order: 90028
   face_id: w08
   name: "朝顔"
-- order: 17
+- order: 90017
   face_id: w09
   name: "チャールズ"
   comment: "チャールズ派遣ならおまかせ　O-ririn"
-- order: 15
+- order: 90015
   face_id: w10
   name: "博史"
-- order: 21
+- order: 90021
   face_id: w11
   name: "沼太郎"
-- order: 14
+- order: 90014
   face_id: w12
   name: "おみつ"
   comment: "道を外して60年　GEDOU協会"
-- order: 20
+- order: 90020
   face_id: w13
   name: "たまこ"
   comment: "世界の道をつなぐ　議事国地図"
-- order: 19
+- order: 90019
   face_id: w14
   name: "華月斎"
   comment: "めげないゼラチン作り　MEGEゼラチン"
-- order: 39
+- order: 90039
   face_id: w15
   name: "八重"
   comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
-- order: 5
+- order: 90005
   face_id: w16
   name: "勢"
   comment: "ぶたさん印の　あおいジンギスカン"
-- order: 26
+- order: 90026
   face_id: w17
   name: "雷門"
   comment: "輝く月に未来を託す　暁月商事"
-- order: 6
+- order: 90006
   face_id: w18
   name: "菊"
-- order: 12
+- order: 90012
   face_id: w20
   name: "藤之助"
-- order: 2
+- order: 90002
   face_id: w21
   name: "鉄平"
   comment: "日本の伝統　熊木彫"
-- order: 3
+- order: 90003
   face_id: w22
   name: "竹三"
   comment: "雪国の風雅　熊木彫"
-- order: 33
+- order: 90033
   face_id: w23
   name: "仁右衛門"
-- order: 9
+- order: 90009
   face_id: w24
   name: "辰次"
   comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
-- order: 16
+- order: 90016
   face_id: w25
   name: "法泉"
-- order: 7
+- order: 90007
   face_id: w26
   name: "勝丸"
-- order: 24
+- order: 90024
   face_id: w27
   name: "源蔵"
-- order: 25
+- order: 90025
   face_id: w28
   name: "甚六"
-- order: 11
+- order: 90011
   face_id: w29
   name: "志乃"
-- order: 18
+- order: 90018
   face_id: w30
   name: "雪代"
-- order: 13
+- order: 90013
   face_id: w31
   name: "日向"
-- order: 40
+- order: 90040
   face_id: w32
   name: "明之進"
-- comment: ''
+- order: 90032
+  comment: ''
   face_id: w33
   name: "団十郎"
-  order: 32
-- order: 23
+- order: 90023
   face_id: w34
   name: "余四朗"
-- comment: ''
+- order: 90008
+  comment: ''
   face_id: w35
   name: "奈須麿"
-  order: 8
-- order: 4
+- order: 90004
   face_id: w36
   name: "ウト"
-- order: 10
+- order: 90010
   face_id: w37
   name: "芙蓉"
 - comment: ''
   face_id: w38
   name: "一平太"
-  order: 37
+  order: 90037
 - comment: ''
   face_id: w39
   name: "沙耶"
-  order: 27
-- order: 31
+  order: 90027
+- order: 90031
   face_id: w40
   name: "朧"
-- order: 29
+- order: 90029
   face_id: w43
   name: "春松"
 - face_id: w44
   name: "雪客"
   comment: "りりんラハウス呑んだくれ大会"
-  order: 42
+  order: 90042
 - face_id: w45
   name: "亀吉"
   comment: "りりんラハウス呑んだくれ大会"
-  order: 43
+  order: 90043
 - face_id: w46
   name: "梅子"
-  order: 44
+  order: 90044
   comment: "お誕生日記念☆"
 - face_id: w47
   name: "置壱"
   comment: "日本の美徳強化月間"
-  order: 45
+  order: 90045
 
 ######################### 
 # 2013-04-01 update
-- order: 5
+- order: 10005
   face_id: g04
   name: 攻芸
   comment: "台湾男性名"
-- order: 6
+- order: 10006
   face_id: g05
   name: 麻雀
   comment: "中国女性名"
-- order: 7
+- order: 10007
   face_id: g06
   name: 黍炉
   comment: "ダリダイ・オッチギン（Daridai Otčigin）"
@@ -725,50 +724,51 @@ Face:
 # 冰露 bing ru
 # 晋鈺 Chin-yü
 # http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
+# http://cjjc.weblio.jp/
 
 - name: ダイミ
   face_id: mad07
   comment: "阿片窟からきました"
-  order: 7
+  order: 20007
 - name: エフェドラ
   face_id: mad08
   comment: "阿片窟からきました"
-  order: 8
+  order: 20008
 #　ドッツ　イボテン　ムッシモール　ムスカゾン　クベンシス
 #　リゼル　ペヨーテ　カーピ　シポ　オアスカ　アミン
 
 - name: サミュエル
   face_id: t06
   comment: "トランスフォーマー"
-  order: 106
+  order: 30006
 - name: アカリ
   face_id: t07
   comment: "時をかける少女"
-  order: 107
+  order: 30007
 - name: ミルフィ
   face_id: t08
   comment: "海賊戦隊ゴーカイジャー"
-  order: 108
+  order: 30008
 - name: ゴロウ
   face_id: t09
   comment: "時をかける少女"
-  order: 109
+  order: 30009
 - name: トレイル
   face_id: t10
   comment: "ゼルダの伝説 ムジュラの仮面"
-  order: 110
+  order: 30010
 - name: マドカ
   face_id: t11
   comment: "宇宙戦艦ヤマモト・ヨーコ"
-  order: 111
+  order: 30011
 - name: フランク
   face_id: t12
   comment: "オーロラの彼方へ"
-  order: 112
+  order: 30012
 - name: ジャニス
   face_id: t13
   comment: "フラッシュフォワード"
-  order: 113
+  order: 30013
 # 少年探偵団、覇権政府、猫の集会、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
 # 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81

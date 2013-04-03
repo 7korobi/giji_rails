@@ -12,17 +12,18 @@ PERL_DEFAULT:
       - ririnra_c51
       - ririnra_c20
       - ririnra_c32
+      - all
+      - mad
+      - time
+      - ger
       - animal
       - school
       - changed
       - changed_m05
-      - wa
-      - wa_w23
       - SF
       - SF_sf10
-      - mad
-      - time
-      - ger
+      - wa
+      - wa_w23
 
       # SFが大文字なのは、従来との互換性を保つため。たぶん変更不能。
     path: &GIJI_PATH
