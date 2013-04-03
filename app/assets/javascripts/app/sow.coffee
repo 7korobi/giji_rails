@@ -75,7 +75,7 @@ CGI = ($scope, $filter)->
         $scope.$apply()
 
 
-    if head.browser.ie
+    if head.browser.ie || 'editvilform' == param.cmd 
       form = $("""<form id="submit_request" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
 
     else
