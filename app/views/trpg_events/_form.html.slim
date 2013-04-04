@@ -1,8 +1,10 @@
-- content_for :head do
+- content_for :navi_head do
   | 章を綴る
 
-- content_for :info do
-  | さあ、新しい章を綴ってゆこう。
+- content_for :navi do
+  .insayfilter(navi="info" name="操作")
+    .paragraph
+      | さあ、新しい章を綴ってゆこう。
 
 - content_for :log do
   =semantic_form_for_resource trpg_event do |f|

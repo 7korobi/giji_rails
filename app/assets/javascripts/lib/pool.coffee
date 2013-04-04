@@ -59,4 +59,3 @@ POOL = ($scope)->
   $scope.boot.delay   400
   $scope.boot.delay  2000
   $scope.boot.delay 10000
-

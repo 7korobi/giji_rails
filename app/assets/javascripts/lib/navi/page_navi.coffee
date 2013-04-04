@@ -45,7 +45,7 @@ class PageNavi extends Navi
       val:  i
       class:
         if i == @value
-        then 'btn-success'
+        then @params.class
         else null
 
     n =
@@ -57,7 +57,7 @@ class PageNavi extends Navi
       penu:     @length - 1
       last:     @length
 
-    @show =
+    show =
       first:    0 < @length and n.first  < n.prev
       second:   1 < @length and n.second < n.prev
 
@@ -70,17 +70,18 @@ class PageNavi extends Navi
       next:             @value < @length
       next_gap:         @value < @length - 3
 
-    @show.keys (key, is_show)=>
-      is_show = @show[key]
+    @of = {}
+    show.keys (key, is_show)=>
       item = @select.find (o)-> o.val == n[key]
       item or=
         name: ""
         val:  null
-      @[key] = item.clone()
+      item = item.clone()
+      item.class = 'ng-cloak'
+      item.class = null          if is_show
+      item.class = @params.class if is_show && @value == n[key]
 
-      @[key].class = 'ng-cloak'
-      @[key].class = null          if is_show
-      @[key].class = 'btn-success' if is_show && @value == n[key]
+      @of[key] = item
 
 
 PageNavi.push = ($scope, key, def)->

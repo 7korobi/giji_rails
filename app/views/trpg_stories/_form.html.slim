@@ -1,7 +1,9 @@
-- content_for :head do
+- content_for :navi_head do
   | 物語を綴る
 
-- content_for :info do
+- content_for :navi do
+  .insayfilter(navi="info" name="解説")
+    .paragraph
   | さあ、物語を皆に紹介しよう。
 
 - content_for :log do

@@ -404,13 +404,6 @@ modes:
   open: true
   player: true
 
-
-navis:
-  link:  移動
-  page:  場面
-  info:  名簿
-  calc:  状況
-
 csids:
   15girls: 15girls
   bloody:  bloody

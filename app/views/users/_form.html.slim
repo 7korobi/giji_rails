@@ -1,26 +1,29 @@
-- content_for :head do
+- content_for :navi_head do
   | input users
 
-- content_for :link do
-  h4.sayfilter_caption_enable
-    | 他のことを知りたい
-  - if user.id
-    .sayfilter_content
-      li=link_to 'あなたのトップページ', user_path(user.id)
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | 他のことを知りたい
+      - if user.id
+        .sayfilter_content
+          li=link_to 'あなたのトップページ', user_path(user.id)
 
-- content_for :info do
-  h4.sayfilter_caption_enable
-    | あなたの登録情報
-  .sayfilter_content
-    =semantic_form_for user do |f|
-      - f.semantic_errors :sow_auths, :byebyes
-      .form-horizontal(ng-init="navi.value=['info']")
-        = f.inputs
-        = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "人狼議事で使っているID"
-        = f.input :byebyes, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "Bye-Bye List"
-        = f.actions do
-          .actions
-            = f.submit
+  .insayfilter(navi="form" name="登録")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | あなたの登録情報
+      .sayfilter_content
+        =semantic_form_for user do |f|
+          - f.semantic_errors :sow_auths, :byebyes
+          .form-horizontal(ng-init="navi.value=['info']")
+            = f.inputs
+            = f.input :sow_auths, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "人狼議事で使っているID"
+            = f.input :byebyes, :as => :text, :input_html => { :rows => 5, :cols => 20 }, label: "Bye-Bye List"
+            = f.actions do
+              .actions
+                = f.submit
 
 - content_for :log do
   h2= "#{user.name} さんの情報"

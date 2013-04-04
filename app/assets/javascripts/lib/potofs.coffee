@@ -16,29 +16,31 @@ POTOFS = ($scope)->
         $scope.face.others.remove $scope.potof_key({})
 
   # potofs support
-  calc_potof = ->
-    hides = $scope.potofs.filter((o)-> o.is_hide ).map $scope.potof_key
-    hides.add $scope.face.others if $scope.others_hide
-    $scope.face.hide = hides
+  calc_potof = (hide)->
+    $scope.hide_potofs.value = hide
 
-  $scope.other_toggle = ->
-    $scope.others_hide = ! $scope.others_hide
-    calc_potof()
+  potof_toggle = (select_face)->
+    hide = $scope.hide_potofs.value.clone()
+    if hide.any(select_face)
+      hide.remove(select_face)
+    else
+      hide.add(select_face)
+
+    calc_potof hide
 
   $scope.potof_only = (potofs)->
-    $scope.others_hide = potofs != $scope.potofs
+    all  = $scope.potofs.map $scope.potof_key
     only = potofs.map $scope.potof_key
-    for potof in $scope.potofs
-      potof.is_hide = ! only.any $scope.potof_key potof
+    hide = all.subtract(only)
+    hide.add("others") if potofs != $scope.potofs
 
-    calc_potof()
+    calc_potof hide
+
+  $scope.other_toggle = ->
+    potof_toggle "others"
 
   $scope.potof_toggle = (select_potof)->
-    select_face = $scope.potof_key select_potof
-    for potof in $scope.potofs
-      if select_face == $scope.potof_key potof
-        potof.is_hide = ! potof.is_hide
-    calc_potof()
+    potof_toggle $scope.potof_key select_potof
 
   $scope.potofs_toggle = ->
     $scope.potofs_is_small = ! $scope.potofs_is_small

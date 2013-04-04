@@ -1,20 +1,24 @@
 =render template:'messages/index'
 
-- content_for :info do
-  br
-  p= event.human_state
+
+- content_for :navi do
+  .insayfilter(navi="info" name="情報")
+    .paragraph
+      br
+      p= event.human_state
 
 -if self?
-  - content_for :info_caption do
-    p GameMaster
+  - content_for :navi do
+    .insayfilter(navi="info" name="操作")
+      .paragraph
+        p GameMaster
 
-  - content_for :info do
-    p= link_to '章を書き換える', edit_trpg_event_path(story, event)
-    =semantic_form_for_resource event do |f|
-      .inputs
-        = f.input :potofs, as: :check_boxes, collection: story.potofs, label: '参加者一覧'
-      .actions
-        = f.submit
+        p= link_to '章を書き換える', edit_trpg_event_path(story, event)
+        =semantic_form_for_resource event do |f|
+          .inputs
+            = f.input :potofs, as: :check_boxes, collection: story.potofs, label: '参加者一覧'
+          .actions
+            = f.submit
 
 - content_for :log do
   h2= story.name

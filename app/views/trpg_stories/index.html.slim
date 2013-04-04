@@ -1,7 +1,9 @@
 =render template:'stories/index'
-- content_for :info do
-  p ここは物語を収めた図書館。
-  p もし新しい物語を綴りたくなったら、扉を開くといい。
-  br
-  p= link_to '新しい物語の扉を開く', new_trpg_story_path
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      p ここは物語を収めた図書館。
+      p もし新しい物語を綴りたくなったら、扉を開くといい。
+      br
+      p= link_to '新しい物語の扉を開く', new_trpg_story_path
 

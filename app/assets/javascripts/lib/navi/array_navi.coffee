@@ -15,13 +15,19 @@ class ArrayNavi extends Navi
   blank: ()->
     @value = []
 
+  value_add: (newVal)->
+    @value = @value.clone().add newVal
+
+  value_del: (newVal)->
+    @value = @value.clone().remove newVal
+
   move: (newVal)->
     if newVal?
       newVal = @params.current_type newVal
       if @value.any newVal
         @value = [newVal]
       else
-        @value = @value.concat [newVal]
+        @value_add newVal
     else
       @value
 
@@ -29,12 +35,13 @@ class ArrayNavi extends Navi
     @hide = (@value.length < 1)
     if @select?
       for o in @select
+        @of[o.val] = o
         if @value.any o.val
-          o.class = 'btn-success'
-          @show[o.val] = true
+          o.class = @params.class
+          o.show = true
         else
           o.class = null
-          @show[o.val] = false
+          o.show = false
 
   choice: ->
     @select.find (o)=> o.val == @value[0]

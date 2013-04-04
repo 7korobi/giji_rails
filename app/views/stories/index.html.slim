@@ -1,11 +1,13 @@
-- content_for :head do
+- content_for :navi_head do
   | ページをめくる
 
-- content_for :link do
-  h4.sayfilter_caption_enable
-    | 他の物語へ
-  .sayfilter_content
-    nav(template="navi/paginate" class="form-inline")
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | 他の物語へ
+      .sayfilter_content
+        nav(template="navi/paginate" class="form-inline")
 
 - content_for :log do
 

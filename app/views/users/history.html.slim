@@ -1,13 +1,15 @@
 =render 'login'
 
-- content_for :head do
+- content_for :navi_head do
   | history user
 
-- content_for :link do
-  h4.sayfilter_caption_enable
-    | 他のことを知りたい
-  .sayfilter_content
-    li=link_to 'あなたのトップページ', user_path(user.id)
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | 他のことを知りたい
+      .sayfilter_content
+        li=link_to 'あなたのトップページ', user_path(user.id)
 
 - content_for :log do
   - if user.sow_auth_ids && gon.messages_raw

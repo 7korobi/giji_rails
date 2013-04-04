@@ -1,16 +1,20 @@
-- content_for :head do
+- content_for :navi_head do
   | ページをめくる
 
-- content_for :link do
-  h4.sayfilter_caption_enable
-    | 他の章へ
-  .sayfilter_content(template="navi/events")
 
-  h4.sayfilter_caption_enable
-    = link_to '他の物語へ', index_parent_path
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | 他の章へ
+      .sayfilter_content(template="navi/events")
 
-- content_for :info do
-  .sayfilter_content(template="navi/potofs")
+      h4.sayfilter_caption_enable
+        = link_to '他の物語へ', index_parent_path
+
+  .insayfilter(navi="info" name="名簿")
+    .paragraph
+      .sayfilter_content(template="navi/potofs")
 
 - content_for :log do
   h2 村の情報

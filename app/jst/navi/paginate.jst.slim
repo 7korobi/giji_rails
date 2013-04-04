@@ -1,16 +1,16 @@
-a.btn(ng-click="page.move(page.first.val)"  ng-class="page.first.class")
-  | {{page.first.name}}
-a.btn(ng-click="page.move(page.second.val)"  ng-class="page.second.class")
-  | {{page.second.name}}
-span(ng-class="page.prev_gap.class") …
-a.btn(ng-click="page.move(page.prev.val)"  ng-class="page.prev.class")
-  | {{page.prev.name}}
+a.btn(ng-click="page.move(page.of.first.val)"  ng-class="page.of.first.class")
+  | {{page.of.first.name}}
+a.btn(ng-click="page.move(page.of.second.val)"  ng-class="page.of.second.class")
+  | {{page.of.second.name}}
+span(ng-class="page.of.prev_gap.class") …
+a.btn(ng-click="page.move(page.of.prev.val)"  ng-class="page.of.prev.class")
+  | {{page.of.prev.name}}
 select(ng-model="page.value" ng-options="pno.val as pno.name for pno in page.select" class="input-mini")
-a.btn(ng-click="page.move(page.next.val)"  ng-class="page.next.class")
-  | {{page.next.name}}
-span(ng-class="page.next_gap.class") …
-a.btn(ng-click="page.move(page.penu.val)"  ng-class="page.penu.class")
-  | {{page.penu.name}}
-a.btn(ng-click="page.move(page.last.val)"  ng-class="page.last.class")
-  | {{page.last.name}}
+a.btn(ng-click="page.move(page.of.next.val)"  ng-class="page.of.next.class")
+  | {{page.of.next.name}}
+span(ng-class="page.of.next_gap.class") …
+a.btn(ng-click="page.move(page.of.penu.val)"  ng-class="page.of.penu.class")
+  | {{page.of.penu.name}}
+a.btn(ng-click="page.move(page.of.last.val)"  ng-class="page.of.last.class")
+  | {{page.of.last.name}}
 

@@ -1,34 +1,34 @@
 
 -if self?
-  - content_for :info_caption do
-    p GameMaster
+  - content_for :navi do
+    .insayfilter(navi="info" name="操作")
+      .paragraph
+        p GameMaster
+        br
+        p= link_to '物語を書き換える', edit_trpg_story_path(story)
+        p= link_to '新しい章を綴る',   new_trpg_event_path(story_id:story)
+        br
 
-  - content_for :info do
-    br
-    p= link_to '物語を書き換える', edit_trpg_story_path(story)
-    p= link_to '新しい章を綴る',   new_trpg_event_path(story_id:story)
-    br
 
-
-- content_for :head do
+- content_for :navi_head do
   | ページをめくる
 
-- content_for :link_caption do
-  | 他の物語へ
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      | 他の物語へ
+      br
+      p= link_to '他の物語を見る', index_parent_path
+      br
 
-- content_for :link do
-  br
-  p= link_to '他の物語を見る', index_parent_path
-  br
-
-- content_for :info_caption do
-  | 他の章へ
-
-- content_for :info do
-  - events.each do |event|
-    ul
-      li= link_to event.name.html_safe, "#{NODE[:server]}/trpg/#{event.id}/#{current.user.rails_token}"
-  br
+- content_for :navi do
+  .insayfilter(navi="page" name="場面")
+    .paragraph
+      | 他の章へ
+    - events.each do |event|
+      ul
+        li= link_to event.name.html_safe, "#{NODE[:server]}/trpg/#{event.id}/#{current.user.rails_token}"
+    br
 
 - content_for :log do
   h2 村の情報

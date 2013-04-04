@@ -19,9 +19,10 @@ class Navi
     @scope = $scope
     @params = def.options
     @params.current_type or= String
+    @params.class or= 'btn-success'
 
+    @of = {}
     @key = key
-    @show = {}
     @watch = []
     if def.button?
       @select = []
@@ -72,12 +73,13 @@ class Navi
   _move: ()->
     if @select?
       for o in @select
+        @of[o.val] = o
         if o.val == @value
-          o.class = 'btn-success'
-          @show[o.val] = true
+          o.class = @params.class
+          o.show = true
         else
           o.class = null
-          @show[o.val] = false
+          o.show = false
 
 
 Navi.popstate = ()->

@@ -7,60 +7,94 @@ angular.module("giji.directives").directive "accordion", [->
       $(this).next().show 'fast'
 ]
 
-EFFECT = ($scope)->
-  win.zoom_start = ->
-    $scope.navi.value = []
-    $scope.$apply()
+angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
+  effect = ($scope)->
+    win.zoom_start = ->
+      $scope.navi.value = []
+      $scope.$apply()
 
-  $(window).resize ->
-    return unless $scope.navi? && $scope.width?
-    height = win.height
-    width  = win.width
+    $(window).resize ->
+      return unless $scope.navi? && $scope.width?
+      height = win.height
+      width  = win.width
 
-    content  = "contentframe"
-    outframe = "outframe"
+      content  = "contentframe"
+      outframe = "outframe"
 
-    calculate = (key, show)->
-      return unless show
-      if $scope.potofs? && key == 'info'
-        if $scope.secret_is_open
-          if $scope.potofs_is_small
-            small = 250
+      calculate = (key, params)->
+        if $scope.potofs? && key == 'info'
+          if $scope.secret_is_open
+            if $scope.potofs_is_small
+              small = 250
+            else
+              small = 340
           else
-            small = 340
+              small = 200
+
+        switch $scope.width.value
+          when 480
+            small   or=   638 - 462
+            info_left = width - 462
+            if      small < info_left
+              info_width  = info_left
+              $scope.is_fullwidth = false
+            else
+              info_width = FixedBox.list["#buttons"].left - 8
+              $scope.is_fullwidth = true
+
+          when 800
+            small    or= (  798 - 770)/2 + 188
+            info_left  = (width - 770)/2 + 188
+            if     small  < info_left
+              info_width  = info_left
+              $scope.is_fullwidth = false
+              content  = "contentframe_navileft"
+              outframe = "outframe_navimode"
+            else
+              info_width = FixedBox.list["#buttons"].left - 8
+              $scope.is_fullwidth = true
+              content  = "contentframe"
+              outframe = "outframe"
+
+        if params.show
+          $("#sayfilter #navi_#{key}").css
+            width: info_width
+            display: ""
         else
-            small = 200
+          $("#sayfilter #navi_#{key}").css
+            display: "none"
 
-      switch $scope.width.value
-        when 480
-          small   or=   638 - 462
-          info_left = width - 462
-          if      small < info_left
-            info_width  = info_left
-            $scope.is_fullwidth = false
-          else
-            info_width = FixedBox.list["#buttons"].left - 8
-            $scope.is_fullwidth = true
+        $("#sayfilter > h4").css
+          width: info_width - 8
 
-        when 800
-          small    or= (  798 - 770)/2 + 188
-          info_left  = (width - 770)/2 + 188
-          if     small  < info_left
-            info_width  = info_left
-            $scope.is_fullwidth = false
-            content  = "contentframe_navileft"
-            outframe = "outframe_navimode"
-          else
-            info_width = FixedBox.list["#buttons"].left - 8
-            $scope.is_fullwidth = true
-            content  = "contentframe"
-            outframe = "outframe"
+      $scope.navi.of.keys calculate
+      calculate "head", 
+        show: true
+      calculate "error", 
+        show: true
 
-      $("#sayfilter #navi_#{key}").css
-        width: info_width
+      $("#contentframe")[0].className = content
+      $("#outframe")[0].className = outframe
+  navis = []
 
-    $scope.navi.show.keys calculate
-    calculate "head", true
+  restrict: "A"
+  link: ($scope, elm, attr, ctrl)->
+    elm.attr("id", "navi_#{attr.navi}")
+    navis.add attr.navi
 
-    $("#contentframe")[0].className = content
-    $("#outframe")[0].className = outframe
+    if ! $scope.navi
+      ArrayNavi.push $scope, 'navi',
+        options:
+          current: []
+          location: 'hash'
+          is_cookie: false
+        button: {}
+      $scope.navi.watch.push ->
+        $scope.boot()
+      effect($scope)
+
+    $scope.navi.select.add
+      name: attr.name
+      val:  attr.navi
+    $scope.navi.value = navis.clone()
+]

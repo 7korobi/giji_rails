@@ -1,11 +1,14 @@
-- content_for :head do
+- content_for :navi_head do
   | 好きなキャラクターに投票しよう
 
-- content_for :link do
-  .sayfilter_content
-    ul
-      li=link_to "あなたの投票は？", new_chr_vote_path
-    br
+- content_for :navi do
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      .sayfilter_content
+        ul
+          li=link_to "あなたの投票は？", new_chr_vote_path
+        br
+
 - content_for :log do
   h2 みんなのコメント
   #messages

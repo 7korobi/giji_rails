@@ -74,8 +74,8 @@ MODULE = ($scope, $filter)->
       o.is_news = Date.create('3days ago') < Date.create(o.date)
     GIJI.news
 
-  $scope.$watch 'title', (oldVal, newVal)->
-    $('title').text(newVal);
+  $scope.$watch 'title', (value, oldVal)->
+    $('title').text(value);
 
   # stories support
   $scope.stories_toggle = ->
@@ -120,13 +120,6 @@ MODULE = ($scope, $filter)->
 
   $scope.remove_card = (at, idx)->
     $scope.story.card[at].removeAt idx
-
-  navi =
-    options:
-      current: ['link']
-      location: 'hash'
-      is_cookie: true
-    button: GIJI.navis
 
   href_eval = (e)->
     init_gon = (href)->
@@ -222,15 +215,9 @@ MODULE = ($scope, $filter)->
   $('#messages').on  'click', '[href_eval]', href_eval
   $('#sayfilter').on 'click', '[href_eval]', href_eval
 
-  ArrayNavi.push $scope, 'navi',  navi
-  $scope.navi.watch.push ->
-    $scope.boot()
-
-
   TOKEN_INPUT  $scope
   AJAX    $scope
   CACHE   $scope
-  EFFECT  $scope
   POTOFS  $scope
 
   # INIT FILTER POOL sequence

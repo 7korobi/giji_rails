@@ -1,12 +1,14 @@
-- content_for :head do
+- content_for :navi_head do
   Listing chr_sets
 
-- content_for :info do
-  .sayfilter_caption_enable
-  	= render 'form'
-  .sayfilter_caption_enable
-	= link_to 'Show', chr_set
-  .sayfilter_caption_enable
-	= link_to 'Back', chr_sets_path
+- content_for :navi do
+  .insayfilter(navi="info" name="名簿")
+    .paragraph
+      .sayfilter_caption_enable
+        = render 'form'
+      .sayfilter_caption_enable
+        = link_to 'Show', chr_set
+      .sayfilter_caption_enable
+        = link_to 'Back', chr_sets_path
 
 

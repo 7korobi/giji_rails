@@ -63,6 +63,9 @@ INIT = ($scope)->
       o.deathday < 0
 
     potofs = gon.potofs.map (potof)->
+      key = $scope.potof_key potof
+      potof.val = key
+
       if potof.bonds?
         potof.bonds = potof.bonds.map (pid)->
           gon.potofs[pid]
@@ -155,6 +158,20 @@ INIT = ($scope)->
     $scope.potofs = potofs
     $scope.sum =
       actaddpt: (live_potofs.sum (o)-> o.point.actaddpt)
+
+    potofs_hash = 
+      others: "他の人々"
+    for potof in potofs
+      key = $scope.potof_key potof
+      potofs_hash[key] = potof.name
+
+    ArrayNavi.push $scope, 'hide_potofs',
+      options:
+        class: 'btn-inverse'
+        current: []
+        location: 'hash'
+        is_cookie: true
+      button: potofs_hash
 
   # for face_ids
   $scope.face.scan()

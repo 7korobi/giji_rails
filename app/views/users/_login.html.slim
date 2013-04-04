@@ -1,26 +1,28 @@
-- content_for :link do
-  -if user?
-    h4.sayfilter_caption_enable
-      = "login with #{current.auth.provider} account."
-    li
-      label.label = link_to current.user.name, user_path(current.user.id)
-  -if login?
-    li
-      label.label = link_to '  click to logout', destroy_user_session_path
+- content_for :navi do
+  .insayfilter(navi="login" name="接続")
+    .paragraph
+      -if user?
+        h4.sayfilter_caption_enable
+          = "login with #{current.auth.provider} account."
+        li
+          label.label = link_to current.user.name, user_path(current.user.id)
+      -if login?
+        li
+          label.label = link_to '  click to logout', destroy_user_session_path
 
-  h4.sayfilter_caption_enable
-    | Choice open id
-  .sayfilter_content
-    table#follow
-      tr
-        td= link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
-        td= link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
-      tr
-        td  Twitter
-        td Facebook
-    li
-      label.label = link_to 'mixi',   '/users/auth/mixi'
-    li
-      label.label = link_to 'google', '/users/auth/google'
-    li
-      label.label = link_to 'yahoo',  '/users/auth/yahoo'
+      h4.sayfilter_caption_enable
+        | Choice open id
+      .sayfilter_content
+        table#follow
+          tr
+            td= link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
+            td= link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
+          tr
+            td  Twitter
+            td Facebook
+        li
+          label.label = link_to 'mixi',   '/users/auth/mixi'
+        li
+          label.label = link_to 'google', '/users/auth/google'
+        li
+          label.label = link_to 'yahoo',  '/users/auth/yahoo'

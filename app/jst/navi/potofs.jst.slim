@@ -46,7 +46,7 @@ table(class="table table-condensed")
           a(ng-click="potof_only(potofs_groups[key])")
             i.icon-share-alt
 
-    tr(ng-repeat="potof in potofs_groups[key]" ng-class="potof.is_hide && 'btn-inverse'" ng-show="potofs_is_small")
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class" ng-show="potofs_is_small")
       td(ng-click="potof_toggle(potof)")
         | {{potof.name}}
       td(ng-click="potof_toggle(potof)" colspan="2" style="text-align: right;")
@@ -61,7 +61,7 @@ table(class="table table-condensed")
         a(ng-click="potof_only([potof])")
           i.icon-share-alt
 
-    tr(ng-repeat="potof in potofs_groups[key]" ng-class="potof.is_hide && 'btn-inverse'" ng-hide="potofs_is_small")
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class" ng-hide="potofs_is_small")
       td(ng-click="potof_toggle(potof)")
         | {{potof.longname || potof.name}}
         .note.name(ng-show="potof.auth")
@@ -92,7 +92,7 @@ table(class="table table-condensed")
   tbody
     tr.head
       th(colspan="6")
-    tr(ng-class="others_hide && 'btn-inverse'")
+    tr(ng-class="hide_potofs.of.others.class")
       td(ng-click="other_toggle()" colspan="2")
         span.name 他の人々
       td(colspan="4" style="text-align: right;")

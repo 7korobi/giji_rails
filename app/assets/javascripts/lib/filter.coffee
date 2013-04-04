@@ -62,19 +62,6 @@ FILTER = ($scope, $filter)->
 
     mode_params = GIJI.modes.groupBy('val')
 
-    Navi.push $scope, 'face_only',
-      options:
-        current: ""
-        location: 'hash'
-        is_cookie: false
-
-    $scope.face_only.watch.push (face_id)->
-      if face_id
-        $scope.face.hide = $scope.face.all.subtract [face_id]
-        if $scope.potofs?
-          for potof in $scope.potofs
-              potof.is_hide = face_id != potof.face_id
-
     Navi.push $scope, 'search',
       options:
         current: ""
@@ -162,8 +149,11 @@ FILTER = ($scope, $filter)->
       else
         list
 
-    page.filter 'face.hide', (hide_ids, list)->
-      faces = $scope.face.all.subtract $scope.face.hide
+    page.filter 'hide_potofs.value', (hide_ids, list)->
+      hide_faces = hide_ids.clone()
+      if hide_faces.any 'others'
+        hide_faces.add($scope.face.others)
+      faces = $scope.face.all.subtract hide_faces
       list.filter (o)->
         faces.some $scope.potof_key(o)
 
