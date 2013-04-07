@@ -5,7 +5,8 @@ link href="mailto:7korobi@gmail.com" rev="Made"
 
 - css = "#{cookies["theme"]}#{cookies["width"]}".html_safe if cookies["theme"] && cookies["width"]
 - css ||= "cinema800".html_safe
-link#giji_css media="screen" rel="stylesheet" type="text/css" href="#{URL[:rails]}/stylesheets/#{css}.css"
+link#giji_css      media="screen" rel="stylesheet" type="text/css" href="#{URL[:rails]}/stylesheets/#{css}.css"
+link#giji_css_font media="screen" rel="stylesheet" type="text/css" href="#{URL[:rails]}/stylesheets/font/normal.css"
 
 meta(charset="utf-8")
 title 人狼議事

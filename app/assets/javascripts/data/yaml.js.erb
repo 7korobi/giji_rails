@@ -5,11 +5,11 @@
   if Kernel.constants.member?(const)
 %>
 
-this.<%= const %> = <%= Kernel.const_get( const ).to_json %> ;
+this.<%= const %> = <%= JSON.pretty_generate Kernel.const_get( const ) %> ;
 
 <%
   end
 end
 %>
 
-this.SOW_RECORD = {"CABALA":<%= SOW_RECORD[:CABALA].to_json %>};
+this.SOW_RECORD = {"CABALA":<%= JSON.pretty_generate SOW_RECORD[:CABALA] %>};

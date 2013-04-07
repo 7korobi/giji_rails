@@ -2,15 +2,6 @@
   | ページをめくる
 
 - content_for :navi do
-  .insayfilter(navi="page" name="場面")
-    .paragraph
-      h4.sayfilter_caption_enable
-        | 他の場面へ
-      .sayfilter_content
-        nav(template="navi/paginate" class="form-inline" ng-hide="event.is_news")
-        nav(template="navi/page_filter")
-        br
-
   .insayfilter(navi="link" name="移動")
     .paragraph
       h4.sayfilter_caption_enable
@@ -20,10 +11,22 @@
       h4.sayfilter_caption_enable
         p= link_to '他の物語へ', index_parent_path
 
-- content_for :navi do
+  .insayfilter(navi="filter" name="場面")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | 他の場面へ
+      .sayfilter_content
+        nav(template="navi/page_filter")
+        br
+
   .insayfilter(navi="info" name="名簿")
     .paragraph
       .sayfilter_content(template="navi/potofs")
+
+  .insayfilter(navi="page" name="頁番")
+    .paragraph
+      .sayfilter_content
+        nav(template="navi/paginate" class="form-inline" ng-hide="event.is_news")
 
 - content_for :log do
   h2 {{title}}

@@ -112,6 +112,15 @@ css:
       480: 458
       800: 580
 
+  font:
+    options:
+      is_cookie: true
+      location: hash
+      current: normal
+    button:
+      normal: 普通
+      small:  繊細
+
   width:
     options:
       is_cookie: true

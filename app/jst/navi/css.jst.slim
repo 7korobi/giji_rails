@@ -1,3 +1,8 @@
+span(ng-repeat="o in font.select")
+  a(ng-click="font.move(o.val)"  ng-class="o.class")
+    | {{o.name}}
+  | &nbsp;
+| ｜
 span(ng-repeat="o in theme.select")
   a(ng-click="theme.move(o.val)"  ng-class="o.class")
     | {{o.name}}

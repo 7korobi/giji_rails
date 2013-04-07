@@ -1,14 +1,16 @@
-//"日本語";
-
 <%
 namespace = "this.JST"
 head = "app/jst/"
+%>
+
+//"日本語";
+<%=namespace%> || (<%=namespace%> = {});
+
+<%
 Dir.glob(head + "**/*.jst.*") do |path|
   idx = path.match(/#{head}([^.]+)/)[1]
   Tilt.new(path).render
 %>
-
-<%=namespace%> || (<%=namespace%> = {});
 <%=namespace%>[<%=idx.inspect%>] = <%=Tilt.new(path).render.to_json%>;
 
 <%
@@ -33,4 +35,4 @@ ChrSet.find(['changed','ririnra','sf','wa']).each do |set|
   end
 end
 %>
-this.FACES = <%= faces.to_json %>
+this.FACES = <%= JSON.pretty_generate faces %>

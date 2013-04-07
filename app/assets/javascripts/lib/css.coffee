@@ -1,6 +1,7 @@
 angular.module("giji.directives").directive "theme", ["$compile", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
+    font  = OPTION.css.font
     width = OPTION.css.width
     width.options.current_type = Number
     theme = OPTION.css.themes[attr.theme]
@@ -8,9 +9,14 @@ angular.module("giji.directives").directive "theme", ["$compile", ($compile)->
     move = ()->
       value = "#{$scope.theme.value}#{$scope.width.value}"
       date  = new Date
+
       css = "#{URL.resource}/stylesheets/#{value}.css"
       if css != $("#giji_css").attr 'href'
         $("#giji_css").attr 'href', css
+
+      css_font = "#{URL.resource}/stylesheets/font/#{$scope.font.value}.css"
+      if css_font != $("#giji_css_font").attr 'href'
+        $("#giji_css_font").attr 'href', css_font
 
       $scope.h1 =
         type:  OPTION.head_img[value][ (date / 60*60*12).ceil() % 2]
@@ -20,12 +26,11 @@ angular.module("giji.directives").directive "theme", ["$compile", ($compile)->
 
     Navi.push $scope, 'width', width
     Navi.push $scope, 'theme', theme
+    Navi.push $scope, 'font',  font
 
     $scope.width.watch.push move
     $scope.theme.watch.push move
+    $scope.font .watch.push move
 
-    elm.css
-      "text-align": "right"
-      "font-size":  "100%"
     GIJI.template $compile, $scope, elm, "navi/css"
 ]
