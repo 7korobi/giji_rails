@@ -35,7 +35,6 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         gap = 0
         if key == 'head'
           small = 150
-          gap = 8
         if key == 'calc'
           small = 150
         if key == 'filter'
@@ -55,10 +54,11 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
         switch $scope.width.value
           when 480
-            small   or=   638 - 462
-            info_left = width - 462
+            small   or=   638 - 472
+            info_left = width - 472
             if      small < info_left
               info_width  = info_left
+              params.is_fullwidth = false
             else
               info_width = FixedBox.list["#buttons"].left - 8
               params.is_fullwidth = true
@@ -73,6 +73,11 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               info_width = FixedBox.list["#buttons"].left - 8
               params.is_fullwidth = true
 
+        if head.browser.mozilla && ! params.is_fullwidth
+          gap = 5
+        if head.browser.opera   && ! params.is_fullwidth
+          gap = 5
+        
         if params.show
           $("#sayfilter #navi_#{key}").css
             width: info_width - gap
