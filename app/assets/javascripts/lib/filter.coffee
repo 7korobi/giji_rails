@@ -126,12 +126,12 @@ FILTER = ($scope, $filter)->
         info: /^[aAm]|(vilinfo)/
         memo_all:  /^(.M)|([AMam]S)/
         memo_open: memo_open_regexp
-        talk_all:   /^[^S][^M]/
-        talk_think: /^[qcaAmIiTVG][^M]/
-        talk_clan:  /^[qcaAmIi\-WPX][^M]/
-        talk_all_open:   /^.[^M]/
-        talk_think_open: /^[qcaAmIiTVGS][^M]/
-        talk_clan_open:  /^[qcaAmIi\-WPXS][^M]/
+        talk_all:   /^[^S][^M]\d+/
+        talk_think: /^[qcaAmIiTVG][^M]\d+/
+        talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
+        talk_all_open:   /^.[^M]\d+/
+        talk_think_open: /^[qcaAmIiTVGS][^M]\d+/
+        talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
         talk_all_last:   /^[^S][SX]/
         talk_think_last: /^[qcaAmIiTVG][SX]/
         talk_clan_last:  /^[qcaAmIi\-WPX][SX]/
