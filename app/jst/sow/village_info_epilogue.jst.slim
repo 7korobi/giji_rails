@@ -4,8 +4,8 @@
     dd {{story.name}}
     dt こだわり
     dd
-      img(ng-src="{{URL.resource}}/images/icon/cd_{{story.rating}}.png")
-      | {{story.rating_caption}}
+      img(ng-src="{{story.rating_url}}")
+      | {{story.announce.rating}}
 
   p.head.text(ng-bind-html-unsafe="story.comment")
 

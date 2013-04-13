@@ -4,6 +4,8 @@ select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group
 
 .form-inline
   label.inline.radio
+    input(type="radio" value="info" ng-model="modes.face") 情報
+  label.inline.radio
     input(type="radio" value="memo" ng-model="modes.face") メモ
   label.inline.radio
     input(type="radio" value="talk" ng-model="modes.face") ログ

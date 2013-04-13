@@ -78,13 +78,15 @@ FILTER = ($scope, $filter)->
     $scope.modes = $scope.mode.choice()
 
     modes_change = (oldVal, newVal)->
+      if "info" == $scope.modes.face
+        $scope.modes.last = false
+        $scope.modes.view = "open"
       if "memo" == $scope.modes.face
         $scope.modes.open = true
       if "open" == $scope.modes.view
         $scope.modes.open = true
       if "all" != $scope.modes.view
         if "memo" == $scope.modes.face
-          $scope.modes.open = true
           $scope.modes.view = "open"
       $scope.mode.value = [ 
         $scope.modes.face
@@ -118,8 +120,10 @@ FILTER = ($scope, $filter)->
         talk_open_regexp = /^[qcaAmIS][^M]/
         memo_open_regexp = /^([qcaAmIMS][MX])|([AMam]S)/
 
+      # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
       mode_filters_memo = 
       mode_filters =
+        info: /^[aAm]|(vilinfo)/
         memo_all:  /^(.M)|([AMam]S)/
         memo_open: memo_open_regexp
         talk_all:   /^[^S][^M]/
@@ -187,20 +191,32 @@ FILTER = ($scope, $filter)->
     else
       list
 
-  scroll = ()->
+  scrollTo = ()->
     $('div.popover').remove()
-    if $scope.top.id?
-      target = $(".message_filter.#{$scope.top.id}")
+    doIt = ->
+      if $scope.top.id?
+        target = $(".message_filter.#{$scope.top.id}")
 
-    if target?.offset()?
+      if target?.offset()?
+      else
+        target = $(".inframe")
+
+      $(window).scrollTop  target.offset().top - 20
+    doIt.delay 500
+
+  $scope.$watch 'modes.face', ()->
+    mode_face = $scope.modes.face
+    if "info" == mode_face
+      $scope.subtitle = "情報"
+    else if $scope.event?
+      $scope.subtitle = $scope.event.name
     else
-      target = $(".inframe")
+      $scope.subtitle = ""
 
-    $(window).scrollTop  target.offset().top - 20
-
-  $scope.$watch 'order.value', scroll
-  $scope.$watch 'page.value',  scroll
-  $scope.$watch 'event.turn',  scroll
+  $scope.$watch 'modes.face',  scrollTo
+  $scope.$watch 'order.value', scrollTo
+  $scope.$watch 'page.value',  scrollTo
+  $scope.$watch 'event.turn',  scrollTo
   page.refresh = ()->
     $scope.boot()
 

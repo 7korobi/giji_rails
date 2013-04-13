@@ -17,18 +17,18 @@ POOL = ($scope)->
   $scope.top =
     id: "IX99999"
     count: ->
-      top_idx = $scope.event.messages.findIndex (o)-> $scope.top.id == o.logid
-      news_size = $scope.event.messages.length - 1 - top_idx
-      if $scope.story? && 0 < top_idx && 0 < news_size
-        $("title").text "(#{news_size}) #{$scope.title}"
+      if $scope.event?
+        top_idx = $scope.event.messages.findIndex (o)-> $scope.top.id == o.logid
+        news_size = $scope.event.messages.length - 1 - top_idx
+        if $scope.story? && 0 < top_idx && 0 < news_size
+          $("title").text "(#{news_size}) #{$scope.title}"
 
   pool = ->
     href = location.href
     if $scope.event?.is_news
       $scope.get href, =>
         INIT $scope
-        $scope.top.count()
-        $scope.face.scan()
+        $scope.boot()
         $scope.$apply()
 
         pool.delay ajax_timer
@@ -46,16 +46,17 @@ POOL = ($scope)->
       $(dom).attr "rel", 'popover'
     $('[rel="popover"]').popover()
 
-    resize = ->
-      $(window).resize()
-    resize.delay   20
-    resize.delay  200
-    resize.delay 2000
+    $(window).resize()
 
   $scope.boot = (func)->
-    $scope.adjust()
+    $scope.top.count()
+    $scope.face.scan()
+    if $scope.story?
+      $scope.title = "#{$scope.subtitle} #{$scope.story.name}"
+    else
+      $scope.title = "人狼議事"
 
-  $scope.boot.delay    80
-  $scope.boot.delay   400
-  $scope.boot.delay  2000
-  $scope.boot.delay 10000
+    $scope.adjust.delay    80
+    $scope.adjust.delay   400
+    $scope.adjust.delay  2000
+    $scope.adjust.delay 10000

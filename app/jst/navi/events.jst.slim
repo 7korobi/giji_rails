@@ -1,6 +1,6 @@
 ul.nav.nav-list
-  li
-    a(ng-href="{{story.link}}" target="_blank")
+  li(ng-click="ajax_info()")
+    a
       i.icon-book
       | 情報
   li(ng-repeat="e in events" ng-click="ajax_event(e.turn, e.link, !!e.is_news)")

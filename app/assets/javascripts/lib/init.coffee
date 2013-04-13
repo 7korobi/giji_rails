@@ -32,6 +32,7 @@ INIT = ($scope)->
     story.card.config_names  = $scope.countup(story.card.config).join '、'
     story.option_helps = story.options.map (o)-> SOW.options[o].help
     story.comment = $scope.text_decolate story.comment
+    story.rating_url = "#{URL.resource}/images/icon/cd_#{story.rating}.png"
 
     if story.upd?
       story.upd.time_text = "#{story.upd.hour}時#{story.upd.minute}分"
@@ -55,7 +56,6 @@ INIT = ($scope)->
       gon_story story
 
   if gon.story?
-    $scope.title = gon.story.name
     gon_story gon.story
 
   if gon.potofs?

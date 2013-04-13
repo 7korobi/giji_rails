@@ -50,6 +50,25 @@ news:
   date: 2012-10-10
 
 modes:
+- val: info_open
+  name: 村の情報
+  group: 情報
+  form: [action]
+  regexp: info
+  face: info
+  view: open
+  open: true
+
+- val: info_open_player
+  name: (中身あり)村の情報
+  group: 情報
+  form: [action]
+  regexp: info
+  face: info
+  view: open
+  open: true
+  player: true
+
 - val: memo_all_open
   name: メモ履歴-全部
   group: メモ履歴

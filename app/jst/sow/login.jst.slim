@@ -1,0 +1,22 @@
+form(action="{{form.uri}}" method="POST" ng-hide="form.login.logined")
+  input(type="hidden" name="cmdfrom" value="{{form.login.cmdfrom}}")
+  input(type="hidden" name="cmd" value="login")
+  p.form-inline
+    label
+      | user id:
+      input.input-small(type="text" size="10" name="uid" ng-model="form.login.uid")
+    label
+      | password:
+      input.input-small(type="password" size="10" name="pwd" value="")
+    input(type="submit" value="ログイン")
+
+form(action="{{form.uri}}" method="POST" ng-show="form.login.logined")
+  input(type="hidden" name="cmdfrom" value="{{form.login.cmdfrom}}")
+  input(type="hidden" name="cmd" value="logout")
+  p.form-inline
+    span.mes_date(ng-show="form.login.is_admin")
+      | [
+      a(ng-href="{{form.login.admin_uri}}") 管理画面
+      | ]
+    span.mes_date ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。
+    input(type="submit" value="{{form.login.uidtext}} がログアウト")

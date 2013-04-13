@@ -121,86 +121,89 @@ MODULE = ($scope, $filter)->
   $scope.remove_card = (at, idx)->
     $scope.story.card[at].removeAt idx
 
-  href_eval = (e)->
-    init_gon = (href)->
-      $scope.gon(href)
+  init_gon = (href)->
+    $scope.gon(href)
 
-    refresh_event = ()->
-      href = location.href.replace location.hash, ""
-      turn = $scope.event.turn
+  refresh_event = ()->
+    href = location.href.replace location.hash, ""
+    turn = $scope.event.turn
+    href = GIJI.change_turn href, turn
+    $scope.get href, =>
+      $scope.events[turn].messages = []
+      INIT $scope
+      $scope.top.count()
+      $scope.face.scan()
+      $scope.$apply()
+
+  sort_potofs = (tgt, zero)->
+    reverse = (tgt == @tgt)
+    $scope.potofs_sortBy tgt, reverse, zero
+    $scope.$apply()
+    @tgt = reverse || tgt
+
+  navi = (link)->
+    $scope.navi.move link
+    if $scope.potofs?
+      $scope.potofs_is_small = false
+      $scope.secret_is_open  = true
+    $scope.$apply()
+
+  cancel_say = (logid)->
+    params = Object.fromQueryString(location.search)
+    params.cmd   = 'cancel'
+    params.queid = logid
+    GIJI.cancel_log = $.param params
+    location.search = GIJI.cancel_log
+
+  popup_apply = (item, turn)->
+    idx = $scope.anchors.indexOf item
+    if idx < 0
+      $scope.anchors.push item
+      item.turn = turn
+      item.z = Date.now()
+      item.top = $scope.pageY + 24
+      $scope.$apply()
+
+      drag = $(".drag.#{item.logid}")
+      drag.fadeIn 'fast', ->
+        drag.find(".badge").attr("href_eval","popup(#{item.turn},'#{item.logid}')")
+    else
+      drag = $(".drag.#{item.logid}")
+      drag.fadeOut 'fast', ->
+        $scope.anchors.removeAt(idx)
+        $scope.$apply()
+
+  popup = (turn, ank)->
+    href = location.href.replace location.hash, ""
+
+    popup_find = ()->
+      has_messages = 0 < $scope.events[turn]?.messages?.length
+      return null unless has_messages
+
+      item = $scope.events[turn].messages.find (log)->
+        log.logid == ank
+      if item
+        popup_apply item, turn
+      item
+
+    popup_ajax = (turn)->
+      return null if turn < 0
+      has_messages = 0 < $scope.events[turn]?.messages?.length
+      return null if has_messages
+
       href = GIJI.change_turn href, turn
       $scope.get href, =>
-        $scope.events[turn].messages = []
-        INIT $scope
-        $scope.top.count()
-        $scope.face.scan()
-        $scope.$apply()
+        $scope.events_join gon.event  if  turn == gon.event.turn
+        return  if  popup_find()
+      href
 
-    sort_potofs = (tgt, zero)->
-      reverse = (tgt == @tgt)
-      $scope.potofs_sortBy tgt, reverse, zero
-      $scope.$apply()
-      @tgt = reverse || tgt
+    return  if  popup_ajax turn
+    return  if  popup_find()
+    return  if  popup_ajax turn - 1
 
-    navi = (link)->
-      $scope.navi.move link
-      if $scope.potofs?
-        $scope.potofs_is_small = false
-        $scope.secret_is_open  = true
-      $scope.$apply()
 
-    cancel_say = (logid)->
-      params = Object.fromQueryString(location.search)
-      params.cmd   = 'cancel'
-      params.queid = logid
-      GIJI.cancel_log = $.param params
-      location.search = GIJI.cancel_log
-
-    popup_apply = (e, item, turn)->
-      idx = $scope.anchors.indexOf item
-      if idx < 0
-        item.z = Date.now()
-        item.top = e.pageY + 24
-        $scope.anchors.push item
-        $scope.$apply()
-        drag = $(".drag.#{item.logid}")
-        drag.prepend("""<div class="drag_head"><span class="badge" href_eval="popup(#{turn},'#{item.logid}')">≡</span></div>""")
-        drag.hide().fadeIn 'fast'
-        $scope.boot()
-
-      else
-        $(".drag.#{item.logid}").fadeOut 'fast', ->
-          $scope.anchors.removeAt(idx)
-          $scope.$apply()
-
-    popup = (turn, ank)->
-      href = location.href.replace location.hash, ""
-
-      popup_find = ()->
-        has_messages = 0 < $scope.events[turn]?.messages?.length
-        return null unless has_messages
-
-        item = $scope.events[turn].messages.find (log)->
-          log.logid == ank
-        if item
-          popup_apply e, item, turn
-        item
-
-      popup_ajax = (turn)->
-        return null if turn < 0
-        has_messages = 0 < $scope.events[turn]?.messages?.length
-        return null if has_messages
-
-        href = GIJI.change_turn href, turn
-        $scope.get href, =>
-          $scope.events_join gon.event  if  turn == gon.event.turn
-          return  if  popup_find()
-        href
-
-      return  if  popup_ajax turn
-      return  if  popup_find()
-      return  if  popup_ajax turn - 1
-
+  href_eval = (e)->
+    $scope.pageY = e.pageY
     eval $(e.target).attr('href_eval')
     $scope.adjust()
 
@@ -211,7 +214,7 @@ MODULE = ($scope, $filter)->
     $scope.$apply()
 
   # use in interpolate
-  $('#messages').on  'click', '.drag',      foreground
+  $('#messages').on  'click', '.drag',  foreground
   $('#messages').on  'click', '[href_eval]', href_eval
   $('#sayfilter').on 'click', '[href_eval]', href_eval
 

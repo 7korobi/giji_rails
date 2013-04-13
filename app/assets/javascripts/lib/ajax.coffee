@@ -18,14 +18,20 @@ AJAX = ($scope)->
       $scope.replace_gon data
       func()
 
+  $scope.ajax_info = ()->
+    $scope.subtitle = "情報"
+    $scope.mode.value = 'info_open_player'
+
   $scope.ajax_event = (turn, href, is_news)->
     target = href + location.hash
     if $scope.events? && $scope.event?
       change = ->
+        $scope.mode.value = 'talk_open'
         $scope.event.is_news = is_news
-        $scope.face.scan()
         $scope.page.value = 1
-        win.history "#{$scope.event.name}", href, location.hash
+        $scope.boot()
+        win.history "#{$scope.title}", href, location.hash
+
       if $scope.events[turn].messages?
         $scope.event = $scope.events[turn]
         change()
