@@ -32,6 +32,9 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
             outframe = "outframe"
 
       calculate = (key, params)->
+        element = $("#sayfilter #navi_#{key}")
+        return if element.size == 0
+
         gap = 0
         if key == 'head'
           small = 150
@@ -75,15 +78,17 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
         if head.browser.mozilla && ! params.is_fullwidth
           gap = 5
-        if head.browser.opera   && ! params.is_fullwidth
+        if head.browser.opera && ! params.is_fullwidth
+          gap = 5
+        if head.browser.ie && ! params.is_fullwidth
           gap = 5
         
         if params.show
-          $("#sayfilter #navi_#{key}").css
+          element.css
             width: info_width - gap
             display: ""
         else
-          $("#sayfilter #navi_#{key}").css
+          element.css
             display: "none"
 
       $scope.navi.of.keys calculate

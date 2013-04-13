@@ -1,0 +1,76 @@
+p.caution(ng-show="story.is_prologue")
+  | あと {{story.vpl[0] - potofs.size}} 人参加できます。
+
+hr.invisible_hr
+
+.mes_maker
+  dl.dl-horizontal
+    dt 村の名前
+    dd {{story.name}}
+    dt こだわり
+    dd
+      img(ng-src="{{URL.resource}}/images/icon/cd_{{story.rating}}.png")
+      | {{story.rating_caption}}
+
+  p.head.text(ng-bind-html-unsafe="story.comment")
+  p
+    | ■
+    a(href="sow.cgi?cmd=rule#rule") 国のルール
+  p(ng-repeat="nrule in story.announce.nrules") {{nrule}}
+  p
+    | ■
+    a(href="sow.cgi?cmd=rule#mind") 心構え
+
+.mes_admin
+  dl
+    dt(ng-bind-html-unsafe="story.announce.trs_name")
+    dd(ng-bind-html-unsafe="story.announce.trs_help")
+  dl 
+    dt(ng-bind-html-unsafe="story.announce.game_name")
+    dd(ng-bind-html-unsafe="story.announce.game_help")
+
+  dl.dl-horizontal
+    dt 登場人物
+    dd {{story.announce.csidcaptions}}
+    dt 更新時間
+    dd {{story.upd.time_text}}
+    dt 更新間隔
+    dd {{story.upd.interval_text}}{{story.type.recovery}}
+    dt 発言制限
+    dd
+      | {{story.type.saycnt.CAPTION}}
+      br
+      | {{story.type.saycnt.HELP}}
+    dt 役職配分
+    dd
+      | {{story.type.roletable_text}}
+      br
+      | {{story.card.config_names}}
+    dt 定員
+    dd {{event.player.limit}}人 （ダミーキャラを含む）
+    dt 人数
+    dd {{potofs.length}}人 （ダミーキャラを含む）
+    dt(ng-show="story.is_wbbs") 最低人数
+    dd(ng-show="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
+    dt 投票方法
+    dd {{story.type.vote_text.CAPTION}}
+    dt 見物人
+    dd {{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）
+    dt 廃村期限
+    dd {{lax_time(story.timer.scraplimitdt)}}
+
+.mes_admin
+  ul
+    li {{story.announce.starttype}}
+    li(ng-repeat="option_help in story.option_helps"){{option_help}}
+
+.mes_maker(template="navi/potofs")
+
+.footnote
+  dl.dl-horizontal
+    dt コミット状況
+    dd
+      | {{story.announce.totalcommit}}
+      br
+      span(ng-show="story.is_totalcommit") {{story.timer.nextcommitdt.relative('ja')}}
+

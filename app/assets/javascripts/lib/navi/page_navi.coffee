@@ -32,7 +32,8 @@ class PageNavi extends Navi
         list = @scope.$eval @by_key
         for [target_key, filter] in @filters
           target = @scope.$eval target_key
-          list = filter target, list
+          if target
+            list = filter target, list
         if @to_key? && list
           eval "_this.scope.#{@to_key} = list"
       @_move()

@@ -74,9 +74,9 @@ CGI = ($scope, $filter)->
         $scope.pool_start()
         $scope.$apply()
 
-
-    if head.browser.ie || 'editvilform' == param.cmd 
-      form = $("""<form id="submit_request" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
+    $("#submit_request").remove()
+    if 'editvilform' == param.cmd 
+      $("body").append("""<form id="submit_request" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
 
     else
       iframe = $('iframe')
@@ -92,7 +92,9 @@ CGI = ($scope, $filter)->
         new_item = $(@).contents().find("body")
         iframe_load new_item.html()
     
-      form = $("""<form id="submit_request" target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
+      $("body").append("""<form id="submit_request" target="submit_result" method="post" action="#{$scope.form.uri.escapeURL()}##{location.href}"></form>""")
+
+    form = $("#submit_request")
 
     param.keys (key,val)->
       return unless val?
@@ -103,6 +105,7 @@ CGI = ($scope, $filter)->
     form[0].submit()
 
   $scope.entry = (f, valid)->
+    return if f.disabled
     if valid && f.is_preview
       param =
         cmd:  'entry'
@@ -119,6 +122,7 @@ CGI = ($scope, $filter)->
       f.is_preview = valid
 
   $scope.write = (f, valid)->
+    return if f.disabled
     if valid && f.is_preview
       param =
         cmd: f.cmd
@@ -134,6 +138,7 @@ CGI = ($scope, $filter)->
       f.is_preview = valid
 
   $scope.action = (f, valid)->
+    return if f.disabled
     param =
       cmd: "action"
       turn: $scope.event.turn
@@ -144,6 +149,7 @@ CGI = ($scope, $filter)->
     $scope.submit param
 
   $scope.vote = (f)->
+    return if f.disabled
     param =
       cmd: f.cmd
       vid:  $scope.story.vid
@@ -153,6 +159,7 @@ CGI = ($scope, $filter)->
     $scope.submit param
 
   $scope.commit = (f)->
+    return if f.disabled
     param =
       cmd: f.cmd
       vid:  $scope.story.vid
@@ -161,6 +168,7 @@ CGI = ($scope, $filter)->
     $scope.submit param
 
   $scope.confirm = (f)->
+    return if f.disabled
     if f.targets
       target_name = $scope.option(f.targets, f.target).name
     if target_name

@@ -12,6 +12,14 @@
       h4.sayfilter_caption_enable
         = link_to '他の物語へ', index_parent_path
 
+  .insayfilter(navi="filter" name="場面")
+    .paragraph
+      h4.sayfilter_caption_enable
+        | 他の場面へ
+      .sayfilter_content
+        nav(template="navi/page_filter")
+        br
+
   .insayfilter(navi="info" name="名簿")
     .paragraph
       .sayfilter_content(template="navi/potofs")
@@ -19,54 +27,5 @@
 - content_for :log do
   h2 村の情報
 
-  #messages
-    .mes_maker
-      dl.dl-horizontal
-        dt 村の名前
-        dd {{story.name}}
-        dt こだわり
-        dd
-          img(ng-src="{{URL.resource}}/images/icon/cd_{{story.rating}}.png")
-
-      p.head.text(ng-bind-html-unsafe="story.comment")
-
-    - if SowVillage === story
-      .mes_maker
-        dl.dl-horizontal
-          dt 更新時間
-          dd {{story.upd.time_text}}
-          dt 更新間隔
-          dd {{story.upd.interval_text}}{{story.type.recovery}}
-          dt 発言制限
-          dd {{story.type.saycnt.CAPTION}}<br>{{story.type.saycnt.HELP}}
-          dt 定員
-          dd {{event.player.limit}}人 （ダミーキャラを含む）
-          dt 人数
-          dd {{potofs.length}}人 （ダミーキャラを含む）
-          dt(ng-show="story.is_wbbs") 最低人数
-          dd(ng-show="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
-          dt 投票方法
-          dd {{story.type.vote_text.CAPTION}}
-          dt 見物人
-          dd {{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）
-          dt 役職配分
-          dd
-            | {{story.type.roletable_text}}
-
-        .form-horizontal
-          .control-group
-            code 編成
-            | ： {{story.card.config_names}}
-          .control-group
-            code 残存事件
-            | ： {{story.card.event_names}}
-          .control-group
-            code 破棄役職
-            | ： {{story.card.discard_names}}
-
-      .mes_maker
-        ul
-          li(ng-repeat="option_help in story.option_helps")
-            | {{option_help}}
-
-    .mes_maker(template="navi/potofs")
+  - if SowVillage === story
+    #messages(template="sow/village_info_epilogue")

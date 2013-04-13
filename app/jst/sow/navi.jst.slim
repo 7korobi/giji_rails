@@ -1,0 +1,44 @@
+.sayfilter#sayfilter
+  h4.sayfilter_heading#navi_head(ng-hide="navi.hide") {{story.name}}
+
+  .insayfilter(navi="calc" name="状況")
+    .paragraph
+      h4.sayfilter_caption_enable  村の進行状況
+      .sayfilter_content
+        ul
+          li あと {{story.timer.extend}}回、更新を延長できる。
+          li.small {{story.timer.nextupdatedt.relative('ja')}}に更新
+          li.small {{story.timer.nextchargedt.relative('ja')}}に補充
+          li.small(ng-show="story.is_totalcommit") {{story.timer.nextcommitdt.relative('ja')}}にcommit
+          li.small(ng-show="story.is_prologue") {{story.timer.scraplimitdt.relative('ja')}}に廃村
+        br
+
+  .insayfilter(navi="link" name="移動")
+    .paragraph
+      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_content(template="navi/events")
+
+  .insayfilter(navi="filter" name="場面")
+    .paragraph
+      h4.sayfilter_caption_enable(ng-show="page")  他の場面へ
+      .sayfilter_content(ng-show="page")
+        nav(template="navi/page_filter")
+        br
+
+  .insayfilter(navi="info" name="名簿")
+    .paragraph(ng-show="potofs")
+      .sayfilter_content(template="navi/potofs")
+
+  .insayfilter(navi="page" name="頁番")
+    .paragraph
+      .sayfilter_content(ng-show="page")
+        nav(ng-show="event.is_news")
+          a.btn(ng-click="ajax_event(event.turn, event.link + '&rowall=on')") ページ表示
+        nav.form_inline(template="navi/paginate" ng-hide="event.is_news")
+
+#buttons
+  nav
+    div(ng-repeat="o in navi.select")
+      a.btn(ng-class="o.class" ng-click="navi.move(o.val)") {{o.name}}
+    div
+      a.btn(ng-click="navi.blank()") ✗
