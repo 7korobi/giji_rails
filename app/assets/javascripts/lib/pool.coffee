@@ -28,8 +28,8 @@ POOL = ($scope)->
     if $scope.event?.is_news
       $scope.get href, =>
         INIT $scope
-        $scope.boot()
         $scope.$apply()
+        $scope.boot()
 
         pool.delay ajax_timer
   pool.delay ajax_timer
@@ -38,7 +38,19 @@ POOL = ($scope)->
     apply.delay message_first
     refresh.delay message_timer
 
+  adjust = ->
+    $(window).scroll()
+
   $scope.adjust = ->
+    adjust.delay    80
+    adjust.delay   400
+    adjust.delay  2000
+    adjust.delay 10000
+
+  $scope.boot = (func)->
+    $scope.top.count()
+    $scope.face.scan()
+
     popover = $('a[title]')
     popover.each (idx, dom)->
       $(dom).attr "data-content", $(dom).attr("title")
@@ -46,17 +58,4 @@ POOL = ($scope)->
       $(dom).attr "rel", 'popover'
     $('[rel="popover"]').popover()
 
-    $(window).resize()
-
-  $scope.boot = (func)->
-    $scope.top.count()
-    $scope.face.scan()
-    if $scope.story?
-      $scope.title = "#{$scope.subtitle} #{$scope.story.name}"
-    else
-      $scope.title = "人狼議事"
-
-    $scope.adjust.delay    80
-    $scope.adjust.delay   400
-    $scope.adjust.delay  2000
-    $scope.adjust.delay 10000
+    $scope.adjust()

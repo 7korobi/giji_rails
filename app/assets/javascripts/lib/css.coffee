@@ -22,7 +22,7 @@ angular.module("giji.directives").directive "theme", ["$compile", ($compile)->
         type:  OPTION.head_img[value][ (date / 60*60*12).ceil() % 2]
         width: OPTION.css.h1.widths[String($scope.width.value)]
       $scope.h1.path = "#{URL.resource}/images/banner/title#{$scope.h1.width}#{$scope.h1.type}.jpg"
-      $scope.boot()
+      $scope.adjust()
 
     Navi.push $scope, 'width', width
     Navi.push $scope, 'theme', theme

@@ -44,12 +44,12 @@ POTOFS = ($scope)->
 
   $scope.potofs_toggle = ->
     $scope.potofs_is_small = ! $scope.potofs_is_small
-    $scope.boot()
+    $scope.adjust()
 
   $scope.secret_toggle = ->
     if $scope.secret_is_open = ! $scope.secret_is_open
       $scope.mode_d = "all"
-    $scope.boot()
+    $scope.adjust()
 
   head_mode =
     said_num:    'deny'
@@ -61,6 +61,13 @@ POTOFS = ($scope)->
     win_name:    'count'
     role_names:  'count'
     select_name: 'count'
+
+
+  $scope.sort_potofs = (tgt, zero)->
+    reverse = (tgt == @tgt)
+    $scope.potofs_sortBy tgt, reverse, zero
+    @tgt = reverse || tgt
+
   $scope.potofs_sortBy = (tgt, reverse)->
     return unless $scope.potofs
     for potof in $scope.potofs
@@ -88,4 +95,5 @@ POTOFS = ($scope)->
       count: (key)-> groups[key].length
     order = orders[head_order[tgt] || 'basic']
     $scope.potofs_keys = keys.sortBy order, reverse
+    $scope.adjust()
 

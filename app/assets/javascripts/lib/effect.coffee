@@ -13,7 +13,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $scope.navi.value = []
       $scope.$apply()
 
-    $(window).resize ->
+    $(window).scroll ->
       return unless $scope.navi? && $scope.width?
       height = win.height
       width  = win.width
@@ -34,6 +34,12 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       calculate = (key, params)->
         element = $("#sayfilter #navi_#{key}")
         return if element.size == 0
+
+        buttons = FixedBox.list["#buttons"]
+        if buttons?
+          max_width = buttons.left - 8
+        else
+          max_width = width - 40
 
         gap = 0
         if key == 'head'
@@ -63,7 +69,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               info_width  = info_left
               params.is_fullwidth = false
             else
-              info_width = FixedBox.list["#buttons"].left - 8
+              info_width = max_width
               params.is_fullwidth = true
 
           when 800
@@ -73,7 +79,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               info_width  = info_left
               params.is_fullwidth = false
             else
-              info_width = FixedBox.list["#buttons"].left - 8
+              info_width = max_width
               params.is_fullwidth = true
 
         if head.browser.mozilla && ! params.is_fullwidth
@@ -113,7 +119,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           is_cookie: false
         button: {}
       $scope.navi.watch.push ->
-        $scope.boot()
+        $scope.adjust()
       effect($scope)
 
     $scope.navi.params.current.add attr.navi

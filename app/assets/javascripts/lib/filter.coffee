@@ -204,8 +204,22 @@ FILTER = ($scope, $filter)->
       $(window).scrollTop  target.offset().top - 20
     doIt.delay 500
 
-  $scope.$watch 'modes.face', ()->
-    mode_face = $scope.modes.face
+  $scope.$watch 'modes.face',  scrollTo
+  $scope.$watch 'order.value', scrollTo
+  $scope.$watch 'page.value',  scrollTo
+  $scope.$watch 'event.turn',  scrollTo
+  page.refresh = ()->
+    $scope.boot()
+
+
+  title_change = ()->
+    if $scope.story?
+      $scope.title = "#{$scope.subtitle} #{$scope.story.name}"
+    else
+      $scope.title = "人狼議事"
+
+  subtitle_change = ()->
+    mode_face = $scope.modes?.face
     if "info" == mode_face
       $scope.subtitle = "情報"
     else if $scope.event?
@@ -213,10 +227,10 @@ FILTER = ($scope, $filter)->
     else
       $scope.subtitle = ""
 
-  $scope.$watch 'modes.face',  scrollTo
-  $scope.$watch 'order.value', scrollTo
-  $scope.$watch 'page.value',  scrollTo
-  $scope.$watch 'event.turn',  scrollTo
-  page.refresh = ()->
-    $scope.boot()
+  titles_change = ()->
+    subtitle_change()
+    title_change()
+
+  titles_change()
+  $scope.$watch 'modes.face', titles_change
 

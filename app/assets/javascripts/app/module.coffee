@@ -80,7 +80,7 @@ MODULE = ($scope, $filter)->
   # stories support
   $scope.stories_toggle = ->
     $scope.stories_is_small = ! $scope.stories_is_small
-    $scope.boot()
+    $scope.adjust()
 
   # face_id support
   $scope.img_csid_cid = (csid_cid)->
@@ -134,12 +134,6 @@ MODULE = ($scope, $filter)->
       $scope.top.count()
       $scope.face.scan()
       $scope.$apply()
-
-  sort_potofs = (tgt, zero)->
-    reverse = (tgt == @tgt)
-    $scope.potofs_sortBy tgt, reverse, zero
-    $scope.$apply()
-    @tgt = reverse || tgt
 
   navi = (link)->
     $scope.navi.move link
@@ -205,7 +199,8 @@ MODULE = ($scope, $filter)->
   href_eval = (e)->
     $scope.pageY = e.pageY
     eval $(e.target).attr('href_eval')
-    $scope.adjust()
+    $scope.$apply()
+    $(window).scroll()
 
   foreground = (e)->
     logid = $(e.target).find("[name]").attr('name')

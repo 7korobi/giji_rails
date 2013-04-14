@@ -19,7 +19,6 @@ AJAX = ($scope)->
       func()
 
   $scope.ajax_info = ()->
-    $scope.subtitle = "情報"
     $scope.mode.value = 'info_open_player'
 
   $scope.ajax_event = (turn, href, is_news)->
