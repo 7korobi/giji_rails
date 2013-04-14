@@ -88,6 +88,8 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           gap = 5
         if head.browser.ie && ! params.is_fullwidth
           gap = 5
+        if head.browser.webkit && ! params.is_fullwidth && 480 == $scope.width.value
+          gap = -10
         
         if params.show
           element.css
