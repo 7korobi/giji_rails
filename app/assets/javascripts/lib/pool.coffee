@@ -15,13 +15,15 @@ POOL = ($scope)->
 
 
   $scope.top =
+    focus: false
+    news_size: 0
     id: "IX99999"
     count: ->
       if $scope.event?
         top_idx = $scope.event.messages.findIndex (o)-> $scope.top.id == o.logid
         news_size = $scope.event.messages.length - 1 - top_idx
-        if $scope.story? && 0 < top_idx && 0 < news_size
-          $("title").text "(#{news_size}) #{$scope.title}"
+        $scope.top.focus = 0 < top_idx && 0 < news_size
+        $scope.top.news_size = news_size
 
   pool = ->
     href = location.href

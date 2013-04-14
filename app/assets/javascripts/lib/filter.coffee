@@ -210,27 +210,3 @@ FILTER = ($scope, $filter)->
   $scope.$watch 'event.turn',  scrollTo
   page.refresh = ()->
     $scope.boot()
-
-
-  title_change = ()->
-    if $scope.story?
-      $scope.title = "#{$scope.subtitle} #{$scope.story.name}"
-    else
-      $scope.title = "人狼議事"
-
-  subtitle_change = ()->
-    mode_face = $scope.modes?.face
-    if "info" == mode_face
-      $scope.subtitle = "情報"
-    else if $scope.event?
-      $scope.subtitle = $scope.event.name
-    else
-      $scope.subtitle = ""
-
-  titles_change = ()->
-    subtitle_change()
-    title_change()
-
-  titles_change()
-  $scope.$watch 'modes.face', titles_change
-

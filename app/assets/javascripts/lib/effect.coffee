@@ -13,7 +13,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $scope.navi.value = []
       $scope.$apply()
 
-    $(window).scroll ->
+    resize_naviitems = ->
       return unless $scope.navi? && $scope.width?
       height = win.height
       width  = win.width
@@ -33,7 +33,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
       calculate = (key, params)->
         element = $("#sayfilter #navi_#{key}")
-        return if element.size == 0
+        return if element.length == 0
 
         buttons = FixedBox.list["#buttons"]
         if buttons?
@@ -107,6 +107,8 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
+    $(window).on 'resize', resize_naviitems
+    $(window).on 'scroll', resize_naviitems
   navis = []
 
   restrict: "A"

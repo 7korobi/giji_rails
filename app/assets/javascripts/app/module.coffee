@@ -222,6 +222,7 @@ MODULE = ($scope, $filter)->
   INIT    $scope
   FILTER  $scope, $filter
   POOL    $scope
+  TITLE   $scope
 
   $scope.stories_is_small = true
   $scope.potofs_is_small  = true

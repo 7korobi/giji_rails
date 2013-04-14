@@ -38,6 +38,7 @@ AJAX = ($scope)->
         $scope.get href, =>
           if turn == gon.event.turn
             INIT $scope
+            $scope.top.count()
           change()
           $scope.$apply()
 
