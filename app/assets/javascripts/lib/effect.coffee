@@ -107,8 +107,8 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
-    $(window).on 'resize', resize_naviitems
-    $(window).on 'scroll', resize_naviitems
+    win.on_scroll resize_naviitems
+    win.on_resize resize_naviitems
   navis = []
 
   restrict: "A"

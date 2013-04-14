@@ -17,8 +17,8 @@ class FixedBox
       @box.css
         left: 0
         top:  0
-      $(window).on 'resize', => @scroll()
-      $(window).on 'scroll', => @scroll()
+      win.on_resize(=> @scroll())
+      win.on_scroll(=> @scroll())
 
   scroll: ()->
     width  = win.width  - @box.width()
