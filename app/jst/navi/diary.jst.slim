@@ -1,0 +1,10 @@
+div
+  code(ng-click="diary.merge(f)" ng-repeat="f in form.texts")
+    | {{f.title}}
+div
+  br
+  | version:
+  code(ng-click="diary.back(version)" ng-repeat="version in diary.versions()")
+    | {{version}}
+.formpl_content
+  textarea(cols="30" rows="10" ng-model="diary.value")

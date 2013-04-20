@@ -44,26 +44,30 @@ CACHE = ($scope)->
 
 
   $scope.gon_merge = (old_base, new_base, target, idx, guard, filter)->
-    if old_base? && new_base?
-      olds = old_base[target]
-      news = new_base[target]
+    return unless old_base? && new_base?
+    olds = old_base[target]
+    news = new_base[target]
 
-    if news? && olds? && news[0]?
-      old_hash = olds[idx..].groupBy filter
-      new_hash = news.groupBy filter
+    return unless news? && olds? && news[0]?
+    olds_tail = olds[idx..]
+    if idx == 0
+      olds_head = []
+    else
+      olds_head = olds[0..idx - 1]
+    old_base[target] = olds_head
+    new_base[target] = olds_head
 
-      old_hash.keys (key, old_item)->
-        new_item = new_hash[key]
-        unless new_item?
-          olds.remove (o)-> old_item[0] == o
+    old_hash = olds.groupBy filter
+    for new_item in news
+      key = filter new_item
+      old_item = old_hash[key]?[0]
 
-      new_hash.keys (key, new_item)->
-        old_item = old_hash[key]
-        if old_item?
-          new_item[0].keys (key, o)->
-            return if guard(key)
-            old_item[0][key] = o
-        else
-          olds.push new_item[0]
-      new_base[target] = old_base[target]
+      if old_item?
+        new_item.keys (key, o)->
+          old_item[key] = o unless guard(key)
+        new_item = old_item
+
+      olds_head.push new_item
+
+
 

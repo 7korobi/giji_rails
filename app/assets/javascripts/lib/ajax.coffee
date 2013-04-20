@@ -18,9 +18,6 @@ AJAX = ($scope)->
       $scope.replace_gon data
       func()
 
-  $scope.ajax_info = ()->
-    $scope.mode.value = 'info_open_player'
-
   $scope.ajax_event = (turn, href, is_news)->
     target = href + location.hash
     if $scope.events? && $scope.event?

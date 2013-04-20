@@ -38,9 +38,9 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
       anchor_ok ||= (mark != 'T')
       anchor_ok ||= $scope.story?.is_epilogue
       if SOW.log.anchor[mark]? && anchor_ok
-        log.anchor or= "(#{SOW.log.anchor[mark]}#{Number(num)})"
+        log.anchor or= "#{SOW.log.anchor[mark]}#{Number(num)}"
       else
-        log.anchor or= " "
+        log.anchor or= ""
 
     log.text = $scope.text_decolate log.log
 

@@ -5,14 +5,16 @@ POOL = ($scope)->
 
   apply = ->
     $scope.$apply()
-  apply.delay message_first
 
   refresh = ->
     $scope.$apply()
 
     refresh.delay message_timer
-  refresh.delay message_timer
 
+  $scope.pool_start = ->
+    apply.delay message_first
+    refresh.delay message_timer
+  $scope.pool_start()
 
   $scope.top =
     focus: false
@@ -30,15 +32,26 @@ POOL = ($scope)->
     if $scope.event?.is_news
       $scope.get href, =>
         INIT $scope
-        $scope.$apply()
-        $scope.boot()
 
+        $scope.top.count()
+        $scope.face.scan()
+        apply.delay message_first
+
+        $scope.$apply()
         pool.delay ajax_timer
   pool.delay ajax_timer
 
-  $scope.pool_start = ->
-    apply.delay message_first
-    refresh.delay message_timer
+  $scope.pool = ()->
+    href = location.href.replace location.hash, ""
+    turn = $scope.event.turn
+    href = GIJI.change_turn href, turn
+    $scope.get href, =>
+      is_news = $scope.event.is_news
+      INIT $scope
+      $scope.event.is_news = is_news
+      $scope.boot()
+      $scope.$apply()
+
 
   adjust = ->
     $(window).scroll()
@@ -52,6 +65,7 @@ POOL = ($scope)->
   $scope.boot = (func)->
     $scope.top.count()
     $scope.face.scan()
+    apply.delay message_first
 
     popover = $('a[title]')
     popover.each (idx, dom)->

@@ -11,6 +11,8 @@ table.say(ng-class="message.mestype")
             b &nbsp;→&nbsp;{{message.to}}
           p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
           p.mes_date
-            | {{message.anchor}} {{message.time()}}
+            a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}
+            span &nbsp;
+            span {{message.time()}}
             span(ng-bind-html-unsafe="message.cancel_btn()")
 

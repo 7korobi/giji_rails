@@ -2,6 +2,10 @@
 INIT = ($scope)->
   return unless gon?
 
+  if gon.event?.messages?
+    gon.event.messages.each (message)->
+      message.turn = gon.event.turn
+
   # autoload news merge
   cache_events = $scope.events
   if cache_events

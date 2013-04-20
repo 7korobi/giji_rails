@@ -35,9 +35,17 @@ class GijiVilScanner < GijiScanner
     source = SowRecordFile.village( path, fname, folder, vid )
     return unless source
 
-    sow = SowVillage.where( folder: folder, vid: vid ).first || SowVillage.new
-    events = sow.events.group_by(&:turn)
-    event_now = events[ events.keys.max ].try(:first)
+    sow = SowVillage.find_or_initialize_by( folder: folder, vid: vid )
+    sow.attributes["_type"] = "SowVillage"
+
+    turn = nil
+    event_now = sow.events.to_a.max
+    if event_now.present?
+      turn = event_now.turn
+      event_id = event_now._id
+    else
+      event_id = "#{sow._id}-#{turn}"
+    end
 
     pno = 0
     source.each do |o|
@@ -53,13 +61,12 @@ class GijiVilScanner < GijiScanner
                  face_name
                end
 
-        potof   = story.potofs.where( sow_auth_id: o.uid ).first     rescue nil
-        potof ||= event_now.potofs.where( sow_auth_id: o.uid ).first rescue nil
-        potof ||= SowUser.new
-
+        SowUser.where(story_id: sow._id, sow_auth_id: o.uid).delete_all
+        potof = SowUser.find_or_initialize_by(story_id: sow._id, sow_auth_id: o.uid)
+        potof.attributes["_type"] = "SowUser"
         potof.update_attributes(
+          event_id: event_id,
           pno: pno,
-          sow_auth_id: o.uid,
           face_id:  o.cid,
           csid:     o.csid.split('_')[0],
           jobname:  o.jobname,
@@ -112,9 +119,10 @@ class GijiVilScanner < GijiScanner
         potof.event_id = event_now.id  if  event_now
         potof.save
       when 'Struct::SowRecordFileVil'
+        turn = o.turn.to_i
         sow.update_attributes(
-          folder: o.folder.to_s,
-          vid:    o.vid,
+          folder: folder,
+          vid:    vid,
 
           name:    o.vname,
           comment: o.vcomment,
@@ -165,24 +173,32 @@ class GijiVilScanner < GijiScanner
         sow.card[:event]   = o.eventcard.split('/').map{|c|   if c.to_i == 0 then c else SOW_RECORD[folder][:events][c.to_i] end } || [] rescue []
         sow.card[:config]  = cnt
         sow.timer  = dt
-        sow.is_finish = (o.epilogue.to_i <= o.turn.to_i)
+        sow.is_finish = (o.epilogue.to_i <= turn)
         sow.save
 
-        sow = SowVillage.where( folder: folder, vid: vid ).first
-        events = sow.events.group_by(&:turn)
+        sow = SowVillage.find_by( folder: folder, vid: vid )
+        event_now = sow.events.to_a.max
+        if event_now.present?
+          turn = event_now.turn
+          event_id = event_now._id
+        else
+          event_id = "#{sow._id}-#{turn}"
+        end
 
         o.turn.to_i.times do |turn_no|
-          event = events[turn_no].try(:first) || SowTurn.new(story_id: sow.id, turn: turn_no)
+          event = SowTurn.find_or_initialize_by(story_id: sow.id, turn: turn_no)
+          event.attributes["_type"] = "SowTurn"
           event.update_attributes(
             winner: SOW_RECORD[folder][:winners][o.winner.to_i],
           )
+
           case turn_no
           when 0
             event.name = "プロローグ"
           when o.epilogue.to_i
             event.name = "エピローグ"
           end
-          if o.turn.to_i - 1 == turn_no || o.epilogue.to_i == turn_no
+          if turn - 1 == turn_no || o.epilogue.to_i == turn_no
             event.epilogue = o.epilogue.to_i,
             event.event = SOW_RECORD[folder][:events][o.event.to_i]  rescue  nil
             event.grudge = o.grudge.to_i  rescue  nil
@@ -195,8 +211,14 @@ class GijiVilScanner < GijiScanner
           event.save
         end
 
-        events = sow.events.group_by(&:turn)
-        event_now = events[ events.keys.max ].try(:first)
+        sow = SowVillage.find_by( folder: folder, vid: vid )
+        event_now = sow.events.to_a.max
+        if event_now.present?
+          turn = event_now.turn
+          event_id = event_now._id
+        else
+          event_id = "#{sow._id}-#{turn}"
+        end
       end
     end
   end

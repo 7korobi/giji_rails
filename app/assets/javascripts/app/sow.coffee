@@ -188,3 +188,4 @@ CGI = ($scope, $filter)->
     $scope.confirm_complete = ->
       $scope.form.confirm = null
       $scope.submit param
+

@@ -50,16 +50,15 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           small = 150
         if key == 'link'
           small = 150
+        if key == 'diary'
+          small = 150
         if key == 'page'
           small = 450
         if key == 'info' && $scope.potofs?
           if $scope.secret_is_open
-            if $scope.potofs_is_small
-              small = 250
-            else
-              small = 340
+            small = 250
           else
-              small = 200
+            small = 180
 
         switch $scope.width.value
           when 480
@@ -100,20 +99,25 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
             display: "none"
 
       $scope.navi.of.keys calculate
-      calculate "head", 
-        show: true
-      calculate "error", 
-        show: true
+      static_navis.keys   calculate
+      extra_navis.keys (k,v)->
+        calculate(k, $scope.navi.of[v.parent])
 
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
     win.on_scroll resize_naviitems
     win.on_resize resize_naviitems
-  navis = []
+  extra_navis = {}
+  static_navis = 
+    head:
+      show: true
+    error:
+      show: true
 
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    elm.attr("id", "navi_#{attr.navi}")
+    attr_id = "navi_#{attr.navi}"
+    elm.attr("id", attr_id)
 
     if ! $scope.navi
       ArrayNavi.push $scope, 'navi',
@@ -126,9 +130,13 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         $scope.adjust()
       effect($scope)
 
-    $scope.navi.params.current.add attr.navi
     $scope.navi.select.add
       name: attr.name
       val:  attr.navi
+    $scope.navi.params.current.add attr.navi
     $scope.navi.popstate()
+
+    if attr.child?
+      extra_navis[attr.child] =
+        parent: attr.navi
 ]

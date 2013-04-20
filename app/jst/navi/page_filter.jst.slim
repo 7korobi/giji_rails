@@ -1,30 +1,10 @@
-input.input-block-level(type="text" ng-model="search.value" placeholder="ログを探す")
+nav
+  input.input-block-level(type="text" ng-model="search.value" placeholder="ログを探す")
 
-select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+  select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
 
-.form-inline
-  label.inline.radio
-    input(type="radio" value="info" ng-model="modes.face") 情報
-  label.inline.radio
-    input(type="radio" value="memo" ng-model="modes.face") メモ
-  label.inline.radio
-    input(type="radio" value="talk" ng-model="modes.face") ログ
-
-  label.inline.radio.checkbox
-    input(type="checkbox" value="last"   ng-model="modes.last") 最後の言葉
-
-  label.inline.radio.checkbox
-    input(type="checkbox" value="player" ng-model="modes.player") 中身発言
-
-  label.inline.radio.checkbox
-    input(type="checkbox" value="open"   ng-model="modes.open") 公開発言
-
-  label.inline.radio
-    input(type="radio" value="open"  ng-model="modes.view") 公開
-  label.inline.radio
-    input(type="radio" value="clan"  ng-model="modes.view") 内緒話
-  label.inline.radio
-    input(type="radio" value="think" ng-model="modes.view") 独り言
-  label.inline.radio
-    input(type="radio" value="all"   ng-model="modes.view") 全部
-
+ul.nav.nav-list
+  li
+    span
+    span(ng-repeat="a in mode_common")
+      a.mark(ng-click="mode.value = a.value") {{a.name}}

@@ -124,17 +124,6 @@ MODULE = ($scope, $filter)->
   init_gon = (href)->
     $scope.gon(href)
 
-  refresh_event = ()->
-    href = location.href.replace location.hash, ""
-    turn = $scope.event.turn
-    href = GIJI.change_turn href, turn
-    $scope.get href, =>
-      $scope.events[turn].messages = []
-      INIT $scope
-      $scope.top.count()
-      $scope.face.scan()
-      $scope.$apply()
-
   navi = (link)->
     $scope.navi.move link
     if $scope.potofs?
@@ -222,6 +211,7 @@ MODULE = ($scope, $filter)->
   INIT    $scope
   FILTER  $scope, $filter
   POOL    $scope
+  DIARY   $scope
   TITLE   $scope
 
   $scope.stories_is_small = true

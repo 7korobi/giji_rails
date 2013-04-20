@@ -1,0 +1,63 @@
+h4.sayfilter_caption_enable 描写設定
+.sayfilter_content(style="line-height: 3ex;")
+  div
+    span(ng-repeat="o in font.select")
+      a.mark(ng-click="font.move(o.val)"  ng-class="o.class")
+        | {{o.name}}
+  div
+    span(ng-repeat="o in width.select")
+      a.mark(ng-click="width.move(o.val)"  ng-class="o.class")
+        | {{o.name}}
+  div
+    span(ng-repeat="o in theme.select")
+      a.mark(ng-click="theme.move(o.val)"  ng-class="o.class")
+        | {{o.name}}
+
+h4.sayfilter_caption_enable 場面設定
+.sayfilter_content
+  select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+
+  .form-inline
+    label.inline.radio
+      input(type="radio" value="info" ng-model="modes.face") 情報
+    label.inline.radio
+      input(type="radio" value="memo" ng-model="modes.face") メモ
+    label.inline.radio
+      input(type="radio" value="talk" ng-model="modes.face") ログ
+
+  .form-inline
+    label.inline.radio
+      input(type="radio" value="open"  ng-model="modes.view") 公開
+    label.inline.radio
+      input(type="radio" value="clan"  ng-model="modes.view") 内緒話
+    label.inline.radio
+      input(type="radio" value="think" ng-model="modes.view") 独り言
+    label.inline.radio
+      input(type="radio" value="all"   ng-model="modes.view") 全部
+
+  .form-inline
+    label.inline.radio.checkbox
+      input(type="checkbox" value="last"   ng-model="modes.last") 最後の言葉
+
+    label.inline.radio.checkbox
+      input(type="checkbox" value="player" ng-model="modes.player") 中身発言
+
+    label.inline.radio.checkbox
+      input(type="checkbox" value="open"   ng-model="modes.open") 公開発言
+
+h4.sayfilter_caption_enable 名簿設定
+.sayfilter_content(style="line-height: 3ex;")
+  code(ng-click="potofs_toggle()")
+    i.icon-resize-full(ng-show="potofs_is_small")
+    i.icon-resize-small(ng-hide="potofs_is_small")
+  code(ng-click="secret_toggle()") ネタバレ
+  div
+    code(ng-click="sort_potofs('stat_at',0)") 日程
+    code(ng-click="sort_potofs('stat_type','')") 状態
+    code(ng-click="sort_potofs('said_num',0)") 発言
+  div(ng-show="secret_is_open")
+    code(ng-click="sort_potofs('win_result','')") 勝敗
+    code(ng-click="sort_potofs('win_name','')") 陣営
+    code(ng-click="sort_potofs('role_names','')") 役割
+    code(ng-click="sort_potofs('select_name','')") 希望
+    code(ng-click="sort_potofs('text','')") 補足

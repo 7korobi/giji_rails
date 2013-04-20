@@ -7,7 +7,7 @@
   |（melonkoさん管理）
 - max_wolf    = 0
 - max_allstar = GAME[:ALLSTAR_OLD][:config][:cfg][:MAX_VILLAGES]
-- max_jksy    = GAME[:ALLSTAR][:config][:cfg][:MAX_VILLAGES]
+- max_jksy    = 0 # GAME[:ALLSTAR][:config][:cfg][:MAX_VILLAGES]
 - max_perjury = GAME[:PERJURY_OLD][:config][:cfg][:MAX_VILLAGES]
 - max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
 - max_crazy   = GAME[:CRAZY][:config][:cfg][:MAX_VILLAGES]
@@ -89,8 +89,7 @@
         br
         | ultimate
         br
-        == "#{max_jksy}村:"
-        a(href="#{GAME[:ALLSTAR][:config][:cfg][:URL_SW]}/sow.cgi") allstar
+        | allstar
         br
         | 　　
         br

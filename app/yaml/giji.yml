@@ -8,6 +8,8 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 news:
+- text: ログよみツールの機能を整理しました。見やすくなっているといいな。
+  date: 2013-04-17
 - text: 文字サイズを選択可能にしました。
   date: 2013-04-07
 - text: 右下ボタンを調整しました。
@@ -51,8 +53,8 @@ news:
 
 modes:
 - val: info_open
-  name: 村の情報
-  group: 情報
+  name: 情報
+  group: 情報と名簿
   form: [action]
   regexp: info
   face: info
@@ -60,8 +62,8 @@ modes:
   open: true
 
 - val: info_open_player
-  name: (中身あり)村の情報
-  group: 情報
+  name: (中身あり)情報
+  group: 情報と名簿
   form: [action]
   regexp: info
   face: info

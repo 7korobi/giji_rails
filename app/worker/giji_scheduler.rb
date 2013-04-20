@@ -17,12 +17,7 @@ class GijiScheduler
 
     when :clean
       errors = Potof.where(story_id: /......................../ ).count
-      begin
-        raise RuntimeError.new("#{errors} record has illegal story id") if 0 < errors
-      rescue RuntimeError => e
-        Potof.where(story_id: /......................../ ).delete
-        raise e
-      end
+      Potof.where(story_id: /......................../ ).delete  if 0 < errors
     end
   end
 

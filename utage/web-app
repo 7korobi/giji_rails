@@ -39,7 +39,7 @@ bundle-update)
   ;;
 
 QUEUE)
-  LIST=giji_rsyncs,giji_schedules,giji_vils
+  export LIST=giji_rsyncs,giji_schedules,giji_vils
   $0 kill TERM "resque-web"
   $0 kill TERM "rake resque:"
   $0 kill QUIT "Waiting for $LIST"

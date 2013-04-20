@@ -15,7 +15,13 @@ class MessagesController < BasePastLogController
         link: messages_path(event.story_id, event.turn),
       }
     end
-    gon.event  = event.attributes
+
+    event_attr = event.attributes
+    event_attr["messages"].unshift(
+      template: "sow/village_info",
+      logid:    "vilinfo00000",
+    )
+    gon.event  = event_attr
     gon.potofs = story.potofs.cache.map(&:attributes)
   end
 

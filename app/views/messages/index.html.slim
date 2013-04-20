@@ -2,31 +2,33 @@
   | ページをめくる
 
 - content_for :navi do
-  .insayfilter(navi="link" name="移動")
+  .insayfilter(navi="switch" name="設定")
+    .paragraph(template="navi/switch")
+
+  .insayfilter(navi="diary" name="手帳")
     .paragraph
-      h4.sayfilter_caption_enable
-        | 他の章へ
+      h4.sayfilter_caption_enable 投稿欄と共有
+      .sayfilter_content(template="navi/diary")
+
+  .insayfilter(navi="info" name="名簿")
+    .paragraph(ng-show="potofs")
+      .sayfilter_content(template="navi/potofs_small")
+
+  .insayfilter(navi="link" name="移動" child="page")
+    .paragraph
+      h4.sayfilter_caption_enable  他の場面へ
+      .sayfilter_content(template="navi/page_filter")
+
+      h4.sayfilter_caption_enable  他の章へ
       .sayfilter_content(template="navi/events")
 
       h4.sayfilter_caption_enable
         p= link_to '他の物語へ', index_parent_path
 
-  .insayfilter(navi="filter" name="場面")
+  .insayfilter#navi_page 
     .paragraph
-      h4.sayfilter_caption_enable
-        | 他の場面へ
-      .sayfilter_content
-        nav(template="navi/page_filter")
-        br
-
-  .insayfilter(navi="info" name="名簿")
-    .paragraph
-      .sayfilter_content(template="navi/potofs")
-
-  .insayfilter(navi="page" name="頁番")
-    .paragraph
-      .sayfilter_content
-        nav(template="navi/paginate" class="form-inline" ng-hide="event.is_news")
+      .sayfilter_content(ng-show="page")
+        nav.form_inline(template="navi/paginate")
 
 - content_for :log do
   h2 {{title}}

@@ -60,6 +60,12 @@ FILTER = ($scope, $filter)->
     unless $scope.event.is_news
       mode_current = 'talk_open'
 
+    $scope.mode_common = [
+      {name: '情報', value: 'info_open_player'}
+      {name: 'メモ', value: 'memo_all_open_last_player'}
+      {name: '議事', value: mode_current}
+    ]
+
     mode_params = GIJI.modes.groupBy('val')
 
     Navi.push $scope, 'search',

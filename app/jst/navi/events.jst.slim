@@ -1,8 +1,4 @@
 ul.nav.nav-list
-  li(ng-click="ajax_info()")
-    a
-      i.icon-book
-      | 情報
   li(ng-repeat="e in events" ng-click="ajax_event(e.turn, e.link, !!e.is_news)")
     a
       i.icon-film( ng-show="e.turn == event.turn")

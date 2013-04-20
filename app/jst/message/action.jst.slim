@@ -4,5 +4,7 @@ div(ng-class="message.mestype")
       b(ng-bind-html-unsafe="message.name")
       | は、
       span(ng-bind-html-unsafe="message.text")
-    p.mes_date  {{message.anchor}} {{message.time()}}
+    p.mes_date
+      span &nbsp;
+      span {{message.time()}}
     hr.invisible_hr

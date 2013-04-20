@@ -1,5 +1,8 @@
-.sayfilter#sayfilter
+.sayfilter#sayfilter(style="width: 0px;")
   h4.sayfilter_heading#navi_head(ng-hide="navi.hide") {{story.name}}
+
+  .insayfilter(navi="switch" name="設定")
+    .paragraph(template="navi/switch")
 
   .insayfilter(navi="calc" name="状況")
     .paragraph
@@ -13,23 +16,24 @@
           li.small(ng-show="story.is_prologue") {{story.timer.scraplimitdt.relative('ja')}}に廃村
         br
 
-  .insayfilter(navi="link" name="移動")
+  .insayfilter(navi="diary" name="手帳")
     .paragraph
-      h4.sayfilter_caption_enable  他の章へ
-      .sayfilter_content(template="navi/events")
-
-  .insayfilter(navi="filter" name="場面")
-    .paragraph
-      h4.sayfilter_caption_enable(ng-show="page")  他の場面へ
-      .sayfilter_content(ng-show="page")
-        nav(template="navi/page_filter")
-        br
+      h4.sayfilter_caption_enable 投稿欄と共有
+      .sayfilter_content(template="navi/diary")
 
   .insayfilter(navi="info" name="名簿")
     .paragraph(ng-show="potofs")
-      .sayfilter_content(template="navi/potofs")
+      .sayfilter_content(template="navi/potofs_small")
 
-  .insayfilter(navi="page" name="頁番")
+  .insayfilter(navi="link" name="移動" child="page")
+    .paragraph
+      h4.sayfilter_caption_enable(ng-show="page")  他の場面へ
+      .sayfilter_content(ng-show="page" template="navi/page_filter")
+
+      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_content(template="navi/events")
+
+  .insayfilter#navi_page
     .paragraph
       .sayfilter_content(ng-show="page")
         nav(ng-show="event.is_news")

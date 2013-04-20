@@ -5,7 +5,7 @@ class StoriesController < ApplicationController
         only(%w[folder vid name rating options upd vpl type card]).
         sort_by{|o|[o.folder, - o.vid]}.
         map do |story|
-          story[:link] = events_path(story)
+          story[:link] = messages_path(story, 0) + "#mode=info_open_player"
           story.attributes
         end
     end

@@ -42,12 +42,14 @@ class FixedBox
     if 1 < win.zoom  or  head.browser.android
       @box.css
         position: "absolute"
+
       left = @left + win.left
       top  = @top  + win.top
       @translate(left, top)
     else
       @box.css
         position: "fixed"
+
       left = @left + win.left
       top  = @top
       @translate(left, top)
