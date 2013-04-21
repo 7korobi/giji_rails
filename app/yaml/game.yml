@@ -445,7 +445,7 @@ XEBEC:
       URL_SW:         http://xebec.x0.to/xebec
       BASEDIR_CGIERR: http://xebec.x0.to//xebec
       NAME_HOME:      人狼議事 xebec<br>- Role Play braid -
-      MAX_VILLAGES:   2
+      MAX_VILLAGES:   3
       BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH

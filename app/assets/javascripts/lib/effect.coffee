@@ -43,14 +43,16 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
         gap = 0
         if key == 'head'
-          small = 150
+          small = 100
+        if key == 'switch'
+          small = 100
         if key == 'calc'
-          small = 150
+          small = 100
+        if key == 'diary'
+          small = 100
         if key == 'filter'
           small = 150
         if key == 'link'
-          small = 150
-        if key == 'diary'
           small = 150
         if key == 'page'
           small = 450
@@ -133,8 +135,9 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
     $scope.navi.select.add
       name: attr.name
       val:  attr.navi
-    $scope.navi.params.current.add attr.navi
-    $scope.navi.popstate()
+    if ! CGI? 
+      $scope.navi.params.current.add attr.navi
+      $scope.navi.popstate()
 
     if attr.child?
       extra_navis[attr.child] =
