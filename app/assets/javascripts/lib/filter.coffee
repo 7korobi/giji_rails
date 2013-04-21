@@ -56,15 +56,17 @@ FILTER = ($scope, $filter)->
     page.filter_to 'messages'
     page.filter 'event.is_news'
 
-    mode_current = 'talk_all_open'
-    unless $scope.event.is_news
-      mode_current = 'talk_open'
+    deploy_mode_common = ()->
+      $scope.mode_current = 'talk_all_open'
+      unless $scope.event.is_news
+        $scope.mode_current = 'talk_open'
 
-    $scope.mode_common = [
-      {name: '情報', value: 'info_open_player'}
-      {name: 'メモ', value: 'memo_all_open_last_player'}
-      {name: '議事', value: mode_current}
-    ]
+      $scope.mode_common = [
+        {name: '情報', value: 'info_open_player'}
+        {name: 'メモ', value: 'memo_all_open_last_player'}
+        {name: '議事', value: $scope.mode_current}
+      ]
+    deploy_mode_common()
 
     mode_params = GIJI.modes.groupBy('val')
 
@@ -76,7 +78,7 @@ FILTER = ($scope, $filter)->
 
     Navi.push $scope, 'mode',
       options:
-        current: mode_current
+        current: $scope.mode_current
         location: 'hash'
         is_cookie: false
       select: GIJI.modes
@@ -210,9 +212,11 @@ FILTER = ($scope, $filter)->
       $(window).scrollTop  target.offset().top - 20
     doIt.delay 500
 
-  $scope.$watch 'modes.face',  scrollTo
-  $scope.$watch 'order.value', scrollTo
-  $scope.$watch 'page.value',  scrollTo
-  $scope.$watch 'event.turn',  scrollTo
+  $scope.$watch 'modes.face',    scrollTo
+  $scope.$watch 'order.value',   scrollTo
+  $scope.$watch 'page.value',    scrollTo
+  $scope.$watch 'event.turn',    scrollTo
+  $scope.$watch 'event_is_news', deploy_mode_common
+
   page.refresh = ()->
     $scope.boot()

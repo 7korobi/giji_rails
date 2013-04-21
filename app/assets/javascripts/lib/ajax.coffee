@@ -22,7 +22,7 @@ AJAX = ($scope)->
     target = href + location.hash
     if $scope.events? && $scope.event?
       change = ->
-        $scope.mode.value = 'talk_open'
+        $scope.mode.value = $scope.mode_current
         $scope.event.is_news = is_news
         $scope.page.value = 1
         $scope.boot()
@@ -33,9 +33,8 @@ AJAX = ($scope)->
         change()
       else
         $scope.get href, =>
-          if turn == gon.event.turn
-            INIT $scope
-            $scope.top.count()
+          INIT $scope
+          $scope.top.count()
           change()
           $scope.$apply()
 

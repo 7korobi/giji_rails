@@ -146,8 +146,6 @@ _HTML_
 sub OutHTMLStateInfo {
   my $sow = shift;
   my $cfg   = $sow->{'cfg'};
-  my $zipfile = 'https://github.com/7korobi/sow-giji';
-  my $license = 'https://github.com/7korobi/sow-giji/blob/master/cabala/license.txt';
 
   print <<"_HTML_";
 <div class="paragraph">
@@ -210,12 +208,6 @@ _HTML_
     print <<"_HTML_";
 このページは<span style="color:#FFF">陰謀を弄び、他人を陥れ、濡れ手に粟を求める村</span>用に調整してある。<br>
 作ったばかりの州なので、意図しない動作をするかもね。それでも泣いたり困ったりしない、逞しい大人だけがハカリゴトを楽しめる。<br>
-<ul style="font-size: smaller;">
-<li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。
-<li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
-<li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
-<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
-</ul>
 _HTML_
   }
 

@@ -3,10 +3,10 @@ form(action="{{form.uri}}" method="POST" ng-hide="form.login.logined")
   input(type="hidden" name="cmd" value="login")
   p.form-inline
     label
-      .mark  user id:
+      span.mark  user id:
       input.input-small(type="text" size="10" name="uid" ng-model="form.login.uid")
     label
-      .mark  password:
+      span.mark  password:
       input.input-small(type="password" size="10" name="pwd" value="")
     input(type="submit" value="ログイン")
 
