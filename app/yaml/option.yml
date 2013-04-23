@@ -106,6 +106,21 @@ page:
       100: 100行
       200: 200行
 
+  potofs:
+    options:
+      current: stat_type
+      location: hash
+      is_cookie: false
+    button:
+      stat_at: 日程
+      stat_type: 状態
+      said_num: 発言
+      win_result: 勝敗
+      win_name: 陣営
+      role_names: 役割
+      select_name: 希望
+      text: 補足
+
 css:
   h1:
     widths:

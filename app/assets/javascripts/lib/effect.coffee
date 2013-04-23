@@ -83,14 +83,15 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               info_width = max_width
               params.is_fullwidth = true
 
-        if head.browser.mozilla && ! params.is_fullwidth
-          gap = 5
-        if head.browser.opera && ! params.is_fullwidth
-          gap = 5
-        if head.browser.ie && ! params.is_fullwidth
-          gap = 5
-        if head.browser.webkit && ! params.is_fullwidth && 480 == $scope.width.value
-          gap = -10
+        unless params.is_fullwidth
+          if head.browser.mozilla
+            gap = 5
+          if head.browser.opera
+            gap = 5
+          if head.browser.ie
+            gap = 5
+          if head.browser.webkit && 480 == $scope.width.value
+            gap = -10
         
         if params.show
           element.css
@@ -137,7 +138,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       val:  attr.navi
     if ! CGI? 
       $scope.navi.params.current.add attr.navi
-      $scope.navi.popstate()
+    $scope.navi.popstate()
 
     if attr.child?
       extra_navis[attr.child] =

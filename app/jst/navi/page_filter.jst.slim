@@ -1,8 +1,10 @@
-nav
-  input.input-block-level(type="text" ng-model="search.value" placeholder="ログを探す")
-
-  select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+table
+  tr
+    td(style="width:50%")
+      input.input-block-level(type="text" ng-model="search.value" placeholder="ログを探す")
+    td
+      select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
 
 div(style="text-align:center;")
   span(ng-repeat="a in mode_common")
-    a.mark(ng-click="mode.value = a.value") {{a.name}}
+    a.mark(style="font-size: 2.5ex;" ng-click="mode.value = a.value") {{a.name}}

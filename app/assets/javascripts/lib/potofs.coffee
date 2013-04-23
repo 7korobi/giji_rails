@@ -63,12 +63,7 @@ POTOFS = ($scope)->
     select_name: 'count'
 
 
-  $scope.sort_potofs = (tgt, zero)->
-    reverse = (tgt == @tgt)
-    $scope.potofs_sortBy tgt, reverse, zero
-    @tgt = reverse || tgt
-
-  $scope.potofs_sortBy = (tgt, reverse)->
+  potofs_sortBy = (tgt, reverse)->
     return unless $scope.potofs
     for potof in $scope.potofs
       potof[tgt] or= ""
@@ -97,3 +92,15 @@ POTOFS = ($scope)->
     $scope.potofs_keys = keys.sortBy order, reverse
     $scope.adjust()
 
+  potofs_sortBy 'stat_at',   true
+  potofs_sortBy 'stat_type', true
+
+  Navi.push $scope, 'potofs_order', OPTION.page.potofs
+
+  $scope.sort_potofs = (tgt, zero)->
+    $scope.potofs_reverse = (tgt == @tgt)
+    $scope.potofs_order.value = tgt
+    @tgt = $scope.potofs_reverse || tgt
+
+  $scope.$watch 'potofs_order.value', ->
+    potofs_sortBy $scope.potofs_order.value, $scope.potofs_reverse

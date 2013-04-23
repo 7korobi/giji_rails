@@ -420,6 +420,7 @@ PERJURY:
     <<: *config_braid
     cfg:
       <<: *cfg_braid
+      RULE:           PERJURY
       URL_SW:         http://perjury.rulez.jp
       BASEDIR_CGIERR: http://perjury.rulez.jp//
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -

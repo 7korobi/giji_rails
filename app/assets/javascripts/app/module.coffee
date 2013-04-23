@@ -214,8 +214,3 @@ MODULE = ($scope, $filter)->
   DIARY   $scope
   TITLE   $scope
 
-  $scope.stories_is_small = true
-  $scope.potofs_is_small  = true
-  $scope.potofs_sortBy 'stat_at',   true
-  $scope.potofs_sortBy 'stat_type', true
-
