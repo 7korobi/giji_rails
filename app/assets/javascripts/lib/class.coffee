@@ -98,6 +98,70 @@ class Form
 
   @submit_chr_vote: (face_id)->
     $('#chr_vote_face_id').val(face_id)
-
     $('form.chr_vote')[0]?.submit()
+
+
+class DiaryItem
+  constructor: (text, diary)->
+    @text = text
+    @diary = diary
+
+class Diary
+  constructor: (f)->
+    @version = 1
+    @form = f
+    @finder = (o)=>
+      @ == o.diary
+
+  history: ->
+    Diary.history.findAll @finder
+
+  versions: ->
+    size = @history().length
+    result = []
+    result = [@version..size].reverse() if @version <= size
+    result.add         @version - 1 if 1 < @version 
+    result.add         @version - 2 if 2 < @version 
+    result
+
+  at: ->
+    @history()[@version - 1]
+
+  title: ->
+
+  commit: ->
+    Diary.base.commit(@)
+    @version = @history().length
+
+  back: (version)->
+    @version = version
+    @form.text = @at().text || ""
+  
+  clear: ->
+    @commit @form.text
+    @form.text = ""
+
+  @history = []
+
+Diary.base = new Diary
+Diary.base.finder = -> true
+Diary.base.head = ->
+  if now = Diary.base.at()?.diary.form
+    "#{now.longname}#{now.title}"
+  else
+    "手帳"
+
+Diary.base.commit = (diary)->
+  return if diary.form.text.length == 0
+  item = new DiaryItem(diary.form.text, diary)
+  Diary.history.remove item
+  Diary.history.add item
+  Diary.base.version = Diary.history.length + 1
+
+Diary.base.copy = (f)->
+  f.text = Diary.base.form.text.trim()
+
+Diary.base.form =
+  text: ""
+
 

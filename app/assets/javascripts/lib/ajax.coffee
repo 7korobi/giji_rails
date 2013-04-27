@@ -22,7 +22,6 @@ AJAX = ($scope)->
     target = href + location.hash
     if $scope.events? && $scope.event?
       change = ->
-        $scope.mode.value = $scope.mode_current
         $scope.event.is_news = is_news
         $scope.page.value = 1
         $scope.boot()

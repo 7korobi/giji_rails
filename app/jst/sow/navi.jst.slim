@@ -17,9 +17,7 @@
         br
 
   .insayfilter(navi="diary" name="手帳")
-    .paragraph
-      h4.sayfilter_caption_enable 投稿欄と共有
-      .sayfilter_content(template="navi/diary")
+    .paragraph(template="navi/diary")
 
   .insayfilter(navi="info" name="名簿")
     .paragraph(ng-show="potofs")

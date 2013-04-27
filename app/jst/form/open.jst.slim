@@ -16,7 +16,7 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
 
           .form-inline
             .formpl_content
-              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview" require)
+              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview")
               p(class="{{f.style}} text" ng-bind-html-unsafe="preview(f)" ng-show="f.is_preview")
 
               a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
@@ -25,6 +25,6 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
               select.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
               select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p  {{f.caption}}
-              p(class="{{f.error}}")
-                i.icon-ban-circle(ng-hide="f.valid")
-                | {{text_valid(f, write_form)}}
+              span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f, write_form)")
+              | &nbsp;
+              span(diary="f" ng-hide="f.is_preview")

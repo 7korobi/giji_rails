@@ -1,0 +1,6 @@
+b.mark(ng-click="diary.copy(f)")
+  | 手帳
+i
+  | 履歴:
+  code(ng-click="f.ver.back(version)" ng-repeat="version in f.ver.versions()")
+    | {{version}}

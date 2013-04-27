@@ -1,9 +1,4 @@
 angular.module("giji.directives").directive "log", ["$compile", ($compile)->
-  if JST?
-    for key,val of JST
-      if key.startsWith "message/"
-        GIJI.interpolates[key] or= $interpolate(val)
-
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     log = $scope.message = $scope.$eval attr.log
