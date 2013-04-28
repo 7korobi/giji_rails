@@ -10,9 +10,7 @@ table(class="table table-condensed")
           code(ng-click="secret_toggle()") ネタバレ
         | &nbsp;          
       th(style="width: 17px")
-        a(ng-click="potof_only(potofs)")
-          i.icon-share-alt
-
+        a(ng-click="potof_only(potofs)") ➡
 
   tbody(ng-repeat="key in potofs_keys")
     tr.head
@@ -22,8 +20,7 @@ table(class="table table-condensed")
           | ({{potofs_groups[key].length}}人)
       th(style="width: 17px")
         div(ng-show="potofs_groups[key].has_head")
-          a(ng-click="potof_only(potofs_groups[key])")
-            i.icon-share-alt
+          a(ng-click="potof_only(potofs_groups[key])") ➡
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
@@ -38,8 +35,7 @@ table(class="table table-condensed")
       td(ng-click="potof_toggle(potof)")
         span(ng-show="secret_is_open" ng-bind-html-unsafe="potof.text.join('')")
       td(style="width: 17px")
-        a(ng-click="potof_only([potof])")
-          i.icon-share-alt
+        a(ng-click="potof_only([potof])") ➡
 
   tbody
     tr.head

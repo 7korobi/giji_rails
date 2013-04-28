@@ -8,6 +8,8 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 news:
+- text: 履歴機能を実装。それと見た目の調整と、村の参加人数ズレ問題を解消しました。
+  date: 2013-04-28
 - text: ログよみツールの機能を整理しました。見やすくなっているといいな。
   date: 2013-04-17
 - text: 文字サイズを選択可能にしました。

@@ -24,7 +24,7 @@ FORM = ($scope)->
         mark = ""
       else
         f.error = "cautiontext"
-        mark = "✘"
+        mark = "⊘"
       "#{mark} #{size} / #{f.max.size}"
     else
       ""

@@ -22,8 +22,7 @@ table.table.table-condensed
           code(ng-click="sort_potofs('select_name','')") 希望
           code(ng-click="sort_potofs('text','')") 補足
       th(style="width: 17px")
-        a(ng-click="potof_only(potofs)")
-          i.icon-share-alt
+        a(ng-click="potof_only(potofs)") ➡
 
 
   tbody(ng-repeat="key in potofs_keys")
@@ -34,22 +33,19 @@ table.table.table-condensed
           | ({{potofs_groups[key].length}}人)
       th(style="width: 17px")
         div(ng-show="potofs_groups[key].has_head")
-          a(ng-click="potof_only(potofs_groups[key])")
-            i.icon-share-alt
+          a(ng-click="potof_only(potofs_groups[key])") ➡
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
         span.name
           | {{potof.longname || potof.name}}
         .note.name(ng-show="potof.auth")
-          i.icon-user
-          | {{potof.auth}}
+          | ☺ {{potof.auth}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
         span.nowrap
           | {{potof.stat}}
         .note.nowrap(ng-show="potof.said")
-          i(class='icon-comment')
-          | {{potof.said}}
+          | ✎{{potof.said}}
       td(ng-click="potof_toggle(potof)")
         span.nowrap(ng-show="secret_is_open")
           | {{potof.win_name}}::{{potof.role_names.join('、')}}
@@ -62,8 +58,7 @@ table.table.table-condensed
         .note(ng-show="secret_is_open && potof.bond_names")
           | {{potof.bond_names.join('、')}}
       td(style="width: 17px")
-        a(ng-click="potof_only([potof])")
-          i.icon-share-alt
+        a(ng-click="potof_only([potof])") ➡
 
   tbody
     tr.head

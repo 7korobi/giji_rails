@@ -1,7 +1,7 @@
 table
   tr
-    td(style="width:50%")
-      input.input-block-level(type="text" ng-model="search.value" placeholder="ログを探す")
+    td
+      a.btn(ng-click="go.search()") ⎋
     td
       select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
 

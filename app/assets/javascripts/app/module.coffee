@@ -213,4 +213,4 @@ MODULE = ($scope, $filter)->
   POOL    $scope
   DIARY   $scope
   TITLE   $scope
-
+  GO      $scope

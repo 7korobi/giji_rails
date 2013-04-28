@@ -16,7 +16,7 @@ class ArrayNavi extends Navi
     @value = []
 
   value_add: (newVal)->
-    @value = @value.clone().add newVal
+    @value = @value.clone().remove(newVal).add newVal
 
   value_del: (newVal)->
     @value = @value.clone().remove newVal

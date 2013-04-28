@@ -158,10 +158,5 @@ Diary.base.commit = (diary)->
   Diary.history.add item
   Diary.base.version = Diary.history.length + 1
 
-Diary.base.copy = (f)->
-  f.text = Diary.base.form.text.trim()
-
 Diary.base.form =
   text: ""
-
-

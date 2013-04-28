@@ -1,5 +1,5 @@
 p.caution(ng-show="story.is_prologue")
-  | あと {{story.vpl[0] - potofs.length}} 人参加できます。
+  | あと {{story.vpl[0] - potofs.length + potofs.mob().length}} 人参加できます。
 
 hr.invisible_hr
 
@@ -49,7 +49,7 @@ hr.invisible_hr
     dt 定員
     dd {{event.player.limit}}人 （ダミーキャラを含む）
     dt 人数
-    dd {{potofs.length}}人 （ダミーキャラを含む）
+    dd {{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）
     dt(ng-show="story.is_wbbs") 最低人数
     dd(ng-show="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
     dt 投票方法
@@ -64,7 +64,7 @@ hr.invisible_hr
     li {{story.announce.starttype}}
     li(ng-repeat="option_help in story.option_helps"){{option_help}}
 
-.mes_maker(template="navi/potofs")
+.formpl_gm(template="navi/potofs")
 
 .footnote
   dl.dl-horizontal

@@ -19,7 +19,7 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
     log.cancel_btn = ->
       if log.logid? && "q" == log.logid[0]
         if (new Date() - log.date) < 25 * 1000
-          """<a class="mark" href_eval='cancel_say("#{log.logid}")'>なら削除できます。<i class="icon-trash" href_eval='cancel_say("#{log.logid}")'></i></a>"""
+          """<a class="mark" href_eval='cancel_say("#{log.logid}")'>なら削除できます。⏳</a>"""
         else
           log.logid = log.logid.replace(/^q/,"")
           ""

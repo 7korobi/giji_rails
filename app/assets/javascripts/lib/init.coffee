@@ -136,9 +136,9 @@ INIT = ($scope)->
       potof.stat = "#{potof.stat_at} #{potof.live_name}"
 
       potof.text = []
-      potof.text.push " <i class='icon-check'></i>"       if 'pixi' == potof.sheep
-      potof.text.push " <i class='icon-heart'></i>"       if 'love' == potof.love
-      potof.text.push " <i class='icon-thumbs-down'></i>" if 'hate' == potof.love
+      potof.text.push " ☑" if 'pixi' == potof.sheep
+      potof.text.push " ♥" if 'love' == potof.love
+      potof.text.push " ☠" if 'hate' == potof.love
       if potof.rolestate?
         rolestate = potof.rolestate
         SOW.maskstates.keys (mask, text)->
@@ -160,6 +160,8 @@ INIT = ($scope)->
       potof
 
     $scope.potofs = potofs
+    $scope.potofs.mob = ->
+      $scope.potofs.filter (o)-> "mob" == o.live
     $scope.sum =
       actaddpt: (live_potofs.sum (o)-> o.point.actaddpt)
 
