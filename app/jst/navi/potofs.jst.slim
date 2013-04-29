@@ -54,7 +54,8 @@ table.table.table-condensed
           span.name(ng-show="potof.select_name")
             | &nbsp; {{potof.select_name}} を希望
       td(ng-click="potof_toggle(potof)")
-        span(ng-show="secret_is_open" ng-bind-html-unsafe="potof.text.join('')")
+        span(ng-show="secret_is_open")
+          | {{potof.text.join('')}}
         .note(ng-show="secret_is_open && potof.bond_names")
           | {{potof.bond_names.join('、')}}
       td(style="width: 17px")

@@ -102,5 +102,8 @@ POTOFS = ($scope)->
     $scope.potofs_order.value = tgt
     @tgt = $scope.potofs_reverse || tgt
 
-  $scope.$watch 'potofs_order.value', ->
+  do_sort = ->
     potofs_sortBy $scope.potofs_order.value, $scope.potofs_reverse
+
+  $scope.$watch 'potofs_reverse', do_sort
+  $scope.$watch 'potofs_order.value', do_sort

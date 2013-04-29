@@ -372,6 +372,41 @@ PAN:
     pl:  /www/giji_log/pan/config.pl
     is_angular: true
 
+MORPHE:
+  server: morphe.sakura.ne.jp
+  oldlog:   /sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /sow.cgi?cmd=rss
+  folder: MORPHE
+  info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事:M"
+  epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: M
+  config:
+    <<: *config_game
+    saycnt:
+      - tiny
+      - weak
+      - juna
+      - say5x200
+      - say5x300
+      - saving
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      RULE:           MORPHE
+      URL_SW:         http://morphe.sakura.ne.jp/morphe
+      BASEDIR_CGIERR: http://morphe.sakura.ne.jp/morphe//
+      NAME_HOME:      人狼議事 夢の形
+      MAX_VILLAGES:   4
+      BASEDIR_DOC:   http://giji.check.jp
+    path:
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/morphe/config.pl
+
 SOYBEAN:
   server: soy-bean.sakura.ne.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
@@ -541,6 +576,7 @@ ALLSTAR:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/jksy/config.pl
+
 
 LOBBY_OLD:
   folder: LOBBY_OLD

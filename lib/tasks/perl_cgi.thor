@@ -2,9 +2,9 @@
 
 class PerlCgi < Thor
   desc "init", "push files initial to server"
-  def init
+  def init(folder)
     files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
-    sync_to_servers(files) do |files|
+    sync_to_servers(files) do |folder, files|
       files && files['lapp'] && files['lapp'][/testbed$/]
     end
   end
@@ -12,6 +12,11 @@ class PerlCgi < Thor
   desc "push_only", "push files to other servers"
   def push_only(*folders)
     sync_to_servers do |folder, files|
+      folders.include? folder
+    end
+
+    files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
+    sync_to_servers(files) do |folder, files|
       folders.include? folder
     end
   end

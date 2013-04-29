@@ -2,6 +2,99 @@
 INIT = ($scope)->
   return unless gon?
 
+  if gon.potofs?
+    gon.potofs.each (potof)->
+      if potof.bonds?
+        bonds =  potof.bonds.map (pno_or_pl)->
+          gon.potofs[pno_or_pl] || pno_or_pl
+        potof.bonds = bonds.compact()
+      if potof.pseudobonds?
+        pseudobonds = potof.pseudobonds.map (pno_or_pl)->
+          gon.potofs[pno_or_pl] || pno_or_pl
+        potof.pseudobonds = pseudobonds.compact()
+
+      if potof.role?
+        potof.win_result = "参加"
+        if gon.story?
+          win_check = (potof, story)->
+            win_by_role = (list)->
+              for role in potof.role
+                win = list[role]?.win
+                return win if win
+              null
+
+            zombie = 0x040
+            win_zombie = 'WOLF' if ('TROUBLE' == story.type.game) && 0 == (potof.rolestate & zombie)
+            win_juror = 'HUMAN' if ('juror' == story.type.mob) && ('mob' == potof.live)
+            win_love = SOW.loves[potof.love]?.win
+
+            win = win_juror || win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
+            if ["PAN","WOLF","RP","PRETENSE","PERJURY","XEBEC","CRAZY"].any story.folder
+              win = 'WOLF' if win == 'EVIL'
+            win
+
+          potof.win = win_check potof, gon.story
+
+          if gon.story.is_finish
+            if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA"].any gon.story.folder
+              is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].any gon.story.type.game
+              is_dead_lose = 1 if "LONEWOLF" == potof.win
+              is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
+              is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.any "HATEDEVIL"
+              is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.any "LOVEANGEL"
+              potof.win_result = "敗北"
+              potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
+              potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && "EVIL" == potof.win
+              potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
+              potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.any potof.pno
+              potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
+              potof.win_result = "参加" if "NONE" == potof.win
+        potof.win_result = "" if "suddendead" == potof.live
+
+        potof.win_name = SOW.wins[potof.win]?.name
+        potof.role_names  = potof.role.map $scope.rolename
+
+      if potof.select?
+        potof.select_name = $scope.rolename potof.select
+
+      potof.live or= ""
+      potof.live_name = SOW.live[ potof.live ] || " "
+      potof.auth = potof.sow_auth_id
+
+      potof.bond_names       = potof.bonds.map       (o)-> o.name
+      potof.pseudobond_names = potof.pseudobonds.map (o)-> o.name
+
+      potof.stat_type = SOW.live_caption[ potof.live ] || " "
+      if potof.deathday < 0
+        potof.stat_at = " "
+      else
+        potof.stat_at = "#{potof.deathday}日"
+      potof.stat = "#{potof.stat_at} #{potof.live_name}"
+
+      potof.text = []
+      potof.text.push "☑" if 'pixi' == potof.sheep
+      potof.text.push "♥" if 'love' == potof.love
+      potof.text.push "☠" if 'hate' == potof.love
+      if potof.rolestate?
+        rolestate = potof.rolestate
+        SOW.maskstates.keys (mask, text)->
+          potof.text.push " #{text}" if 0 == (rolestate & mask)
+          rolestate |= mask
+
+      potof.said = ""
+      potof.said_num = 0
+      if 0 < potof.point.saidcount
+        potof.said_num += potof.point.saidcount
+        potof.said     += " #{potof.point.saidcount}回"
+      if 0 < potof.point.saidpoint
+        potof.said_num += potof.point.saidpoint
+        potof.said     += " #{potof.point.saidpoint}pt"
+
+      if potof.timer?
+        potof.timer.entried     = -> $scope.lax_time Date.create potof.timer.entrieddt
+        potof.timer.entry_limit = -> $scope.lax_time Date.create potof.timer.limitentrydt
+      potof
+
   if gon.event?.messages?
     gon.event.messages.each (message)->
       message.turn = gon.event.turn
@@ -66,100 +159,6 @@ INIT = ($scope)->
     live_potofs = gon.potofs.filter (o)->
       o.deathday < 0
 
-    potofs = gon.potofs.map (potof)->
-      key = $scope.potof_key potof
-      potof.val = key
-
-      if potof.bonds?
-        potof.bonds = potof.bonds.map (pid)->
-          gon.potofs[pid]
-      if potof.pseudobonds?
-        potof.pseudobonds = potof.pseudobonds.map (pid)->
-          gon.potofs[pid]
-
-      if potof.role?
-        potof.win_result = "参加"
-        if gon.story?
-          win_check = (potof, story)->
-            win_by_role = (list)->
-              for role in potof.role
-                win = list[role]?.win
-                return win if win
-              null
-
-            zombie = 0x040
-            win_zombie = 'WOLF' if ('TROUBLE' == story.type.game) && 0 == (potof.rolestate & zombie)
-            win_juror = 'HUMAN' if ('juror' == story.type.mob) && ('mob' == potof.live)
-            win_love = SOW.loves[potof.love]?.win
-
-            win = win_juror || win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
-            if ["PAN","WOLF","RP","PRETENSE","PERJURY","XEBEC","CRAZY"].any story.folder
-              win = 'WOLF' if win == 'EVIL'
-            win
-
-          potof.win = win_check potof, gon.story
-
-          if gon.story.is_finish
-            if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA"].any gon.story.folder
-              is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].any gon.story.type.game
-              is_dead_lose = 1 if "LONEWOLF" == potof.win
-              is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
-              is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.any "HATEDEVIL"
-              is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.any "LOVEANGEL"
-              potof.win_result = "敗北"
-              potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
-              potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && "EVIL" == potof.win
-              potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
-              potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.any potof.pno
-              potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
-              potof.win_result = "参加" if "NONE" == potof.win
-        potof.win_result = "" if "suddendead" == potof.live
-
-        potof.win_name = SOW.wins[potof.win]?.name
-        potof.role_names  = potof.role.map $scope.rolename
-
-      if potof.select?
-        potof.select_name = $scope.rolename potof.select
-
-      potof.live or= ""
-      potof.live_name = SOW.live[ potof.live ] || " "
-      potof.auth = potof.sow_auth_id
-
-      potof.bond_names       = potof.bonds.map       (o)-> o.name
-      potof.pseudobond_names = potof.pseudobonds.map (o)-> o.name
-
-      potof.stat_type = SOW.live_caption[ potof.live ] || " "
-      if potof.deathday < 0
-        potof.stat_at = " "
-      else
-        potof.stat_at = "#{potof.deathday}日"
-      potof.stat = "#{potof.stat_at} #{potof.live_name}"
-
-      potof.text = []
-      potof.text.push " ☑" if 'pixi' == potof.sheep
-      potof.text.push " ♥" if 'love' == potof.love
-      potof.text.push " ☠" if 'hate' == potof.love
-      if potof.rolestate?
-        rolestate = potof.rolestate
-        SOW.maskstates.keys (mask, text)->
-          potof.text.push " #{text}" if 0 == (rolestate & mask)
-          rolestate |= mask
-
-      potof.said = ""
-      potof.said_num = 0
-      if 0 < potof.point.saidcount
-        potof.said_num += potof.point.saidcount
-        potof.said     += " #{potof.point.saidcount}回"
-      if 0 < potof.point.saidpoint
-        potof.said_num += potof.point.saidpoint
-        potof.said     += " #{potof.point.saidpoint}pt"
-
-      if potof.timer?
-        potof.timer.entried     = -> $scope.lax_time Date.create potof.timer.entrieddt
-        potof.timer.entry_limit = -> $scope.lax_time Date.create potof.timer.limitentrydt
-      potof
-
-    $scope.potofs = potofs
     $scope.potofs.mob = ->
       $scope.potofs.filter (o)-> "mob" == o.live
     $scope.sum =
@@ -167,7 +166,7 @@ INIT = ($scope)->
 
     potofs_hash = 
       others: "他の人々"
-    for potof in potofs
+    for potof in $scope.potofs
       key = $scope.potof_key potof
       potofs_hash[key] = potof.name
 

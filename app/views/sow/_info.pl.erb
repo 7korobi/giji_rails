@@ -218,7 +218,6 @@ _HTML_
 _HTML_
   }
 
-
   if( 'CABALA' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
 このページは<span style="color:#FFF">陰謀を弄び、他人を陥れ、濡れ手に粟を求める村</span>用に調整してある。<br>
@@ -226,6 +225,12 @@ _HTML_
 _HTML_
   }
 
+  if( 'MORPHE' eq $cfg->{'RULE'} ){
+    print <<"_HTML_";
+こちらのページは、<span style="color:#FFF">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。早い者勝ちが原則だけれど、企画村予定表という便利なページも見てみよう。<br>
+もし君がRPに没頭したいか、ガチガチの勝負に魂を燃やすなら、それぞれ専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。<br>
+_HTML_
+  }
 
   if( 'PAN' eq $cfg->{'RULE'} ){
     print <<"_HTML_";

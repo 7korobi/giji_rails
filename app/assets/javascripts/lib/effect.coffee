@@ -52,15 +52,12 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           small = 150
         if key == 'link'
           small = 180
+        if key == 'info'
+          small = 180
         if key == 'switch'
           small = 185
         if key == 'page'
           small = 450
-        if key == 'info' && $scope.potofs?
-          if $scope.secret_is_open
-            small = 250
-          else
-            small = 180
 
         switch $scope.width.value
           when 480

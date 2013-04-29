@@ -51,7 +51,6 @@ class GijiVilScanner < GijiScanner
     source.each do |o|
       case o.class.name
       when 'Struct::SowRecordFileUser'
-        pno += 1
         story = sow
 
         face_name = Face.find(o.cid).name  rescue  '***'
@@ -118,6 +117,7 @@ class GijiVilScanner < GijiScanner
         potof.story_id = story.id
         potof.event_id = event_now.id  if  event_now
         potof.save
+        pno += 1
       when 'Struct::SowRecordFileVil'
         turn = o.turn.to_i
         sow.update_attributes(

@@ -5,45 +5,44 @@ table(class="table table-condensed")
         span.name
           | &nbsp;{{sum.actaddpt}}促&nbsp;
 
-      th(colspan="4" style="text-align: right;")
+      th(colspan="2" style="text-align: right;")
         span
           code(ng-click="secret_toggle()") ネタバレ
         | &nbsp;          
-      th(style="width: 17px")
-        a(ng-click="potof_only(potofs)") ➡
+      th
+        a.note(ng-click="potof_only(potofs)") ➡
 
   tbody(ng-repeat="key in potofs_keys")
     tr.head
-      th(colspan="5")
+      th(colspan="3")
         span(ng-bind-html-unsafe="potofs_groups[key].head")
         sub(ng-show="potofs_groups[key].has_head")
           | ({{potofs_groups[key].length}}人)
-      th(style="width: 17px")
+      th
         div(ng-show="potofs_groups[key].has_head")
-          a(ng-click="potof_only(potofs_groups[key])") ➡
+          a.note(ng-click="potof_only(potofs_groups[key])") ➡
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
         span.name
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
-        span.nowrap
+        span.nowrap.note(ng-hide="secret_is_open")
           | {{potof.stat}}
-      td(ng-click="potof_toggle(potof)")
-        span.nowrap(ng-show="secret_is_open")
+        span.nowrap.note(ng-show="secret_is_open && (potofs_order.value != 'text')")
+          | {{potof.text.join('')}}
+        span.nowrap.note(ng-show="secret_is_open")
           | {{potof.role_names.join('、')}}
-      td(ng-click="potof_toggle(potof)")
-        span(ng-show="secret_is_open" ng-bind-html-unsafe="potof.text.join('')")
-      td(style="width: 17px")
-        a(ng-click="potof_only([potof])") ➡
+      td
+        a.note(ng-click="potof_only([potof])") ➡
 
   tbody
     tr.head
-      th(colspan="6")
+      th(colspan="4")
     tr(ng-class="hide_potofs.of.others.class")
-      td(colspan="2" ng-click="other_toggle()")
+      td(colspan="1" ng-click="other_toggle()")
         span.name 他の人々
-      td(colspan="4" style="text-align: right;")
+      td(colspan="3" style="text-align: right;")
         span
           code(ng-click="sort_potofs('stat_type','')") 状態
           | &nbsp;

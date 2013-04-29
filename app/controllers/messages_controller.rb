@@ -22,7 +22,7 @@ class MessagesController < BasePastLogController
       logid:    "vilinfo00000",
     )
     gon.event  = event_attr
-    gon.potofs = story.potofs.cache.map(&:attributes)
+    gon.potofs = story.potofs.order_by(:pno.asc).cache.map(&:attributes)
   end
 
   protected

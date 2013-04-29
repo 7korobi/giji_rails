@@ -204,13 +204,13 @@ MODULE = ($scope, $filter)->
 
   TOKEN_INPUT  $scope
   AJAX    $scope
+  POOL    $scope
   CACHE   $scope
   POTOFS  $scope
 
   # INIT FILTER POOL sequence
   INIT    $scope
   FILTER  $scope, $filter
-  POOL    $scope
   DIARY   $scope
   TITLE   $scope
   GO      $scope
