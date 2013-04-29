@@ -44,8 +44,6 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         gap = 0
         if key == 'head'
           small = 100
-        if key == 'switch'
-          small = 100
         if key == 'calc'
           small = 100
         if key == 'diary'
@@ -53,7 +51,9 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         if key == 'filter'
           small = 150
         if key == 'link'
-          small = 150
+          small = 180
+        if key == 'switch'
+          small = 185
         if key == 'page'
           small = 450
         if key == 'info' && $scope.potofs?

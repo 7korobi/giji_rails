@@ -16,8 +16,8 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
 
           .form-inline
             .formpl_content
-              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview")
               p(class="{{f.style}} text" ng-bind-html-unsafe="preview(f)" ng-show="f.is_preview")
+              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview")
 
               a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
               a.btn(ng-click="write(f, f.valid)") {{f.title}}

@@ -5,7 +5,6 @@ class PageNavi extends Navi
 
     super
     @filters = []
-    @refresh = ->
 
   paginate: (page_per_key, func)->
     @filter page_per_key, (page_per, list)=>
@@ -16,7 +15,6 @@ class PageNavi extends Navi
 
     @filter "#{@key}.value", (page, list)=>
       @item_last = list.last() if list.last
-      @refresh.delay 300
       list
 
   filter_by: (by_key)->

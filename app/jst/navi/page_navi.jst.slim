@@ -1,15 +1,26 @@
 label.inline.radio
-  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
-label.inline.radio
   span.add-on ⎋
   input.input-medium(type="text" ng-model="search.value" placeholder="ログを探す")
 
-br
+label.inline.radio
+  span(ng-repeat="a in mode_common")
+    a.mark(style="font-size: 2.5ex;" ng-click="mode.value = a.value") {{a.name}}
+
+br 
 
 label.inline.radio
-  select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select" ng-hide="event.is_news")
+  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+
+label.inline.radio(ng-show="story.turn == event.turn")
+  a.btn(ng-show="event.is_news" ng-click="ajax_event(event.turn, event.link + '&rowall=on')") ページ表示
+  a.btn(ng-hide="event.is_news" ng-click="ajax_event(event.turn, event.link, true)") 最新の発言
+
+label.inline.radio(ng-hide="event.is_news")
+  select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
+
 label.inline.radio
   select.input-small(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
+
 label.inline.radio
-  select.input-small(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
+  select.input-mini(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
 

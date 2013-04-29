@@ -179,9 +179,6 @@ INIT = ($scope)->
         is_cookie: true
       button: potofs_hash
 
-  # for face_ids
-  $scope.face.scan()
-
   if gon.pages?
     PageNavi.push $scope, 'page',
       options:
@@ -190,3 +187,4 @@ INIT = ($scope)->
         is_cookie: false
 
     $scope.page.length = gon.pages.length
+

@@ -4,17 +4,38 @@ POOL = ($scope)->
   ajax_timer = 5 * 60 * 1000
 
   apply = ->
+    popover = $('a[title]')
+    popover.each (idx, dom)->
+      $(dom).attr "data-content", $(dom).attr("title")
+      $(dom).attr "title", ''
+      $(dom).attr "rel", 'popover'
+    $('[rel="popover"]').popover()
+
     $scope.$apply()
 
   refresh = ->
-    $scope.$apply()
-
+    apply()
     refresh.delay message_timer
 
-  $scope.pool_start = ->
+  pool_start = ->
     apply.delay message_first
     refresh.delay message_timer
-  $scope.pool_start()
+
+  pool_ajax = ->
+    href = location.href
+    if $scope.event?.is_news
+      $scope.get href, =>
+        $scope.init()
+        pool_ajax.delay ajax_timer
+        $scope.$apply()
+
+  $scope.pool = ()->
+    href = location.href.replace location.hash, ""
+    turn = $scope.event.turn
+    href = GIJI.change_turn href, turn
+    $scope.get href, =>
+      $scope.init()
+      $scope.boot()
 
   $scope.top =
     focus: false
@@ -27,51 +48,34 @@ POOL = ($scope)->
         $scope.top.focus = 0 < top_idx && 0 < news_size
         $scope.top.news_size = news_size
 
-  pool = ->
-    href = location.href
-    if $scope.event?.is_news
-      $scope.get href, =>
-        INIT $scope
-
-        $scope.top.count()
-        $scope.face.scan()
-        apply.delay message_first
-
-        $scope.$apply()
-        pool.delay ajax_timer
-  pool.delay ajax_timer
-
-  $scope.pool = ()->
-    href = location.href.replace location.hash, ""
-    turn = $scope.event.turn
-    href = GIJI.change_turn href, turn
-    $scope.get href, =>
-      is_news = $scope.event.is_news
-      INIT $scope
-      $scope.event.is_news = is_news
-      $scope.boot()
-      $scope.$apply()
-
-
   adjust = ->
     $(window).scroll()
 
   $scope.adjust = ->
-    adjust.delay    80
-    adjust.delay   400
-    adjust.delay  2000
-    adjust.delay 10000
+    adjust()
+    adjust.delay   160
+    adjust.delay   800
+    adjust.delay  4000
 
-  $scope.boot = (func)->
+  $scope.boot = ->
     $scope.top.count()
     $scope.face.scan()
     apply.delay message_first
 
-    popover = $('a[title]')
-    popover.each (idx, dom)->
-      $(dom).attr "data-content", $(dom).attr("title")
-      $(dom).attr "title", ''
-      $(dom).attr "rel", 'popover'
-    $('[rel="popover"]').popover()
-
     $scope.adjust()
+
+  $scope.init = ->
+    if $scope.event?
+      is_news = $scope.event.is_news
+      INIT $scope
+      $scope.event.is_news = is_news
+    else
+      INIT $scope
+    $scope.face.scan()
+    $scope.top.count()
+
+    apply.delay message_first
+
+  # onload event
+  pool_start()
+  pool_ajax()

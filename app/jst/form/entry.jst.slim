@@ -21,14 +21,14 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('entry')")
 
           .form-inline
             .formpl_content
-              div(ng-hide="f.is_preview")
-                p  参加する時のセリフ
-                textarea(cols="30" rows="5" ng-model="f.text")
               div(ng-show="f.is_preview" )
                 h3.mesname
                   a  {{option(f.csid_cids, f.csid_cid).name}}
                 p(class="{{f.style}} text" ng-bind-html-unsafe="preview(f)")
 
+              div(ng-hide="f.is_preview")
+                p  参加する時のセリフ
+                textarea(cols="30" rows="5" ng-model="f.text")
               a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
               a.btn(ng-click="entry(f, f.valid)") {{f.title}}
               | {{f.count}}

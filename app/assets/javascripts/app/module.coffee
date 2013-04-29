@@ -214,3 +214,5 @@ MODULE = ($scope, $filter)->
   DIARY   $scope
   TITLE   $scope
   GO      $scope
+
+  $scope.init()

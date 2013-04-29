@@ -50,7 +50,7 @@ CACHE = ($scope)->
 
     return unless news? && olds? && news[0]?
     olds_tail = olds[idx..]
-    if idx == 0
+    if idx < 1
       olds_head = []
     else
       olds_head = olds[0..idx - 1]

@@ -79,6 +79,7 @@ FORM = ($scope)->
     if valid && f.is_preview
       param =
         cmd: f.cmd
+        safety: "on"
         turn: $scope.event.turn
         vid:  $scope.story.vid
         target:    f.target

@@ -66,6 +66,7 @@ FILTER = ($scope, $filter)->
         {name: 'メモ', value: 'memo_all_open_last_player'}
         {name: '議事', value: $scope.mode_current}
       ]
+      
     deploy_mode_common()
 
     mode_params = GIJI.modes.groupBy('val')
@@ -212,11 +213,9 @@ FILTER = ($scope, $filter)->
       $(window).scrollTop  target.offset().top - 20
     doIt.delay 500
 
+  $scope.$watch 'event_is_news', deploy_mode_common
   $scope.$watch 'modes.face',    scrollTo
   $scope.$watch 'order.value',   scrollTo
-  $scope.$watch 'page.value',    scrollTo
   $scope.$watch 'event.turn',    scrollTo
-  $scope.$watch 'event_is_news', deploy_mode_common
-
-  page.refresh = ()->
-    $scope.boot()
+  $scope.$watch 'page.value',    scrollTo
+  $scope.$watch 'page.value',    $scope.boot
