@@ -51,9 +51,9 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         if key == 'filter'
           small = 150
         if key == 'link'
-          small = 180
+          small = 185
         if key == 'info'
-          small = 180
+          small = 185
         if key == 'switch'
           small = 185
         if key == 'page'
@@ -67,7 +67,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               info_width  = info_left
               params.is_fullwidth = false
             else
-              info_width = max_width
+              info_width = small
               params.is_fullwidth = true
 
           when 800
@@ -77,7 +77,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               info_width  = info_left
               params.is_fullwidth = false
             else
-              info_width = max_width
+              info_width = small
               params.is_fullwidth = true
 
         unless params.is_fullwidth

@@ -206,14 +206,14 @@ FILTER = ($scope, $filter)->
       if $scope.top.id?
         target = $(".message_filter.#{$scope.top.id}")
 
-      if target?.offset()?
+      if $scope.event.is_news && target?.offset()?
       else
         target = $(".inframe")
 
       $(window).scrollTop  target.offset().top - 20
     doIt.delay 500
 
-  $scope.$watch 'event_is_news', deploy_mode_common
+  $scope.$watch 'event.is_news', deploy_mode_common
   $scope.$watch 'modes.face',    scrollTo
   $scope.$watch 'order.value',   scrollTo
   $scope.$watch 'event.turn',    scrollTo

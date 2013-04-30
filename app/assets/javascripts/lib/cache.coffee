@@ -1,37 +1,51 @@
 CACHE = ($scope)->
 
-  $scope.events_join = (event)->
-    event = $scope.events_merge event
-    if 0 < event?.messages.length
-      $scope.events[event.turn] = event
-    else
-      null
+  $scope.events_merge = (old_base, new_base, event)->
+    guard = (key)-> ["messages"].any key
+    filter = (o)-> o.turn
+    target = 'events'
 
-  $scope.events_merge = (event)->
-    if $scope.events? && event? && event.messages? && event.turn?
-      cache = $scope.events[event.turn]
-      if cache?
-        event.merge
-          name: cache.name
-          link: cache.link
-    else
-      null
+    if old_base? && new_base?
+      olds = old_base[target]
+      news = new_base[target]
+
+    # events merge event
+    if event?.messages?
+      event.messages.each (message)->
+        message.turn = event.turn
+
+      if news?
+        new_item = news[event.turn]
+        event.keys (key, o)->
+          new_item[key] = o unless guard(key)
+
+        new_item.keys (key, o)->
+          event[key] = o unless guard(key)
+
+      if olds?
+        old_item = olds[event.turn]
+        $scope.messages_merge old_item, event
+    $scope.gon_merge old_base, new_base, target, 0, guard, filter
 
   $scope.messages_merge = (old_base, new_base)->
     guard = (key)-> false
     filter = (o)-> o.logid
     target = 'messages'
     if old_base? && new_base?
+      return if new_base.is_news
       olds = old_base[target]
       news = new_base[target]
 
-    if news? && olds? && news[0]?
-      base_id = filter news[0]
-      idx = olds.findIndex (o)-> filter(o) == base_id
-      $scope.gon_merge old_base, new_base, target, idx, guard, filter
+    if olds?
+      if news? && news[0]?
+        base_id = filter news[0]
+        idx = olds.findIndex (o)-> filter(o) == base_id
+        $scope.gon_merge old_base, new_base, target, idx, guard, filter
+    else
+      old_base[target] = news
 
   $scope.form_text_merge = (old_base, new_base)->
-    guard = (key)-> ["text","action","style","target"].any key
+    guard = (key)-> ["$$hashKey","text","action","style","target"].any key
     filter = (o)-> o.jst + o.switch
     target = 'texts'
     $scope.gon_merge old_base, new_base, target, 0, guard, filter
@@ -48,7 +62,7 @@ CACHE = ($scope)->
     olds = old_base[target]
     news = new_base[target]
 
-    return unless news? && olds? && news[0]?
+    return unless news? && olds?
     olds_tail = olds[idx..]
     if idx < 1
       olds_head = []

@@ -3,7 +3,7 @@ table.table.table-condensed
     tr
       th
         span.name
-          | &nbsp;あと{{sum.actaddpt}}促
+          | &nbsp;あと{{sum.actaddpt}}促&nbsp;({{potofs.length}}人)
       th(colspan="4" style="text-align: right;")
         div(ng-hide="secret_is_open")
           code(ng-click="sort_potofs('stat_at',0)") 日程
@@ -69,4 +69,6 @@ table.table.table-condensed
         span.name 他の人々
       td(colspan="4" style="text-align: right;")
         code(ng-click="secret_toggle()") ネタバレ
+    tr
+      th(colspan="6")
 

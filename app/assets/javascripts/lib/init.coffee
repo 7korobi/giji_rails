@@ -95,33 +95,14 @@ INIT = ($scope)->
         potof.timer.entry_limit = -> $scope.lax_time Date.create potof.timer.limitentrydt
       potof
 
-  if gon.event?.messages?
-    gon.event.messages.each (message)->
-      message.turn = gon.event.turn
-
-  # autoload news merge
-  cache_events = $scope.events
-  if cache_events
-    cache_event = $scope.events[gon.event.turn]
-
   $scope.potofs_merge $scope, gon
   $scope.form_text_merge $scope.form, gon.form
-  $scope.messages_merge cache_event, gon.event
+  $scope.events_merge $scope, gon, gon.event
 
   gon.keys (key, news)->
     $scope[key] = news
 
-  # events join legacy cache
-  if cache_events?
-    for cache in cache_events
-      $scope.events_join cache
-
-  # events join new one-day log
-  if gon.event?
-    if ! gon.event.is_news && ! gon.event.is_deny_messages
-      $scope.events_join  $scope.event
-    if gon.event.is_news
-      $scope.events_merge $scope.event
+  # make same object to $scope.event == $scope.events[turn]
 
   gon_story = (story)->
     story.card.discard_names = $scope.countup(story.card.discard).join '、'
