@@ -16,11 +16,11 @@ CACHE = ($scope)->
 
       if news?
         new_item = news[event.turn]
-        event.keys (key, o)->
-          new_item[key] = o unless guard(key)
-
-        new_item.keys (key, o)->
-          event[key] = o unless guard(key)
+        if new_item?
+          new_item.keys (key, o)->
+            event[key] = o unless guard(key)
+          event.keys (key, o)->
+            new_item[key] = o unless guard(key)
 
       if olds?
         old_item = olds[event.turn]
@@ -28,13 +28,13 @@ CACHE = ($scope)->
     $scope.gon_merge old_base, new_base, target, 0, guard, filter
 
   $scope.messages_merge = (old_base, new_base)->
+    return unless old_base? && new_base?
+
     guard = (key)-> false
     filter = (o)-> o.logid
     target = 'messages'
-    if old_base? && new_base?
-      return if new_base.is_news
-      olds = old_base[target]
-      news = new_base[target]
+    olds = old_base[target]
+    news = new_base[target]
 
     if olds?
       if news? && news[0]?

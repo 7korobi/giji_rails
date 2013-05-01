@@ -176,7 +176,7 @@ MODULE = ($scope, $filter)->
 
       href = GIJI.change_turn href, turn
       $scope.get href, =>
-        $scope.events_join gon.event  if  turn == gon.event.turn
+        $scope.events_merge $scope, gon, gon.event  if  turn == gon.event.turn
         return  if  popup_find()
       href
 
