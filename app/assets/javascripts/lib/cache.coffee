@@ -46,9 +46,11 @@ CACHE = ($scope)->
 
   $scope.form_texts_merge = (old_base, new_base)->
     return unless old_base?.form? && new_base?.form?
-    return unless new_base.event?.is_news 
+    unless new_base.event?.is_news 
+      new_base.form = old_base.form
+      return
 
-    guard = (key)-> ["$$hashKey","text","action","style","target"].any key
+    guard = (key)-> ["ver","text","action","style","target"].any key
     filter = (o)-> o.jst + o.switch
     target = 'texts'
 
