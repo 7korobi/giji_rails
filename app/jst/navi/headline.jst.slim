@@ -5,20 +5,14 @@
   a(ng-href="{{link.servers}}")
     | 人狼物語Server一覧
   |（melonkoさん管理）
-- max_wolf    = 0
-- max_allstar = GAME[:ALLSTAR_OLD][:config][:cfg][:MAX_VILLAGES]
-- max_jksy    = 0 # GAME[:ALLSTAR][:config][:cfg][:MAX_VILLAGES]
-- max_perjury = GAME[:PERJURY_OLD][:config][:cfg][:MAX_VILLAGES]
 - max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
 - max_crazy   = GAME[:CRAZY][:config][:cfg][:MAX_VILLAGES]
 - max_xebec   = GAME[:XEBEC][:config][:cfg][:MAX_VILLAGES]
 - max_cafe    = GAME[:CABALA][:config][:cfg][:MAX_VILLAGES]
-- max_cabala  = GAME[:CABALA_OLD][:config][:cfg][:MAX_VILLAGES]
 - max_pan     = GAME[:PAN][:config][:cfg][:MAX_VILLAGES]
-- max_all     = ( max_wolf )
-- max_all    += ( max_allstar + max_jksy   )
-- max_all    += ( max_perjury + max_vage   + max_crazy + max_xebec )
-- max_all    += ( max_cafe    + max_cabala )
+- max_morphe  = GAME[:MORPHE][:config][:cfg][:MAX_VILLAGES]
+- max_all     = ( max_vage + max_crazy + max_xebec )
+- max_all    += ( max_cafe + max_morphe )
 .choice
   table.board
     tr
@@ -51,11 +45,11 @@
         br
         | 　
       td.no_choice
-        | 陰謀
+        | 夢の形
         br
         | 　
       td.no_choice
-        | 大乱闘
+        | 陰謀
         br
         | 　
       td.no_choice
@@ -74,8 +68,8 @@
         br
         | 　
       td.no_choice style="text-align:left;"
-        == "#{max_cafe}村:"
-        a(href="#{GAME[:CABALA][:config][:cfg][:URL_SW]}/sow.cgi") cafe
+        == "#{max_morphe}村:"
+        a(href="#{GAME[:MORPHE][:config][:cfg][:URL_SW]}/sow.cgi") morphe
         br
         | 　
         br
@@ -91,7 +85,8 @@
         br
         | allstar
         br
-        | 　　
+        == "#{max_cafe}村:"
+        a(href="#{GAME[:CABALA][:config][:cfg][:URL_SW]}/sow.cgi") cafe
         br
         | 　
       td.no_choice style="text-align:left;"
@@ -130,7 +125,7 @@
         br
         | 　
       td.no_choice style="text-align:left;"
-        a(href="http://giji.check.jp/stories?folder=CABALA") cafe
+        a(href="http://giji.check.jp/stories?folder=MORPHE") morphe
         br
         | 　
         br
@@ -146,7 +141,7 @@
         br
         a(href="http://giji.check.jp/stories?folder=ALLSTAR") allstar
         br
-        | 　　
+        a(href="http://giji.check.jp/stories?folder=CAFE") cafe
         br
         | 　
       td.no_choice style="text-align:left;"

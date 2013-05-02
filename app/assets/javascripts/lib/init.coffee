@@ -96,8 +96,8 @@ INIT = ($scope)->
       potof
 
   $scope.potofs_merge $scope, gon
-  $scope.form_text_merge $scope.form, gon.form
   $scope.events_merge $scope, gon, gon.event
+  $scope.form_texts_merge $scope, gon
 
   gon.keys (key, news)->
     $scope[key] = news

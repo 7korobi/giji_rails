@@ -112,8 +112,6 @@ FILTER = ($scope, $filter)->
 
     page.filter 'mode.value', (key, list)->
       $scope.modes = $scope.mode.choice().clone()
-      $scope.form_show = $scope.modes.form
-
       is_mob_open = false
       if $scope.story?
         is_mob_open = true if 'alive' == $scope.story.type.mob
@@ -213,6 +211,11 @@ FILTER = ($scope, $filter)->
       $(window).scrollTop  target.offset().top - 20
     doIt.delay 500
 
+  form_show = ->
+    $scope.form_show = $scope.modes.form
+
+  $scope.$watch 'mode.value',    form_show
+  $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', deploy_mode_common
   $scope.$watch 'modes.face',    scrollTo
   $scope.$watch 'order.value',   scrollTo

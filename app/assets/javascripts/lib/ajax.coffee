@@ -67,7 +67,7 @@ AJAX = ($scope)->
         $scope.page.value = 1
         $scope.boot()
 
-      if $scope.events[turn].messages?
+      if $scope.events[turn].has_all_messages
         $scope.event = $scope.events[turn]
         change()
       else

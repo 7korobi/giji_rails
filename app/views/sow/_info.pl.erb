@@ -25,10 +25,6 @@ sub OutHTMLAdminInfo {
   my $reqvals = &SWBase::GetRequestValues($sow);
   my $topcss  = &SWBase::GetLinkValues($sow, $reqvals);
 
-  my $max_wolf     =  <%= 0 %>;
-  my $max_allstar  =  <%= GAME[:ALLSTAR_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_jksy     =  <%= GAME[:ALLSTAR]['config']['cfg'][:MAX_VILLAGES] %>;
-
   my $max_perjury  =  <%= GAME[:PERJURY_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
   my $max_vage     =  <%= GAME[:PERJURY]['config']['cfg'][:MAX_VILLAGES] %>;
 
@@ -36,21 +32,18 @@ sub OutHTMLAdminInfo {
   my $max_xebec    =  <%= GAME[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
   my $max_cafe     =  <%= GAME[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
 
-  my $max_cabala   =  <%= GAME[:CABALA_OLD ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_morphe   =  <%= GAME[:MORPHE ]['config']['cfg'][:MAX_VILLAGES] %>;
+
   my $max_pan      =  <%= GAME[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_all      = ( $max_wolf )
-                   + ( $max_allstar + $max_jksy   )
-                   + ( $max_perjury + $max_vage   + $max_crazy + $max_xebec )
-                   + ( $max_cafe    + $max_cabala )
+  my $max_all      = ( $max_perjury + $max_vage   + $max_crazy + $max_xebec )
+                   + ( $max_cafe )
+                   + ( $max_morphe )
                    ;
 
   my $choice_lobby    = (   'LOBBY' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_wolf     = (    'WOLF' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_rp       = (      'RP' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_pretense = ('PRETENSE' eq $cfg->{'RULE'})?("choice"):("no_choice");
   my $choice_braid    = (   'BRAID' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_allstar  = ( 'ALLSTAR' eq $cfg->{'RULE'})?("choice"):("no_choice");
   my $choice_cabala   = (  'CABALA' eq $cfg->{'RULE'})?("choice"):("no_choice");
+  my $choice_morphe   = (  'MORPHE' eq $cfg->{'RULE'})?("choice"):("no_choice");
 
 
   my $css_select = '<a href="sow.cgi?css=ririnra">漆黒</a>｜<a href="sow.cgi?css=cinema800">煉瓦</a> <a href="sow.cgi?css=cinema480">480</a>｜<a href="sow.cgi?css=night800">月夜</a> <a href="sow.cgi?css=night480">480</a>｜<a href="sow.cgi?css=star800">蒼穹</a> <a href="sow.cgi?css=star480">480</a>｜<a href="sow.cgi?css=wa800">和の国</a> <a href="sow.cgi?css=wa480">480</a>｜<a href="sow.cgi?ua=mb">携帯</a>';
@@ -71,10 +64,10 @@ sub OutHTMLAdminInfo {
 </div>
 <td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼<br>　</a>
 <tr class="link">
-<td class="$choice_lobby">   ロビー<br>　
-<td class="$choice_cabala">  陰謀<br>　
-<td class="$choice_allstar"> 大乱闘<br>　
-<td class="$choice_braid">   ＲＰ　<br>:Braid
+<td class="$choice_lobby">  ロビー<br>　
+<td class="$choice_morphe"> 夢の形<br>　
+<td class="$choice_cabala"> 陰謀　<br>　
+<td class="$choice_braid">  ＲＰ　<br>:Braid
 <tr class="progress_log">
 <td class="$choice_lobby" style="text-align:left;">
   <a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">lobby</a><br>
@@ -83,7 +76,7 @@ sub OutHTMLAdminInfo {
 　<br>
 　<br>
 <td class="$choice_cabala" style="text-align:left;">
-  $max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
+  $max_morphe村:<a href="<%= GAME[:MORPHE]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">morphe</a><br>
 　<br>
 　<br>
 　<br>
@@ -91,8 +84,8 @@ sub OutHTMLAdminInfo {
 <td class="$choice_allstar" style="text-align:left;">
   wolf<br>
   ultimate<br>
-  $max_jksy村:<a href="<%= GAME[:ALLSTAR]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">allstar</a><br>
-　<br>
+  allstar<br>
+  $max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
 　<br>
 <td class="$choice_braid" style="text-align:left;">
   role-play<br>
@@ -114,7 +107,7 @@ sub OutHTMLAdminInfo {
 　<br>
 　<br>
 <td class="$choice_cabala" style="text-align:left;">
-  <a href="http://giji.check.jp/CABALA/stories">cafe</a><br>
+  <a href="http://giji.check.jp/MORPHE/stories">morphe</a><br>
 　<br>
 　<br>
 　<br>
@@ -123,7 +116,7 @@ sub OutHTMLAdminInfo {
   <a href="http://giji.check.jp/WOLF/stories">wolf</a><br>
   <a href="http://giji.check.jp/ULTIMATE/stories">ultimate</a><br>
   <a href="http://giji.check.jp/ALLSTAR/stories">allstar</a><br>
-　<br>
+  <a href="http://giji.check.jp/CABALA/stories">cafe</a><br>
 　<br>
 <td class="$choice_braid" style="text-align:left;">
   <a href="http://giji.check.jp/RP/stories">role-play</a><br>
@@ -227,7 +220,7 @@ _HTML_
 
   if( 'MORPHE' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-こちらのページは、<span style="color:#FFF">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。早い者勝ちが原則だけれど、企画村予定表という便利なページも見てみよう。<br>
+こちらのページは、<span style="color:#FFF">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。早い者勝ちが原則だけれど、企画村予\定\表\という便利なページも見てみよう。<br>
 もし君がRPに没頭したいか、ガチガチの勝負に魂を燃やすなら、それぞれ専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。<br>
 _HTML_
   }
