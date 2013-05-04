@@ -4,6 +4,7 @@ POOL = ($scope)->
   ajax_timer = 5 * 60 * 1000
 
   apply = ->
+    pool_ajax()
     popover = $('a[title]')
     popover.each (idx, dom)->
       $(dom).attr "data-content", $(dom).attr("title")
@@ -21,18 +22,16 @@ POOL = ($scope)->
     apply.delay message_first
     refresh.delay message_timer
 
-  pool_ajax = ->
-    href = location.href
+  do_pool_ajax = ->
     if $scope.event?.is_news
+      href = $scope.event.link
       $scope.get href, =>
         $scope.init()
-        pool_ajax.delay ajax_timer
         $scope.$apply()
+  pool_ajax = do_pool_ajax.debounce ajax_timer
 
   $scope.pool = ()->
-    href = location.href.replace location.hash, ""
-    turn = $scope.event.turn
-    href = GIJI.change_turn href, turn
+    href = $scope.event.link
     $scope.get href, =>
       $scope.init()
       $scope.boot()
@@ -78,4 +77,3 @@ POOL = ($scope)->
 
   # onload event
   pool_start()
-  pool_ajax()

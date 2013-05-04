@@ -39,39 +39,39 @@ win =
   history: (title, href, hash)->
 
   on_scroll: (cb)->
-    $(window).on 'scroll', cb.debounce(100)
+    $(window).on 'scroll', cb.throttle(100)
   on_resize: (cb)->
     if window.onorientationchange? && ! head.browser.android
-      $(window).on 'orientationchange', cb.debounce(100)
+      $(window).on 'orientationchange', cb.throttle(100)
     else
-      $(window).on 'resize', cb.debounce(100)
+      $(window).on 'resize', cb.throttle(100)
 
 win.on_scroll win.refresh
 win.on_resize win.refresh
 
 dummy = ()->
 if ontouchstart?
-  $(window).on 'touchstart', dummy.debounce(100)
-  $(window).on 'touchmove', dummy.debounce(100)
-  $(window).on 'touchend', dummy.debounce(100)
+  $(window).on 'touchstart', dummy.throttle(100)
+  $(window).on 'touchmove', dummy.throttle(100)
+  $(window).on 'touchend', dummy.throttle(100)
 else
-  $(window).on 'mousedown', dummy.debounce(100)
-  $(window).on 'mouseup', dummy.debounce(100)
-  $(window).on 'mousemove', dummy.debounce(100)
+  $(window).on 'mousedown', dummy.throttle(100)
+  $(window).on 'mouseup', dummy.throttle(100)
+  $(window).on 'mousemove', dummy.throttle(100)
 
 scan_motion = (e)->
   win.accel   = e.originalEvent.acceleration
   win.gravity = e.originalEvent.accelerationIncludingGravity
   win.rotate  = e.originalEvent.rotationRate
-$(window).on 'devicemotion', scan_motion.debounce(100)
+$(window).on 'devicemotion', scan_motion.throttle(100)
 
 if history?.pushState?
   popstate = (e)->
     Navi.popstate()
-  $(window).on 'popstate', popstate.debounce(100)
+  $(window).on 'popstate', popstate.throttle(100)
 
   win.history = (title, href, hash)->
-    href || href = location.href.replace location.hash, ""
+    href || href = location.href.replace /#.*/, ""
     history.replaceState null, title, href + hash
 else
   win.history = (title, href, hash)->

@@ -160,8 +160,8 @@ MODULE = ($scope, $filter)->
     href = location.href.replace location.hash, ""
 
     popup_find = ()->
-      has_messages = 0 < $scope.events[turn]?.messages?.length
-      return null unless has_messages
+      has_all_messages = $scope.events[turn]?.has_all_messages
+      return null unless has_all_messages
 
       item = $scope.events[turn].messages.find (log)->
         log.logid == ank
@@ -170,14 +170,14 @@ MODULE = ($scope, $filter)->
       item
 
     popup_ajax = (turn)->
-      return null if turn < 0
-      has_messages = 0 < $scope.events[turn]?.messages?.length
-      return null if has_messages
+      return null unless $scope.events[turn]?
+      has_all_messages = $scope.events[turn]?.has_all_messages
+      return null if has_all_messages
 
-      href = GIJI.change_turn href, turn
+      href = $scope.events[turn].link
       $scope.get href, =>
-        $scope.events_merge $scope, gon, gon.event  if  turn == gon.event.turn
-        return  if  popup_find()
+        $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
+        popup_find()
       href
 
     return  if  popup_ajax turn

@@ -1,6 +1,6 @@
 label.inline.radio
-  span.add-on ⎋
-  input.input-medium(type="text" ng-model="search.value" placeholder="ログを探す")
+  span.btn.add-on(ng-click="search.value = search_input") ⎋
+  input.input-medium(type="text" ng-model="search_input" placeholder="ログを探す")
 
 label.inline.radio
   span(ng-repeat="a in mode_common")

@@ -1,9 +1,9 @@
 angular.module("giji.directives").directive "diary", ["$compile", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    form = $scope.$eval attr.diary
-    form.ver = new Diary(form)
-    form.ver.versions()
+    form_text = $scope.$eval attr.diary
+    form_text.ver = new Diary(form_text)
+    form_text.ver.versions()
     GIJI.template $compile, $scope, elm, "form/version"
 ]
 

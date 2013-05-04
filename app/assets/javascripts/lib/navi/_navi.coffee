@@ -1,3 +1,4 @@
+
 class Navi
   @list = {}
 
@@ -45,7 +46,7 @@ class Navi
         func @value
 
       navis = Navi.list.values()
-      list = new Object
+      list = {}
       for navi in navis
         options = navi.params
         if navi.value
@@ -67,7 +68,7 @@ class Navi
 
       if list.hash
         val_hash   = "#" + list.hash.join   "&"  if list.hash
-        if location.hash   != val_hash
+        if location.hash != val_hash
           win.history null, null, val_hash
 
   _move: ()->

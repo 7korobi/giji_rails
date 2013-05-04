@@ -38,6 +38,10 @@ class PageNavi extends Navi
 
     @filters.push [key, func] if func
 
+  hide: ()->
+    @of.keys (key, item)->
+      item.class = 'ng-cloak'
+
   _move: ()->
     @select  = [1..@length].map (i)->
       name: i
@@ -77,8 +81,9 @@ class PageNavi extends Navi
         val:  null
       item = item.clone()
       item.class = 'ng-cloak'
-      item.class = null          if is_show
-      item.class = @params.class if is_show && @value == n[key]
+      if @visible
+        item.class = null          if is_show
+        item.class = @params.class if is_show && @value == n[key]
 
       @of[key] = item
 

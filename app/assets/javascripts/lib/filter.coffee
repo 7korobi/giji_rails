@@ -57,9 +57,9 @@ FILTER = ($scope, $filter)->
     page.filter 'event.is_news'
 
     deploy_mode_common = ()->
-      $scope.mode_current = 'talk_all_open'
+      $scope.mode_current = 'talk_all_open_player'
       unless $scope.event.is_news
-        $scope.mode_current = 'talk_open'
+        $scope.mode_current = 'talk_open_player'
 
       $scope.mode_common = [
         {name: '情報', value: 'info_open_player'}
@@ -121,17 +121,17 @@ FILTER = ($scope, $filter)->
       if is_mob_open
         talk_news_regexp = /^[qcaAmIVS][SX]/
         talk_open_regexp = /^[qcaAmIVS][^M]/
-        memo_open_regexp = /^([qcaAmIMVS][MX])|([AMam]S)/
+        memo_open_regexp = /^([qcaAmIMVS][MX])/
       else
         talk_news_regexp = /^[qcaAmIS][SX]/
         talk_open_regexp = /^[qcaAmIS][^M]/
-        memo_open_regexp = /^([qcaAmIMS][MX])|([AMam]S)/
+        memo_open_regexp = /^([qcaAmIMS][MX])/
 
       # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
       mode_filters_memo = 
       mode_filters =
         info: /^[aAm]|(vilinfo)/
-        memo_all:  /^(.M)|([AMam]S)/
+        memo_all:  /^(.M)/
         memo_open: memo_open_regexp
         talk_all:   /^[^S][^M]\d+/
         talk_think: /^[qcaAmIiTVG][^M]\d+/
@@ -169,17 +169,19 @@ FILTER = ($scope, $filter)->
         faces.some $scope.potof_key(o)
 
   page.filter 'search.value', (search, list)->
+    $scope.search_input = search
     filter_filter list, search
 
   page.paginate 'row.value', (page_per, list)->
     if $scope.event?.is_news
+      $scope.page.visible = false
       to   = list.length
       from = to - page_per
       from = 0 if from < 0
       $scope.event.is_rowover = (0 < from)
-      $scope.page.value = $scope.page.length
 
     else
+      $scope.page.visible = true
       $scope.page.value = $scope.page.length if $scope.page.value > $scope.page.length
       $scope.page.value = 1 if $scope.page.value < 1
       page_no = $scope.page.value
@@ -198,18 +200,16 @@ FILTER = ($scope, $filter)->
     else
       list
 
-  scrollTo = ()->
+  do_scrollTo = ()->
     $('div.popover').remove()
-    doIt = ->
-      if $scope.top.id?
-        target = $(".message_filter.#{$scope.top.id}")
+    target = $(".message_filter.#{$scope.top.id}")
 
-      if $scope.event.is_news && target?.offset()?
-      else
-        target = $(".inframe")
+    if $scope.event.is_news && target?.offset()?
+    else
+      target = $(".inframe")
 
-      $(window).scrollTop  target.offset().top - 20
-    doIt.delay 500
+    $(window).scrollTop  target.offset().top - 20
+  scrollTo = do_scrollTo.debounce 500
 
   form_show = ->
     $scope.form_show = $scope.modes.form

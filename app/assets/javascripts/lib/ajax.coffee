@@ -3,10 +3,11 @@ AJAX = ($scope)->
     codes = data.match ///
       <script.*?>[\s\S]*?</script>
     ///ig
-    for dom in codes
-      code = $(dom).text()
-      if code.match(/gon/)?
-        eval code
+    if codes?
+      for dom in codes
+        code = $(dom).text()
+        if code.match(/gon/)?
+          eval code
 
   $scope.get = (href, cb)->
     $.get href, {}, (data)->
@@ -66,6 +67,7 @@ AJAX = ($scope)->
         $scope.event.is_news = is_news
         $scope.page.value = 1
         $scope.boot()
+        win.history "#{$scope.event.name}", href, location.hash
 
       if $scope.events[turn].has_all_messages
         $scope.event = $scope.events[turn]

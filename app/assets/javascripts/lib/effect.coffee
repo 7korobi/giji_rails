@@ -13,7 +13,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $scope.navi.value = []
       $scope.$apply()
 
-    resize_naviitems = ->
+    do_resize_naviitems = ->
       return unless $scope.navi? && $scope.width?
       height = win.height
       width  = win.width
@@ -105,6 +105,8 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
 
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
+
+    resize_naviitems = do_resize_naviitems.debounce(100)
     win.on_scroll resize_naviitems
     win.on_resize resize_naviitems
   extra_navis = {}

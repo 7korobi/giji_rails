@@ -25,5 +25,5 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
               select.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
               select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p  {{f.caption}}
-              span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f, write_form)")
+              span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")

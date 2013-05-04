@@ -12,7 +12,7 @@ FORM = ($scope)->
       else
         text.length
 
-  $scope.text_valid = (f, form)->
+  $scope.text_valid = (f)->
     f.valid = true
     if f.max
       size = length(f.text, f.max.unit)
@@ -63,12 +63,13 @@ FORM = ($scope)->
         cmd:  'entry'
         turn: $scope.event.turn
         vid:  $scope.story.vid
-        target:    -1
-        monospace: f.style
         csid_cid:  f.csid_cid
         role:      f.role
         mes:       f.text
         entrypwd:  f.password
+        target:    -1
+        monospace: 0
+      param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       $scope.submit param
     else
       f.ver.commit() if f.ver?
@@ -94,14 +95,16 @@ FORM = ($scope)->
 
   $scope.action = (f, valid)->
     return if f.disabled
-    param =
-      cmd: "action"
-      turn: $scope.event.turn
-      vid:  $scope.story.vid
-      target:     f.target
-      actionno:   f.action
-      actiontext: f.text
-    $scope.submit param
+    if valid
+      param =
+        cmd: "action"
+        turn: $scope.event.turn
+        vid:  $scope.story.vid
+        target:     f.target
+        actionno:   f.action
+        actiontext: f.text
+        monospace: 0
+      $scope.submit param
 
   $scope.vote = (f)->
     return if f.disabled

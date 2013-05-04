@@ -1,18 +1,14 @@
-form(action="{{form.uri}}" method="POST" ng-hide="form.login.logined")
-  input(type="hidden" name="cmdfrom" value="{{form.login.cmdfrom}}")
-  input(type="hidden" name="cmd" value="login")
+form(ng-hide="form.login.logined()" ng-submit="login(form.login)")
   p.form-inline
     label
       span.mark  user id:
       input.input-small(type="text" size="10" name="uid" ng-model="form.login.uid")
     label
       span.mark  password:
-      input.input-small(type="password" size="10" name="pwd" value="")
+      input.input-small(type="password" size="10" name="pwd" ng-model="form.login.pwd")
     input(type="submit" value="ログイン")
 
-form(action="{{form.uri}}" method="POST" ng-show="form.login.logined")
-  input(type="hidden" name="cmdfrom" value="{{form.login.cmdfrom}}")
-  input(type="hidden" name="cmd" value="logout")
+form(ng-show="form.login.logined()" ng-submit="logout(form.login)")
   p.form-inline
     span.mes_date(ng-show="form.login.is_admin")
       | [

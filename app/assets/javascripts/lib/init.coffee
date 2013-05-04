@@ -93,16 +93,23 @@ INIT = ($scope)->
       if potof.timer?
         potof.timer.entried     = -> $scope.lax_time Date.create potof.timer.entrieddt
         potof.timer.entry_limit = -> $scope.lax_time Date.create potof.timer.limitentrydt
+
+      potof.summary = ->
+        switch $scope.potofs_order.value
+          when 'said_num'
+            "✎#{potof.said}"
+          when 'stat_at', 'stat_type'
+            potof.stat
+          when 'win_result', 'win_name','role_names', 'select_name'
+            potof.role_names.join('、')
+          when 'text'
+            potof.text.join('')
       potof
 
-  $scope.potofs_merge $scope, gon
-  $scope.events_merge $scope, gon, gon.event
-  $scope.form_texts_merge $scope, gon
 
   gon.keys (key, news)->
-    $scope[key] = news
+    $scope.merge $scope, gon, key
 
-  # make same object to $scope.event == $scope.events[turn]
 
   gon_story = (story)->
     story.card.discard_names = $scope.countup(story.card.discard).join '、'

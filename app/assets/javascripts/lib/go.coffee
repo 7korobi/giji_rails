@@ -1,4 +1,4 @@
 GO = ($scope)->
   $scope.go =
     search: ->
-      $($("""[ng-model="search.value"]""")[0]).focus()
+      $($("""[ng-model="search_input"]""")[0]).focus()

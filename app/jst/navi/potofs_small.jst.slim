@@ -16,7 +16,7 @@ table(class="table table-condensed")
     tr.head
       th(colspan="3")
         span(ng-bind-html-unsafe="potofs_groups[key].head")
-        sub(ng-show="potofs_groups[key].has_head")
+        span.note(ng-show="potofs_groups[key].has_head")
           | ({{potofs_groups[key].length}}人)
       th
         div(ng-show="potofs_groups[key].has_head")
@@ -27,12 +27,8 @@ table(class="table table-condensed")
         span.name
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
-        span.nowrap.note(ng-hide="secret_is_open")
-          | {{potof.stat}}
-        span.nowrap.note(ng-show="secret_is_open && (potofs_order.value != 'text')")
-          | {{potof.text.join('')}}
-        span.nowrap.note(ng-show="secret_is_open")
-          | {{potof.role_names.join('、')}}
+        span.nowrap.note
+          | {{potof.summary()}}
       td
         a.note(ng-click="potof_only([potof])") ➡
 

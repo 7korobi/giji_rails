@@ -101,17 +101,21 @@ class Form
     $('form.chr_vote')[0]?.submit()
 
 
-class DiaryItem
-  constructor: (text, diary)->
-    @text = text
-    @diary = diary
+class DiaryHistory
+  constructor: (diary)->
+    @title = "#{diary.form.longname}#{diary.form.title}"
+    @text = diary.form.text
+    @key = diary.key
 
 class Diary
   constructor: (f)->
+    filter = (o)-> o.jst + o.switch
+
     @version = 1
     @form = f
+    @key = filter f
     @finder = (o)=>
-      @ == o.diary
+      @key == o.key
 
   history: ->
     Diary.history.findAll @finder
@@ -131,7 +135,7 @@ class Diary
 
   commit: ->
     Diary.base.commit(@)
-    @version = @history().length
+    @version = @history().length + 1
 
   back: (version)->
     @version = version
@@ -144,19 +148,19 @@ class Diary
   @history = []
 
 Diary.base = new Diary
+  text: ""
+
 Diary.base.finder = -> true
 Diary.base.head = ->
-  if now = Diary.base.at()?.diary.form
-    "#{now.longname}#{now.title}"
+  Diary.base.at()
+  if now?
+    now.title
   else
     "手帳"
 
 Diary.base.commit = (diary)->
   return if diary.form.text.length == 0
-  item = new DiaryItem(diary.form.text, diary)
+  item = new DiaryHistory(diary)
   Diary.history.remove item
   Diary.history.add item
   Diary.base.version = Diary.history.length + 1
-
-Diary.base.form =
-  text: ""

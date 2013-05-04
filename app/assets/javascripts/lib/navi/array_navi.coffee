@@ -25,7 +25,7 @@ class ArrayNavi extends Navi
     if newVal?
       newVal = @params.current_type newVal
       if @value.any newVal
-        @value = [newVal]
+        @value_del newVal
       else
         @value_add newVal
     else

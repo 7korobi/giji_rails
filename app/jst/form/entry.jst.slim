@@ -35,7 +35,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('entry')")
 
               select.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p  {{f.caption}}
-              span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f, write_form)")
+              span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
 
 
