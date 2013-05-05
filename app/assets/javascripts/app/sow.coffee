@@ -4,14 +4,24 @@ if SOW_RECORD.CABALA.events?
     v.key = k
 
 CGI = ($scope, $filter)->
-  MODULE $scope, $filter
-  FORM    $scope
+  $scope.mode_current_set = ->
+    $scope.mode_current = 'talk_all_open_player'
 
-  $scope.get_by = (event, cb)->
-    return unless event
-    href = event.link + "&ua=javascript"
-    $scope.get href, cb
+  get = (href, cb)->
+    $scope.get href + "&ua=javascript", cb
 
+  $scope.event_url = (event)->
+    return null unless event
+    (event.is_news && event.news) || event.link
+
+  $scope.get_news = (event,cb)->
+    href = $scope.event_url(event)
+    get href, cb if href
+
+  $scope.get_all = (event,cb)->
+    return null unless event
+    href = event.link
+    get href, cb if href
 
   submit = (param)->
     switch param.cmd
@@ -47,3 +57,7 @@ CGI = ($scope, $filter)->
       cmd: 'logout'
       cmdfrom: f.cmdfrom
     $scope.submit param
+
+  MODULE $scope, $filter
+  FORM    $scope
+

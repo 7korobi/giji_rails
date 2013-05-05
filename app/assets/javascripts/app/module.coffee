@@ -177,7 +177,7 @@ MODULE = ($scope, $filter)->
       if event.has_all_messages
         seek()
       else
-        $scope.get_by event, ->
+        $scope.get_all event, ->
           $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
           seek()
 

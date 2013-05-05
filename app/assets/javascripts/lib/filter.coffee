@@ -57,9 +57,7 @@ FILTER = ($scope, $filter)->
     page.filter 'event.is_news'
 
     deploy_mode_common = ()->
-      $scope.mode_current = 'talk_all_open_player'
-      unless $scope.event.is_news
-        $scope.mode_current = 'talk_open_player'
+      $scope.mode_current_set()
 
       $scope.mode_common = [
         {name: '情報', value: 'info_open_player'}

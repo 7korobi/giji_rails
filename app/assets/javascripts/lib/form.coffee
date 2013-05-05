@@ -87,6 +87,8 @@ FORM = ($scope)->
 
   $scope.write = (f, valid)->
     return if f.disabled
+    f.ver.commit() if f.ver?
+
     if valid && f.is_preview
       param =
         cmd: f.cmd
@@ -98,9 +100,11 @@ FORM = ($scope)->
         monospace: 0
       param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       param[f.switch] = "on"  if  f.switch
+
       $scope.submit param
+      f.text = ""
+      f.is_preview = false
     else
-      f.ver.commit() if f.ver?
       f.is_preview = valid
 
   $scope.action = (f, valid)->
@@ -115,6 +119,9 @@ FORM = ($scope)->
         actiontext: f.text
         monospace: 0
       $scope.submit param
+      f.text = ""
+      f.target = "-1"
+      f.action = "-99"
 
   $scope.vote = (f)->
     return if f.disabled

@@ -1,5 +1,5 @@
 ul.nav.nav-list
-  li(ng-repeat="e in events" ng-click="ajax_event(e.turn, e.link, !!e.is_news)")
+  li(ng-repeat="e in events" ng-click="ajax_event(e.turn, null, !!e.is_news)")
     a
       i.icon-film( ng-show="e.turn == event.turn")
       i.icon-minus(ng-hide="e.turn == event.turn")

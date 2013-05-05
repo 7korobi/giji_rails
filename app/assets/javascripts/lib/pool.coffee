@@ -24,13 +24,13 @@ POOL = ($scope)->
 
   do_pool_ajax = ->
     if $scope.event?.is_news
-      $scope.get_by $scope.event, =>
+      $scope.get_news $scope.event, =>
         $scope.init()
         $scope.$apply()
   pool_ajax = do_pool_ajax.throttle ajax_timer
 
   $scope.pool = ()->
-    $scope.get_by $scope.event, =>
+    $scope.get_news $scope.event, =>
       $scope.init()
       $scope.boot()
 

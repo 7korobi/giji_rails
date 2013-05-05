@@ -4,67 +4,87 @@ CACHE = ($scope)->
     func = merge[target] || merge_by.copy
     func old_base, new_base, target
 
+  merge = 
+    events: (old_base, new_base, target)=>
+      guard = (key)-> ["messages", "has_all_messages", "is_news"].any(key)
+      filter = (o)-> o.turn
 
-  merge.potofs = (old_base, new_base, target)=>
-    guard = -> false
-    filter = (o)-> o.pno
-    merge_by.simple old_base, new_base, target, guard, filter
+      # events section
+      merge_by.simple old_base, new_base, "events", guard, filter
 
-    clear(new_base, @cache.potofs)
-    cache = find(new_base, @cache.potofs)
-    merge_by.copy cache, old_base, target if cache
+      # event section
+      new_event = new_base.event
+      old_event = find_or_create new_base, old_base.events
 
+      return unless new_event?
+      new_event.keys (key, o)->
+        old_event[key] = o unless guard(key)
 
-  merge.event = ->
-  merge.events = (old_base, new_base, target)=>
-    guard = (key)-> ["messages", "has_all_messages", "is_news"].any(key)
-    filter = (o)-> o.turn
-    merge_by.simple old_base, new_base, target, guard, filter
+      old_event.has_all_messages ||= new_event.has_all_messages
+      old_base.event ||= old_event
 
-    new_event = new_base.event
-    old_event = find(new_base, old_base[target])
-
-    return unless old_event? && new_event?
-    new_event.keys (key, o)->
-      old_event[key] = o unless guard(key)
-
-    merge.messages old_event, new_event
-    old_event.has_all_messages ||= new_event.has_all_messages
-
-    old_base.event ||= old_event
+      # messages section
+      merge.messages old_event, new_event
 
 
-  merge.form = (old_base, new_base, target)->
-    guard = (key)-> ["texts"].any(key)
-    filter = (o)-> o.turn
+    event: ->
+    messages: (old_base, new_base)->
+      guard = -> false
+      filter = (o)-> o.logid
 
-    old_base[target] ||= new_base[target]
-    merge.form_texts(old_base.form, new_base.form)
+      return unless new_base?.messages?
+      if new_base.turn?
+        new_base.messages.each (message)->
+          message.turn = new_base.turn
 
-    clear(new_base, @cache.potofs)
-    cache = find(new_base, @cache.form)
-    merge_by.copy cache, old_base, target if cache
+      merge_by.news old_base, new_base, 'messages', guard, filter
+
+    
+    potofs_boxes: ->
+    potofs_box: ->
+    potofs: (old_base, new_base, target)=>
+      guard = -> false
+      filter = (o)-> o.pno
+
+      # potofs_boxes section
+      cache.load old_base, new_base, 'potofs_boxes', 'potofs_box'
+
+      # potofs_box section
+      old_base.potofs_box = find_or_create new_base, old_base.potofs_boxes
+
+      # potofs section
+      old_base.potofs_box.potofs = old_base.potofs
+      merge_by.simple old_base, new_base, "potofs", guard, filter
 
 
-  merge.messages = (old_base, new_base)->
-    guard = -> false
-    filter = (o)-> o.logid
-    target = 'messages'
+    forms: ->
+    form: (old_base, new_base, target)->
+      guard = (key)-> ["texts"].any(key)
+      filter = (o)-> o.turn
 
-    return unless new_base?.messages?
-    new_base.messages.each (message)->
-      message.turn = new_base.turn
+      # forms section
+      cache.load old_base, new_base, 'forms', 'form'
 
-    merge_by.news old_base, new_base, target, guard, filter
+      # form section
+      new_form = new_base.form
+      old_form = find_or_create new_base, old_base.forms
+
+      return unless new_form?
+      new_form.keys (key, o)->
+        old_form[key] = o unless guard(key)
+
+      old_base.form ||= old_form
+
+      # form_texts section
+      merge.form_texts old_form, new_base.form
 
 
-  merge.form_texts = (old_base, new_base)->
-    guard = (key)-> ["ver","text","action","style","target"].any(key)
-    filter = (o)-> o.jst + o.switch
-    target = 'texts'
+    form_texts: (old_base, new_base)->
+      guard = (key)-> ["ver","text","action","style","target"].any(key)
+      filter = (o)-> o.jst + o.switch
 
-    return unless old_base? && new_base?
-    merge_by.simple old_base, new_base, target, guard, filter
+      return unless old_base? && new_base?
+      merge_by.simple old_base, new_base, "texts", guard, filter
 
 
   merge_by =
@@ -108,22 +128,34 @@ CACHE = ($scope)->
       concat_merge(olds, news, olds_head, guard, filter)
 
 
-  @cache =
-    potofs: []
-    forms:  []
+  cache = 
+    load: (old_base, new_base, target, child)=>
+      guard = -> false
+      filter = (o)-> o.turn
+      old_base[target] ||= []
+      merge_by.simple old_base, new_base, target, guard, filter
 
-  clear = (new_base, field)->
-    if field? && new_base?.events?
-      for event in new_base.events
-        if event.turn?
-          field[event.turn] ||= {}
+      child_item = find new_base, old_base[target]
+      old_base[child] = child_item if child_item
 
-  find = (new_base, field)->
-    turn = new_base?.event?.turn
-    if turn? && field?
+    build: (new_base, field)->
+      if field? && new_base?.events?
+        for event in new_base.events
+          if event.turn?
+            field[event.turn] ||= 
+              turn: event.turn
+
+  find_or_create = (new_base, field)->
+    cache.build new_base, field
+
+    turn = find_turn new_base
+    if turn? && field? && field[turn]
       field[turn]
     else
-      null
+      {}
+
+  find_turn = (new_base)->
+    new_base?.event?.turn
 
   concat_merge = (olds, news, olds_head, guard, filter)->
     old_hash = olds.groupBy filter
@@ -134,7 +166,7 @@ CACHE = ($scope)->
 
       if old_item?
         new_item.keys (key, o)->
-          old_item[key] = o unless guard(key)
+          old_item[key] = o unless guard key
         new_item = old_item
 
       olds_head.push new_item

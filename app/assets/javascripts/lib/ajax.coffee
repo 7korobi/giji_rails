@@ -61,19 +61,22 @@ AJAX = ($scope)->
     form_submit(param)
 
   $scope.ajax_event = (turn, href, is_news)->    
-    if $scope.events? && $scope.event?
+    if $scope.events?
       event = $scope.events[turn]
       change = ->
+        $scope.potofs = $scope.potofs_boxes[turn].potofs
         $scope.event = $scope.events[turn]
+        $scope.form = $scope.forms[turn]
         $scope.event.is_news = is_news
         $scope.page.value = 1
         $scope.boot()
-        win.history "#{$scope.event.name}", $scope.event.link, location.hash
+        href = $scope.event_url $scope.event
+        win.history "#{$scope.event.name}", href, location.hash
 
       if event.has_all_messages
         change()
       else
-        $scope.get_by event, =>
+        $scope.get_news event, =>
           $scope.init()
           change()
 

@@ -46,24 +46,6 @@ win =
     else
       $(window).on 'resize', cb.throttle(100)
 
-win.on_scroll win.refresh
-win.on_resize win.refresh
-
-dummy = ()->
-if ontouchstart?
-  $(window).on 'touchstart', dummy.throttle(100)
-  $(window).on 'touchmove', dummy.throttle(100)
-  $(window).on 'touchend', dummy.throttle(100)
-else
-  $(window).on 'mousedown', dummy.throttle(100)
-  $(window).on 'mouseup', dummy.throttle(100)
-  $(window).on 'mousemove', dummy.throttle(100)
-
-scan_motion = (e)->
-  win.accel   = e.originalEvent.acceleration
-  win.gravity = e.originalEvent.accelerationIncludingGravity
-  win.rotate  = e.originalEvent.rotationRate
-$(window).on 'devicemotion', scan_motion.throttle(100)
 
 if history?.pushState?
   popstate = (e)->
@@ -76,3 +58,25 @@ if history?.pushState?
 else
   win.history = (title, href, hash)->
     location.hash = hash
+
+
+(->
+  win.on_scroll win.refresh
+  win.on_resize win.refresh
+
+  dummy = ()->
+  if ontouchstart?
+    $(window).on 'touchstart', dummy.throttle(100)
+    $(window).on 'touchmove', dummy.throttle(100)
+    $(window).on 'touchend', dummy.throttle(100)
+  else
+    $(window).on 'mousedown', dummy.throttle(100)
+    $(window).on 'mouseup', dummy.throttle(100)
+    $(window).on 'mousemove', dummy.throttle(100)
+
+  scan_motion = (e)->
+    win.accel   = e.originalEvent.acceleration
+    win.gravity = e.originalEvent.accelerationIncludingGravity
+    win.rotate  = e.originalEvent.rotationRate
+  $(window).on 'devicemotion', scan_motion.throttle(100)
+).delay(500)
