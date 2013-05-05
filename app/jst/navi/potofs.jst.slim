@@ -47,17 +47,22 @@ table.table.table-condensed
         .note.nowrap(ng-show="potof.said")
           | ✎{{potof.said}}
       td(ng-click="potof_toggle(potof)")
-        span.nowrap(ng-show="secret_is_open")
-          | {{potof.win_name}}::{{potof.role_names.join('、')}}
-        .note.nowrap(ng-show="secret_is_open")
-          strong {{potof.win_result}}
-          span.name(ng-show="potof.select_name")
-            | &nbsp; {{potof.select_name}} を希望
+        div(ng-show="secret_is_open")
+          span.nowrap
+            | {{potof.win_name}}::{{potof.role_names.join('、')}}
+          .note.nowrap
+            strong {{potof.win_result}}
+            span.name(ng-show="potof.select_name")
+              | &nbsp; {{potof.select_name}} を希望
       td(ng-click="potof_toggle(potof)")
-        span(ng-show="secret_is_open")
-          | {{potof.text.join('')}}
-        .note(ng-show="secret_is_open && potof.bond_names")
-          | {{potof.bond_names.join('、')}}
+        div(ng-show="secret_is_open")
+          span(ng-bind-html-unsafe="potof.text.join('')")
+          span.note(ng-show="potof.bond_names")
+            | {{potof.bond_names.join('、')}}
+          span.note(ng-show="potof.bond_names.length && potof.pseudobond_names.length")
+            | 、
+          s.note(ng-show="potof.pseudobond_names")
+            | {{potof.pseudobond_names.join('、')}}
       td(style="width: 17px")
         a(ng-click="potof_only([potof])") ➡
 

@@ -155,35 +155,36 @@ MODULE = ($scope, $filter)->
       drag.fadeOut 'fast', ->
         $scope.anchors.removeAt(idx)
         $scope.$apply()
+    idx
 
   popup = (turn, ank)->
     href = location.href.replace location.hash, ""
 
-    popup_find = ()->
-      has_all_messages = $scope.events[turn]?.has_all_messages
-      return null unless has_all_messages
+    popup_find = (turn)->
+      event = $scope.events[turn]
+      return null unless event?.messages?
 
-      item = $scope.events[turn].messages.find (log)->
+      item = event.messages.find (log)->
         log.logid == ank
       if item
         popup_apply item, turn
       item
 
-    popup_ajax = (turn)->
-      return null unless $scope.events[turn]?
-      has_all_messages = $scope.events[turn]?.has_all_messages
-      return null if has_all_messages
+    popup_ajax = (turn, seek)->
+      event = $scope.events[turn]
+      return unless event?
 
-      href = $scope.events[turn].link
-      $scope.get href, =>
-        $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
-        popup_find()
-      href
+      if event.has_all_messages
+        seek()
+      else
+        $scope.get_by event, ->
+          $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
+          seek()
 
-    return  if  popup_ajax turn
-    return  if  popup_find()
-    return  if  popup_ajax turn - 1
-
+    popup_ajax turn, ->
+      if ! popup_find turn
+        popup_ajax turn - 1, ->
+          popup_find turn - 1
 
   href_eval = (e)->
     $scope.pageY = e.pageY

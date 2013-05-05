@@ -1,4 +1,4 @@
-form(ng-hide="form.login.logined()" ng-submit="login(form.login)")
+form(ng-hide="logined()" ng-submit="login(form.login)")
   p.form-inline
     label
       span.mark  user id:
@@ -8,7 +8,7 @@ form(ng-hide="form.login.logined()" ng-submit="login(form.login)")
       input.input-small(type="password" size="10" name="pwd" ng-model="form.login.pwd")
     input(type="submit" value="ログイン")
 
-form(ng-show="form.login.logined()" ng-submit="logout(form.login)")
+form(ng-show="logined()" ng-submit="logout(form.login)")
   p.form-inline
     span.mes_date(ng-show="form.login.is_admin")
       | [

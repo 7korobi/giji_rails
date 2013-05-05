@@ -9,11 +9,12 @@ angular.module("giji.directives").directive "accordion", [->
 
 angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
   effect = ($scope)->
-    win.zoom_start = ->
+    navi_off = ->
       $scope.navi.value = []
       $scope.$apply()
+    win.zoom_start = navi_off.debounce 100
 
-    do_resize_naviitems = ->
+    resize_naviitems = ->
       return unless $scope.navi? && $scope.width?
       height = win.height
       width  = win.width
@@ -106,9 +107,10 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
 
-    resize_naviitems = do_resize_naviitems.debounce(100)
-    win.on_scroll resize_naviitems
-    win.on_resize resize_naviitems
+    (->
+      win.on_scroll resize_naviitems
+      win.on_resize resize_naviitems
+    ).delay 100
   extra_navis = {}
   static_navis = 
     head:

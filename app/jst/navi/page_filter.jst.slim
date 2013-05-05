@@ -1,7 +1,9 @@
 table
   tr
     td
-      a.btn(ng-click="go.search()") ⎋
+      a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
+    td
+      a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ♻	
     td
       select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
 

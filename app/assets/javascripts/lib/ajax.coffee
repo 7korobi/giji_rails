@@ -60,23 +60,23 @@ AJAX = ($scope)->
     $("body").append("""<form id="submit_request" target="submit_result" method="post" action="#{href.escapeURL()}"></form>""")
     form_submit(param)
 
-  $scope.ajax_event = (turn, href, is_news)->
-    target = href + location.hash
+  $scope.ajax_event = (turn, href, is_news)->    
     if $scope.events? && $scope.event?
+      event = $scope.events[turn]
       change = ->
+        $scope.event = $scope.events[turn]
         $scope.event.is_news = is_news
         $scope.page.value = 1
         $scope.boot()
-        win.history "#{$scope.event.name}", href, location.hash
+        win.history "#{$scope.event.name}", $scope.event.link, location.hash
 
-      if $scope.events[turn].has_all_messages
-        $scope.event = $scope.events[turn]
+      if event.has_all_messages
         change()
       else
-        $scope.get href, =>
+        $scope.get_by event, =>
           $scope.init()
           change()
 
     else
-      location.href = target
+      location.href = href + location.hash
 

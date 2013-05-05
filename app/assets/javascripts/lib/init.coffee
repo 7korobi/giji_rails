@@ -75,6 +75,8 @@ INIT = ($scope)->
       potof.text.push "☑" if 'pixi' == potof.sheep
       potof.text.push "♥" if 'love' == potof.love
       potof.text.push "☠" if 'hate' == potof.love
+      potof.text.push "<s>♥</s>" if 'love' == potof.pseudolove
+      potof.text.push "<s>☠</s>" if 'hate' == potof.pseudolove
       if potof.rolestate?
         rolestate = potof.rolestate
         SOW.maskstates.keys (mask, text)->
@@ -101,9 +103,15 @@ INIT = ($scope)->
           when 'stat_at', 'stat_type'
             potof.stat
           when 'win_result', 'win_name','role_names', 'select_name'
-            potof.role_names.join('、')
+            if potof.role_names?
+              potof.role_names.join('、')
+            else
+              ""
           when 'text'
-            potof.text.join('')
+            if potof.text?
+              potof.text.join('')
+            else
+              ""
       potof
 
 

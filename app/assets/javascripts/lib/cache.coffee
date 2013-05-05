@@ -17,7 +17,7 @@ CACHE = ($scope)->
 
   merge.event = ->
   merge.events = (old_base, new_base, target)=>
-    guard = ["messages"].any
+    guard = (key)-> ["messages", "has_all_messages", "is_news"].any(key)
     filter = (o)-> o.turn
     merge_by.simple old_base, new_base, target, guard, filter
 
@@ -29,12 +29,13 @@ CACHE = ($scope)->
       old_event[key] = o unless guard(key)
 
     merge.messages old_event, new_event
+    old_event.has_all_messages ||= new_event.has_all_messages
 
     old_base.event ||= old_event
 
 
   merge.form = (old_base, new_base, target)->
-    guard = ["texts"].any
+    guard = (key)-> ["texts"].any(key)
     filter = (o)-> o.turn
 
     old_base[target] ||= new_base[target]
@@ -46,7 +47,7 @@ CACHE = ($scope)->
 
 
   merge.messages = (old_base, new_base)->
-    guard = (key)-> false
+    guard = -> false
     filter = (o)-> o.logid
     target = 'messages'
 
@@ -58,7 +59,7 @@ CACHE = ($scope)->
 
 
   merge.form_texts = (old_base, new_base)->
-    guard = ["ver","text","action","style","target"].any
+    guard = (key)-> ["ver","text","action","style","target"].any(key)
     filter = (o)-> o.jst + o.switch
     target = 'texts'
 

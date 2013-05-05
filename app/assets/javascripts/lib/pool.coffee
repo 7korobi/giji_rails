@@ -24,15 +24,13 @@ POOL = ($scope)->
 
   do_pool_ajax = ->
     if $scope.event?.is_news
-      href = $scope.event.link
-      $scope.get href, =>
+      $scope.get_by $scope.event, =>
         $scope.init()
         $scope.$apply()
-  pool_ajax = do_pool_ajax.debounce ajax_timer
+  pool_ajax = do_pool_ajax.throttle ajax_timer
 
   $scope.pool = ()->
-    href = $scope.event.link
-    $scope.get href, =>
+    $scope.get_by $scope.event, =>
       $scope.init()
       $scope.boot()
 
@@ -65,9 +63,8 @@ POOL = ($scope)->
 
   $scope.init = ->
     if $scope.event?
-      is_news = $scope.event.is_news
       INIT $scope
-      $scope.event.is_news = is_news
+      $scope.do_sort_potofs()
     else
       INIT $scope
     $scope.face.scan()

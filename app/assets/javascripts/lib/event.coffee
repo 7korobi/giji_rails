@@ -8,14 +8,14 @@ win =
   left:   0
   width:  0
   height: 0
-  zoom:   0
   accel:   0
   gravity: 0
   rotate:  0
   max:
     top:  0
     left: 0
-  _zoom: 0
+  zoom:  1
+  _zoom: 1
 
   refresh: ()->
     win.height = window.innerHeight || $(window).height()

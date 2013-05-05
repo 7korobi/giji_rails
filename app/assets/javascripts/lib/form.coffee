@@ -12,11 +12,11 @@ FORM = ($scope)->
       else
         text.length
 
-  $scope.text_valid = (f)->
+  valid = (f, cb)->
     f.valid = true
     if f.max
       size = length(f.text, f.max.unit)
-      f.valid = false if size < 4
+      cb(size)
       f.valid = false if f.max.size < size
       f.valid = false if f.max.line < f.text.lines().length
       if f.valid
@@ -28,6 +28,16 @@ FORM = ($scope)->
       "#{mark} #{size} / #{f.max.size}"
     else
       ""
+
+  $scope.text_valid = (f)->
+    valid f, (size)->
+      f.valid = false if size < 4
+
+  $scope.action_valid = (f)->
+    valid f, (size)->
+      if size < 1 
+        f.valid = false if f.target ==  "-1"
+        f.valid = false if f.action == "-99"
 
   $scope.preview_action = (f)->
     text =
