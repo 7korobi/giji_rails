@@ -1,7 +1,31 @@
 
-INIT = ($scope)->
-  return unless gon?
+INIT_STORY = ($scope, story)->
+  story.card.discard_names = $scope.countup(story.card.discard).join '、'
+  story.card.event_names   = $scope.countup(story.card.event).join '、'
+  story.card.config_names  = $scope.countup(story.card.config).join '、'
+  story.option_helps = story.options.map (o)-> SOW.options[o].help
+  story.comment = $scope.text_decolate story.comment
+  story.rating_url = "#{URL.resource}/images/icon/cd_#{story.rating}.png"
 
+  if story.upd?
+    story.upd.time_text = "#{story.upd.hour}時#{story.upd.minute}分"
+    story.upd.interval_text = "#{story.upd.interval * 24}時間"
+
+  if story.type?
+    story.type.game or= 'TABULA'
+    story.type.roletable_text = SOW.roletable[story.type.roletable]
+    story.type.game_rule    = SOW.game_rule[story.type.game]
+    story.type.vote_text  = SOW.vote[story.type.vote]
+    story.type.mob_text = SOW.mob[story.type.mob]
+    story.type.saycnt = SOW.saycnt[story.type.say]
+    if 1 == story.type.saycnt?.RECOVERY
+      story.type.recovery = ' （発言の補充はありません。）'
+      story.type.recovery = ' （発言の補充があります。）' if 1 < story.upd.interval
+    story.is_wbbs = 'wbbs' == story.type.start
+  story
+
+
+INIT_POTOFS = ($scope, gon)->
   if gon.potofs?
     gon.potofs.each (potof)->
       if potof.bonds?
@@ -115,43 +139,25 @@ INIT = ($scope)->
       potof
 
 
-  gon.keys (key, news)->
-    $scope.merge $scope, gon, key
+INIT = ($scope, $filter)->
+  return unless gon?
 
-
-  gon_story = (story)->
-    story.card.discard_names = $scope.countup(story.card.discard).join '、'
-    story.card.event_names   = $scope.countup(story.card.event).join '、'
-    story.card.config_names  = $scope.countup(story.card.config).join '、'
-    story.option_helps = story.options.map (o)-> SOW.options[o].help
-    story.comment = $scope.text_decolate story.comment
-    story.rating_url = "#{URL.resource}/images/icon/cd_#{story.rating}.png"
-
-    if story.upd?
-      story.upd.time_text = "#{story.upd.hour}時#{story.upd.minute}分"
-      story.upd.interval_text = "#{story.upd.interval * 24}時間"
-
-    if story.type?
-      story.type.game or= 'TABULA'
-      story.type.roletable_text = SOW.roletable[story.type.roletable]
-      story.type.game_rule    = SOW.game_rule[story.type.game]
-      story.type.vote_text  = SOW.vote[story.type.vote]
-      story.type.mob_text = SOW.mob[story.type.mob]
-      story.type.saycnt = SOW.saycnt[story.type.say]
-      if 1 == story.type.saycnt?.RECOVERY
-        story.type.recovery = ' （発言の補充はありません。）'
-        story.type.recovery = ' （発言の補充があります。）' if 1 < story.upd.interval
-      story.is_wbbs = 'wbbs' == story.type.start
-    story
+  INIT_POTOFS $scope, gon
 
   if gon.stories?
     for story in gon.stories
-      gon_story story
+      INIT_STORY $scope, story
 
   if gon.story?
-    gon_story gon.story
+    INIT_STORY $scope, gon.story
 
-  if gon.potofs?
+
+  gon.keys (key, news)->
+    $scope.merge $scope, gon, key
+  $scope.merge_turn $scope, gon
+
+
+  if $scope.potofs?
     live_potofs = gon.potofs.filter (o)->
       o.deathday < 0
 
@@ -166,20 +172,34 @@ INIT = ($scope)->
       key = $scope.potof_key potof
       potofs_hash[key] = potof.name
 
-    ArrayNavi.push $scope, 'hide_potofs',
-      options:
-        class: 'btn-inverse'
-        current: []
-        location: 'hash'
-        is_cookie: true
-      button: potofs_hash
+  if $scope.potofs?
+    unless $scope.hide_potofs?
+      ArrayNavi.push $scope, 'hide_potofs',
+        options:
+          class: 'btn-inverse'
+          current: []
+          location: 'hash'
+          is_cookie: true
+        button: potofs_hash
 
-  if gon.pages?
-    PageNavi.push $scope, 'page',
-      options:
-        current: 1
-        location: 'search'
-        is_cookie: false
+  if $scope.pages?
+    unless $scope.page?
+      PageNavi.push $scope, 'page', OPTION.page.page_search
 
     $scope.page.length = gon.pages.length
+
+  has_messages = false
+  has_messages or= $scope.event?.messages?
+  has_messages or= $scope.messages_raw?
+  has_messages or= $scope.stories?
+  if has_messages
+    row = OPTION.page.row
+    row.options.current_type = Number
+    unless $scope.row?
+      Navi.push     $scope, 'row',   row
+    unless $scope.order?
+      Navi.push     $scope, 'order', OPTION.page.order
+    unless $scope.page?
+      FILTER($scope, $filter)
+
 

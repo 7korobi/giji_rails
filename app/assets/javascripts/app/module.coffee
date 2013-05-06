@@ -131,12 +131,12 @@ MODULE = ($scope, $filter)->
       $scope.secret_is_open  = true
     $scope.$apply()
 
-  cancel_say = (logid)->
-    params = Object.fromQueryString(location.search)
-    params.cmd   = 'cancel'
-    params.queid = logid
-    GIJI.cancel_log = $.param params
-    location.search = GIJI.cancel_log
+  cancel_say = (queid)->
+    $scope.submit
+      cmd:   'cancel'
+      queid: queid
+      turn: $scope.event.turn
+      vid:  $scope.story.vid
 
   popup_apply = (item, turn)->
     idx = $scope.anchors.indexOf item
@@ -205,13 +205,12 @@ MODULE = ($scope, $filter)->
 
   TOKEN_INPUT  $scope
   AJAX    $scope
-  POOL    $scope
   CACHE   $scope
   POTOFS  $scope
 
   # INIT FILTER POOL sequence
-  INIT    $scope
-  FILTER  $scope, $filter
+  INIT    $scope, $filter
+  POOL    $scope
   DIARY   $scope
   TITLE   $scope
   GO      $scope

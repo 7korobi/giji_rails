@@ -21,7 +21,6 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
         if (new Date() - log.date) < 25 * 1000
           """<a class="mark" href_eval='cancel_say("#{log.logid}")'>なら削除できます。⏳</a>"""
         else
-          log.logid = log.logid.replace(/^q/,"")
           ""
       else
         ""

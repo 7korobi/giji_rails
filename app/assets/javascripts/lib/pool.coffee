@@ -1,4 +1,4 @@
-POOL = ($scope)->
+POOL = ($scope, $filter)->
   message_timer =  60 * 1000
   message_first =  25 * 1000
   ajax_timer = 5 * 60 * 1000
@@ -63,10 +63,10 @@ POOL = ($scope)->
 
   $scope.init = ->
     if $scope.event?
-      INIT $scope
+      INIT $scope, $filter
       $scope.do_sort_potofs()
     else
-      INIT $scope
+      INIT $scope, $filter
     $scope.face.scan()
     $scope.top.count()
 

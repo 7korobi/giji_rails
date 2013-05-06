@@ -15,8 +15,9 @@ AJAX = ($scope)->
       cb()
       $scope.$apply()
 
-  $scope.post = (href, form, cb)->
-    $.post href, form, (data)->
+  $scope.post = (href, param, cb)->
+    $.post href, param, (data)->
+      console.log data
       $scope.replace_gon data
       cb()
       $scope.$apply()
@@ -64,9 +65,7 @@ AJAX = ($scope)->
     if $scope.events?
       event = $scope.events[turn]
       change = ->
-        $scope.potofs = $scope.potofs_boxes[turn].potofs
-        $scope.event = $scope.events[turn]
-        $scope.form = $scope.forms[turn]
+        $scope.set_turn(turn)
         $scope.event.is_news = is_news
         $scope.page.value = 1
         $scope.boot()
@@ -76,7 +75,11 @@ AJAX = ($scope)->
       if event.has_all_messages
         change()
       else
-        $scope.get_news event, =>
+        if is_news
+          getter = $scope.get_news
+        else
+          getter = $scope.get_all 
+        getter event, =>
           $scope.init()
           change()
 

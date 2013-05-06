@@ -1,20 +1,6 @@
-
 FILTER = ($scope, $filter)->
-  has_messages = false
-  has_messages or= $scope.event?.messages?
-  has_messages or= $scope.messages_raw?
-  has_messages or= $scope.stories?
-  return unless has_messages
-
-  row = OPTION.page.row
-  row.options.current_type = Number
-
-  Navi.push     $scope, 'row',   row
-  Navi.push     $scope, 'order', OPTION.page.order
   PageNavi.push $scope, 'page',  OPTION.page.page
-
   page = $scope.page
-
   filter_filter = $filter 'filter'
 
   if $scope.stories?

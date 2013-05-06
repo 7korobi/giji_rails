@@ -32,12 +32,16 @@
       .sayfilter_content(template="navi/events")
 
   .insayfilter#navi_page
-    .paragraph
-      .sayfilter_content.form-inline(ng-show="page")
+    .paragraph(ng-show="page")
+      .sayfilter_content.form-inline(ng-show="event.is_news")
         label.inline.radio(ng-show="story.turn == event.turn")
-          a.btn(ng-show="event.is_news" ng-click="ajax_event(event.turn, null, false)") ページ表示
-          a.btn(ng-hide="event.is_news" ng-click="ajax_event(event.turn, null, true)") 最新の発言
-        label.inline.radio(template="navi/paginate" ng-hide="event.is_news")
+          a.btn(ng-click="ajax_event(event.turn, null, false)") ページ表示
+        label.note 5分ごとに、最新の議事録を自動取得します。
+
+      .sayfilter_content.form-inline(ng-hide="event.is_news")
+        label.inline.radio(ng-show="story.turn == event.turn")
+          a.btn(ng-click="ajax_event(event.turn, null, true)") 最新の発言
+        label.inline.radio(template="navi/paginate")
 
 #buttons
   nav

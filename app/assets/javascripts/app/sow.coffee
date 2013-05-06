@@ -26,11 +26,16 @@ CGI = ($scope, $filter)->
   submit = (param)->
     switch param.cmd
       when 'editvilform', 'login', 'logout'
-        $scope.post_submit $scope.form.uri, param
+        protocol = $scope.post_submit
+      when 'wrmemo', 'write', 'action'
+        param.ua = "javascript"
+        protocol = $scope.post_iframe
       else
         param.ua = "javascript"
-        $scope.post_iframe $scope.form.uri, param, ->
-          $scope.init()
+        protocol = $scope.post_iframe
+
+    protocol $scope.form.uri, param, ->
+      $scope.init()
   $scope.submit = submit.throttle 5000
 
   regexp =

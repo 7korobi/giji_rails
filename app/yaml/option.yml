@@ -85,6 +85,12 @@ page:
       location: hash
       is_cookie: false
 
+  page_search:
+    options:
+      current: 1
+      location: search
+      is_cookie: false
+
   order:
     options:
       current: asc
