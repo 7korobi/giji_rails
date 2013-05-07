@@ -23,17 +23,21 @@ CGI = ($scope, $filter)->
     href = event.link
     get href, cb if href
 
+
   submit = (param)->
     switch param.cmd
-      when 'editvilform', 'login', 'logout'
+      when 'login'
+        if param.vid?
+          protocol = $scope.post_iframe
+        else
+          protocol = $scope.post_submit
+      when 'editvilform', 'logout'
         protocol = $scope.post_submit
       when 'wrmemo', 'write', 'action'
-        param.ua = "javascript"
         protocol = $scope.post_iframe
       else
-        param.ua = "javascript"
-        protocol = $scope.post_iframe
-
+        protocol = $scope.post
+    param.ua = "javascript" unless $scope.post_submit == protocol
     protocol $scope.form.uri, param, ->
       $scope.init()
   $scope.submit = submit.throttle 5000

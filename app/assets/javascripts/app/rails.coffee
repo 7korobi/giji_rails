@@ -1,10 +1,15 @@
+if SOW_RECORD.CABALA.events?
+  SOW.events.keys (k,v)->
+    v.id  = SOW_RECORD.CABALA.events.indexOf k
+    v.key = k
+
 RAILS = ($scope, $filter)->
   $scope.mode_current_set = ->
     $scope.mode_current = 'talk_open'
 
 
   get = (href, cb)->
-    $scope.get href + "&ua=javascript", cb
+    $scope.get href, cb
 
   $scope.event_url = (event)->
     return null unless event

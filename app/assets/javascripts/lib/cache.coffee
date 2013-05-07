@@ -1,12 +1,12 @@
 CACHE = ($scope)->
   $scope.set_turn = (turn)->
-    return unless $scope.potofs_boxes[turn]
-    return unless $scope.events[turn]
-    return unless $scope.forms[turn]
-    $scope.potofs_box = $scope.potofs_boxes[turn]
-    $scope.potofs = $scope.potofs_box.potofs
-    $scope.event = $scope.events[turn]
-    $scope.form = $scope.forms[turn]
+    if $scope.potofs_boxes?[turn]?
+      $scope.potofs_box = $scope.potofs_boxes[turn]
+      $scope.potofs = $scope.potofs_box.potofs
+    if $scope.events?[turn]?
+      $scope.event = $scope.events[turn]
+    if $scope.forms?[turn]?
+      $scope.form = $scope.forms[turn]
 
   $scope.merge_turn = (old_base, new_base)->
     return unless old_base? && new_base?

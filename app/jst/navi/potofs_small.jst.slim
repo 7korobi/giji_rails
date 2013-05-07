@@ -27,8 +27,7 @@ table(class="table table-condensed")
         span.name
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
-        span.nowrap.note
-          | {{potof.summary()}}
+        span.nowrap.note(ng-bind-html-unsafe="potof.summary()")
       td
         a.note(ng-click="potof_only([potof])") ➡
 
