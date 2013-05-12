@@ -1,7 +1,6 @@
-form.form-inline
-  label.control-label {{f.title}}
-  .controls
-    select.input-medium(name="target" ng-model="f.target1" ng-options="o.val as o.name for o in f.targets")
-    | と
-    select.input-medium(name="target2" ng-model="f.target2" ng-options="o.val as o.name for o in f.targets")
-    a.btn(ng-click="vote(f)") 変更
+.inline.radio
+  a.btn(ng-click="vote(ff, f)") {{ff.title}}
+  select.input-medium(name="target1" ng-change="vote_change(ff)" ng-model="ff.target1" ng-options="o.val as o.name for o in ff.targets")
+  | と
+  select.input-medium(name="target2" ng-change="vote_change(ff)" ng-model="ff.target2" ng-options="o.val as o.name for o in ff.targets")
+.mark(ng-bind-html-unsafe="error(ff)")

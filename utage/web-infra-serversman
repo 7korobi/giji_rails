@@ -11,7 +11,7 @@ status)
   ls -ltra /var/run/*
   ;;
 start)
-  $nginx -c $conf
+  $nginx
   ls -l $pid
   ;;
 stop)
@@ -21,7 +21,7 @@ restart|reload)
   cat $pid | xargs  kill -HUP
   ;;
 configtest)
-  sudo $nginx -t -c $conf
+  sudo $nginx -t
   ;;
 *)
   echo $"Usage: $0 {start|stop|restart|reload|configtest}"

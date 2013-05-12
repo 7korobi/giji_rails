@@ -5,7 +5,7 @@ INIT_STORY = ($scope, story)->
   story.card.config_names  = $scope.countup(story.card.config).join '、'
   story.option_helps = story.options.map (o)-> SOW.options[o].help
   story.comment = $scope.text_decolate story.comment
-  story.rating_url = "#{URL.resource}/images/icon/cd_#{story.rating}.png"
+  story.rating_url = "#{URL.file}/images/icon/cd_#{story.rating}.png"
 
   if story.upd?
     story.upd.time_text = "#{story.upd.hour}時#{story.upd.minute}分"

@@ -9,7 +9,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('memo')")
             h3.mesname
               a  {{f.longname}}
 
-            .vote.control-group(form="f.jst" ng-repeat="f in f.votes")
+            .vote(form="ff.jst" ng-repeat="ff in f.votes")
 
           .form-inline
             .formpl_content
@@ -24,4 +24,5 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('memo')")
               p  {{f.caption}}
               span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
+              .mark(ng-bind-html-unsafe="error(f)")
 

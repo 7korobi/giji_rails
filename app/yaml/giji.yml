@@ -55,7 +55,7 @@ news:
 
 modes:
 - val: info_open
-  name: 情報
+  name: 情報 - BG close
   group: 情報と名簿
   form: [action]
   regexp: info
@@ -64,7 +64,7 @@ modes:
   open: true
 
 - val: info_open_player
-  name: (中身あり)情報
+  name: 情報
   group: 情報と名簿
   form: [action]
   regexp: info
@@ -74,7 +74,7 @@ modes:
   player: true
 
 - val: memo_all_open
-  name: メモ履歴-全部
+  name: メモ履歴-全部 - BG close
   group: メモ履歴
   form: [entry, action, memo]
   regexp: memo_all
@@ -83,7 +83,7 @@ modes:
   open: true
 
 - val: memo_open
-  name: メモ履歴-公開
+  name: メモ履歴-公開 - BG close
   group: メモ履歴
   form: [entry, action, memo]
   regexp: memo_open
@@ -92,7 +92,7 @@ modes:
   open: true
 
 - val: memo_all_open_player
-  name: (中身あり)メモ履歴-全部
+  name: メモ履歴-全部
   group: メモ履歴
   form: [entry, action, memo]
   regexp: memo_all
@@ -102,7 +102,7 @@ modes:
   player: true
 
 - val: memo_open_player
-  name: (中身あり)メモ履歴-公開
+  name: メモ履歴-公開
   group: メモ履歴
   form: [entry, action, memo]
   regexp: memo_open
@@ -113,7 +113,7 @@ modes:
 
 
 - val: memo_all_open_last
-  name: メモ-全部
+  name: メモ-全部 - BG close
   group: メモ
   form: [entry, action, memo]
   regexp: memo_all
@@ -123,7 +123,7 @@ modes:
   last: true
 
 - val: memo_open_last
-  name: メモ-公開
+  name: メモ-公開 - BG close
   group: メモ
   form: [entry, action, memo]
   regexp: memo_open
@@ -133,7 +133,7 @@ modes:
   last: true
 
 - val: memo_all_open_last_player
-  name: (中身あり)メモ-全部
+  name: メモ-全部
   group: メモ
   form: [entry, action, memo]
   regexp: memo_all
@@ -144,7 +144,7 @@ modes:
   player: true
 
 - val: memo_open_last_player
-  name: (中身あり)メモ-公開
+  name: メモ-公開
   group: メモ
   form: [entry, action, memo]
   regexp: memo_open
@@ -156,7 +156,7 @@ modes:
 
 
 - val: talk_all
-  name: 秘密議事全部
+  name: 秘密議事全部 - BG close
   group: 秘密議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_all
@@ -164,7 +164,7 @@ modes:
   view: all
 
 - val: talk_think
-  name: 独り言
+  name: 独り言 - BG close
   group: 秘密議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_think
@@ -172,7 +172,7 @@ modes:
   view: think
 
 - val: talk_clan
-  name: 内緒話/狼/鳴/…
+  name: 内緒話/狼/鳴/… - BG close
   group: 秘密議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_clan
@@ -180,7 +180,7 @@ modes:
   view: clan
 
 - val: talk_all_last
-  name: 非公開の最後の言葉
+  name: 非公開の最後の言葉 - BG close
   group: 非公開の最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_all_last
@@ -189,7 +189,7 @@ modes:
   last: true
 
 - val: talk_think_last
-  name: 最後の言葉-独り言
+  name: 最後の言葉-独り言 - BG close
   group: 非公開の最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_think_last
@@ -198,7 +198,7 @@ modes:
   last: true
 
 - val: talk_clan_last
-  name: 最後の言葉-内緒話/狼/鳴/…
+  name: 最後の言葉-内緒話/狼/鳴/… - BG close
   group: 非公開の最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_clan_last
@@ -208,7 +208,7 @@ modes:
 
 
 - val: talk_all_player
-  name: (中身あり)秘密議事全部
+  name: 秘密議事全部
   group: 秘密議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_all
@@ -217,7 +217,7 @@ modes:
   player: true
 
 - val: talk_think_player
-  name: (中身あり)独り言
+  name: 独り言
   group: 秘密議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_think
@@ -226,7 +226,7 @@ modes:
   player: true
 
 - val: talk_clan_player
-  name: (中身あり)内緒話/狼/鳴/…
+  name: 内緒話/狼/鳴/…
   group: 秘密議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_clan
@@ -235,7 +235,7 @@ modes:
   player: true
 
 - val: talk_all_last_player
-  name: (中身あり)非公開の最後の言葉全部
+  name: 非公開の最後の言葉全部
   group: 非公開の最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_all_last
@@ -245,7 +245,7 @@ modes:
   player: true
 
 - val: talk_think_last_player
-  name: (中身あり)最後の言葉-独り言
+  name: 最後の言葉-独り言
   group: 非公開の最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_think_last
@@ -255,7 +255,7 @@ modes:
   player: true
 
 - val: talk_clan_last_player
-  name: (中身あり)最後の言葉-内緒話/狼/鳴/…
+  name: 最後の言葉-内緒話/狼/鳴/…
   group: 非公開の最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_clan_last
@@ -266,7 +266,7 @@ modes:
 
 
 - val: talk_all_open
-  name: 議事全部
+  name: 議事全部 - BG close
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_all_open
@@ -275,7 +275,7 @@ modes:
   open: true
 
 - val: talk_think_open
-  name: 公開議事録+独り言
+  name: 公開議事録+独り言 - BG close
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_think_open
@@ -284,7 +284,7 @@ modes:
   open: true
 
 - val: talk_clan_open
-  name: 公開議事録+内緒話/狼/鳴/…
+  name: 公開議事録+内緒話/狼/鳴/… - BG close
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_clan_open
@@ -293,7 +293,7 @@ modes:
   open: true
 
 - val: talk_open
-  name: 公開議事録
+  name: 公開議事録 - BG close
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_open
@@ -303,7 +303,7 @@ modes:
 
 
 - val: talk_all_open_last
-  name: 最後の言葉全部
+  name: 最後の言葉全部 - BG close
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_all_open_last
@@ -314,7 +314,7 @@ modes:
 
 
 - val: talk_think_open_last
-  name: 最後の言葉-公開or独り言
+  name: 最後の言葉-公開or独り言 - BG close
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_think_open_last
@@ -324,7 +324,7 @@ modes:
   open: true
 
 - val: talk_clan_open_last
-  name: 最後の言葉-公開or内緒話/狼/鳴/…
+  name: 最後の言葉-公開or内緒話/狼/鳴/… - BG close
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_clan_open_last
@@ -334,7 +334,7 @@ modes:
   open: true
 
 - val: talk_open_last
-  name: 最後の言葉-公開
+  name: 最後の言葉-公開 - BG close
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_open_last
@@ -345,7 +345,7 @@ modes:
 
 
 - val: talk_all_open_player
-  name: (中身あり)議事全部
+  name: 議事全部
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_all_open
@@ -355,7 +355,7 @@ modes:
   player: true
 
 - val: talk_think_open_player
-  name: (中身あり)公開議事録+独り言
+  name: 公開議事録+独り言
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_think_open
@@ -365,7 +365,7 @@ modes:
   player: true
 
 - val: talk_clan_open_player
-  name: (中身あり)公開議事録+内緒話/狼/鳴/…
+  name: 公開議事録+内緒話/狼/鳴/…
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_clan_open
@@ -375,7 +375,7 @@ modes:
   player: true
 
 - val: talk_open_player
-  name: (中身あり)公開議事録
+  name: 公開議事録
   group: 議事録
   form: [entry, action, open, secret, silent]
   regexp: talk_open
@@ -386,7 +386,7 @@ modes:
 
 
 - val: talk_all_open_last_player
-  name: (中身あり)最後の言葉全部
+  name: 最後の言葉全部
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_all_open_last
@@ -397,7 +397,7 @@ modes:
   player: true
 
 - val: talk_think_open_last_player
-  name: (中身あり)最後の言葉-公開or独り言
+  name: 最後の言葉-公開or独り言
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_think_open_last
@@ -408,7 +408,7 @@ modes:
   player: true
 
 - val: talk_clan_open_last_player
-  name: (中身あり)最後の言葉-公開or内緒話/狼/鳴/…
+  name: 最後の言葉-公開or内緒話/狼/鳴/…
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_clan_open_last
@@ -419,7 +419,7 @@ modes:
   player: true
 
 - val: talk_open_last_player
-  name: (中身あり)最後の言葉-公開
+  name: 最後の言葉-公開
   group: 最後の言葉
   form: [entry, action, open, secret, silent]
   regexp: talk_open_last

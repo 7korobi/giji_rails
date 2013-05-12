@@ -1,10 +1,10 @@
 development:
-  rails:
+  file:
     http://localhost:3000
-  resource:
+  rails:
     http://localhost:3000
 production:
+  file:
+    http://giji.load.jp
   rails:
-    http://giji.check.jp
-  resource:
     http://giji.check.jp

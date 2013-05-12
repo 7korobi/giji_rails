@@ -29,10 +29,11 @@ POOL = ($scope, $filter)->
         $scope.$apply()
   pool_ajax = do_pool_ajax.throttle ajax_timer
 
-  $scope.pool = ()->
+  pool_button = ()->
     $scope.get_news $scope.event, =>
       $scope.init()
       $scope.boot()
+  $scope.pool = pool_button.throttle message_first
 
   $scope.top =
     focus: false

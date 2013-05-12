@@ -93,7 +93,7 @@ MODULE = ($scope, $filter)->
   $scope.img_cid = (csid, face_id)->
     csid = GIJI.csids[csid]
     csid or= 'portrate'
-    "#{URL.resource}/images/#{csid}/#{face_id}.jpg"
+    "#{URL.file}/images/#{csid}/#{face_id}.jpg"
 
   $scope.potof_key = (o)->
     csid   = (o.csid || '*').split('_')[0]

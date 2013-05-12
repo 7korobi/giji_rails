@@ -29,6 +29,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('entry')")
               div(ng-hide="f.is_preview")
                 p  参加する時のセリフ
                 textarea(cols="30" rows="5" ng-model="f.text")
+  
               a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
               a.btn(ng-click="entry(f, f.valid)") {{f.title}}
               | {{f.count}}
@@ -37,6 +38,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('entry')")
               p  {{f.caption}}
               span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
+              .mark(ng-bind-html-unsafe="error(f)")
 
 
 

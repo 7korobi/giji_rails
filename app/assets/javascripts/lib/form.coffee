@@ -5,12 +5,15 @@ FORM = ($scope)->
     return 0 unless text?
     switch unit
       when 'point'
-        # countup sjis byte size
-        ascii = text.match(/[\x01-\xff]/g)  or []
-        other = text.match(/[^\x01-\xff]/g) or []
-        ascii.length + other.length * 2
-      else
-        text.length
+        0
+      when 'count'
+        0
+      when 'none'
+        0
+    # countup sjis byte size
+    ascii = text.match(/[\x01-\xff]/g)  or []
+    other = text.match(/[^\x01-\xff]/g) or []
+    ascii.length + other.length * 2
 
   valid = (f, cb)->
     f.valid = true
@@ -28,6 +31,29 @@ FORM = ($scope)->
       "#{mark} #{size} / #{f.max.size}"
     else
       ""
+  
+  submit = (f, param)->
+    if f
+      if $scope.errors?
+        $scope.errors[f.cmd] = []
+      f.is_delete = true
+      switch f.cmd
+        when "wrmemo"
+          f.is_preview = false
+        when "write"
+          f.is_preview = false
+          f.text = ""
+        when "action"
+          f.text = ""
+          f.target = "-1"
+          f.action = "-99"
+        else 
+    $scope.submit param
+    
+  $scope.error = (f)->
+    list = $scope.errors[f.cmd] if f? && $scope.errors?
+    list ||= []
+    list.join("<br>")
 
   $scope.text_valid = (f)->
     valid f, (size)->
@@ -80,7 +106,7 @@ FORM = ($scope)->
         target:    -1
         monospace: 0
       param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
-      $scope.submit param
+      submit f, param
     else
       f.ver.commit() if f.ver?
       f.is_preview = valid
@@ -100,10 +126,7 @@ FORM = ($scope)->
         monospace: 0
       param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       param[f.switch] = "on"  if  f.switch
-
-      $scope.submit param
-      f.text = ""
-      f.is_preview = false
+      submit f, param
     else
       f.is_preview = valid
 
@@ -118,10 +141,11 @@ FORM = ($scope)->
         actionno:   f.action
         actiontext: f.text
         monospace: 0
-      $scope.submit param
-      f.text = ""
-      f.target = "-1"
-      f.action = "-99"
+      submit f, param
+
+  $scope.vote_change = (f)->
+    if $scope.errors?
+      $scope.errors[f.cmd] = ["#{f.title}をクリックしましょう。"]
 
   $scope.vote = (f)->
     return if f.disabled
@@ -130,8 +154,7 @@ FORM = ($scope)->
       vid:  $scope.story.vid
       target:    f.target1
       target2:   f.target2
-
-    $scope.submit param
+    submit f, param
 
   $scope.commit = (f)->
     return if f.disabled
@@ -139,8 +162,7 @@ FORM = ($scope)->
       cmd: f.cmd
       vid:  $scope.story.vid
       commit:    f.commit
-
-    $scope.submit param
+    submit f, param
 
   $scope.confirm = (f)->
     return if f.disabled
@@ -162,4 +184,6 @@ FORM = ($scope)->
       $scope.form.confirm = null
     $scope.confirm_complete = ->
       $scope.form.confirm = null
-      $scope.submit param
+      submit f, param
+      for f in $scope.form.texts
+        f.is_delete = true

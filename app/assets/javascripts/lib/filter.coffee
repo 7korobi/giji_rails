@@ -112,29 +112,36 @@ FILTER = ($scope, $filter)->
         memo_open_regexp = /^([qcaAmIMS][MX])/
 
       # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
-      mode_filters_memo = 
       mode_filters =
         info: /^[aAm]|(vilinfo)/
         memo_all:  /^(.M)/
         memo_open: memo_open_regexp
         talk_all:   /^[^S][^M]\d+/
-        talk_think: /^[qcaAmIiTVG][^M]\d+/
+        talk_think: /^[qcaAmIiVG][^M]\d+/
         talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
         talk_all_open:   /^.[^M]\d+/
-        talk_think_open: /^[qcaAmIiTVGS][^M]\d+/
+        talk_think_open: /^[qcaAmIiVGS][^M]\d+/
         talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
         talk_all_last:   /^[^S][SX]/
-        talk_think_last: /^[qcaAmIiTVG][SX]/
+        talk_think_last: /^[qcaAmIiVG][SX]/
         talk_clan_last:  /^[qcaAmIi\-WPX][SX]/
         talk_all_open_last:   /^.[SX]/
-        talk_think_open_last: /^[qcaAmIiTVGS][SX]/
+        talk_think_open_last: /^[qcaAmIiVGS][SX]/
         talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]/
         talk_open:      talk_open_regexp
         talk_open_last: talk_news_regexp
 
-      filter = mode_filters[$scope.modes.regexp]
+      add_filters = 
+        clan:  (o)-> "" != o.to && o.to?
+        think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
+
+      mode_filter = mode_filters[$scope.modes.regexp]
+      add_filter = add_filters[$scope.modes.view]
+      add_filter ||= -> false
+
       list = list.filter (o)->
-        o.logid.match filter
+        o.logid.match(mode_filter) || add_filter(o)
+
       if $scope.modes.last
         result = []
         order   = (o)-> [GIJI.message.order[o.mestype] || 8, o.date || (new Date)]

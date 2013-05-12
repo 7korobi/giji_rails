@@ -33,7 +33,7 @@ CGI = ($scope, $filter)->
           protocol = $scope.post_submit
       when 'editvilform', 'logout'
         protocol = $scope.post_submit
-      when 'wrmemo', 'write', 'action'
+      when 'wrmemo', 'write', 'action', 'entry'
         protocol = $scope.post_iframe
       else
         protocol = $scope.post

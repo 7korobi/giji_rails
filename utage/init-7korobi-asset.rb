@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby-local-exec
 
-node="v0.6.18"
-ss  ="0.3.0RC2"
+# node="v0.6.18"
+# ss  ="0.3.0RC2"
 
 open('/home/7korobi/web-env','w').puts <<-_SH_
 export LANG=ja_JP.UTF-8
@@ -22,8 +22,8 @@ commands = <<-_SH_
 chmod 755  ~/web-env ~/.bash_profile
 ~/.bash_profile
 
-test -d ~/.node/#{node}           || nvm install #{node}
-test -d ~/.npm/socketstream/#{ss} || npm install -g socketstream
+# test -d ~/.node/#{node}           || nvm install #{node}
+# test -d ~/.npm/socketstream/#{ss} || npm install -g socketstream
 
 _SH_
 commands.each_line {|sh| system sh}

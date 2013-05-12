@@ -21,7 +21,7 @@ CACHE = ($scope)->
 
   merge = 
     events: (old_base, new_base, target)=>
-      guard = (key)-> ["messages", "has_all_messages", "is_news"].any(key)
+      guard = (key)-> ["messages", "has_all_messages"].any(key)
       filter = (o)-> o.turn
 
       # events section
@@ -95,7 +95,7 @@ CACHE = ($scope)->
 
 
     form_texts: (old_base, new_base)->
-      guard = (key)-> ["ver","text","action","style","target"].any(key)
+      guard = (key)-> ! ["count","targets","votes"].any(key)
       filter = (o)-> o.jst + o.switch
 
       return unless old_base? && new_base?
@@ -159,9 +159,9 @@ CACHE = ($scope)->
     new_base?.event?.turn
 
   concat_merge = (olds, news, guard, filter)->
-    old_hash = olds.groupBy filter
     olds_head = olds.filter (o)->
       ! o.is_delete
+    old_hash = olds_head.groupBy filter
 
     for new_item in news
       key = filter new_item

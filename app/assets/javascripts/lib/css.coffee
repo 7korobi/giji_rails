@@ -10,18 +10,18 @@ angular.module("giji.directives").directive "theme", ["$compile", ($compile)->
       value = "#{$scope.theme.value}#{$scope.width.value}"
       date  = new Date
 
-      css = "#{URL.resource}/stylesheets/#{value}.css"
+      css = "#{URL.file}/stylesheets/#{value}.css"
       if css != $("#giji_css").attr 'href'
         $("#giji_css").attr 'href', css
 
-      css_font = "#{URL.resource}/stylesheets/font/#{$scope.font.value}.css"
+      css_font = "#{URL.file}/stylesheets/font/#{$scope.font.value}.css"
       if css_font != $("#giji_css_font").attr 'href'
         $("#giji_css_font").attr 'href', css_font
 
       $scope.h1 =
         type:  OPTION.head_img[value][ (date / 60*60*12).ceil() % 2]
         width: OPTION.css.h1.widths[String($scope.width.value)]
-      $scope.h1.path = "#{URL.resource}/images/banner/title#{$scope.h1.width}#{$scope.h1.type}.jpg"
+      $scope.h1.path = "#{URL.file}/images/banner/title#{$scope.h1.width}#{$scope.h1.type}.jpg"
       $scope.adjust()
 
     Navi.push $scope, 'width', width

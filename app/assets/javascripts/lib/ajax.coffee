@@ -17,7 +17,6 @@ AJAX = ($scope)->
 
   $scope.post = (href, param, cb)->
     $.post href, param, (data)->
-      console.log data
       $scope.replace_gon data
       cb()
       $scope.$apply()

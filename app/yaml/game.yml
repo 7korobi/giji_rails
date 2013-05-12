@@ -69,6 +69,7 @@ PERL_GAME:
       - saving
     game:  &game_cabala
       - TABULA
+      - MILLERHOLLOW
       - LIVE_TABULA
       - TROUBLE
       - MISTERY
@@ -123,7 +124,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji.check.jp
+      BASEDIR_DOC:   http://giji.load.jp
 
 PERL_BRAID:
   config: &config_braid
@@ -171,7 +172,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji.check.jp
+      BASEDIR_DOC:   http://giji.load.jp
       RULE:          BRAID
 
 # 内部 人狼議事
@@ -365,7 +366,7 @@ PAN:
       MAX_VILLAGES:    1
       TIMEOUT_SCRAP:  10
       TIMEOUT_ENTRY:   3
-      BASEDIR_DOC:    http://giji.check.jp
+      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -435,7 +436,7 @@ SOYBEAN:
       BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/soy-bean//
       NAME_HOME:      人狼議事 鯖の味噌煮
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.check.jp
+      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -541,7 +542,7 @@ CABALA:
       BASEDIR_CGIERR: http://cabala.halfmoon.jp//cafe
       NAME_HOME:      人狼議事 Cabala Cafe
       MAX_VILLAGES:   4
-      BASEDIR_DOC:    http://giji.check.jp
+      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
@@ -607,7 +608,7 @@ LOBBY:
       URL_SW:         http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby
       NAME_HOME:      人狼議事 ロビー
-      BASEDIR_DOC:    http://giji.check.jp
+      BASEDIR_DOC:    http://giji.load.jp
       ENABLED_VMAKE:    0
       MAX_VILLAGES:    10
       TIMEOUT_SCRAP:  365
