@@ -19,7 +19,6 @@ class PageNavi extends Navi
 
   filter_by: (by_key)->
     @by_key = by_key
-    @filter "#{@by_key}.length"
 
   filter_to: (to_key)->
     @to_key = to_key

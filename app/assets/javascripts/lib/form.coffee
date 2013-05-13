@@ -154,6 +154,11 @@ FORM = ($scope)->
       vid:  $scope.story.vid
       target:    f.target1
       target2:   f.target2
+    switch f.cmd
+      when 'vote'
+        param.entrust = ''
+      when 'entrust'
+        param.entrust = 'on'
     submit f, param
 
   $scope.commit = (f)->

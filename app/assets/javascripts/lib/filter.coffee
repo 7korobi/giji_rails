@@ -36,10 +36,12 @@ FILTER = ($scope, $filter)->
   if $scope.messages_raw?
     page.filter_by 'messages_raw'
     page.filter_to 'messages'
+    page.filter 'messages_raw.length'
 
   if $scope.event?.messages?
     page.filter_by 'event.messages'
     page.filter_to 'messages'
+    page.filter 'event.turn'
     page.filter 'event.is_news'
 
     deploy_mode_common = ()->
@@ -102,41 +104,43 @@ FILTER = ($scope, $filter)->
         is_mob_open = true if $scope.story.turn == 0
         is_mob_open = true if $scope.story.is_epilogue
 
-      if is_mob_open
-        talk_news_regexp = /^[qcaAmIVS][SX]/
-        talk_open_regexp = /^[qcaAmIVS][^M]/
-        memo_open_regexp = /^([qcaAmIMVS][MX])/
-      else
-        talk_news_regexp = /^[qcaAmIS][SX]/
-        talk_open_regexp = /^[qcaAmIS][^M]/
-        memo_open_regexp = /^([qcaAmIMS][MX])/
-
       # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
       mode_filters =
         info: /^[aAm]|(vilinfo)/
         memo_all:  /^(.M)/
-        memo_open: memo_open_regexp
+        memo_open: /^([qcaAmIMS][MX])/
         talk_all:   /^[^S][^M]\d+/
-        talk_think: /^[qcaAmIiVG][^M]\d+/
+        talk_think: /^[qcaAmIi][^M]\d+/
         talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
         talk_all_open:   /^.[^M]\d+/
-        talk_think_open: /^[qcaAmIiVGS][^M]\d+/
+        talk_think_open: /^[qcaAmIiS][^M]\d+/
         talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
         talk_all_last:   /^[^S][SX]/
-        talk_think_last: /^[qcaAmIiVG][SX]/
+        talk_think_last: /^[qcaAmIi][SX]/
         talk_clan_last:  /^[qcaAmIi\-WPX][SX]/
         talk_all_open_last:   /^.[SX]/
-        talk_think_open_last: /^[qcaAmIiVGS][SX]/
+        talk_think_open_last: /^[qcaAmIiS][SX]/
         talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]/
-        talk_open:      talk_open_regexp
-        talk_open_last: talk_news_regexp
+        talk_open:      /^[qcaAmIS][^M]/
+        talk_open_last: /^[qcaAmIS][SX]/
+
+      if is_mob_open
+        open_filters = 
+          talk_think_open_last: /^[qcaAmIiVS][SX]/
+          talk_think_open: /^[qcaAmIiVS][^M]\d+/
+          memo_open:      /^([qcaAmIMVS][MX])/
+          talk_open:      /^[qcaAmIVS][^M]/
+          talk_open_last: /^[qcaAmIVS][SX]/
+      else
+        open_filters = {}
 
       add_filters = 
         clan:  (o)-> "" != o.to && o.to?
         think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
 
-      mode_filter = mode_filters[$scope.modes.regexp]
-      add_filter = add_filters[$scope.modes.view]
+      mode_filter   = open_filters[$scope.modes.regexp]
+      mode_filter ||= mode_filters[$scope.modes.regexp]
+      add_filter   = add_filters[$scope.modes.view]
       add_filter ||= -> false
 
       list = list.filter (o)->
