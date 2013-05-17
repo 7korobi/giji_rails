@@ -181,10 +181,11 @@ MODULE = ($scope, $filter)->
           $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
           seek()
 
-    popup_ajax turn, ->
-      if ! popup_find turn
-        popup_ajax turn - 1, ->
-          popup_find turn - 1
+    if ! popup_find turn
+      popup_ajax turn, ->
+        if ! popup_find turn
+          popup_ajax turn - 1, ->
+            popup_find turn - 1
 
   href_eval = (e)->
     $scope.pageY = e.pageY

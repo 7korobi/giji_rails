@@ -43,6 +43,7 @@ FILTER = ($scope, $filter)->
     page.filter_to 'messages'
     page.filter 'event.turn'
     page.filter 'event.is_news'
+    page.filter 'event.messages.length'
 
     deploy_mode_common = ()->
       $scope.mode_current_set()
