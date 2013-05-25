@@ -8,6 +8,8 @@ link:
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
 news:
+- text: ruby-2.0.0 p195 にバージョンアップしました。
+  date: 安定性が良くなったような気もします。
 - text: 履歴機能を実装。それと見た目の調整と、村の参加人数ズレ問題を解消しました。
   date: 2013-04-28
 - text: ログよみツールの機能を整理しました。見やすくなっているといいな。

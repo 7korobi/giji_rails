@@ -138,6 +138,27 @@ _PERL_
       MAX_MESLINE =>  10, # 一発言の最大行数
     );
 
+    my %saycnt_euro = (
+      CAPTION     => '欧州',
+      HELP        => '（24h回復） 800字x30回/30act',
+      COST_SAY    => 'count', # 回数勘定
+      COST_MEMO   => 'none',  # 無制限
+      COST_ACT    => 'none',  # 無制限
+      RECOVERY    =>   1, # 発言復活
+      MAX_SAY     =>  30, # 発言/憑依回数
+      MAX_TSAY    => 999, # 独り言発言回数
+      MAX_SPSAY   => 999, # 共鳴発言回数
+      MAX_WSAY    => 999, # 囁き/念話発言回数
+      MAX_GSAY    => 999, # うめき発言回数
+      MAX_PSAY    =>  30, # プロローグ発言回数
+      MAX_ESAY    => 999, # エピローグ発言回数
+      MAX_SAY_ACT =>  30, # アクション回数
+      ADD_SAY     =>   0, # 促しで増える発言回数
+      MAX_ADDSAY  =>   0, # 促しの回数
+      MAX_MESCNT  => 800, # 一発言の最大文字数
+      MAX_MESLINE =>  20, # 一発言の最大行数
+    );
+
     my %saycnt_tiny = (
       CAPTION     => 'たりない',
       HELP        => '（24h回復）（メモは20pt） 333pt/9act',
@@ -223,28 +244,6 @@ _PERL_
       MAX_ADDSAY  =>   0, # 促しの回数
       MAX_MESCNT  => 200, # 一発言の最大文字数
       MAX_MESLINE =>   5, # 一発言の最大行数
-    );
-
-    # 発言制限
-    my %saycnt_euro = (
-      CAPTION     => '欧州',
-      HELP        => '（24h回復） 800字x30回/30act',
-      COST_SAY    => 'count', # 回数勘定
-      COST_MEMO   => 'count', # 回数勘定
-      COST_ACT    => 'count', # 回数勘定
-      RECOVERY    =>   1, # 発言復活
-      MAX_SAY     =>  30, # 発言/憑依回数
-      MAX_TSAY    => 999, # 独り言発言回数
-      MAX_SPSAY   => 999, # 共鳴発言回数
-      MAX_WSAY    => 999, # 囁き/念話発言回数
-      MAX_GSAY    => 999, # うめき発言回数
-      MAX_PSAY    =>  30, # プロローグ発言回数
-      MAX_ESAY    => 999, # エピローグ発言回数
-      MAX_SAY_ACT =>  30, # アクション回数
-      ADD_SAY     =>   0, # 促しで増える発言回数
-      MAX_ADDSAY  =>   0, # 促しの回数
-      MAX_MESCNT  => 800, # 一発言の最大文字数
-      MAX_MESLINE =>  20, # 一発言の最大行数
     );
 _PERL_
 

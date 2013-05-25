@@ -1,8 +1,5 @@
 CACHE = ($scope)->
   $scope.set_turn = (turn)->
-    if $scope.potofs_boxes?[turn]?
-      $scope.potofs_box = $scope.potofs_boxes[turn]
-      $scope.potofs = $scope.potofs_box.potofs
     if $scope.events?[turn]?
       $scope.event = $scope.events[turn]
     if $scope.forms?[turn]?
@@ -38,42 +35,40 @@ CACHE = ($scope)->
       old_event.has_all_messages ||= new_event.has_all_messages
 
       # messages section
-      merge.messages old_event, new_event
+      merge._messages old_event, new_event
+
+      # potofs section
+      merge._potofs old_event, new_base
+      old_base.potofs = old_event.potofs
 
       # bad data initial protection
       old_base.event ||= old_event
 
     event: ->
-    messages: (old_base, new_base)->
+    _messages: (old_base, new_base)->
       guard = -> false
       filter = (o)-> o.logid
-
       return unless new_base?.messages?
+
       if new_base.turn?
         new_base.messages.each (message)->
           message.turn = new_base.turn
 
       merge_by.news old_base, new_base, 'messages', guard, filter
 
-    
-    potofs_boxes: ->
-    potofs_box: ->
-    potofs: (old_base, new_base, target)=>
+    _potofs: (old_base, new_base)->
       guard = -> false
       filter = (o)-> o.pno
+      return unless new_base?.potofs?
 
-      # potofs_boxes section
-      cache.load old_base, new_base, 'potofs_boxes', 'potofs_box'
+      if new_base.turn?
+        new_base.potofs.each (potof)->
+          potof.turn = new_base.turn
 
-      # potofs_box section
-      old_base.potofs_box = find_or_create new_base, old_base.potofs_boxes
-
-      # potofs section
-      merge_by.simple old_base.potofs_box, new_base, "potofs", guard, filter
-      old_base.potofs = old_base.potofs_box.potofs
+      merge_by.simple old_base, new_base, "potofs", guard, filter
 
     forms: ->
-    form: (old_base, new_base, target)->
+    form: (old_base, new_base)->
       guard = (key)-> ["texts"].any(key)
       filter = (o)-> o.turn
 
@@ -82,7 +77,7 @@ CACHE = ($scope)->
 
       # form section
       new_form = new_base.form
-      old_form = find_or_create new_base, old_base.forms
+      old_form = old_base.form
 
       return unless new_form?
       new_form.keys (key, o)->
@@ -133,11 +128,14 @@ CACHE = ($scope)->
     load: (old_base, new_base, target, child)=>
       guard = -> false
       filter = (o)-> o.turn
+
       old_base[target] ||= []
       merge_by.simple old_base, new_base, target, guard, filter
 
-      child_item = find new_base, old_base[target]
-      old_base[child] = child_item if child_item
+      if new_base?.events?
+        old_base[child] = find_or_create new_base, old_base[target]
+      else
+        old_base[child] = old_base[target][0] ||= {}
 
     build: (new_base, field)->
       if field? && new_base?.events?

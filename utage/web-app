@@ -38,24 +38,24 @@ bundle-update)
   ~/.rbenv/shims/bundle update
   ;;
 
-QUEUE)
-  $0 QUEUE-web
-  $0 QUEUE-resque
-  ;;
-
-QUEUE-web)
+resque)
+#  rm .ruby-version 
+#  export RBENV_VERSION=1.9.3-p194
   $0 kill TERM "resque-web"
+  $0 kill QUIT "resque-scheduler-"
 
-  rbenv exec resque-web -p $WEB_PORT config/initializers/resque.rb                        1> /dev/null 2> /dev/null
+  PIDFILE=/utage/run/resque-scheduler.pid BACKGROUND=yes rbenv exec rake resque:scheduler 1> /dev/null 2> /dev/null
+  rbenv exec resque-web -p $RESQUE_PORT config/initializers/resque.rb                     1> /dev/null 2> /dev/null
   ;;
 
-QUEUE-resque)
+QUEUE)
+#  rm .ruby-version 
+#  export RBENV_VERSION=1.9.3-p194
   export LIST=giji_rsyncs,giji_schedules,giji_vils
-  $0 kill QUIT "resque-scheduler-"
   $0 kill TERM "rake resque:"
   $0 kill QUIT "Waiting for $LIST"
 
-  PIDFILE=/utage/run/resque-scheduler.pid BACKGROUND=yes rbenv exec rake resque:scheduler 1> /dev/null 2> /dev/null
+  echo QUEUE=$LIST PIDFILE=/utage/run/resque.pid rbenv exec rake environment resque:work       1> /dev/null 2> /dev/null &
   QUEUE=$LIST PIDFILE=/utage/run/resque.pid rbenv exec rake environment resque:work       1> /dev/null 2> /dev/null &
   ;;
 
@@ -112,7 +112,7 @@ tail)
   echo  "Usage: $0 command"
   echo
   echo  "  command : status start stop restart reload"
-  echo  "          : bundle-update bundle-install QUEUE time"
+  echo  "          : bundle-update bundle-install resque QUEUE time"
   echo  "          : kill exec  s server test  c console  tail-log"
   echo  "  product : $APP"
 esac

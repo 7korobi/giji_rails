@@ -24,7 +24,7 @@ CGI = ($scope, $filter)->
     get href, cb if href
 
 
-  submit = (param)->
+  submit = (param, cb)->
     switch param.cmd
       when 'login'
         if param.vid?
@@ -40,6 +40,7 @@ CGI = ($scope, $filter)->
     param.ua = "javascript" unless $scope.post_submit == protocol
     protocol $scope.form.uri, param, ->
       $scope.init()
+      cb()
   $scope.submit = submit.throttle 5000
 
   regexp =
@@ -59,13 +60,13 @@ CGI = ($scope, $filter)->
       pwd: f.pwd
       cmdfrom: f.cmdfrom
     param.vid = $scope.story.vid if $scope.story?.vid?
-    $scope.submit param
+    $scope.submit param, ->
 
   $scope.logout = (f)->
     param =
       cmd: 'logout'
       cmdfrom: f.cmdfrom
-    $scope.submit param
+    $scope.submit param, ->
 
   MODULE $scope, $filter
   FORM    $scope

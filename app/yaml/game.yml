@@ -67,6 +67,7 @@ PERL_GAME:
       - say5x200
       - say5x300
       - saving
+      - euro
     game:  &game_cabala
       - TABULA
       - MILLERHOLLOW
@@ -384,13 +385,6 @@ MORPHE:
   vid_code: M
   config:
     <<: *config_game
-    saycnt:
-      - tiny
-      - weak
-      - juna
-      - say5x200
-      - say5x300
-      - saving
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -454,13 +448,18 @@ PERJURY:
   vid_code: Bp
   config:
     <<: *config_braid
+    saycnt:
+      - weak
+      - juna
+      - vulcan
+      - infinity
     cfg:
       <<: *cfg_braid
       RULE:           PERJURY
       URL_SW:         http://perjury.rulez.jp
       BASEDIR_CGIERR: http://perjury.rulez.jp//
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
-      MAX_VILLAGES:   3
+      MAX_VILLAGES:   2
       BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH

@@ -28,7 +28,6 @@ class GijiScheduler
       src = SowVillage.find(story_id).source rescue nil
       next unless src
 
-      p story_id
       src.select{|o| Struct::SowRecordFileUser == o.class }.each_with_index do |o,i|
         potof = SowUser.where(sow_auth_id: o.uid, story_id: story_id).first
         potof.pno = i

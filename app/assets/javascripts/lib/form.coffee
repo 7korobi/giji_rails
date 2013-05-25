@@ -18,37 +18,38 @@ FORM = ($scope)->
   valid = (f, cb)->
     f.valid = true
     if f.max
-      size = length(f.text, f.max.unit)
+      size  = length(f.text, f.max.unit)
+      lines = f.text.lines().length
       cb(size)
       f.valid = false if f.max.size < size
-      f.valid = false if f.max.line < f.text.lines().length
+      f.valid = false if f.max.line < lines
       if f.valid
         f.error = ""
         mark = ""
       else
         f.error = "cautiontext"
         mark = "⊘"
-      "#{mark} #{size} / #{f.max.size}"
+      "#{mark} #{size}<sub>/#{f.max.size}字</sub>  #{lines}<sub>/#{f.max.line}行</sub>"
     else
       ""
   
   submit = (f, param)->
-    if f
-      if $scope.errors?
-        $scope.errors[f.cmd] = []
-      f.is_delete = true
-      switch f.cmd
-        when "wrmemo"
-          f.is_preview = false
-        when "write"
-          f.is_preview = false
-          f.text = ""
-        when "action"
-          f.text = ""
-          f.target = "-1"
-          f.action = "-99"
-        else 
-    $scope.submit param
+    $scope.submit param, ->
+      if f
+        if $scope.errors?
+          $scope.errors[f.cmd] = []
+        f.is_delete = true
+        switch f.cmd
+          when "wrmemo"
+            f.is_preview = false
+          when "write"
+            f.is_preview = false
+            f.text = ""
+          when "action"
+            f.text = ""
+            f.target = "-1"
+            f.action = "-99"
+          else 
     
   $scope.error = (f)->
     list = $scope.errors[f.cmd] if f? && $scope.errors?

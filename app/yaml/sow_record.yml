@@ -219,6 +219,8 @@ CABALA: &CABALA
     - 【憑】
     - 【秘】
 
+MORPHE:
+  <<: *CABALA
 
 SOYBEAN:
   <<: *CABALA

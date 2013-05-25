@@ -8,10 +8,10 @@ label.inline.radio
 
 br 
 
-label.inline.radio
+label.inline.radio(ng-show="mode")
   select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
 
-label.inline.radio(ng-show="story.turn == event.turn")
+label.inline.radio(ng-show="story && event && story.turn == event.turn")
   a.btn(ng-show="event.is_news" ng-click="ajax_event(event.turn, null, false)") ページ表示
   a.btn(ng-hide="event.is_news" ng-click="ajax_event(event.turn, null, true)") 最新の発言
 

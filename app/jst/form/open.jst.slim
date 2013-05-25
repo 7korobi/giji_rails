@@ -13,6 +13,7 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
               span(ng-show="0 < potof.bonds.length")&nbsp;★絆
 
             .vote(form="ff.jst" ng-repeat="ff in f.votes")
+            .mark(ng-bind-html-unsafe="error(ff)" ng-repeat="ff in f.votes")
 
           .form-inline
             .formpl_content

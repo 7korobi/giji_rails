@@ -15,12 +15,15 @@ UTAGE=#{no}
 SSH_PORT=#{no}0
 WEB_PORT=#{no}9
 WSS_PORT=#{no}8
+RESQUE_PORT=#{no}7
 
 export LANG=ja_JP.UTF-8
 export PATH
 export UTAGE
 export SSH_PORT
 export WEB_PORT
+export WSS_PORT
+export RESQUE_PORT
 export RBENV_VERSION=2.0.0-p195
 export MONGO_URL="mongodb://7korobi:kotatsu3@mongo.family.jp/giji"
 export REDIS_URL="redis://mongo.family.jp:6379/0"

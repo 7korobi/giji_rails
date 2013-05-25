@@ -200,7 +200,7 @@ FILTER = ($scope, $filter)->
     $('div.popover').remove()
     target = $(".message_filter.#{$scope.top.id}")
 
-    if $scope.event.is_news && target?.offset()?
+    if $scope.event?.is_news && target?.offset()?
     else
       target = $(".inframe")
 
@@ -208,7 +208,8 @@ FILTER = ($scope, $filter)->
   scrollTo = do_scrollTo.debounce 500
 
   form_show = ->
-    $scope.form_show = $scope.modes.form
+    if $scope.modes?
+      $scope.form_show = $scope.modes.form
 
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show

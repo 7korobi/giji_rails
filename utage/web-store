@@ -1,9 +1,8 @@
 #!/bin/sh
 
+redis_bin=/usr/local/bin/redis-server
 mongod=/etc/init.d/mongod
-redis=/usr/local/bin/redis-server
-conf=/utage/conf/redis.conf
-pid=/var/run/redis.pid
+redis=/etc/init.d/mongod
 
 case "$1" in
 status)
@@ -13,21 +12,21 @@ status)
   ps -A | grep $conf
   ;;
 start-redis)
-  $redis $conf
+  $redis start
   ;;
 start-mongo)
   $mongod start
   ;;
 start)
-  $redis $conf
+  $redis start
   $mongod start
   ;;
 stop)
-  cat $pid | xargs sudo kill -QUIT
+  $redis stop
   $mongod stop
   ;;
 restart|reload)
-  cat $pid | xargs sudo kill -HUP
+  $redis reload
   $mongod reload
   ;;
 *)
