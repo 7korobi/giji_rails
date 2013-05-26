@@ -90,7 +90,6 @@ POTOFS = ($scope)->
       count: (key)-> groups[key].length
     order = orders[head_order[tgt] || 'basic']
     $scope.potofs_keys = keys.sortBy order, reverse
-    $scope.adjust()
 
   potofs_sortBy 'stat_at',   true
   potofs_sortBy 'stat_type', true
@@ -104,6 +103,7 @@ POTOFS = ($scope)->
 
   $scope.do_sort_potofs = ->
     potofs_sortBy $scope.potofs_order.value, $scope.potofs_reverse
+    $scope.adjust()
 
   $scope.$watch 'potofs_reverse', $scope.do_sort_potofs
   $scope.$watch 'potofs_order.value', $scope.do_sort_potofs

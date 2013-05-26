@@ -23,4 +23,11 @@ RAILS = ($scope, $filter)->
     href = $scope.event_url(event)
     get href, cb if href
 
+  submit = (param, cb)->
+    $scope.post $scope.form.uri, param, ->
+      $scope.init()
+      cb() if cb
+  $scope.submit = submit.throttle 5000
+
+
   MODULE   $scope, $filter

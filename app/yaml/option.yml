@@ -54,7 +54,7 @@ page:
   folder:
     options:
       current: ALL
-      location: hash
+      location: search
       is_cookie: false
     button:
       ALL:       "- すべて -"

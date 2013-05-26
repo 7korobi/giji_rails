@@ -1,7 +1,9 @@
 class StoriesController < ApplicationController
   expose(:stories) do
-    Rails.cache.fetch("stories_finished", :expires_in => 1.hours) do
-      Story.finished.
+    Rails.cache.fetch("stories_finished_#{params[:folder]}", :expires_in => 4.hours) do
+      query = Story.finished
+      query = query.where(folder: params[:folder])  if  params[:folder] != "ALL"
+      query.
         only(%w[folder vid name rating options upd vpl type card]).
         sort_by{|o|[o.folder, - o.vid]}.
         map do |story|
@@ -14,10 +16,6 @@ class StoriesController < ApplicationController
   respond_to :html, :json
 
   def index
-    if params[:folder]
-      redirect_to stories_path + "#folder=#{params[:folder]}"
-    else
-    	gon.stories = stories
-    end
+    gon.stories = stories
   end
 end

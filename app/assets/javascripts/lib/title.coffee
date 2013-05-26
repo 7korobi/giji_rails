@@ -1,7 +1,7 @@
 TITLE = ($scope)->
   title_change = ()->
     if $scope.story?
-      if $scope.top.focus
+      if $scope.top?.focus
         $scope.title = "(#{$scope.top.news_size}) #{$scope.subtitle} #{$scope.story.name}"
       else
         $scope.title = "#{$scope.subtitle} #{$scope.story.name}"

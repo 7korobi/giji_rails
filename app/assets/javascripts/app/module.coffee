@@ -121,9 +121,6 @@ MODULE = ($scope, $filter)->
   $scope.remove_card = (at, idx)->
     $scope.story.card[at].removeAt idx
 
-  init_gon = (href)->
-    $scope.gon(href)
-
   navi = (link)->
     $scope.navi.move link
     if $scope.potofs?
@@ -209,11 +206,9 @@ MODULE = ($scope, $filter)->
   CACHE   $scope
   POTOFS  $scope
 
-  # INIT FILTER POOL sequence
-  INIT    $scope, $filter
-  POOL    $scope
   DIARY   $scope
   TITLE   $scope
   GO      $scope
 
-  $scope.init()
+  # INIT FILTER POOL sequence
+  POOL    $scope, $filter

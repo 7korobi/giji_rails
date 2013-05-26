@@ -4,6 +4,7 @@ CACHE = ($scope)->
       $scope.event = $scope.events[turn]
     if $scope.forms?[turn]?
       $scope.form = $scope.forms[turn]
+    $scope.face.scan()
 
   $scope.merge_turn = (old_base, new_base)->
     return unless old_base? && new_base?
@@ -46,7 +47,7 @@ CACHE = ($scope)->
 
     event: ->
     _messages: (old_base, new_base)->
-      guard = -> false
+      guard = null
       filter = (o)-> o.logid
       return unless new_base?.messages?
 
@@ -57,7 +58,7 @@ CACHE = ($scope)->
       merge_by.news old_base, new_base, 'messages', guard, filter
 
     _potofs: (old_base, new_base)->
-      guard = -> false
+      guard = null
       filter = (o)-> o.pno
       return unless new_base?.potofs?
 
@@ -161,17 +162,24 @@ CACHE = ($scope)->
       ! o.is_delete
     old_hash = olds_head.groupBy filter
 
-    for new_item in news
-      key = filter new_item
-      old_item = old_hash[key]?[0]
+    if guard?
+      for new_item in news
+        key = filter new_item
+        old_item = old_hash[key]?[0]
+        if old_item?
+          olds_head.remove old_item
+          new_item.keys (key, o)->
+            old_item[key] = o unless guard key
+          new_item = old_item
+        olds_head.push new_item
+    else
+      for new_item in news
+        key = filter new_item
+        old_item = old_hash[key]?[0]
+        if old_item?
+          olds_head.remove old_item
 
-      if old_item?
-        olds_head.remove old_item
-        new_item.keys (key, o)->
-          old_item[key] = o unless guard key
-        new_item = old_item
-
-      olds_head.push new_item
+        olds_head.push new_item
     olds_head
 
 

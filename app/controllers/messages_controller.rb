@@ -21,6 +21,7 @@ class MessagesController < BasePastLogController
       template: "sow/village_info",
       logid:    "vilinfo00000",
     )
+    event_attr["has_all_messages"] = true
     gon.event  = event_attr
     gon.potofs = story.potofs.order_by(:pno.asc).cache.map(&:attributes)
   end

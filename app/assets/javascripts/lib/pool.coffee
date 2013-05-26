@@ -14,6 +14,14 @@ POOL = ($scope, $filter)->
 
     $scope.$apply()
 
+  $scope.init = ->
+    INIT $scope, $filter
+    if $scope.event?
+      $scope.do_sort_potofs()
+      $scope.set_turn($scope.event.turn)
+
+    apply.delay message_first
+
   refresh = ->
     apply()
     refresh.delay message_timer
@@ -56,22 +64,9 @@ POOL = ($scope, $filter)->
     adjust.delay  4000
 
   $scope.boot = ->
-    $scope.top.count()
-    $scope.face.scan()
-    apply.delay message_first
-
+    apply.delay 2000
     $scope.adjust()
 
-  $scope.init = ->
-    if $scope.event?
-      INIT $scope, $filter
-      $scope.do_sort_potofs()
-    else
-      INIT $scope, $filter
-    $scope.face.scan()
-    $scope.top.count()
-
-    apply.delay message_first
-
   # onload event
+  $scope.init()
   pool_start()

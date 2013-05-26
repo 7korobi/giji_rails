@@ -49,8 +49,8 @@ resque)
   ;;
 
 QUEUE)
-#  rm .ruby-version 
-#  export RBENV_VERSION=1.9.3-p194
+  rm .ruby-version 
+  export RBENV_VERSION=1.9.3-p194
   export LIST=giji_rsyncs,giji_schedules,giji_vils
   $0 kill TERM "rake resque:"
   $0 kill QUIT "Waiting for $LIST"

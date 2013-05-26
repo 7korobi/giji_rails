@@ -40,7 +40,7 @@ CGI = ($scope, $filter)->
     param.ua = "javascript" unless $scope.post_submit == protocol
     protocol $scope.form.uri, param, ->
       $scope.init()
-      cb()
+      cb() if cb
   $scope.submit = submit.throttle 5000
 
   regexp =
