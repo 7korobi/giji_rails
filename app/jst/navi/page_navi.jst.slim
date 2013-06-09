@@ -2,25 +2,25 @@ label.inline.radio
   span.btn.add-on(ng-click="search.value = search_input") ⎋
   input.input-medium(type="text" ng-model="search_input" placeholder="ログを探す")
 
+label.inline.radio(ng-show="event.is_progress")
+  a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
+
 label.inline.radio
-  span(ng-repeat="a in mode_common")
-    a.mark(style="font-size: 2.5ex;" ng-click="mode.value = a.value") {{a.name}}
+  select.input-mini(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
+  select.input-mini(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
 
-br 
+br
 
-label.inline.radio(ng-show="mode")
-  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
-
-label.inline.radio(ng-show="story && event && story.turn == event.turn")
+label.inline.radio(ng-show="event.is_progress")
   a.btn(ng-show="event.is_news" ng-click="ajax_event(event.turn, null, false)") ページ表示
   a.btn(ng-hide="event.is_news" ng-click="ajax_event(event.turn, null, true)") 最新の発言
 
 label.inline.radio(ng-hide="event.is_news")
   select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
 
-label.inline.radio
-  select.input-small(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
+label.inline.radio(ng-show="mode")
+  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
 
 label.inline.radio
-  select.input-mini(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
-
+  span(ng-repeat="a in mode_common")
+    a.mark(style="font-size: 2.5ex;" ng-click="mode.value = a.value") {{a.name}}

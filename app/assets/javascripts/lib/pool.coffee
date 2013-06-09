@@ -4,7 +4,6 @@ POOL = ($scope, $filter)->
   ajax_timer = 5 * 60 * 1000
 
   apply = ->
-    pool_ajax()
     popover = $('a[title]')
     popover.each (idx, dom)->
       $(dom).attr "data-content", $(dom).attr("title")

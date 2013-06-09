@@ -442,7 +442,7 @@ sub GetConfig {
 
 		# ファイルロック機能
 		ENABLED_GLOCK => 1, # 0: none, 1: flock, 2: rename
-		TIMEOUT_GLOCK => 5 * 60, # rename方式の時の時間切れ
+		TIMEOUT_GLOCK => 1 * 60, # rename方式の時の時間切れ
 
 		# 標準のバナー画像
 		FILE_TOPBANNER   => 'banner/mwtitle.jpg',
@@ -554,7 +554,7 @@ sub GetConfig {
 		CID_MAKER   => 'maker', # 村建て人用の便宜上のキャラID
 		CID_ADMIN   => 'admin', # 管理人用の便宜上のキャラID
 
-		FILE_WRITE     => "sow". int(rand(10)) .".cgi",
+		FILE_WRITE     => "sow.cgi",
 		FILE_SOW       => "sow.cgi",
 		FILE_VIL       => "vil.cgi",
 		FILE_LOG       => "log.cgi",

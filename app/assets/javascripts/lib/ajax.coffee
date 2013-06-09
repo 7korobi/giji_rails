@@ -67,6 +67,7 @@ AJAX = ($scope)->
         $scope.set_turn(turn)
         $scope.event.is_news = is_news
         $scope.page.value = 1
+        $scope.mode.value = $scope.mode_cache.talk
         $scope.boot()
         href = $scope.event_url $scope.event
         win.history "#{$scope.event.name}", href, location.hash

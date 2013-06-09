@@ -28,7 +28,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
             outframe = "outframe"
 
       calculate = (key, params)->
-        element = $("#sayfilter #navi_#{key}")
+        element = $(".sayfilter #navi_#{key}")
         return if element.length == 0
 
         buttons = FixedBox.list["#buttons"]

@@ -1,31 +1,34 @@
 FORM = ($scope)->
   $scope.stories_is_small = true
 
-  length = (text, unit)->
+  calc_length = (text)->
     return 0 unless text?
-    switch unit
-      when 'point'
-        0
-      when 'count'
-        0
-      when 'none'
-        0
     # countup sjis byte size
     ascii = text.match(/[\x01-\xff]/g)  or []
     other = text.match(/[^\x01-\xff]/g) or []
     ascii.length + other.length * 2
 
+  calc_point = (size)->
+    point  = 20
+    point += (size - 50)/14 if 50 < size
+    point.floor()
+
   valid = (f, cb)->
     f.valid = true
     if f.max
-      size  = length(f.text, f.max.unit)
       lines = f.text.lines().length
-      cb(size)
+      size  = calc_length(f.text)
+      point = calc_point(size, lines) 
+
+      cb(size, lines)
       f.valid = false if f.max.size < size
       f.valid = false if f.max.line < lines
       if f.valid
         f.error = ""
-        mark = ""
+        if 'point' == f.max.unit
+          mark = "#{point}pt "
+        else
+          mark = ""
       else
         f.error = "cautiontext"
         mark = "⊘"
@@ -57,11 +60,12 @@ FORM = ($scope)->
     list.join("<br>")
 
   $scope.text_valid = (f)->
-    valid f, (size)->
+    valid f, (size, lines)->
       f.valid = false if size < 4
 
   $scope.action_valid = (f)->
-    valid f, (size)->
+    valid f, (size, lines)->
+      f.valid = false if f.target == "-1" && f.action != "-99"
       if size < 1 
         f.valid = false if f.target ==  "-1"
         f.valid = false if f.action == "-99"

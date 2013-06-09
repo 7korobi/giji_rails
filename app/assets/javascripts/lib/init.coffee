@@ -60,7 +60,7 @@ INIT_POTOFS = ($scope, gon)->
           potof.win = win_check potof, gon.story
 
           if gon.story.is_finish
-            if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA"].any gon.story.folder
+            if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA", "MORPHE"].any gon.story.folder
               is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].any gon.story.type.game
               is_dead_lose = 1 if "LONEWOLF" == potof.win
               is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
@@ -68,7 +68,7 @@ INIT_POTOFS = ($scope, gon)->
               is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.any "LOVEANGEL"
               potof.win_result = "敗北"
               potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
-              potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && "EVIL" == potof.win
+              potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && gon.event.winner != "WIN_LOVER" && "EVIL" == potof.win
               potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
               potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.any potof.pno
               potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
@@ -96,16 +96,16 @@ INIT_POTOFS = ($scope, gon)->
       potof.stat = "#{potof.stat_at} #{potof.live_name}"
 
       potof.text = []
+      if potof.rolestate?
+        rolestate = potof.rolestate
+        SOW.maskstates.keys (mask, text)->
+          potof.text.push "#{text} " if 0 == (rolestate & mask)
+          rolestate |= mask
       potof.text.push "☑" if 'pixi' == potof.sheep
       potof.text.push "♥" if 'love' == potof.love
       potof.text.push "☠" if 'hate' == potof.love
       potof.text.push "<s>♥</s>" if 'love' == potof.pseudolove
       potof.text.push "<s>☠</s>" if 'hate' == potof.pseudolove
-      if potof.rolestate?
-        rolestate = potof.rolestate
-        SOW.maskstates.keys (mask, text)->
-          potof.text.push " #{text}" if 0 == (rolestate & mask)
-          rolestate |= mask
 
       potof.said = ""
       potof.said_num = 0
@@ -158,7 +158,7 @@ INIT = ($scope, $filter)->
 
 
   if $scope.potofs?
-    live_potofs = gon.potofs.filter (o)->
+    live_potofs = $scope.potofs.filter (o)->
       o.deathday < 0
 
     $scope.potofs.mob = ->
@@ -172,7 +172,6 @@ INIT = ($scope, $filter)->
       key = $scope.potof_key potof
       potofs_hash[key] = potof.name
 
-  if $scope.potofs?
     unless $scope.hide_potofs?
       ArrayNavi.push $scope, 'hide_potofs',
         options:

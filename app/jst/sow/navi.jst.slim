@@ -1,6 +1,7 @@
+.sayfilter#topviewer(style="width: 0px;")
+
 .sayfilter#sayfilter(style="width: 0px;")
   h4.sayfilter_heading#navi_head(ng-hide="navi.hide") {{story.name}}
-
   .insayfilter(navi="switch" name="設定")
     .paragraph(template="navi/switch")
 
@@ -34,12 +35,13 @@
   .insayfilter#navi_page
     .paragraph(ng-show="page")
       .sayfilter_content.form-inline(ng-show="event.is_news")
-        label.inline.radio(ng-show="story.turn == event.turn")
+        label.inline.radio(ng-show="event.is_progress")
           a.btn(ng-click="ajax_event(event.turn, null, false)") ページ表示
-        label.note 5分ごとに、最新の議事録を自動取得します。
+          | &nbsp;
+          a.mark(style="font-size: 2.5ex;" ng-click="pool()") ♻
 
       .sayfilter_content.form-inline(ng-hide="event.is_news")
-        label.inline.radio(ng-show="story.turn == event.turn")
+        label.inline.radio(ng-show="event.is_progress")
           a.btn(ng-click="ajax_event(event.turn, null, true)") 最新の発言
         label.inline.radio(template="navi/paginate")
 

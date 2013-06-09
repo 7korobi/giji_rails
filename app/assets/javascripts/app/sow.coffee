@@ -4,8 +4,16 @@ if SOW_RECORD.CABALA.events?
     v.key = k
 
 CGI = ($scope, $filter)->
-  $scope.mode_current_set = ->
-    $scope.mode_current = 'talk_all_open_player'
+  $scope.mode_cache = 
+    info: 'info_open_player'
+    memo: 'memo_all_open_last_player'
+    talk: 'talk_all_open_player'
+  $scope.deploy_mode_common = ->
+    $scope.mode_common = [
+      {name: '情報', value: $scope.mode_cache.info }
+      {name: 'メモ', value: $scope.mode_cache.memo }
+      {name: '議事', value: $scope.mode_cache.talk }
+    ]
 
   get = (href, cb)->
     $scope.get href + "&ua=javascript", cb
