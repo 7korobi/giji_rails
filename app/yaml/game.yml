@@ -459,7 +459,7 @@ PERJURY:
       URL_SW:         http://perjury.rulez.jp
       BASEDIR_CGIERR: http://perjury.rulez.jp//
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
-      MAX_VILLAGES:   2
+      MAX_VILLAGES:   3
       BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
@@ -602,8 +602,9 @@ LOBBY:
       ENABLED_SEQ_EVENT: [0, "0:ランダムイベント 1:順序通りのイベント"]
     cfg:
       <<: *cfg_braid
-      USERID_NPC:    master
-      USERID_ADMIN:  master
+      RULE: LOBBY
+      USERID_NPC:   master
+      USERID_ADMIN: master
       URL_SW:         http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby
       NAME_HOME:      人狼議事 ロビー

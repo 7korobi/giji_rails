@@ -39,3 +39,7 @@ chr_jobs:
   job: 地下鉄道
 - face_id: t13
   job: MNU機関
+- face_id: t14
+  job: 猫の集会
+- face_id: t15
+  job: 少年探偵団

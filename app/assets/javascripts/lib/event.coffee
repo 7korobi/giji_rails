@@ -1,5 +1,9 @@
 if navigator.userAgent.toLowerCase().indexOf('android') != -1
   head.browser?.android = true
+if navigator.userAgent.toLowerCase().indexOf('iphone') != -1
+  head.browser?.iphone = true
+if navigator.userAgent.toLowerCase().indexOf('ipad') != -1
+  head.browser?.iphone = true
 head.useragent = navigator.userAgent
 
 

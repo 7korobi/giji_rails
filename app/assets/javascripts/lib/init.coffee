@@ -76,7 +76,9 @@ INIT_POTOFS = ($scope, gon)->
         potof.win_result = "" if "suddendead" == potof.live
 
         potof.win_name = SOW.wins[potof.win]?.name
-        potof.role_names  = potof.role.map $scope.rolename
+        potof.role_names = potof.role.map $scope.rolename
+      else
+        potof.role_names = []
 
       if potof.select?
         potof.select_name = $scope.rolename potof.select
@@ -127,15 +129,9 @@ INIT_POTOFS = ($scope, gon)->
           when 'stat_at', 'stat_type'
             potof.stat
           when 'win_result', 'win_name','role_names', 'select_name'
-            if potof.role_names?
-              potof.role_names.join('、')
-            else
-              ""
+            potof.role_names.join('、')
           when 'text'
-            if potof.text?
-              potof.text.join('')
-            else
-              ""
+            potof.text.join('')
       potof
 
 

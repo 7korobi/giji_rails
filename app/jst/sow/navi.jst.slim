@@ -1,49 +1,58 @@
-.sayfilter#topviewer(style="width: 0px;")
-
-.sayfilter#sayfilter(style="width: 0px;")
-  h4.sayfilter_heading#navi_head(ng-hide="navi.hide") {{story.name}}
-  .insayfilter(navi="switch" name="設定")
-    .paragraph(template="navi/switch")
-
-  .insayfilter(navi="calc" name="状況")
-    .paragraph
-      h4.sayfilter_caption_enable  村の進行状況
-      .sayfilter_content
-        ul
-          li あと {{story.timer.extend}}回、更新を延長できる。
-          li.small {{story.timer.nextupdatedt.relative('ja')}}に更新
-          li.small {{story.timer.nextchargedt.relative('ja')}}に補充
-          li.small(ng-show="story.is_totalcommit") {{story.timer.nextcommitdt.relative('ja')}}にcommit
-          li.small(ng-show="story.is_prologue") {{story.timer.scraplimitdt.relative('ja')}}に廃村
-        br
-
+.sayfilter#topviewer
   .insayfilter(navi="diary" name="手帳")
     .paragraph(template="navi/diary")
+
+  .insayfilter(navi="calc" name="設定")
+    .paragraph(template="navi/switch")
+      h4.sayfilter_caption_enable  進行設定
+      .sayfilter_content
+        .note
+          | あと {{story.timer.extend}}回、更新を延長できる。
+        .note
+          | {{story.timer.nextupdatedt.relative('ja')}}に更新
+        .note
+          | {{story.timer.nextchargedt.relative('ja')}}に補充
+        .note(ng-show="story.is_totalcommit")
+          | {{story.timer.nextcommitdt.relative('ja')}}にcommit
+        .note(ng-show="story.is_prologue")
+          | {{story.timer.scraplimitdt.relative('ja')}}に廃村
+
+.sayfilter#sayfilter
+  h4.sayfilter_heading(navi="head" ng-hide="navi.hide") {{story.name}}
+  .insayfilter#navi_events
+    .paragraph
+      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_content(template="navi/events")
 
   .insayfilter(navi="info" name="名簿")
     .paragraph(ng-show="potofs")
       .sayfilter_content(template="navi/potofs_small")
 
-  .insayfilter(navi="link" name="移動" child="page")
+  .insayfilter(navi="link" name="移動" child="events")
     .paragraph
       h4.sayfilter_caption_enable(ng-show="page")  他の場面へ
       .sayfilter_content(ng-show="page" template="navi/page_filter")
 
-      h4.sayfilter_caption_enable  他の章へ
-      .sayfilter_content(template="navi/events")
-
-  .insayfilter#navi_page
-    .paragraph(ng-show="page")
+  .insayfilter(navi="page" ng-show="page")
+    .paragraph
       .sayfilter_content.form-inline(ng-show="event.is_news")
         label.inline.radio(ng-show="event.is_progress")
           a.btn(ng-click="ajax_event(event.turn, null, false)") ページ表示
-          | &nbsp;
+        label.inline.radio(ng-show="event.is_progress")
           a.mark(style="font-size: 2.5ex;" ng-click="pool()") ♻
+        label.inline.radio
+          | &nbsp;
+          a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
+          a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
 
       .sayfilter_content.form-inline(ng-hide="event.is_news")
         label.inline.radio(ng-show="event.is_progress")
           a.btn(ng-click="ajax_event(event.turn, null, true)") 最新の発言
         label.inline.radio(template="navi/paginate")
+        label.inline.radio
+          | &nbsp;
+          a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
+          a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
 
 #buttons
   nav

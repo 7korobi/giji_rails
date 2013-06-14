@@ -2,7 +2,7 @@ h4.sayfilter_caption_enable
   | {{diary.head()}}
 .sayfilter_content
   .formpl_content
-    textarea(cols="30" rows="10" ng-model="diary.form.text")
+    textarea.input-block-level(cols="50" rows="6" ng-model="diary.form.text")
   span
     | &nbsp;履歴:
     code(ng-click="diary.back(version)" ng-repeat="version in diary.versions()")

@@ -8,10 +8,11 @@ angular.module "giji", ["giji.filters", "giji.directives", "giji.config"]
 class FixedBox
   @list = {}
 
-  constructor: (dx, dy, fixed_box)->
+  constructor: (dx, dy, fixed_box, force_zoom)->
     @dx = dx
     @dy = dy
     @box = fixed_box
+    @force_zoom = force_zoom
 
     if @box?
       @box.css
@@ -39,7 +40,7 @@ class FixedBox
 
     @box.to_z_front()
 
-    if 1 < win.zoom  or  head.browser.android
+    if 1 < win.zoom  or  head.browser.android  or  @force_zoom
       @box.css
         position: "absolute"
 
@@ -86,8 +87,8 @@ class FixedBox
         easing: 'swing'
         queue: false
 
-FixedBox.push = (dx, dy, key)->
-  FixedBox.list[key] or= new FixedBox dx, dy, $(key)
+FixedBox.push = (dx, dy, key, force_zoom)->
+  FixedBox.list[key] or= new FixedBox dx, dy, $(key), force_zoom
 
 
 class Form

@@ -54,6 +54,14 @@ CACHE = ($scope)->
       if new_base.turn?
         new_base.messages.each (message)->
           message.turn = new_base.turn
+          if message.plain?
+            if message.plain.type?
+              message.mesicon = SOW_RECORD.CABALA.mestypeicons[message.plain.type] 
+              message.mestype = SOW_RECORD.CABALA.mestypes[message.plain.type]
+              message.order = GIJI.message.order[message.mestype] || 8
+            if message.plain.updated_at?
+              message.updated_at = Date.create(1000 * message.plain.updated_at) 
+          message.updated_at ||= new Date
 
       merge_by.news old_base, new_base, 'messages', guard, filter
 

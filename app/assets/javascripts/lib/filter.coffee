@@ -145,9 +145,9 @@ FILTER = ($scope, $filter)->
 
       if $scope.modes.last
         result = []
-        order   = (o)-> [GIJI.message.order[o.mestype] || 8, o.date || (new Date)]
+        order   = (o)-> [o.order, o.updated_at]
         list.groupBy($scope.potof_key).keys (key, list)->
-          result.push list.last()
+          result.push list.sortBy(order).last()
         result.sortBy(order)
       else
         list

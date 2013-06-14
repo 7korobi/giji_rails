@@ -17,11 +17,11 @@ MODULE = ($scope, $filter)->
 
   anchor = (log)->
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """ <a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a> """
+      """<a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a>"""
 
   random = (log)->
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """ <a rel="popover" data-content="#{cmd}" class="mark">#{val}</a> """
+      """<a rel="popover" data-content="#{cmd}" class="mark">#{val}</a>"""
 
   link_regexp = ///
       (\w+)://([^/]+)([^<>）］】」\s]+)
@@ -39,7 +39,7 @@ MODULE = ($scope, $filter)->
           #{protocol}://#{host} <br>
           #{path}
         """
-        log = log.replace uri, """ <span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a rel=popover data-content="#{data}">#{protocol}</a></span> """
+        log = log.replace uri, """<span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a rel=popover data-content="#{data}">#{protocol}</a></span>"""
     return log
 
 

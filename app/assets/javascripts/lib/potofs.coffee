@@ -65,12 +65,10 @@ POTOFS = ($scope)->
 
   potofs_sortBy = (tgt, reverse)->
     return unless $scope.potofs
-    for potof in $scope.potofs
-      potof[tgt] or= ""
     $scope.potofs = $scope.potofs.sortBy tgt, reverse
 
     groups = $scope.potofs_groups = $scope.potofs.groupBy tgt
-    keys = groups.keys()
+    keys = $scope.potofs.map(tgt).unique()
     for key in keys
       if 'deny' != head_mode[tgt] && groups[key]?
         has_head = true
@@ -80,11 +78,7 @@ POTOFS = ($scope)->
         has_head = false
 
       groups[key].has_head = has_head
-      groups[key].head =
-        if has_head
-          key
-        else
-          ""
+      groups[key].head = key
     orders =
       basic: (key)-> groups[key].head
       count: (key)-> groups[key].length

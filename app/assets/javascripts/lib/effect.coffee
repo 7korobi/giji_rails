@@ -2,6 +2,7 @@ angular.module("giji.directives").directive "accordion", [->
   restrict: "C"
   link: ($scope, elm, attr, ctrl)->
     elm.find("dd").hide()
+    elm.find("dt").append('<div style="line-height:0; text-align:right; margin:-0.5ex 0 0.5ex 0;">↨</div>')
     elm.on 'click', 'dt', ->
       $(this).parents('dl').find("dd").hide()
       $(this).next().show 'fast'
@@ -11,21 +12,26 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
   effect = ($scope)->
     resize_naviitems = ->
       return unless $scope.navi? && $scope.width?
+      width = win.width
       height = win.height
-      width  = win.width
-
-      content  = "contentframe"
+      content = "contentframe"
       outframe = "outframe"
       switch $scope.width.value
         when 800
-          lim_left   = (  778 - 770)/2 + 188
-          info_left  = (width - 770)/2 + 188
+          lim_left   = (  778 - 770)/2 + 187
+          info_left  = (width - 770)/2 + 187 - 60
           if  lim_left < info_left
-            content  = "contentframe_navileft"
+            content = "contentframe_navileft"
             outframe = "outframe_navimode"
+            info_left = (width - 770)/2 + 187
           else
-            content  = "contentframe"
+            content = "contentframe"
             outframe = "outframe"
+            info_left = (width - 580)/2
+        when 480
+          info_left = width - 472
+      info_right = width - info_left - 110
+
 
       calculate = (key, params)->
         element = $(".sayfilter #navi_#{key}")
@@ -38,27 +44,28 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           max_width = width - 40
 
         gap = 0
+        if key == 'calc'
+          small = info_right
+        if key == 'diary'
+          small = info_right
+
         if key == 'head'
           small = 100
-        if key == 'calc'
-          small = 100
-        if key == 'diary'
-          small = 100
+        if key == 'events'
+          small = 125
         if key == 'filter'
           small = 150
-        if key == 'link'
-          small = 185
         if key == 'info'
           small = 185
         if key == 'switch'
           small = 185
+        if key == 'link'
+          small = 185
         if key == 'page'
-          small = 450
+          small = max_width
 
         switch $scope.width.value
           when 480
-            small   or=   638 - 472
-            info_left = width - 472
             if      small < info_left
               info_width  = info_left
               params.is_fullwidth = false
@@ -67,8 +74,6 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
               params.is_fullwidth = true
 
           when 800
-            small    or= (  798 - 770)/2 + 188
-            info_left  = (width - 770)/2 + 188
             if     small  < info_left
               info_width  = info_left
               params.is_fullwidth = false
@@ -97,8 +102,12 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $scope.navi.of.keys calculate
       static_navis.keys   calculate
       extra_navis.keys (k,v)->
-        calculate(k, $scope.navi.of[v.parent])
+        calculate k, $scope.navi.of[v.parent]
 
+      $("#topviewer").css
+        width: info_right
+      $("#sayfilter").css
+        width: info_left
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
 
@@ -107,11 +116,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       win.on_resize resize_naviitems
     ).delay 100
   extra_navis = {}
-  static_navis = 
-    head:
-      show: true
-    error:
-      show: true
+  static_navis = {}
 
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
@@ -129,14 +134,18 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         $scope.adjust()
       effect($scope)
 
-    $scope.navi.select.add
-      name: attr.name
-      val:  attr.navi
-    if ! CGI? 
-      $scope.navi.params.current.add attr.navi
+    if attr.name?
+      $scope.navi.select.add
+        name: attr.name
+        val:  attr.navi
+      $scope.navi.params.current.add attr.navi if ! CGI?
+    else
+      static_navis[attr.navi] =
+        show: true
     $scope.navi.popstate()
 
     if attr.child?
-      extra_navis[attr.child] =
-        parent: attr.navi
+      for child in attr.child.split(",")
+        extra_navis[child] =
+          parent: attr.navi
 ]

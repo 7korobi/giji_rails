@@ -144,6 +144,22 @@ sub OutHTMLStateInfo {
 <div class="paragraph">
 _HTML_
 
+  if( 'LOBBY' eq $cfg->{'RULE'} ){
+    print <<"_HTML_";
+<script>
+gon.top_info = [
+{ mesicon:'',
+  name:'ようこそ！',
+  text:'みなさまの助けになるよう、ロビーを用意いたしました。<br>\\
+相談や困りごと、ちょっとした疑問などをお持ちでしたら、どうぞ、ごゆっくりなさいませ。',
+updated_at:new Date(1370662886000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c20"}
+];
+</script>
+</div>
+<div class="message_filter" ng-repeat="message in top_info" log="message">
+_HTML_
+  }
+
   if( 'WOLF' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
 こちらのページは<span style="color:#FFF">自陣営勝利を目指し、議論をし、最善を尽くす村</span>用に調整しています。<br>
@@ -215,10 +231,10 @@ _HTML_
 gon.top_info = [
 { mesicon:'',
   name:'ようこそ！',
-  log:'<span class="mark">陰謀を弄び、他人を陥れ、濡れ手に粟を求める村</span>用に、このページは調整してある。\\
+  text:'<span class="mark">陰謀を弄び、他人を陥れ、濡れ手に粟を求める村</span>用に、このページは調整してある。\\
 作ったばかりの州なので、意図しない動作をするかもね。\\
 それでも泣いたり困ったりしない、逞しい大人だけがハカリゴトを楽しめる。',
-date: new Date(1370662886000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c78"}
+updated_at:new Date(1370662886000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c78"}
 ];
 </script>
 </div>

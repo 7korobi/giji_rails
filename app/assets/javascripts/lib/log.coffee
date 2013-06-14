@@ -14,8 +14,6 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
     if ! log.img? && log.face_id? && log.csid?
       log.img  or= $scope.img_cid(log.csid, log.face_id)
 
-    log.updated_at = Date.create log.date
-
     log.cancel_btn = ->
       if log.logid? && "q" == log.logid[0]
         if (new Date() - log.date) < 25 * 1000
@@ -36,7 +34,11 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
       else
         log.anchor or= ""
 
-    log.text = $scope.text_decolate log.log
+    if ! log.text?
+      if log.plain?
+        log.text = $scope.text_decolate log.plain.text
+      else
+        log.text = $scope.text_decolate log.log
 
     GIJI.template $compile, $scope, elm, log.template
 

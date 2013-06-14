@@ -1,15 +1,21 @@
-table.table.table-condensed
+table.table.table-condensed(style="margin:0;")
   thead.head
     tr
       th
-        span.name
-          | &nbsp;あと{{sum.actaddpt}}促&nbsp;({{potofs.length}}人)
+        span.name(ng-show="sum.actaddpt")
+          | &nbsp;あと{{sum.actaddpt}}促
+        span.name(ng-show="potofs.length")
+          | &nbsp;({{potofs.length}}人)
       th(colspan="4" style="text-align: right;")
-        div(ng-hide="secret_is_open")
+        span
+          br
+          code(ng-click="secret_toggle()") ネタバレ
+          | &nbsp;
+        span(ng-hide="secret_is_open")
           code(ng-click="sort_potofs('stat_at',0)") 日程
           code(ng-click="sort_potofs('stat_type','')") 状態
           code(ng-click="sort_potofs('said_num',0)") 発言
-        div(ng-show="secret_is_open")
+        span(ng-show="secret_is_open")
           code(ng-click="sort_potofs('stat_at',0)") 日程
           | &nbsp;
           code(ng-click="sort_potofs('said_num',0)") 発言
@@ -21,19 +27,18 @@ table.table.table-condensed
           code(ng-click="sort_potofs('role_names','')") 役割
           code(ng-click="sort_potofs('select_name','')") 希望
           code(ng-click="sort_potofs('text','')") 補足
-      th(style="width: 17px")
+      th(style="width: 1ex")
         a(ng-click="potof_only(potofs)") ➡
 
-
+table.table.table-condensed(style="margin:0;")
   tbody(ng-repeat="key in potofs_keys")
-    tr.head
+    tr.head(ng-show="potofs_groups[key].has_head")
       th.mark(colspan="5")
         span(ng-bind-html-unsafe="potofs_groups[key].head")
-        span(ng-show="potofs_groups[key].has_head")
+        span
           | ({{potofs_groups[key].length}}人)
-      th(style="width: 17px")
-        div(ng-show="potofs_groups[key].has_head")
-          a(ng-click="potof_only(potofs_groups[key])") ➡
+      th(style="width: 1ex")
+        a(ng-click="potof_only(potofs_groups[key])") ➡
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
@@ -63,17 +68,6 @@ table.table.table-condensed
             | 、
           s.note(ng-show="potof.pseudobond_names")
             | {{potof.pseudobond_names.join('、')}}
-      td(style="width: 17px")
+      td(style="width: 1ex")
         a(ng-click="potof_only([potof])") ➡
-
-  tbody
-    tr.head
-      th(colspan="6")
-    tr(ng-class="hide_potofs.of.others.class")
-      td(colspan="2" ng-click="other_toggle()")
-        span.name 他の人々
-      td(colspan="4" style="text-align: right;")
-        code(ng-click="secret_toggle()") ネタバレ
-    tr
-      th(colspan="6")
 
