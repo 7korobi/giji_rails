@@ -720,8 +720,6 @@ Face:
   face_id: g06
   name: 黍炉
   comment: "ダリダイ・オッチギン（Daridai Otčigin）"
-# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
-# http://cjjc.weblio.jp/
 
 - name: ダイミ
   face_id: mad07
@@ -778,14 +776,40 @@ Face:
   comment: "ベイカー街少年探偵団"
   order: 30015
 
-# 少年探偵団、覇権政府、猫の集会、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
+######################### 
+# 2013-06-15 update
+
+- order: 80020
+  face_id: sf20
+  name: ティソ
+  comment: 地図の投影図法。地図の歪み度合いを表現する手法から。
+
+- order: 10008
+  face_id: g07
+  name: ジリヤ
+  comment: ロシア女性名
+
+- order: 30016
+  name: アラン
+  face_id: t16
+  comment: "映画監督たちの共用偽名"
+
+# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
+# http://cjjc.weblio.jp/
+
+# 覇権政府、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
 # 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
-
-#######################
-# 
-
-# 労働者 駅長 車掌 客室乗務員
+#
 # 歩き巫女 中条流 侘び茶 侘茶湯 板前 
+# 労働者 駅長 車掌 客室乗務員
+# 写真家 〜診断士 洞窟探査 鉱泉分析
+# 三合派 八宅派 紫白九星派 玄空飛星派 玄空大卦派 八字派
+# 聖堂騎士
+# 黒後家蜘蛛 黒い兄弟
+# 官房秘密局 時間貯蓄銀行 保険機関 観光機関 麻薬委員
+# 魔法省 学園特警
+# とんがり白帽 みつば詰草 十字に薔薇 不死の鸚哥
+# 人民の意志

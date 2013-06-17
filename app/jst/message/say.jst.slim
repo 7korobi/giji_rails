@@ -12,5 +12,6 @@ table.say(ng-class="message.mestype")
           p.mes_date
             a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}
             span &nbsp;
-            span {{message.time()}}
+            span
+              | {{message.time()}}
             span(ng-bind-html-unsafe="message.cancel_btn()")

@@ -52,3 +52,5 @@ chr_jobs:
   job: 感性子
 - face_id: sf19
   job: 理性子
+- face_id: sf20
+  job: 測量士

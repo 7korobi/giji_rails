@@ -31,7 +31,7 @@ gem 'jquery-rails'
 # gem 'spreadsheet'
 # gem 'rabl'
 # gem 'codemirror-rails'
-gem 'twitter-bootstrap-rails', '= 2.1.4'
+gem 'twitter-bootstrap-rails'
 
 # queue
 gem 'resque'

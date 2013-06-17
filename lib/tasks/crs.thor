@@ -28,7 +28,6 @@ class Crs < Thor
     end.flatten.each do | params |
       CrsCreate.new.activate( params )
     end
-
     rsync.each do |folder, protocol, set|
       rsync.put(protocol, set, 'rs/', :lapp, :app)
     end
@@ -58,18 +57,20 @@ class Crs < Thor
       @chrset = params[:set]
       @chrnpc = params[:npc]
 
-      perl_change = -> s { s.inspect.gsub(/[噂十]/){ $& + '\\' }}
-      @chrnpc.say_0 = perl_change.call @chrnpc.say_0
-      @chrnpc.say_1 = perl_change.call @chrnpc.say_1
+      perl_change = -> s { s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
+      @chrnpc.say_0 = perl_change.call @chrnpc.say_0.inspect
+      @chrnpc.say_1 = perl_change.call @chrnpc.say_1.inspect
 
       jobs  = @chrset.chr_jobs
       job_groups = jobs.group_by(&:face_id)
+
       faces = params[:faces]
       faces.each do |face|
+        face.name = perl_change.call face.name
         job = job_groups[face.id].first
 
         [:job].each do |col|
-          face[col] = job[col]
+          face[col] = perl_change.call job[col]
         end
       end
       @orders = faces.sort_by(&:order)

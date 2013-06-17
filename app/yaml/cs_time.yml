@@ -43,3 +43,5 @@ chr_jobs:
   job: 猫の集会
 - face_id: t15
   job: 少年探偵団
+- face_id: t16
+  job: 安全保障局

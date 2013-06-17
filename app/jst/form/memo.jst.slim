@@ -7,7 +7,8 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('memo')")
         .msg
           .form-horizontal
             h3.mesname
-              a  {{f.longname}}
+              a
+                | {{f.longname}}
 
             .vote(form="ff.jst" ng-repeat="ff in f.votes")
             .mark(ng-bind-html-unsafe="error(ff)" ng-repeat="ff in f.votes")
@@ -22,7 +23,8 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('memo')")
               | {{f.count}}
 
               select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
-              p  {{f.caption}}
+              p
+                | {{f.caption}}
               span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
               .mark(ng-bind-html-unsafe="error(f)")

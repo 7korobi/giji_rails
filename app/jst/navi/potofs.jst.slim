@@ -56,7 +56,8 @@ table.table.table-condensed(style="margin:0;")
           span.nowrap
             | {{potof.win_name}}::{{potof.role_names.join('、')}}
           .note.nowrap
-            strong {{potof.win_result}}
+            strong
+              | {{potof.win_result}}
             span.name(ng-show="potof.select_name")
               | &nbsp; {{potof.select_name}} を希望
       td(ng-click="potof_toggle(potof)")

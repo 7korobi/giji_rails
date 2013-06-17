@@ -6,5 +6,6 @@ div(ng-class="message.mestype")
       span(ng-bind-html-unsafe="message.text")
     p.mes_date
       span &nbsp;
-      span {{message.time()}}
+      span
+        | {{message.time()}}
     hr.invisible_hr

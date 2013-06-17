@@ -7,7 +7,8 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
         .msg
           .form-horizontal
             h3.mesname
-              a  {{f.longname}}
+              a
+                | {{f.longname}}
               | &nbsp;({{potof.sow_auth_id}})
               | &nbsp; {{potof.role_names.join("、")}}
               span(ng-show="0 < potof.bonds.length")&nbsp;★絆
@@ -25,7 +26,8 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.fin
 
               select.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
               select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
-              p  {{f.caption}}
+              p
+                | {{f.caption}}
               span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
               .mark(ng-bind-html-unsafe="error(f)")

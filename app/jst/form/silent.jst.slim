@@ -7,11 +7,13 @@ table(class="say {{f.mestype}}" ng-show="form_show.find('secret')")
         .msg
           .form-horizontal
             h3.mesname
-              a  {{f.longname}}
+              a
+                | {{f.longname}}
 
             .vote(form="ff.jst" ng-repeat="ff in f.votes")
             .mark(ng-bind-html-unsafe="error(ff)" ng-repeat="ff in f.votes")
 
           .form-inline
             .formpl_content
-              p  {{f.caption}}
+              p
+                | {{f.caption}}

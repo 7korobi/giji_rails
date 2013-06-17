@@ -1,4 +1,4 @@
-ul.nav.nav-list
+ul.nav.nav-list.unstyled
   li(ng-repeat="e in events" ng-click="ajax_event(e.turn, null, !!e.is_news)")
     a
       i.icon-film( ng-show="e.turn == event.turn")

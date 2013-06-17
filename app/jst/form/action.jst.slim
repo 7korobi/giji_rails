@@ -8,7 +8,8 @@ div(class="{{f.mestype}}" ng-show="form_show.find('action')")
 
       fieldset.formpl_action.action_type
         legend  アクション内容
-      p.text  {{preview_action(f)}}
+      p.text
+        | {{preview_action(f)}}
       p
         a.btn(ng-click="action(f, f.valid)") {{f.title}}
         | {{f.count}}

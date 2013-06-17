@@ -5,4 +5,5 @@ table.memo(ng-class="message.mestype")
         h5(ng-bind-html-unsafe="message.name")
       td.memoright
         p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
-        p.mes_date {{message.time()}}
+        p.mes_date
+          | {{message.time()}}
