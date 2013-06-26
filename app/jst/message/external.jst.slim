@@ -1,0 +1,12 @@
+div(ng-class="message.mestype")
+  .action
+    p.text(ng-class="message.style")
+      a(href="{{message.uri}}")
+        span.mark
+          | {{message.protocol}}
+        | ://
+        span.mark
+          | {{message.host}}
+        span.note
+          | {{message.path}}
+    hr.invisible_hr

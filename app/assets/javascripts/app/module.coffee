@@ -4,75 +4,48 @@ MODULE = ($scope, $filter)->
   $scope.link = GIJI.link
 
   background = (log)->
+    return log unless log
     if $scope.modes?.player
       log.replace ///
         (/\*)(.*?)(\*/|$)
       ///g,'<em>$1$2$3</em>'
     else
-      ret = log.replace ///
+      log.replace ///
         (/\*)(.*?)(\*/|$)
       ///g,'<span>$1 B.G $3</span>'
-      # ret = ""  if  "" == ret.removeTags('span').trim()
-      ret
 
   anchor = (log)->
+    return log unless log
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
       """<a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a>"""
 
   random = (log)->
+    return log unless log
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<a rel="popover" data-content="#{cmd}" class="mark">#{val}</a>"""
+      """<a class="mark" href_eval="inner(this,'#{cmd}','#{val}')">#{val}</a>"""
 
   link_regexp = ///
-      (\w+)://([^/]+)([^<>）］】」\s]+)
+      (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
   ///
   link_regexp_g = link_regexp.setFlags('g')
 
+  id_num = 0
   link = (log)->
     return log unless log
-    text = log.removeTags('a')
+    text = log.replace("<"," <").stripTags()
     uris = text.match link_regexp_g
     if uris
       for uri in uris
+        id_num++
         [uri, protocol, host, path] = uri.match link_regexp
-        data = """
-          #{protocol}://#{host} <br>
-          #{path}
-        """
-        log = log.replace uri, """<span class="badge"><a href="#{uri}" target="_blank">LINK</a> - <a rel=popover data-content="#{data}">#{protocol}</a></span>"""
+        log = log.replace uri, """<span class="badge" href_eval="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
     return log
-
 
   $scope.text_decolate = (log)->
     if log
       background anchor link random log
     else
       null
-
-  $scope.lax_date = (date)->
-    date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
-
-  $scope.lax_time = (date)->
-    if date? && date.addMinutes?
-      timespan = (new Date() - date)/1000
-      limit = 3 * 60 * 60
-      if - limit < timespan < limit
-        return "1分後"    if -60 < timespan < -25
-        return "25秒以内" if -25 < timespan <  25
-        return "1分前"    if  25 < timespan <  60
-        return date.relative('ja')
-      else
-        now = date.clone()
-        now.addMinutes(15)
-        postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
-        return now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
-    else
-      return "....-..-..(？？？) --..時頃"
-
-  $scope.news = ()->
-    for o in GIJI.news
-      o.is_news = Date.create('3days ago') < Date.create(o.date)
-    GIJI.news
 
   $scope.$watch 'title', (value, oldVal)->
     $('title').text(value);
@@ -100,87 +73,10 @@ MODULE = ($scope, $filter)->
     face_id = o.face_id || '*'
     "#{csid}-#{face_id}"
 
-  navi = (link)->
-    $scope.navi.move link
-    if $scope.potofs?
-      $scope.potofs_is_small = false
-      $scope.secret_is_open  = true
-    $scope.$apply()
-
-  cancel_say = (queid)->
-    $scope.submit
-      cmd:   'cancel'
-      queid: queid
-      turn: $scope.event.turn
-      vid:  $scope.story.vid
-
-  popup_apply = (item, turn)->
-    idx = $scope.anchors.indexOf item
-    if idx < 0
-      $scope.anchors.push item
-      item.turn = turn
-      item.z = Date.now()
-      item.top = $scope.pageY + 24
-      $scope.$apply()
-
-      drag = $(".drag.#{item.logid}")
-      drag.fadeIn 'fast', ->
-        drag.find(".badge").attr("href_eval","popup(#{item.turn},'#{item.logid}')")
-    else
-      drag = $(".drag.#{item.logid}")
-      drag.fadeOut 'fast', ->
-        $scope.anchors.removeAt(idx)
-        $scope.$apply()
-    idx
-
-  popup = (turn, ank)->
-    href = location.href.replace location.hash, ""
-
-    popup_find = (turn)->
-      event = $scope.events[turn]
-      return null unless event?.messages?
-
-      item = event.messages.find (log)->
-        log.logid == ank
-      if item
-        popup_apply item, turn
-      item
-
-    popup_ajax = (turn, seek)->
-      event = $scope.events[turn]
-      return unless event?
-
-      if event.has_all_messages
-        seek()
-      else
-        $scope.get_all event, ->
-          $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
-          seek()
-
-    if ! popup_find turn
-      popup_ajax turn, ->
-        if ! popup_find turn
-          popup_ajax turn - 1, ->
-            popup_find turn - 1
-
-  href_eval = (e)->
-    $scope.pageY = e.pageY
-    eval $(e.target).attr('href_eval')
-    $scope.$apply()
-    $(window).scroll()
-
-  foreground = (e)->
-    logid = $(e.target).find("[name]").attr('name')
-    item  = $scope.anchors.find (o)-> logid = o.logid
-    item.z = Date.now()
-    $scope.$apply()
-
-  # use in interpolate
-  $('#messages').on  'click', '.drag',  foreground
-  $('#messages').on  'click', '[href_eval]', href_eval
-  $('#sayfilter').on 'click', '[href_eval]', href_eval
 
   TOKEN_INPUT  $scope
+  HREF_EVAL    $scope
+  TIMER   $scope
   AJAX    $scope
   CARD    $scope
   CACHE   $scope
