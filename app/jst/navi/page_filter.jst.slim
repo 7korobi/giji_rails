@@ -1,7 +1,7 @@
 table
   tr
     td
-      select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+      select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select")
 
 div(style="text-align:center;")
   span(ng-repeat="a in mode_common")

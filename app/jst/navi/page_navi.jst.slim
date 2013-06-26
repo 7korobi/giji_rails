@@ -21,7 +21,7 @@ label.inline.radio(ng-hide="event.is_news")
   select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
 
 label.inline.radio(ng-show="mode")
-  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode.select")
+  select.input-small(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select")
 
 label.inline.radio
   span(ng-repeat="a in mode_common")

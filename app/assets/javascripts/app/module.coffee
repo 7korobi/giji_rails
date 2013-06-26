@@ -32,7 +32,7 @@ MODULE = ($scope, $filter)->
   id_num = 0
   link = (log)->
     return log unless log
-    text = log.replace("<"," <").stripTags()
+    text = log.replace(/</g," <").stripTags()
     uris = text.match link_regexp_g
     if uris
       for uri in uris

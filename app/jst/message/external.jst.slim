@@ -1,7 +1,7 @@
 div(ng-class="message.mestype")
   .action
     p.text(ng-class="message.style")
-      a(href="{{message.uri}}")
+      a(href="{{message.uri}}" target="_blank")
         span.mark
           | {{message.protocol}}
         | ://

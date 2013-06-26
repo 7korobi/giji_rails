@@ -58,7 +58,7 @@ HREF_EVAL = ($scope)->
 
       drag = $(".drag.#{item.logid}")
       drag.fadeIn 'fast', ->
-        drag.find(".badge").attr("href_eval","popup(#{item.turn},'#{item.logid}')")
+        drag.find(".drag_head .badge").attr("href_eval","popup(#{item.turn},'#{item.logid}')")
     else
       drag = $(".drag.#{item.logid}")
       drag.fadeOut 'fast', ->

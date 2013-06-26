@@ -85,6 +85,7 @@ FILTER = ($scope, $filter)->
       if "all" != $scope.modes.view
         if "memo" == $scope.modes.face
           $scope.modes.view = "open"
+
       $scope.mode.value = [ 
         $scope.modes.face
         $scope.modes.view
@@ -92,6 +93,8 @@ FILTER = ($scope, $filter)->
         'last'   if $scope.modes.last
         'player' if $scope.modes.player
       ].unique().compact(true).join("_")
+      $scope.mode_select = $scope.mode.select.filter (o)->
+        o.face == $scope.modes.face
 
       $scope.mode_cache[$scope.modes.face] = $scope.mode.value
       $scope.deploy_mode_common()
