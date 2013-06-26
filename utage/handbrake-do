@@ -1,9 +1,0 @@
-#! /bin/sh
-
-cmd="handbrake.`date +%Y-%m-%d`.$UTAGE.sh"
-test -f $cmd || mv $1 $cmd
-
-cat $cmd | while read LINE
-do
-  echo "$LINE" | bash
-done

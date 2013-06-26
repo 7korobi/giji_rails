@@ -104,3 +104,9 @@ chr_jobs:
   job: 屍漁り
 - face_id: w47
   job: 肥代取り
+- face_id: w48
+  job: 和算家
+- face_id: w49
+  job: 地図抜荷
+- face_id: w50
+  job: 半の目

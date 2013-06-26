@@ -1,4 +1,0 @@
-
-ssh-249 du -h /var/log /utage/log/ /www/*/log/
-ssh-254 du -h /var/log /utage/log/ /www/*/log/
-

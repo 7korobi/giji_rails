@@ -1,4 +1,0 @@
-yum install wget gcc make
-yum install openssl-devel readline-devel ncurses-devel bison bison-devel gdbm-devel libffi-devel
-yum install gcc-c++ libxml2-devel libxslt-devel  sqlite-devel
-

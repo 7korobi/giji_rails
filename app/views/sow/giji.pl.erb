@@ -220,171 +220,24 @@ sub GetConfig {
 	);
 
 	# 閲覧制限表示
-	my %ratingnormal = (
-		FILE    => 'cd_default.png',
-		CAPTION => 'とくになし',
-		ALT     => '<%= @cd_default %>',
-		WIDTH   => 0,
-		HEIGHT  => 0,
-	);
-
-	my %cd_love = (
-		FILE    => 'cd_love.png',
-		CAPTION => '[愛] 恋愛を重視',
-		ALT     => '愛',
+<%	@ratings.each do |key, rating|	%>
+	my %cd_<%= key %> = (
+		FILE    => 'cd_<%= key %>.png',
+		CAPTION => '<%= @perl_change.call rating[:caption] %>',
+		ALT     => '<%= @perl_change.call rating[:alt]     %>',
 		WIDTH   => 20,
 		HEIGHT  => 16,
 	);
 
-	my %cd_sexy = (
-		FILE    => 'cd_sexy.png',
-		CAPTION => '[性] 性表現あり',
-		ALT     => '性',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
+<%	end	%>
 
-	my %cd_sexylove = (
-		FILE    => 'cd_sexylove.png',
-		CAPTION => '[性愛] 大人の恋愛',
-		ALT     => '性愛',
-		WIDTH   => 40,
-		HEIGHT  => 16,
-	);
 
-	my %cd_sexyviolence = (
-		FILE    => 'cd_sexyviolence.png',
-		CAPTION => '[性暴] えろぐろ',
-		ALT     => '性暴 ',
-		WIDTH   => 40,
-		HEIGHT  => 16,
-	);
-
-	my %cd_violence = (
-		FILE    => 'cd_violence.png',
-		CAPTION => '[暴] 暴力、グロ',
-		ALT     => '暴 ',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_teller = (
-		FILE    => 'cd_teller.png',
-		CAPTION => '[恐] 恐怖を煽る',
-		ALT     => '恐',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_drunk = (
-		FILE    => 'cd_drunk.png',
-		CAPTION => '[楽] 享楽に耽る',
-		ALT     => '楽',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_gamble = (
-		FILE    => 'cd_gamble.png',
-		CAPTION => '[賭] 賭博に耽る',
-		ALT     => '賭',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_crime = (
-		FILE    => 'cd_crime.png',
-		CAPTION => '[罪] 犯罪描写あり',
-		ALT     => '罪',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_drug = (
-		FILE    => 'cd_drug.png',
-		CAPTION => '[薬] 薬物表現あり',
-		ALT     => '薬',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_word = (
-		FILE    => 'cd_word.png',
-		CAPTION => '[言] 殺伐、暴言あり',
-		ALT     => '言',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_fireplace = (
-		FILE    => 'cd_fireplace.png',
-		CAPTION => '[暢] のんびり雑談',
-		ALT     => '暢',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_appare = (
-		FILE    => 'cd_appare.png',
-		CAPTION => '[遖] あっぱれネタ風味',
-		ALT     => '遖',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_ukkari = (
-		FILE    => 'cd_ukkari.png',
-		CAPTION => '[張] うっかりハリセン',
-		ALT     => '張',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_child = (
-		FILE    => 'cd_child.png',
-		CAPTION => '[全] 大人も子供も初心者も、みんな安心',
-		ALT     => '全',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_alert = (
-		FILE    => 'cd_alert.png',
-		CAPTION => '要注意！',
-		ALT     => '！',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my %cd_biohazard = (
-		FILE    => 'cd_biohazard.png',
-		CAPTION => '[危] 無茶ぶり上等',
-		ALT     => '危',
-		WIDTH   => 20,
-		HEIGHT  => 16,
-	);
-
-	my @rating_order = ('default', 'love', 'sexy', 'sexylove', 'violence', 'sexyviolence', 'teller','drunk','gamble','crime','drug','word', 'fireplace', 'appare','ukkari', 'child', 'biohazard');
+	my @rating_order = (<%= @rating_list.map(&:inspect).join(", ") %>);
 	my %rating = (
 		ORDER     => \@rating_order,
-		default   => \%ratingnormal,
-		love      => \%cd_love,
-		sexy      => \%cd_sexy,
-		sexylove  => \%cd_sexylove,
-		violence  => \%cd_violence,
-		sexyviolence => \%cd_sexyviolence,
-		teller    => \%cd_teller,
-		drunk     => \%cd_drunk,
-		gamble    => \%cd_gamble,
-		crime     => \%cd_crime,
-		drug      => \%cd_drug,
-		word      => \%cd_word,
-		fireplace => \%cd_fireplace,
-		appare    => \%cd_appare,
-		ukkari    => \%cd_ukkari,
-		child     => \%cd_child,
-		alert     => \%cd_alert,
-		biohazard => \%cd_biohazard,
+<%	@ratings.each do |key, rating|	%>
+		<%= key %> => \%cd_<%= key %>,
+<%	end	%>
 	);
 
 <%	if @is_angular	%>

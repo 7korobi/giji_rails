@@ -1,4 +1,0 @@
-#! /bin/sh
-
-rdiff-backup -r $1 /data/backup/mongo /data/mongo
-

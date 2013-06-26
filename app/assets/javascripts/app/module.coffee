@@ -100,27 +100,6 @@ MODULE = ($scope, $filter)->
     face_id = o.face_id || '*'
     "#{csid}-#{face_id}"
 
-  # role support
-  $scope.rolename = (o)->
-    SOW.roles[o]?.name || SOW.gifts[o]?.name || SOW.events[o]?.name || o || ""
-
-  $scope.countup = (list)->
-    counts = []
-    group = list.groupBy()
-    group.keys (key,val)->
-      counts.push [val.length, key]
-
-    counts.sortBy ([size, key])->
-      size
-    .map ([size, key])->
-      if 1 < size
-        "#{$scope.rolename(key)}x#{size}"
-      else
-        "#{$scope.rolename(key)}"
-
-  $scope.remove_card = (at, idx)->
-    $scope.story.card[at].removeAt idx
-
   navi = (link)->
     $scope.navi.move link
     if $scope.potofs?
@@ -203,6 +182,7 @@ MODULE = ($scope, $filter)->
 
   TOKEN_INPUT  $scope
   AJAX    $scope
+  CARD    $scope
   CACHE   $scope
   POTOFS  $scope
 

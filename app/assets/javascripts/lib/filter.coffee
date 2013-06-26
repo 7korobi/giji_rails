@@ -7,31 +7,40 @@ FILTER = ($scope, $filter)->
     page.filter_by 'stories'
     page.filter_to 'stories_find'
 
-    game_rule =
-      options: OPTION.page.game_rule.options
-      button:
-        ALL: "- すべて -"
+    [ { target: "rating",     key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
+      { target: "roletable",  key: ((o)-> o.type.roletable), text: ((key)-> SOW.roletable[key]) }
+      { target: "game_rule",  key: ((o)-> o.type.game), text: ((key)-> SOW.game_rule[key]?.CAPTION) }
+      { target: "potof_size", key: ((o)-> String(o.vpl.last())), text: ((key)-> key + "人") }
+      { target: "card_event", key: ((o)-> o.card.event_names || "(なし)"), text: String }
+      { target: "card_win",   key: ((o)-> o.card.win_names || "(なし)"), text: String }
+      { target: "card_role",  key: ((o)-> o.card.role_names || "(なし)"), text: String }
+      { target: "upd_time",   key: ((o)-> o.upd.time_text),     text: String }
+      { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
+    ].each (filter)->
+      keys = $scope.stories.map(filter.key).unique().sort()
+      if keys.length > 1
+        navigator = 
+          options: OPTION.page[filter.target].options
+          button:
+            ALL: "- すべて -"
+        keys.each (key)->
+          navigator.button[key] = filter.text(key)
 
-
-    SOW.game_rule.keys (key,o)->
-      game_rule.button[key] = o.CAPTION
+        Navi.push $scope, filter.target, navigator
+        page.filter "#{filter.target}.value", (key, list)->
+          if 'ALL' == $scope[filter.target].value
+            list
+          else
+            list.filter (o)->
+              filter.key(o) == $scope[filter.target].value
 
     Navi.push $scope, 'folder',   OPTION.page.folder
-    Navi.push $scope, 'game_rule', game_rule
-
     page.filter 'folder.value', (key, list)->
       if 'ALL' == $scope.folder.value
         list
       else
         list.filter (o)->
           o.folder == $scope.folder.value
-
-    page.filter 'game_rule.value', (key, list)->
-      if 'ALL' == $scope.game_rule.value
-        list
-      else
-        list.filter (o)->
-          o.type.game == $scope.game_rule.value
 
   if $scope.messages_raw?
     page.filter_by 'messages_raw'

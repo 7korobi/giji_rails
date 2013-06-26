@@ -388,11 +388,13 @@ _PERL_
       File.open(rhtml_info_out ,'w:sjis:utf-8'){|f| f.write( to_s ) }
       FileUtils.chmod( 0666, rhtml_info_out )
 
+      @perl_change = -> s { s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
+
       GAME.each_pair do |folder,cfg|
         config           = cfg['config'] || next
         rhtml_config_out = config['pl']  || next
 
-        @rhtml_content,@cd_default,@maxsize,@saycnt_lists,@saycnt_orders,@games,@csids,@trsids,@path,@cfg,@enable,@is_angular = [config['erb'], config['cd_default'], config['maxsize'], config['saycnt'], config['saycnt'], config['game'], config['csid'], config['trsid'], config['path'], config['cfg'], config['enable'], config['is_angular']]
+        @rhtml_content,@maxsize,@saycnt_lists,@saycnt_orders,@games,@csids,@trsids,@path,@cfg,@enable,@is_angular = [config['erb'], config['maxsize'], config['saycnt'], config['saycnt'], config['game'], config['csid'], config['trsid'], config['path'], config['cfg'], config['enable'], config['is_angular']]
         chk_braid = 0 < (@saycnt_lists & ['vulcan','infinity'] ).size
         chk_all   = 0 < (@saycnt_lists & ['wbbs','euro']       ).size
         chk_lobby = 0 < (@saycnt_lists & ['lobby']             ).size
@@ -401,6 +403,9 @@ _PERL_
         @saycnt   = saycnt_all    if  chk_all
         @saycnt   = saycnt_test   if  chk_braid && chk_all
         @saycnt   = saycnt_game   unless chk_lobby || chk_braid || chk_all
+        @ratings  = OPTION[:rating]
+        @ratings[:default][:alt] = config['cd_default']
+        @rating_list = @ratings.keys() - ['alert']
 
         result[folder] = to_s
 

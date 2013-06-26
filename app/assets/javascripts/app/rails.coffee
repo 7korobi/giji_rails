@@ -9,11 +9,14 @@ RAILS = ($scope, $filter)->
     memo: 'memo_all_open_last_player'
     talk: 'talk_all_open_player'
   $scope.deploy_mode_common = ->
-    $scope.mode_common = [
-      {name: '情報', value: $scope.mode_cache.info }
-      {name: 'メモ', value: $scope.mode_cache.memo }
-      {name: '議事', value: $scope.mode_cache.talk }
-    ]
+    $scope.mode_common = if $scope.mode?
+      [ {name: '情報', value: $scope.mode_cache.info }
+        {name: 'メモ', value: $scope.mode_cache.memo }
+        {name: '議事', value: $scope.mode_cache.talk }
+      ]
+    else
+      []
+
       
   get = (href, cb)->
     $scope.get href, cb

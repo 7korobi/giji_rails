@@ -1,8 +1,0 @@
-#! /bin/sh
-
-ssh-241       /utage/git-log-stat /etc
-ssh-249       /utage/git-log-stat /etc
-ssh-254       /utage/git-log-stat /etc
-
-ssh-249       /utage/git-log-stat /www
-ssh-readynas  /utage/git-log-stat /c/media/Album

@@ -1,2 +1,0 @@
-echo "= 242:$* "
-ssh -p 2420 7korobi@utage.family.jp $*

@@ -4,7 +4,7 @@ module GijiHelper
     when TrpgEventsController, TrpgMessagesController
       trpg_stories_path
     when     EventsController,     MessagesController
-      stories_path(story.folder)
+      stories_path(folder: story.folder)
     end
   end
 

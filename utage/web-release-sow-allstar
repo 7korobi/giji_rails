@@ -1,6 +1,0 @@
-APP=/www/sow_giji
-
-/utage/web-push-241 /utage &
-/utage/web-push-241 $APP --delete
-/utage/ssh-241-root  /utage/web-infra restart
-

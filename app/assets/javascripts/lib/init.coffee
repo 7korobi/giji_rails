@@ -1,14 +1,28 @@
 
 INIT_STORY = ($scope, story)->
-  story.card.discard_names = $scope.countup(story.card.discard).join '、'
-  story.card.event_names   = $scope.countup(story.card.event).join '、'
-  story.card.config_names  = $scope.countup(story.card.config).join '、'
+  event_config = story.card.config.filter (o)->  SOW.events[o]
+  role_config = story.card.config.filter (o)-> ! SOW.events[o] && ! SOW.specials[o]
+  win_config = role_config.map((o)-> SOW.gifts[o]?.win || SOW.roles[o]?.win || "NONE").filter (o)-> "NONE" != o
+
+  story.card.discard_names = $scope.countup_config(story.card.discard).join '、'
+  story.card.config_names = $scope.countup_config(story.card.config).join '、'
+  story.card.role_names  = $scope.countup_config(role_config).join '、'
+  story.card.win_names  = $scope.countup_win(win_config).join('、') 
+
+  if 0 < event_config.length 
+    story.card.event_names   = $scope.countup_config(event_config).join '、'
+  else
+    story.card.event_names   = $scope.countup_config(story.card.event).join '、'
+
   story.option_helps = story.options.map (o)-> SOW.options[o].help
   story.comment = $scope.text_decolate story.comment
   story.rating_url = "#{URL.file}/images/icon/cd_#{story.rating}.png"
 
+  if story.announce?
+    story.announce.rating = OPTION.rating[story.rating].caption
+
   if story.upd?
-    story.upd.time_text = "#{story.upd.hour}時#{story.upd.minute}分"
+    story.upd.time_text = "#{story.upd.hour.pad(2)}時#{story.upd.minute.pad(2)}分"
     story.upd.interval_text = "#{story.upd.interval * 24}時間"
 
   if story.type?
@@ -76,12 +90,12 @@ INIT_POTOFS = ($scope, gon)->
         potof.win_result = "" if "suddendead" == potof.live
 
         potof.win_name = SOW.wins[potof.win]?.name
-        potof.role_names = potof.role.map $scope.rolename
+        potof.role_names = potof.role.map $scope.configname
       else
         potof.role_names = []
 
       if potof.select?
-        potof.select_name = $scope.rolename potof.select
+        potof.select_name = $scope.configname potof.select
 
       potof.live or= ""
       potof.live_name = SOW.live[ potof.live ] || " "

@@ -1,3 +1,0 @@
-echo "= nas:$* "
-ssh -p 1510 7korobi@utage.family.jp $*
-

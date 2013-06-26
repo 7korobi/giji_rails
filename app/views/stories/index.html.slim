@@ -4,21 +4,14 @@
 - content_for :navi do
   .insayfilter(navi="page" name="頁番")
     .paragraph
-      h4.sayfilter_caption_enable
-        | 他の物語へ
       .sayfilter_content
-        nav(template="navi/paginate" class="form-inline")
+        nav.form-inline(template="navi/paginate")
 
 - content_for :log do
 
   hr.invisible_hr
 
-  .pagenavi.form-inline.input-prepend(template="navi/page_navi")
-  .pagenavi.form-inline.input-prepend
-    select.input-small( ng-model="folder.value"  ng-options="o.val as o.name for o in folder.select")
-    select.input-small( ng-model="game_rule.value"  ng-options="o.val as o.name for o in game_rule.select")
-
-
+  .pagenavi.form-inline(template="navi/story_navi")
 
   table.vindex(border="1" summary="物語の一覧")
     thead
@@ -28,23 +21,25 @@
             i.icon-resize-full(ng-show="stories_is_small")
             i.icon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
-        th(nowrap="" scope="col") ルール
+        th(scope="col" ng-hide="stories_is_small") ルール
     tbody
       tr(ng-repeat="story in stories_find")
         td
           | {{story._id}} &nbsp;
           a(ng-href="{{story.link}}") {{story.name}}
           img(ng-src="/images/icon/cd_{{story.rating}}.png")
-          span.note(ng-hide="stories_is_small || story._type != 'SowVillage'")
+          span.note(ng-hide="stories_is_small")
             br
             | 　　更新 : {{story.upd.time_text}} {{story.upd.interval_text}}
             br
-            | {{story.card.config_names}}
+            | {{story.card.role_names}}
+            br
+            | {{story.card.event_names}}
 
         td.small(ng-hide="stories_is_small")
           | {{story.vpl.last()}}人
-        td(nowrap="")
-          span.note(ng-hide="stories_is_small || story._type != 'SowVillage'")
+        td.small(ng-hide="stories_is_small")
+          span.note(ng-hide="story._type != 'SowVillage'")
             | {{story.type.saycnt.CAPTION}}
             br
           | {{story.type.game_rule.CAPTION}}
@@ -55,5 +50,5 @@
             i.icon-resize-full(ng-show="stories_is_small")
             i.icon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
-        th(nowrap="" scope="col") ルール
+        th(scope="col" ng-hide="stories_is_small") ルール
 

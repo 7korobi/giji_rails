@@ -34,6 +34,8 @@ html(lang="ja" ng-controller="RAILS")
 
       #footer
       #tab(ng-cloak)
+        #topviewer.sayfilter
+          = yield :navi_top
         #sayfilter.sayfilter
           h4.sayfilter_heading#navi_head(ng-hide="navi.hide")
             = yield :navi_head

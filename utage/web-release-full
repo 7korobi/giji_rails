@@ -1,9 +1,0 @@
-APP=/www/giji_rails
-
-/utage/web-cleanup
-
-/utage/web-front reload &
-/utage/web-worker QUEUE &
-/utage/web-asset-full &
-
-

@@ -20,12 +20,15 @@ roletable:
   custom:   自由設定
   default:  標準
   hamster:  ハムスター
+  mistery:  
   random:   ランダム
   test1st:  人狼審問試験壱型
   test2nd:  人狼審問試験弐型
   ultimate: アルティメット
   wbbs_c:   人狼BBS-C国
   wbbs_f:   人狼BBS-F国
+  wbbs_g:   人狼BBS-G国
+  lover:    恋愛天使
 
 vote:
   sign:
@@ -67,6 +70,8 @@ loves:
     win: HATER
 
 wins:
+  MOB:
+    name: 見物人
   NONE:
     name:
   HUMAN:
@@ -88,10 +93,15 @@ wins:
   DISH:
     name: 据え膳
 
+specials:
+  mob:
+    name: 見物人
+    win: MOB
+
 roles:
   mob:
     name: 見物人
-    win:
+    win: MOB
   lover:
     name: 弟子
     win:

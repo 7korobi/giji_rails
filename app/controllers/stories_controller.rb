@@ -17,5 +17,6 @@ class StoriesController < ApplicationController
 
   def index
     gon.stories = stories
+    gon.stories_is_small = true
   end
 end

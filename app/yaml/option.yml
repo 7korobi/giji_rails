@@ -72,7 +72,63 @@ page:
       LOBBY:     "人狼議事ロビー"
       OFFPARTY:  "人狼議事オフ相談所"
 
+  roletable:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  rating:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
   game_rule:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  potof_size:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  card_win:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  card_role:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  card_event:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  upd_time:
+    options:
+      current: ALL
+      location: hash
+      is_cookie: false
+    button:
+
+  upd_interval:
     options:
       current: ALL
       location: hash
@@ -127,6 +183,79 @@ page:
       role_names: 役割
       select_name: 希望
       text: 補足
+
+rating:
+  default:
+    caption: とくになし
+  love:
+    caption: "[愛] 恋愛を重視"
+    alt: 愛
+  sexy:
+    caption: "[性] 性表現あり"
+    alt: 性
+  sexylove:
+    caption: "[性愛] 大人の恋愛"
+    alt: 性愛
+  violence:
+    caption: "[暴] 暴力、グロ"
+    alt: 暴
+  sexyviolence:
+    caption: "[性暴] えろぐろ"
+    alt: 性暴
+  teller:
+    caption: "[怖] 恐怖を煽る"
+    alt: 怖
+  drunk:
+    caption: "[楽] 享楽に耽る"
+    alt: 楽
+  gamble:
+    caption: "[賭] 賭博に耽る"
+    alt: 賭
+  crime:
+    caption: "[罪] 犯罪描写あり"
+    alt: 罪
+  drug:
+    caption: "[薬] 薬物表現あり"
+    alt: 薬
+  word:
+    caption: "[言] 殺伐、暴言あり"
+    alt: 言
+  fireplace:
+    caption: "[暢] のんびり雑談"
+    alt: 暢
+  appare:
+    caption: "[遖] あっぱれネタ風味"
+    alt: 遖
+  ukkari:
+    caption: "[張] うっかりハリセン"
+    alt: 張
+  child:
+    caption: "[全] 大人も子供も初心者も、みんな安心"
+    alt: 全
+  biohazard:
+    caption: "[危] 無茶ぶり上等"
+    alt: 危
+
+  null:
+    caption: "null"
+    alt: ""
+  0:
+    caption: "0"
+    alt: ""
+  r15:
+    caption: "１５禁"
+    alt: ""
+  r18:
+    caption: "１８禁"
+    alt: ""
+  gro:
+    caption: "暴力、グロ"
+    alt: ""
+  view:
+    caption: view
+  alert:
+    caption: "要注意"
+    alt: ""
 
 css:
   h1:

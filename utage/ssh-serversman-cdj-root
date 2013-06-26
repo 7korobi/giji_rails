@@ -1,4 +1,0 @@
-echo "= cookingDJ:$* "
-
-ssh -p 3843 root@183.181.54.214 $*
-

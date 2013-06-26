@@ -794,6 +794,26 @@ Face:
   face_id: t16
   comment: "映画監督たちの共用偽名"
 
+######################### 
+# 2013-06-20 update
+
+- face_id: w48
+  name: "直円"
+  comment: "和算復活月間"
+  order: 90048
+
+- face_id: w49
+  name: "錠"
+  comment: "ポルトガル人にジオゴっているんだぜ。へー。かっこいー。"
+  order: 90049
+
+- face_id: w50
+  name: "丁助"
+  comment: "負けるたびに追い博打"
+  order: 90050
+
+
+
 # http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
 # http://cjjc.weblio.jp/
 
