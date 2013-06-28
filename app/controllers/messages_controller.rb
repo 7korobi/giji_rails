@@ -15,7 +15,7 @@ class MessagesController < BasePastLogController
       }
     end
     vil_info event
-    gon.event  = event.attributes
+    gon.event  = event
   end
 
   def file
@@ -24,7 +24,7 @@ class MessagesController < BasePastLogController
       event.name = event.name
       vil_info event
     end
-    gon.events = events.map(&:attributes)
+    gon.events = events
     gon.event = {turn:0}
 
     render :index
@@ -32,20 +32,18 @@ class MessagesController < BasePastLogController
 
   protected
   def vil_info(event)
-    event_attr = event.attributes
-    event_attr["messages"].unshift(
+    event.messages.unshift Message.new(
       template: "sow/village_info",
       logid:    "vilinfo00000",
     )
-    event_attr["has_all_messages"] = true
+    event[:has_all_messages] = true
   end
 
   def base
+    story[:link] = events_path(story.id)
     gon.folder = story.folder
-    gon.story  = story.attributes.merge(
-      link: events_path(story.id),
-    )
-    gon.potofs = story.potofs.order_by(:pno.asc).cache.map(&:attributes)
+    gon.story  = story
+    gon.potofs = story.potofs.order_by(:pno.asc).cache
   end
 
   def theme

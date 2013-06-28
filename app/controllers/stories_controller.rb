@@ -8,7 +8,7 @@ class StoriesController < ApplicationController
         sort_by{|o|[o.folder, - o.vid]}.
         map do |story|
           story[:link] = messages_path(story, 0) + "#mode=info_open_player"
-          story.attributes
+          story
         end
     end
   end

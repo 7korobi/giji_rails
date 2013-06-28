@@ -4,6 +4,9 @@ require 'const'
 require 'ostruct'
 require 'current'
 require 'rsync'
+
+require 'serializer'
+
 require 'omniauth-openid'
 require 'openid/fetchers'
 require 'openid/store/filesystem'
@@ -17,6 +20,12 @@ module Giji
     base.class_eval do
       include Mongoid::Document
     end
+  end
+end
+
+module Mongoid::Fields::ClassMethods
+  def attribute_names
+    fields.keys.select{|k| fields[k].instance_eval{@options[:klass]} >= self }
   end
 end
 

@@ -3,7 +3,7 @@ module GijiHelper
     case controller
     when TrpgEventsController, TrpgMessagesController
       trpg_stories_path
-    when     EventsController,     MessagesController
+    when MessagesController
       stories_path(folder: story.folder)
     end
   end
