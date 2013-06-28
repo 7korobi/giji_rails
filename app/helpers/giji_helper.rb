@@ -17,7 +17,7 @@ module GijiHelper
     when Event
       messages_path(story, obj.turn)
     when Story
-      events_path(obj)
+      message_file_path(obj)
     else
       raise RuntimeError
     end

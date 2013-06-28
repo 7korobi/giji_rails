@@ -11,9 +11,9 @@ Giji::Application.routes.draw do
   end
 
   scope ':story_id' do
-    resources :events, only:%w[index]
     resources :trpg_events,  except:%w[show]
-    match "file" => "messages#file", :as => :message_file
+    match "file"   => "messages#file", :as => :message_file
+    match "events" => "messages#file", :as => :message_file
     scope ':turn' do
       resources :messages, only:%w[index show]
       resources :trpg_messages, except:%w[show]

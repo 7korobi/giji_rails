@@ -44,8 +44,6 @@ class UsersController < ApplicationController
       end
     end
 
-    p kick_ids
-
     stories = story_in user_story_ids
 
     gon.byebyes = user_story_ids.map do |story_id|
@@ -61,7 +59,7 @@ class UsersController < ApplicationController
         text = kick_names.join('、') + "に退去願おう。"
       end
 
-      link = events_path(story_id)
+      link = message_file_path(story_id)
 
       { story_id:  story_id,
         is_byebye: byebye_story_ids === story_id,
@@ -99,7 +97,7 @@ class UsersController < ApplicationController
     gon.messages_raw = list.map do |chr|
       story   = stories[chr.story_id].first
       nation  = GAME[story.folder][:nation] rescue ' - '
-      link    = events_path(chr.story_id)
+      link    = message_file_path(chr.story_id)
       created = story.timer["updateddt"]
 
       chr.attributes.merge(

@@ -40,7 +40,7 @@ class MessagesController < BasePastLogController
   end
 
   def base
-    story[:link] = events_path(story.id)
+    story[:link] = message_file_path(story.id)
     gon.folder = story.folder
     gon.story  = story
     gon.potofs = story.potofs.order_by(:pno.asc).cache

@@ -3,6 +3,11 @@ class Time
     "new Date(#{to_i*1000})"
   end
 end
+class ActiveSupport::TimeWithZone
+  def to_json
+    "new Date(#{to_i*1000})"
+  end
+end
 
 class Array::Line < Array
   class << self
