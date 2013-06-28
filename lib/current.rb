@@ -61,14 +61,14 @@ module CurrentAuthenticated
     p
 
     if current.auth
-      current.auth.with(safe: false).save
+      current.auth.with(safe: false).save(validate: false)
     end
     if current.user
       current.user.rails_token = form_authenticity_token
-      current.user.with(safe: false).save
+      current.user.with(safe: false).save(validate: false)
       current.request.user_ids |= [current.user.id]
     end
-    current.request.with(safe: false).save
+    current.request.with(safe: false).save(validate: false)
 
     p cookies
     p

@@ -52,6 +52,16 @@ class SowTurn < Event
     end
   end
 
+  def self.ids_of_messages_empty
+    collection.find(messages: {"$exists" => false}).map{|o| o["_id"]}.select{|o| !( /trpg/ === o )}.sort
+  end
+
+  def self.empty_fill_from_file
+    ids_of_messages_empty.each do |id|
+      find(id).update_from_file
+    end
+  end
+
   def self.update_gaps
     gaps.each do |folder, ids|
       Giji::RSync.new.in_folder(folder) do |folder, protocol, set|

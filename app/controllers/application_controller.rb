@@ -5,14 +5,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   include CurrentAuthenticated
 
+=begin
   case Rails.env
-  when 'development'
+  when 'development'    
     before_filter :debug
     def debug
       current.auth ||= Auth.where(nickname:'7korobi').first
       current_save
     end
   end
+=end
 
   protected
   def theme

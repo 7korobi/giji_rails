@@ -93,6 +93,16 @@ wins:
   DISH:
     name: 据え膳
 
+groups:
+  HUMAN:
+    name: 人間
+  WOLF:
+    name: 人狼
+  EVIL:
+    name: 敵側の人間
+  PIXI:
+    name: 妖精
+
 specials:
   mob:
     name: 見物人

@@ -1,5 +1,6 @@
 - content_for :log do
-  -face_titles.each do |group, title| faces = face_groups[group]
+  -face_titles.each do |group, title|
+    - faces = face_groups[group]
     - if title.present?
       h2=title
     .chrlist

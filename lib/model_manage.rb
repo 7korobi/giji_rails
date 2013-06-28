@@ -12,12 +12,10 @@ if defined?(ActiveRecord::Base)
 end
 
 require 'model_manage/rails'
-require 'model_manage/bitfield'
-require 'model_manage/base'
 
 if defined?(Rails)
-module ModelManage
-  class Engine < ::Rails::Engine
+  module ModelManage
+    class Engine < ::Rails::Engine
+    end
   end
-end
 end

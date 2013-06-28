@@ -19,19 +19,19 @@ class UsersController < ApplicationController
   def byebye_list
     return unless user.sow_auths.present? && user.byebyes.present?
 
-    active_story_ids = SowVillage.where(is_finish:false).only(:_id).map(&:_id)
-    user_story_ids   = SowUser.all.in(sow_auth_id: user.sow_auth_ids ).in(story_id: active_story_ids ).only(:story_id).map(&:story_id)
-    byebye_story_ids = SowUser.all.in(sow_auth_id: user.byebye_ids   ).in(story_id: user_story_ids   ).only(:story_id).map(&:story_id)
+    active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
+    user_story_ids   = SowUser.all.in(sow_auth_id: user[:sow_auth_ids] ).in(story_id: active_story_ids ).pluck(:story_id)
+    byebye_story_ids = SowUser.all.in(sow_auth_id: user[:byebye_ids]   ).in(story_id: user_story_ids   ).pluck(:story_id)
 
     kick_ids = Hash.new {|hash, key| hash[key] = [] }
-    maker_story_ids  = SowVillage.where(is_finish:false).in(sow_auth_id: user.sow_auth_ids ).only(:_id).map(&:_id)
+    maker_story_ids  = SowVillage.where(is_finish:false).in(sow_auth_id: user[:sow_auth_ids] ).pluck(:_id)
     maker_stories = story_in user_story_ids
     maker_stories.each do |story_id, stories|
       story = stories.first
       maker = story.sow_auth_id
-      sow_auth_ids = story.potofs.only(:sow_auth_id).map(&:sow_auth_id)
-      byebyes_by_potof = User.all.in(sow_auth_ids: sow_auth_ids).only(:byebye_ids).map(&:byebye_ids).flatten
-      byebyes_by_maker = User.all.in(sow_auth_ids:      [maker]).only(:byebye_ids).map(&:byebye_ids).flatten
+      sow_auth_ids = story.potofs.pluck(:sow_auth_id)
+      byebyes_by_potof = User.all.in(sow_auth_ids: sow_auth_ids).pluck(:byebye_ids).flatten
+      byebyes_by_maker = User.all.in(sow_auth_ids:      [maker]).pluck(:byebye_ids).flatten
 
       # ５人以上からバイバイされている人
       (byebyes_by_potof & sow_auth_ids).each do |byebye_id|
@@ -84,16 +84,13 @@ class UsersController < ApplicationController
     criteria = SowUser.only(:story_id, :name, :face_id, :csid, :sow_auth_id )
     sow_auth_ids = user.sow_auth_ids - %w[master]
 
-    potofs = criteria.in(sow_auth_id:sow_auth_ids).select do |o|
-      o.story_id.size < 20
-    end
-
+    potofs = criteria.in(sow_auth_id:sow_auth_ids)
     story_ids = potofs.map(&:story_id)
     stories = story_in story_ids
 
     list = potofs.select do |o|
-      story = stories[o.story_id].first
-      story.is_finish
+      story = stories[o.story_id]
+      story && story.first.is_finish
     end.sort_by do |o|
       story = stories[o.story_id].first
       0 - story.timer["updateddt"].to_i
@@ -147,7 +144,7 @@ _HTML_
   protected
   def story_in(story_ids)
     @stories ||= {}
-    @stories[story_ids] ||= SowVillage.only(:folder, :vid, :name, :timer, :is_finish).in(_id:story_ids).group_by(&:_id)
+    @stories[story_ids] ||= SowVillage.only(:folder, :vid, :name, :timer, :sow_auth_id, :is_finish).in(_id:story_ids).group_by(&:_id)
   end
 
 

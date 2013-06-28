@@ -1,0 +1,73 @@
+fieldset
+  div(style="display:none;")
+    input(type="text" name="trsid" ng-model="config.trsid")
+    input(type="text" name="hour" ng-model="story.upd.hour")
+    input(type="text" name="minite" ng-model="story.upd.minute")
+    input(type="text" name="updinterval" ng-model="story.upd.interval")
+    input(type="text" name="votetype" ng-model="story.type.vote")
+    input(type="text" name="roletable" ng-model="story.type.roletable")
+
+  legend
+    | 基本設定
+  dl
+    dt
+      | {{config.trs.caption}}
+    dd
+      | {{config.trs.help}}
+  dl.dl-horizontal
+    dt
+      label(for="vplcnt")
+        | 定員
+    dd
+      input.input-mini#vplcnt(type="text" name="vplcnt" ng-model="event.player.limit" size="5")
+      | 人
+    dt
+      label(for="vplcntstart")
+        | 最低人数
+    dd
+      input.input-mini#vplcntstart(type="text" name="vplcntstart" ng-model="event.player.start" size="5")
+      | 人  ※開始方法が人狼BBS型の時のみ
+    dt
+      label(for="updhour")
+        | 更新時間
+    dd
+      select.input-small#updhour(ng-model="story.upd.hour" ng-options="o.val as o.name for o in config.hours")
+      select.input-small#updminite(ng-model="story.upd.minute" ng-options="o.val as o.name for o in config.minutes")
+      | に更新
+    dt
+      label(for="updinterval")
+        | 更新間隔
+    dd
+      select.input-large#updinterval(ng-model="story.upd.interval" ng-options="o.val as o.name for o in config.intervals")
+      | ごとに更新
+    dt
+      label(for="votetype")
+        | 投票方法
+    dd
+      select.input-large#votetype(ng-model="story.type.vote" ng-options="o.val as o.name for o in config.votetypes")
+    dt
+      label(for="roletable")
+        | 役職配分
+    dd
+      select.input-large#roletable(ng-model="story.type.roletable" ng-options="o.val as o.name for o in config.roletables")
+
+fieldset(ng-show="story.type.roletable == 'custom'")
+  legend
+    | 役職配分自由設定
+
+  div(ng-repeat="title in config.items_keys")
+    h3
+      | {{title}}
+    .config_item.input-append.input-prepend(ng-repeat="item in config.items[title]")
+      label.add-on(for="cnt{{item.key}}")
+        | {{item.name}}
+      input.input-tiny(size="2" type="text" id="cnt{{item.key}}" name="cnt{{item.key}}" ng-model="item.count")
+      span.add-on
+        | 人
+fieldset
+  h3
+    | 事件
+
+  input(type="text" id="eventcard" name="eventcard")
+  span.btn(onclick="tokenInput['#eventcard'].eventAdd('{{item.key}}')" ng-repeat="item in config.items.events")
+    | {{item.name}}

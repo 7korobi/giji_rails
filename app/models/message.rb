@@ -33,13 +33,5 @@ class Message < Chat
       o[key] = send(key)
     end
   end
-
-  def gon
-    options = slice(%w[template logid color style img time name to text])
-  end
-
-  def self.gon
-    all.map &:gon
-  end
 end
 

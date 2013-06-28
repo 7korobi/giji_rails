@@ -1,3 +1,19 @@
+INIT_MESSAGES = (new_base)->
+  return unless new_base?.messages?
+  if new_base.turn?
+    new_base.messages.each (message)->
+      message.turn = new_base.turn
+      if message.plain?
+        if message.plain.type?
+          message.mesicon = SOW_RECORD.CABALA.mestypeicons[message.plain.type] 
+          message.mestype = SOW_RECORD.CABALA.mestypes[message.plain.type]
+          message.order = GIJI.message.order[message.mestype] || 8
+        if message.plain.updated_at?
+          message.updated_at = Date.create(1000 * message.plain.updated_at) 
+      if message.date?
+        message.updated_at = Date.create(message.date) 
+      message.updated_at ||= new Date
+
 
 INIT_STORY = ($scope, story)->
   event_config = story.card.config.filter (o)->  SOW.events[o]

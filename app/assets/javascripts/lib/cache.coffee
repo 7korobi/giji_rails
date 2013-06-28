@@ -18,11 +18,17 @@ CACHE = ($scope)->
     func old_base, new_base, target
 
   merge = 
+    config: (old_base, new_base, target)=>
+      merge_by.copy old_base, new_base, target
+      $scope.deploy_config()
+
     events: (old_base, new_base, target)=>
       guard = (key)-> ["messages", "has_all_messages"].any(key)
       filter = (o)-> o.turn
 
       # events section
+      for new_event in new_base.events
+        INIT_MESSAGES new_event
       merge_by.simple old_base, new_base, "events", guard, filter
 
       # event section
@@ -49,21 +55,10 @@ CACHE = ($scope)->
     _messages: (old_base, new_base)->
       guard = null
       filter = (o)-> o.logid
-      return unless new_base?.messages?
 
-      if new_base.turn?
-        new_base.messages.each (message)->
-          message.turn = new_base.turn
-          if message.plain?
-            if message.plain.type?
-              message.mesicon = SOW_RECORD.CABALA.mestypeicons[message.plain.type] 
-              message.mestype = SOW_RECORD.CABALA.mestypes[message.plain.type]
-              message.order = GIJI.message.order[message.mestype] || 8
-            if message.plain.updated_at?
-              message.updated_at = Date.create(1000 * message.plain.updated_at) 
-          message.updated_at ||= new Date
-
+      INIT_MESSAGES new_base
       merge_by.news old_base, new_base, 'messages', guard, filter
+
 
     _potofs: (old_base, new_base)->
       guard = null

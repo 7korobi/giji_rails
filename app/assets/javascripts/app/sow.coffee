@@ -1,7 +1,11 @@
+set_key = (k,v)-> v.key = k
+SOW.roles?.keys  set_key
+SOW.gifts?.keys  set_key
+SOW.events?.keys set_key
+
 if SOW_RECORD.CABALA.events?
   SOW.events.keys (k,v)->
     v.id  = SOW_RECORD.CABALA.events.indexOf k
-    v.key = k
 
 CGI = ($scope, $filter)->
   $scope.mode_cache = 
@@ -14,6 +18,18 @@ CGI = ($scope, $filter)->
       {name: 'メモ', value: $scope.mode_cache.memo }
       {name: '議事', value: $scope.mode_cache.talk }
     ]
+
+  $scope.deploy_config = ->
+    count_set = (item)->
+      item.count = $scope.config.counts[item.key]
+      item
+
+    roles = $scope.config.roles.map((o)-> count_set SOW.roles[o]).groupBy((o)-> if SOW.groups[o.win] then SOW.groups[o.win].name else "その他")
+    gifts = $scope.config.gifts.map((o)-> count_set SOW.gifts[o]).groupBy((o)-> "恩恵")
+    $scope.config.items = roles.merge(gifts)
+    $scope.config.items_keys = $scope.config.items.keys()
+
+    $scope.config.items.events = $scope.config.events.map (o)-> SOW.events[o]
 
   get = (href, cb)->
     $scope.get href + "&ua=javascript", cb
@@ -78,4 +94,5 @@ CGI = ($scope, $filter)->
 
   MODULE $scope, $filter
   FORM    $scope
+
 

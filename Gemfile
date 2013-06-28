@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 
 # ruby on rails
 gem 'unicorn'
-gem 'rails'
+gem 'rails', "= 3.2.13"
 
 # Gems used only for assets and not required
 # in production environments by default.

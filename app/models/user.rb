@@ -1,3 +1,20 @@
+class Array::Line < Array
+  class << self
+    def demongoize(ary)
+      ary.to_a.join("\n")
+    end
+    def mongoize(o)
+      case o
+      when String
+        o.lines.map(&:strip).compact
+      else
+        o
+      end
+    end
+    alias_method :evolve, :mongoize
+  end
+end
+
 class User
   include Giji
 
@@ -7,8 +24,15 @@ class User
   field :email
   field :is_admin, type: Boolean
   field :rails_token
-  field :sow_auth_ids, type: Array
-  field :byebye_ids,   type: Array
+  field :sow_auth_ids, as: :sow_auths, type: Array::Line
+  field :byebye_ids,   as: :byebyes,   type: Array::Line
+  def sow_auth_ids
+    self[:sow_auth_ids]
+  end
+  def byebye_ids
+    self[:byebye_ids]
+  end
+
 
   devise :trackable, :omniauthable
   has_many :auths,    inverse_of: :user
@@ -21,7 +45,7 @@ class User
     end
   end
   validates_uniqueness_of :user_id
-  validates_uniqueness_of :email, allow_blank:true
+  validates_uniqueness_of :email, allow_blank: true
 
   validates_length_of :user_id, in: 1..30, allow_blank: true, allow_nil: true
   validates_length_of :name,    in: 1..30
@@ -33,20 +57,6 @@ class User
 
   def login?
     user_id.present? && name.present?
-  end
-
-  def byebyes
-    byebye_ids.to_a.join("\n")
-  end
-  def byebyes=(str)
-    self[:byebye_ids] = str.to_s.lines.map(&:strip).compact
-  end
-
-  def sow_auths
-    sow_auth_ids.to_a.join("\n")
-  end
-  def sow_auths=(str)
-    self[:sow_auth_ids] = str.to_s.lines.map(&:strip).compact
   end
 end
 

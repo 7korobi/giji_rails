@@ -22,7 +22,7 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
           ""
       else
         ""
-    log.time = -> $scope.lax_time log.updated_at
+    log.time = -> $scope.lax_time Date.create log.updated_at
 
     if ! log.anchor? && log.logid?
       [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
