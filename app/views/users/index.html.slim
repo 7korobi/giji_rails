@@ -6,7 +6,14 @@
 
 - content_for :top do
   h2 ログインの仕方
-  .paragraph 左のどれかのボタンをクリックして、ログインしよう！
+  .paragraph
+    | 左のどれかのボタンをクリックして、ログインしよう！
+    | 左にボタンが見えないひとは、右下の「接続」ボタンを押してみよう。
+
+  h2 キャラクターの統計  
+  .paragraph
+    = link_to "集計ページ", map_reduce_faces_path
+    | に、人狼議事のキャラクターたちの活躍をまとめてある。
 
   h2 更新情報
   .paragraph

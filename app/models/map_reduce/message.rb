@@ -28,6 +28,8 @@ class MapReduce::Message
 
 
   def self.generate
+    MapReduce::MessageByStory.generate
+
     map = %Q{function() {
   var logid_head, logs, _ref, _results;
 

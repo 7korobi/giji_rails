@@ -14,8 +14,6 @@ reduce = (k, vs) ->
   MapReduce::Face.generate
 ###
 map = ->
-  return if -1 < deny_stories.indexOf @story_id
-  return if -1 < deny_sow_auth_ids.indexOf @sow_auth_id
   deploy = (v, field)->
     res[field] ||= 
       all: 1
@@ -116,7 +114,6 @@ reduce = (k, vs) ->
 ###
 map =  ->
   return unless @messages
-  return if -1 < deny_stories.indexOf @story_id
 
   counter = (v, logs, field)->
     key  = v[field]

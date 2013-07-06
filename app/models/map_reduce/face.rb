@@ -29,12 +29,6 @@ class MapReduce::Face
     map = %Q{function() {
   var deploy, folder, res, role, v, win, _i, _len, _ref, _ref1, _ref2, _ref3;
 
-  if (-1 < deny_stories.indexOf(this.story_id)) {
-    return;
-  }
-  if (-1 < deny_sow_auth_ids.indexOf(this.sow_auth_id)) {
-    return;
-  }
   deploy = function(v, field) {
     res[field] || (res[field] = {
       all: 1,
@@ -113,11 +107,13 @@ class MapReduce::Face
   res.face_id = k;
   return res
 };}
+    denies = {
+      story_id: SowVillage.where(is_finish: false).pluck("id"),
+      sow_auth_id: %w[master admin a1 a2 a3 a4 a5 a6 a7 a8 a9],
+    }
     scope = {
-      deny_stories: SowVillage.where(is_finish:false).pluck("id").sort,
-      deny_sow_auth_ids: %w[master admin a1 a2 a3 a4 a5 a6 a7 a8 a9],
       SOW: SOW,
     }
-    Potof.map_reduce(map,reduce).finalize(final).scope(scope).out(replace: collection_name).reduced
+    Potof.not.in(denies).map_reduce(map,reduce).finalize(final).scope(scope).out(replace: collection_name).reduced
   end
 end

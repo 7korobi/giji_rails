@@ -1,5 +1,8 @@
 
 - content_for :log do
+  h2
+    | {{face.name}} の活躍
+
   script
     | gon.face.says[0].date.min = new Date(gon.face.says[0].date.min);
     | gon.face.says[0].date.max = new Date(gon.face.says[0].date.max);
@@ -27,10 +30,7 @@
         .mark(style="text-align:right")
           | {{say.count.metric(0,0)}} 回
 
-  p.text.info
-    | 活躍している期間
-    br
-    | &nbsp;&nbsp;&nbsp;
+  h3
     span.mark
       | {{lax_date(face.says[0].date.min)}} 
     | &nbsp;〜&nbsp;

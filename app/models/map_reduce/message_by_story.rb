@@ -14,9 +14,6 @@ class MapReduce::MessageByStory
   if (!this.messages) {
     return;
   }
-  if (-1 < deny_stories.indexOf(this.story_id)) {
-    return;
-  }
   counter = function(v, logs, field) {
     var base, key, res;
 
@@ -107,10 +104,11 @@ class MapReduce::MessageByStory
   }
   return emits;
 };}
+    done = MapReduce::MessageByStory.pluck("id")
+    target = SowVillage.not.in(id: done).where(is_finish: true).pluck("id")
     scope = {
-      deny_stories: SowVillage.where(is_finish:false).pluck("id").sort,
       deny_sow_auth_ids: %w[master admin a1 a2 a3 a4 a5 a6 a7 a8 a9],
     }
-    Event.map_reduce(map, reduce).scope(scope).out(replace: collection_name).reduced
+    Event.in(story_id: target).map_reduce(map, reduce).scope(scope).out(replace: collection_name).reduced
   end
 end
