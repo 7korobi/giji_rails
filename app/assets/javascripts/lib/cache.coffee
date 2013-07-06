@@ -22,6 +22,10 @@ CACHE = ($scope)->
       merge_by.copy old_base, new_base, target
       $scope.deploy_config()
 
+    face: (old_base, new_base, target)=>
+      INIT_FACE new_base.face
+      merge_by.copy old_base, new_base, target
+
     events: (old_base, new_base, target)=>
       guard = (key)-> ["messages", "has_all_messages"].any(key)
       filter = (o)-> o.turn

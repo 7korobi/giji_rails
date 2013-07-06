@@ -2,25 +2,16 @@
 
 class GijiLogScanner < GijiScanner
   def self.save
-    rsync = Giji::RSync.new
-
-    gaps = SowVillage.gaps
-    rsync.each_locals do |folder, protocol, set|
-      next unless set
-
-      path = set[:files][:ldata] + '/data/vil'
-      from = set[:files][:from]
-      force = gaps[folder] || []
-
-      Dir.new(path).each do | fname |
-        next  if  0 == File.size(path+'/'+fname)
-        next  if  /vil.cgi/ === fname  rescue  next
-
-        new(path, folder, WATCH[:log][:time], from, force, fname).save
+    blank_ids = SowTurn.ids_of_messages_empty
+    SowTurn.messages_empty.each do |o|
+      if o.story.is_finish
+        o.update_from_file
+      else
+        puts "#{o.id} is not finish"
       end
     end
 
-    open( WATCH[:log][:file], "w" ).puts SowVillage.gaps.inspect
+    open( WATCH[:log][:file], "w" ).puts blank_ids
   end
 
   def enqueue  type

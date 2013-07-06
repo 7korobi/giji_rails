@@ -17,6 +17,7 @@ group :assets do
 end
 
 # DCI
+gem 'rabl'
 gem 'gon'
 gem "cells"
 gem "cancan"

@@ -138,7 +138,6 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $scope.navi.select.add
         name: attr.name
         val:  attr.navi
-      $scope.navi.params.current.add attr.navi if ! CGI?
     else
       static_navis[attr.navi] =
         show: true

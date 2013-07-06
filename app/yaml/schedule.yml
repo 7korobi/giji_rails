@@ -1,3 +1,17 @@
+giji_map_reduce_face:
+  cron: '58  4  *  *  *'
+  class: GijiMapReduce
+  args:  Face
+  queue: giji_schedules
+  description: giji mapreduce by face.
+
+giji_map_reduce_message:
+  cron: '57  4  *  *  *'
+  class: GijiMapReduce
+  args:  Message
+  queue: giji_schedules
+  description: giji mapreduce by face.
+
 giji_git_scanner:
   cron: '5  12  *  *  *'
   class: GijiScheduler

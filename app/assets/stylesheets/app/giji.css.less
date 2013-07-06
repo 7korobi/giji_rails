@@ -165,7 +165,6 @@ hr {
 }
 
 .chrbox {
-  height: 200px;
 }
 
 .chrbox,
@@ -188,20 +187,27 @@ hr {
 .chrblank, .chrM, .chrF {
   background-repeat: no-repeat;
   background-position: top;
-  padding: 6px 0 0 0;
-  height: 60px;
-  font-size: smaller;
+  padding: 0.5ex 0 0.5ex;
   margin: 0 auto 0 auto;
+
+  line-height: 1.3em;
+  min-height:  2.6em;
+  font-size: smaller;
   text-align: center;
+  white-space: nowrap;
+
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
 }
 .chrblank {
-  background-image: url(http://giji.check.jp/images/portrate/blank.jpg);
+  background-color: #444844
 }
 .chrM {
-  background-image: url(http://giji.check.jp/images/portrate/blankM.jpg);
+  background-color: #444888
 }
 .chrF {
-  background-image: url(http://giji.check.jp/images/portrate/blankF.jpg);
+  background-color: #884844
 }
 
 .sayfilter_content_enable {
@@ -279,9 +285,6 @@ dt, dd {
 }
 
 .mark {
-  -webkit-border-radius: 9px;
-  -moz-border-radius: 9px;
-  border-radius: 9px;
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;

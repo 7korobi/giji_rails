@@ -1,0 +1,64 @@
+
+- content_for :log do
+  table.say.SAY
+    tbody
+      tr
+        td.img
+          img(ng-src="{{img_cid('all', face.face_id)}}")
+        td.field
+          .msg
+            h3.mesname
+              b
+                | {{face.name}}
+            p.text
+              | 全部で
+              span.mark
+                | {{face.role.all}}
+              | の役職になりました
+              div(ng-repeat="win in face.win.keys")
+                h4.mesname
+                  | {{win}} x{{face.win.value[win]}}回
+                div(style="display:inline-block;" ng-repeat="role in face.role_of_wins[win]")
+                  .mark(style="display:inline-block; width:3.75em; text-align:right;")
+                    | {{name.config(role[0])}}
+                  .mark(style="display:inline-block; width:2em; text-align:right;")
+                    | x{{role[1]}}
+
+  .MAKER
+    .guide
+      h3.mesname
+        b
+          | {{face.name}}
+      p.text
+        | 全部で
+        span.mark
+          | {{face.folder.all}}回
+        | 登場しました（村数）
+        dl
+          div.accordion
+            dt
+              span.mark ✘ 
+          div.accordion(ng-repeat="folder in face.folder.keys" style="display:inline-block; width:8.5em; vertical-align:top; text-align:right;")
+            dt
+              div(style="text-align:right; margin-right:1em")
+                | {{folder}} x{{face.folder.value[folder]}}回
+            dd
+              a.mark(style="display:inline-block; width:7em; text-align:right;" ng-repeat="story_id in face.story_id_of_folders[folder]" href="/{{story_id[0]}}/file")
+                | {{story_id[0]}}
+
+  .ADMIN
+    .guide
+      h3.mesname
+        b
+          | {{face.name}}
+      p.text
+        | 全部で
+        span.mark
+          | {{face.sow_auth_id.all}}回
+        | 登場しました（プレイヤー数）
+        div(style="display:inline-block;" ng-repeat="sow_auth_id in face.sow_auth_ids")
+          a.mark(style="display:inline-block; width:8.5em; text-align:right;")
+            | {{sow_auth_id[0]}}
+          .mark(style="display:inline-block; width:2em; text-align:right;")
+            | x{{sow_auth_id[1]}}
+

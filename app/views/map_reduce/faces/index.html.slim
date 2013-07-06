@@ -1,0 +1,16 @@
+
+- content_for :log do
+  .toppage
+    .paragraph
+      ul
+        li
+          | キャラクター名
+        li
+          | ♥ いちばん沢山、そのキャラクターで遊んだプレイヤー
+        li.mark
+          | 人気度（詳細へのリンク）
+      label.input-block-level
+        | キャラセットを選んでみよう ☆ミ
+      select.input-block-level(ng-model="chrs"  ng-options="o.val as o.name for o in chrs_select"))
+  .chrlist(template="navi/chr_list")
+    .mark 人気の{{chrs.length}}キャラクター

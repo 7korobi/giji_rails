@@ -1,3 +1,13 @@
+INIT_FACE = (new_base)->
+  if new_base.story_ids?
+    new_base.story_id_of_folders = new_base.story_ids.groupBy ([k,count])->
+      k.split("-")?[0]
+
+  if new_base.wins?
+    new_base.role_of_wins = new_base.roles.groupBy ([k,count])->
+      role = SOW.gifts[k] || SOW.roles[k] || {win: "NONE"}
+      SOW.groups[role.win]?.name || "その他"
+
 INIT_MESSAGES = (new_base)->
   return unless new_base?.messages?
   if new_base.turn?
@@ -106,12 +116,12 @@ INIT_POTOFS = ($scope, gon)->
         potof.win_result = "" if "suddendead" == potof.live
 
         potof.win_name = SOW.wins[potof.win]?.name
-        potof.role_names = potof.role.map $scope.configname
+        potof.role_names = potof.role.map $scope.name.config
       else
         potof.role_names = []
 
       if potof.select?
-        potof.select_name = $scope.configname potof.select
+        potof.select_name = $scope.name.config potof.select
 
       potof.live or= ""
       potof.live_name = SOW.live[ potof.live ] || " "
