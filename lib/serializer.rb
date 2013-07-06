@@ -1,11 +1,11 @@
 class Time
   def to_json
-    "new Date(#{to_i*1000})"
+    "#{to_i*1000}"
   end
 end
 class ActiveSupport::TimeWithZone
   def to_json
-    "new Date(#{to_i*1000})"
+    "#{to_i*1000}"
   end
 end
 

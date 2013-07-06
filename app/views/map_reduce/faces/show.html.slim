@@ -1,5 +1,42 @@
 
 - content_for :log do
+  script
+    | gon.face.says[0].date.min = new Date(gon.face.says[0].date.min);
+    | gon.face.says[0].date.max = new Date(gon.face.says[0].date.max);
+
+  table.say.info
+    tr.caution
+      th.msg(colspan="2")
+      th.msg(style="text-align:right")
+        | 文字数合計
+      th.msg(style="text-align:right")
+        | 一番長い発言
+      th.msg(style="text-align:right")
+        | 総発言回数
+    tr(ng-repeat="say in face.says" class="{{say.logid_head}}AY")
+      th.msg
+      th.msg
+        | {{face.say_titles[say.logid_head]}}
+      td.msg
+        .mark(style="text-align:right")
+          | {{say.all.metric(0,0)}} 字
+      td.msg
+        .mark(style="text-align:right")
+          | {{say.max.metric(0,0)}} 字
+      td.msg
+        .mark(style="text-align:right")
+          | {{say.count.metric(0,0)}} 回
+
+  p.text.info
+    | 活躍している期間
+    br
+    | &nbsp;&nbsp;&nbsp;
+    span.mark
+      | {{lax_date(face.says[0].date.min)}} 
+    | &nbsp;〜&nbsp;
+    span.mark
+      | {{lax_date(face.says[0].date.max)}}
+
   table.say.SAY
     tbody
       tr
@@ -10,6 +47,7 @@
             h3.mesname
               b
                 | {{face.name}}
+
             p.text
               | 全部で
               span.mark

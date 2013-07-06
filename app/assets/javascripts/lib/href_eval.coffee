@@ -87,7 +87,10 @@ HREF_EVAL = ($scope)->
         seek()
       else
         $scope.get_all event, ->
-          $scope.merge $scope, gon, "events"  if  turn == gon.event.turn
+          if  turn == gon.event.turn
+            is_news = $scope.event.is_news
+            $scope.merge $scope, gon, "events"  
+            $scope.event.is_news = is_news
           seek()
 
     if ! popup_find turn
