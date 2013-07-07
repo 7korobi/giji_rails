@@ -14,6 +14,10 @@ CACHE = ($scope)->
 
   $scope.merge = (old_base, new_base, target)->
     return unless old_base? && new_base?
+
+    # into epilogue reset(event section)
+    wary_messages old_base, new_base
+
     func = merge[target] || merge_by.copy
     func old_base, new_base, target
 
@@ -188,5 +192,15 @@ CACHE = ($scope)->
 
         olds_head.push new_item
     olds_head
+
+  wary_messages = (old_base, new_base)->
+    do_wary = ->
+      for old_event in old_base.events
+        old_event.has_all_messages = false
+    if old_base.form?.login? && new_base.form?.login?
+      do_wary() if new_base.form.login.uid != old_base.form.login.uid
+    if old_base.event? && old_base.events?
+      do_wary() if new_base.event.is_epilogue && ! old_base.event.is_epilogue
+
 
 
