@@ -1,7 +1,7 @@
 class StoriesController < ApplicationController
   expose(:stories) do
     Rails.cache.fetch("stories_finished_#{params[:folder]}", :expires_in => 4.hours) do
-      query = Story.finished
+      query = Story.epilogued
       query = query.where(folder: params[:folder])  if  params[:folder] != "ALL"
       query.
         only(%w[folder vid name rating options upd vpl type card]).

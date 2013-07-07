@@ -27,17 +27,17 @@ class SowTurn < Event
       self.messages = []
       %w[log memo].each do |type|
         fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-        GijiLogScanner.new(path, folder, Time.at(0), 60, [vid], fname).save
+        GijiLogScanner.new(path, folder, fname).save
       end
     end
   end
 
-  def self.messages_empty
-    exists(messages:false).not(_id: /^(trpg|lobby-8)/)
+  def self.empty_ids
+    messages_empty.pluck("id")
   end
 
-  def self.ids_of_messages_empty
-    messages_empty.pluck("_id")
+  def self.messages_empty
+    exists(messages:false).not(_id: /^(trpg|lobby-8)/)
   end
 
   def self.breaks_each

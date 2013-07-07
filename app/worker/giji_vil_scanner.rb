@@ -4,23 +4,12 @@ class GijiVilScanner < GijiScanner
   def self.save
     rsync = Giji::RSync.new
 
-    gaps = SowVillage.gaps
-    rsync.each_locals do |folder, protocol, set|
-      next unless set
-
-      path = set[:files][:ldata] + '/data/vil'
-      from = set[:files][:from]
-      force = gaps[folder]
-
-      Dir.new(path).each do | fname |
-        next  if  0 == File.size(path+'/'+fname)
-        next  unless  /vil.cgi/ === fname  rescue  next
-
-        new(path, folder, WATCH[:cgi][:time], from, force, fname).save
-      end
+    stop_vid_list = {}
+    rsync.each_villages do |folder, vid, path, fname|
+      stop_vid_list[folder] ||= SowVillage.where(folder: folder, is_finish: true).pluck("vid")
+      next if stop_vid_list[folder].member? vid
+      new(path, folder, fname).save
     end
-
-    open( WATCH[:cgi][:file], "w" ).puts SowVillage.gaps.inspect
   end
 
   def enqueue
@@ -172,7 +161,8 @@ class GijiVilScanner < GijiScanner
         sow.card["event"]   = o.eventcard.split('/').map{|c|   if c.to_i == 0 then c else SOW_RECORD[folder][:events][c.to_i] end } || [] rescue []
         sow.card["config"]  = cnt
         sow.timer  = dt
-        sow.is_finish = (o.epilogue.to_i <= turn)
+        sow.is_epilogue = (o.epilogue.to_i <= turn)
+        sow.is_finish   = (o.epilogue.to_i <  turn)
         sow.save
 
         sow = SowVillage.find_by( folder: folder, vid: vid )
@@ -211,6 +201,7 @@ class GijiVilScanner < GijiScanner
         end
 
         sow = SowVillage.find_by( folder: folder, vid: vid )
+
         event_now = sow.events.to_a.max
         if event_now.present?
           turn = event_now.turn
@@ -219,6 +210,9 @@ class GijiVilScanner < GijiScanner
           event_id = "#{sow._id}-#{turn}"
         end
       end
+    end
+    sow.events.each do |event|
+      event.update_from_file if event.messages.blank?
     end
   end
 end

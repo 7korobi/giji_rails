@@ -25,6 +25,23 @@ module Giji
       end
     end
 
+    def each_villages &block
+      each_with_servers do |folder,_,set|
+        path = set[:files][:ldata] + '/data/vil'
+        fnames = Dir.glob(set[:files][:ldata]+"/data/vil/*_vil.cgi")
+        fnames.each do |fullpath_fname|
+          next  if  0 == File.size(fullpath_fname)
+          match = /(\d\d\d\d)_vil.cgi/.match(fullpath_fname)
+          if match
+            vid = match[1].to_i
+            fname = match[0]
+
+            yield(folder, vid, path, fname)
+          end
+        end
+      end
+    end
+
     def each_with_servers &block
       each 'none', &block
     end

@@ -7,7 +7,19 @@ class MapReduce::MessageByStory
     field :"value.#{key}.sow_auth_id", as: :"#{key}_sow_auth_ids", type: Hash
   end
 
-  def self.generate
+  def self.frontier_story
+    done = MapReduce::MessageByStory.pluck("id")
+    SowVillage.not.in(id: done).where(is_finish: true)
+  end
+
+  def self.frontier_story_ids
+    frontier_story.pluck("id")
+  end
+
+  def self.generate(target = frontier_story_ids)
+    bad_requests = target & SowVillage.empty_ids
+    return if bad_requests.present?
+
     map = %Q{function() {
   var counter, emits, logid_head, logs, v, _i, _len, _ref;
 
@@ -104,11 +116,9 @@ class MapReduce::MessageByStory
   }
   return emits;
 };}
-    done = MapReduce::MessageByStory.pluck("id")
-    target = SowVillage.not.in(id: done).where(is_finish: true).pluck("id")
     scope = {
       deny_sow_auth_ids: %w[master admin a1 a2 a3 a4 a5 a6 a7 a8 a9],
     }
-    Event.in(story_id: target).map_reduce(map, reduce).scope(scope).out(replace: collection_name).reduced
+    Event.in(story_id: target).map_reduce(map, reduce).scope(scope).out(merge: collection_name).reduced
   end
 end

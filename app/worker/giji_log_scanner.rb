@@ -2,16 +2,9 @@
 
 class GijiLogScanner < GijiScanner
   def self.save
-    blank_ids = SowTurn.ids_of_messages_empty
-    SowTurn.messages_empty.each do |o|
-      if o.story.is_finish
-        o.update_from_file
-      else
-        puts "#{o.id} is not finish"
-      end
+    SowTurn.messages_empty do |o|
+      o.update_from_file
     end
-
-    open( WATCH[:log][:file], "w" ).puts blank_ids
   end
 
   def enqueue  type
@@ -75,5 +68,7 @@ class GijiLogScanner < GijiScanner
     end
     event.messages.sort_by!(&:date)
     event.save
+
+    MapReduce::MessageByStory.generate(story.id) if story.is_finish
   end
 end

@@ -3,6 +3,6 @@ class BasePastLogController < BaseLogController
 
   protected
   def finish_require
-    authenticate_deny :not_finish unless story.is_finish
+    authenticate_deny :not_finish unless story.is_epilogue
   end
 end

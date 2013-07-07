@@ -10,27 +10,15 @@ class GijiScanner
     hash[:time] = File.mtime( hash[:file] ) rescue  Time.at(0)
   end
 
-  def initialize(path, folder, watch, timeout =  60*60*24*365*2009, force=[], fname)
-    @old  = watch - File.mtime(path+'/'+fname) rescue 0
-    @timeout = timeout
-    @force = force || []
-
+  def initialize(path, folder, fname, vid = fname[0..3].to_i, turn = fname[5..6].to_i)
     @path = path
     @fname = fname
     @folder = folder
-    @vid  = @fname[0..3].to_i
-    @turn = @fname[5..6].to_i
-  end
-
-  def out?
-    return false if @force && @force.include?(@vid)
-    return false if @old < @timeout
-    return true
+    @vid  = vid
+    @turn = turn
   end
 
   def save
-    return if out?
-
     @keys = nil
     case @fname
     when /vil.cgi/
