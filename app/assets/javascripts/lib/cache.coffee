@@ -16,7 +16,8 @@ CACHE = ($scope)->
     return unless old_base? && new_base?
 
     # into epilogue reset(event section)
-    wary_messages old_base, new_base
+    if new_base.event? && old_base.event?
+      $scope.wary_messages() if new_base.event.is_epilogue && ! old_base.event.is_epilogue
 
     func = merge[target] || merge_by.copy
     func old_base, new_base, target
@@ -41,7 +42,7 @@ CACHE = ($scope)->
 
       # event section
       new_event = new_base.event
-      old_event = find_or_create new_base, old_base.events
+      old_event = find_or_create new_base, old_base, "events"
 
       return unless new_event?
       new_event.keys (key, o)->
@@ -65,6 +66,8 @@ CACHE = ($scope)->
       filter = (o)-> o.logid
 
       INIT_MESSAGES new_base
+      if new_base.has_all_messages
+        old_base.messages = []
       merge_by.news old_base, new_base, 'messages', guard, filter
 
 
@@ -98,10 +101,10 @@ CACHE = ($scope)->
       old_base.form ||= old_form
 
       # form_texts section
-      merge.form_texts old_form, new_base.form
+      merge._form_texts old_form, new_base.form
 
 
-    form_texts: (old_base, new_base)->
+    _form_texts: (old_base, new_base)->
       guard = (key)-> ! ["count","targets","votes"].any(key)
       filter = (o)-> o.jst + o.switch
 
@@ -144,10 +147,7 @@ CACHE = ($scope)->
       old_base[target] ||= []
       merge_by.simple old_base, new_base, target, guard, filter
 
-      if new_base?.events?
-        old_base[child] = find_or_create new_base, old_base[target]
-      else
-        old_base[child] = old_base[target][0] ||= {}
+      old_base[child] = find_or_create new_base, old_base, target
 
     build: (new_base, field)->
       if field? && new_base?.events?
@@ -156,7 +156,8 @@ CACHE = ($scope)->
             field[event.turn] ||= 
               turn: event.turn
 
-  find_or_create = (new_base, field)->
+  find_or_create = (new_base, old_base, field_name)->
+    field = old_base[field_name]
     cache.build new_base, field
 
     turn = find_turn new_base
@@ -166,7 +167,10 @@ CACHE = ($scope)->
       {}
 
   find_turn = (new_base)->
-    new_base?.event?.turn
+    if new_base?.event?
+      return new_base.event.turn
+    if old_base?.event?
+      return old_base.event.turn
 
   concat_merge = (olds, news, guard, filter)->
     olds_head = olds.filter (o)->
@@ -188,19 +192,17 @@ CACHE = ($scope)->
         key = filter new_item
         old_item = old_hash[key]?[0]
         if old_item?
-          olds_head.remove old_item
+          olds_head.remove (o)->
+            filter(old_item) == filter(o)
 
         olds_head.push new_item
     olds_head
 
-  wary_messages = (old_base, new_base)->
-    do_wary = ->
-      for old_event in old_base.events
-        old_event.has_all_messages = false
-    if old_base.form?.login? && new_base.form?.login?
-      do_wary() if new_base.form.login.uid != old_base.form.login.uid
-    if old_base.event? && old_base.events?
-      do_wary() if new_base.event.is_epilogue && ! old_base.event.is_epilogue
+  $scope.wary_messages = ()->
+    if $scope.events?
+      for event in $scope.events
+        event.has_all_messages = false
+
 
 
 

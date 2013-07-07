@@ -32,7 +32,7 @@ class User
 
   validates_length_of :user_id, in: 1..30, allow_blank: true, allow_nil: true
   validates_length_of :name,    in: 1..30
-  validates_length_of :email,   in: 1..30
+  validates_length_of :email,   in: 1..30, allow_blank: true
 
   def admin?
     is_admin

@@ -79,12 +79,13 @@ CGI = ($scope, $filter)->
     f.uid = $("""[name="uid"]""").val()
     f.pwd = $("""[name="pwd"]""").val()
     param =
-      cmd: 'login'
+      cmd: f.cmd
       uid: f.uid
       pwd: f.pwd
       cmdfrom: f.cmdfrom
     param.vid = $scope.story.vid if $scope.story?.vid?
     $scope.submit param, ->
+      $scope.wary_messages()
 
   $scope.logout = (f)->
     param =
