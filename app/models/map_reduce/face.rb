@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class MapReduce::Face
   include Giji
 

@@ -20,7 +20,7 @@ giji_git_scanner:
   description: giji git regular collection.
 
 giji_vil_scanner:
-  cron: '1,16,31,46  *  *  *  *'
+  cron: '1,21,41  *  *  *  *'
   class: GijiScheduler
   args:  vil
   queue: giji_schedules
@@ -34,7 +34,7 @@ giji_log_scanner:
   description: giji logs get.
 
 giji_cleaner:
-  cron: '0,15,30,45 * * * *'
+  cron: '0,20,40 * * * *'
   class: GijiScheduler
   args:  clean
   queue: giji_schedules

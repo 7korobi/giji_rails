@@ -17,7 +17,7 @@ class MapReduce::MessageByStory
   end
 
   def self.generate(target = frontier_story_ids)
-    bad_requests = target & SowVillage.empty_ids
+    bad_requests = target.to_a & SowVillage.empty_ids
     return if bad_requests.present?
 
     map = %Q{function() {

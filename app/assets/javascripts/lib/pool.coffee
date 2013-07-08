@@ -54,7 +54,7 @@ POOL = ($scope, $filter)->
         $scope.top.news_size = news_size
 
   adjust = ->
-    $(window).scroll()
+    $(window).resize()
 
   $scope.adjust = ->
     adjust()

@@ -43,12 +43,14 @@ win =
   history: (title, href, hash)->
 
   on_scroll: (cb)->
-    $(window).on 'scroll', cb.throttle(100)
-  on_resize: (cb)->
+    $(window).on 'scroll', cb.throttle(500)
+    win.on_resize cb, 5000
+  on_resize: (cb, delay)->
+    delay ||= 100
     if window.onorientationchange? && ! head.browser.android
-      $(window).on 'orientationchange', cb.throttle(100)
+      $(window).on 'orientationchange', cb.throttle delay
     else
-      $(window).on 'resize', cb.throttle(100)
+      $(window).on 'resize', cb.throttle delay
 
 
 if history?.pushState?

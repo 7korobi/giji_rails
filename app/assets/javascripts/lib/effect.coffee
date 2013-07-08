@@ -29,7 +29,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
             outframe = "outframe"
             info_left = (width - 580)/2
         when 480
-          info_left = width - 472
+          info_left = width - 476
       info_right = width - info_left - 110
 
 
@@ -60,6 +60,8 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
         if key == 'switch'
           small = 185
         if key == 'link'
+          small = 185
+        if key == 'login'
           small = 185
         if key == 'page'
           small = max_width
@@ -112,7 +114,6 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $("#outframe")[0].className = outframe
 
     (->
-      win.on_scroll resize_naviitems
       win.on_resize resize_naviitems
     ).delay 100
   extra_navis = {}
