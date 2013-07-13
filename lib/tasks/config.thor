@@ -388,7 +388,7 @@ _PERL_
       File.open(rhtml_info_out ,'w:sjis:utf-8'){|f| f.write( to_s ) }
       FileUtils.chmod( 0666, rhtml_info_out )
 
-      @perl_change = -> s { s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
+      @perl_change = -> s { s.to_s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
 
       GAME.each_pair do |folder,cfg|
         config           = cfg['config'] || next

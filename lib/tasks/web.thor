@@ -63,10 +63,18 @@ TO=$1
 rsync -e "ssh -p #{no}0" -r ${TO}/ 7korobi@#{server}:${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak'  $2 $3 $4 $5
 _SHELL_
 
+  PULL = <<'_SHELL_'
+echo "no: #{no}  to: $1  option: $2 $3 $4 $5"
+TO=$1
+
+rsync -e "ssh -p #{no}0" -r 7korobi@#{server}:${TO}/ ${TO}/ --exclude='*.svn-base' --exclude='*.svn' --exclude='*.bak'  $2 $3 $4 $5
+_SHELL_
+
   def each_servers
     [241,242,243,244,247,248,249,250,251,252,253,254].each do |no|
       [["/utage/ssh-#{no}" ,SSH ],
-       ["/utage/web-push-#{no}",PUSH]
+       ["/utage/web-push-#{no}",PUSH],
+       ["/utage/web-pull-#{no}",PULL],
       ].each do |fname, shell|
         `mkdir -p /utage/#{no}`
         open(fname,"w") do |f|

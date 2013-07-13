@@ -100,6 +100,8 @@ INIT_POTOFS = ($scope, gon)->
           potof.win = win_check potof, gon.story
 
           if gon.story.is_finish
+            winner = gon.event?.winner || gon.events?.last()?.winner
+
             if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA", "MORPHE"].any gon.story.folder
               is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].any gon.story.type.game
               is_dead_lose = 1 if "LONEWOLF" == potof.win
@@ -107,8 +109,8 @@ INIT_POTOFS = ($scope, gon)->
               is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.any "HATEDEVIL"
               is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.any "LOVEANGEL"
               potof.win_result = "敗北"
-              potof.win_result = "勝利" if gon.event.winner == "WIN_" + potof.win
-              potof.win_result = "勝利" if gon.event.winner != "WIN_HUMAN"  && gon.event.winner != "WIN_LOVER" && "EVIL" == potof.win
+              potof.win_result = "勝利" if winner == "WIN_" + potof.win
+              potof.win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == potof.win
               potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
               potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.any potof.pno
               potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live

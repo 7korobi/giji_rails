@@ -51,9 +51,11 @@ AJAX = ($scope)->
       new_item = $(@).contents().find("body")
       doc = new_item.html()
 
-      $scope.form = null
       if 20 < doc.length
-        $scope.replace_gon doc
+        if @contentWindow.gon?
+          window.gon = Object.extended(@contentWindow.gon)
+        else
+          $scope.replace_gon doc
         cb()
         $scope.$apply()
   

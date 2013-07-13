@@ -37,25 +37,24 @@ FORM = ($scope)->
       ""
   
   submit = (f, param)->
+    if f
+      $scope.errors?[f.cmd] = null
+      f.is_delete = true
+      switch f.cmd
+        when "wrmemo"
+          f.is_preview = false
+        when "write"
+          f.is_preview = false
+          f.text = ""
+        when "action"
+          f.text = ""
+          f.target = "-1"
+          f.action = "-99"
+        else 
     $scope.submit param, ->
-      if f
-        if $scope.errors?
-          $scope.errors[f.cmd] = []
-        f.is_delete = true
-        switch f.cmd
-          when "wrmemo"
-            f.is_preview = false
-          when "write"
-            f.is_preview = false
-            f.text = ""
-          when "action"
-            f.text = ""
-            f.target = "-1"
-            f.action = "-99"
-          else 
-    
+
   $scope.error = (f)->
-    list = $scope.errors[f.cmd] if f? && $scope.errors?
+    list = $scope.errors?[f?.cmd]
     list ||= []
     list.join("<br>")
 
@@ -65,6 +64,7 @@ FORM = ($scope)->
 
   $scope.action_valid = (f)->
     valid f, (size, lines)->
+      f.valid = false if size < 4
       f.valid = false if f.target == "-1" && f.action != "-99"
       if size < 1 
         f.valid = false if f.target ==  "-1"
