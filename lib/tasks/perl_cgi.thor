@@ -29,6 +29,7 @@ class PerlCgi < Thor
   desc "test", "push files to testbed servers"
   def test
     sync_to_servers do |folder, files|
+      next if files['skip']
       files && files['lapp'] && files['lapp'][/testbed$/]
     end
   end

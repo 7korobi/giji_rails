@@ -111,12 +111,12 @@ class DiaryHistory
 class Diary
   constructor: (f)->
     filter = (o)-> o.jst + o.switch
-
-    @version = 1
-    @form = f
-    @key = filter f
     @finder = (o)=>
       @key == o.key
+
+    @form = f
+    @key = filter f
+    @version = @history().length + 1
 
   history: ->
     Diary.history.findAll @finder

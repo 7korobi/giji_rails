@@ -47,13 +47,13 @@ class MapReduce::Message
   var counter, logs, v, _i, _len;
 
   counter = function(v, field) {
-    var base, field_id, res, vv, _ref, _results;
+    var base, field_id, res, values, vv, _results;
 
     base = logs[field] || (logs[field] = {});
-    _ref = v[field];
+    values = v[field];
     _results = [];
-    for (field_id in _ref) {
-      vv = _ref[field_id];
+    for (field_id in values) {
+      vv = values[field_id];
       res = base[field_id] || (base[field_id] = {
         date: {
           min: vv.date.min,
@@ -61,7 +61,8 @@ class MapReduce::Message
         },
         max: 0,
         all: 0,
-        count: 0
+        count: 0,
+        vil: 0
       });
       if (res.date.min > vv.date.min) {
         res.date.min = vv.date.min;
@@ -73,7 +74,8 @@ class MapReduce::Message
         res.max = vv.max;
       }
       res.all += vv.all;
-      _results.push(res.count += vv.count);
+      res.count += vv.count;
+      _results.push(res.vil += vv.vil || 1);
     }
     return _results;
   };

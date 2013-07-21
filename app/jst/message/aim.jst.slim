@@ -6,9 +6,9 @@ table.say(ng-class="message.mestype")
       td.field
         .msg
           h3.mesname
-            | {{message.mesicon}}&nbsp;
             b(ng-bind-html-unsafe="message.name")
-            b &nbsp;→&nbsp;{{message.to}}
+            | &nbsp;→&nbsp;
+            b(ng-bind-html-unsafe="message.to")
           p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
           p.mes_date
             a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}

@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     return unless user.sow_auths.present? && user.byebyes.present?
 
     active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
-    user_story_ids   = SowUser.all.in(sow_auth_id: user[:sow_auth_ids] ).in(story_id: active_story_ids ).pluck(:story_id)
+    user_story_ids   = SowUser.all.in(sow_auth_id: user[:sow_auth_ids] ).in(story_id: active_story_ids ).order_by("timer.entrieddt" => 1).pluck(:story_id).uniq
     byebye_story_ids = SowUser.all.in(sow_auth_id: user[:byebye_ids]   ).in(story_id: user_story_ids   ).pluck(:story_id)
 
     kick_ids = Hash.new {|hash, key| hash[key] = [] }
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
     gon.byebyes = user_story_ids.map do |story_id|
       story   = stories[story_id].first
       nation  = GAME[story.folder][:nation] rescue ' - '
-      created = story.timer["updateddt"]
+      created = story["timer.updateddt"]
       mestype = "VSAY"
       text = "開始が楽しみだ。"
       text = "村を抜けておいたほうがいい。" if byebye_story_ids.member? story_id
@@ -77,7 +77,7 @@ class UsersController < ApplicationController
         mestype:  mestype,
         name:  "#{nation}#{story.vid} #{story.name}",
         style: '',
-        date:  created,
+        updated_at:  created,
         log:   text,
       }
     end

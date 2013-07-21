@@ -103,7 +103,7 @@ INIT_POTOFS = ($scope, gon)->
             winner = gon.event?.winner || gon.events?.last()?.winner
 
             if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA", "MORPHE"].any gon.story.folder
-              is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW"].any gon.story.type.game
+              is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"].any gon.story.type.game
               is_dead_lose = 1 if "LONEWOLF" == potof.win
               is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
               is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.any "HATEDEVIL"

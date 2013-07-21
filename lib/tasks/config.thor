@@ -23,7 +23,7 @@ class Config < Thor
     require './lib/rsync'
 
     ConfigCreate.new.activate do |files|
-      files && files['lapp'] && files['lapp'][/testbed$/]
+      files && ! files['skip'] && files['lapp'] && files['lapp'][/testbed$/]
     end
   end
 

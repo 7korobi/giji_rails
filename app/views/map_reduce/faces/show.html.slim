@@ -10,10 +10,11 @@
   table.say.info
     tr.caution
       th.msg(colspan="2")
-      th.msg(style="text-align:right")
-        | 文字数合計
+        | 総合値
       th.msg(style="text-align:right")
         | 一番長い発言
+      th.msg(style="text-align:right")
+        | 総文字数
       th.msg(style="text-align:right")
         | 総発言回数
     tr(ng-repeat="say in face.says" class="{{say.logid_head}}AY")
@@ -22,13 +23,37 @@
         | {{face.say_titles[say.logid_head]}}
       td.msg
         .mark(style="text-align:right")
-          | {{say.all.metric(0,0)}} 字
-      td.msg
-        .mark(style="text-align:right")
           | {{say.max.metric(0,0)}} 字
       td.msg
         .mark(style="text-align:right")
+          | {{say.all.metric(0,0)}} 字
+      td.msg
+        .mark(style="text-align:right")
           | {{say.count.metric(0,0)}} 回
+
+  table.say.info
+    tr.caution
+      th.msg(colspan="2")
+        | 平均値
+      th.msg(style="text-align:right")
+        | ／村数
+      th.msg(style="text-align:right")
+        | 文字数
+      th.msg(style="text-align:right")
+        | 発言回数
+    tr(ng-repeat="say in face.says" class="{{say.logid_head}}AY")
+      th.msg
+      th.msg
+        | {{face.say_titles[say.logid_head]}}
+      th.msg
+        .mark(style="text-align:right")
+          | {{say.vil}} 村
+      td.msg
+        .mark(style="text-align:right")
+          | {{(say.all / say.vil).metric(0,0)}} 字
+      td.msg
+        .mark(style="text-align:right")
+          | {{(say.count / say.vil).metric(0,0)}} 回
 
   h3
     span.mark
@@ -71,7 +96,7 @@
         | 全部で
         span.mark
           | {{face.folder.all}}回
-        | 登場しました（村数）
+        | 登場しました。
         dl
           div.accordion
             dt
@@ -92,8 +117,11 @@
       p.text
         | 全部で
         span.mark
+          | {{face.sow_auth_ids.length}}人
+        | が、
+        span.mark
           | {{face.sow_auth_id.all}}回
-        | 登場しました（プレイヤー数）
+        | 登場しました。
         div(style="display:inline-block;" ng-repeat="sow_auth_id in face.sow_auth_ids")
           a.mark(style="display:inline-block; width:8.5em; text-align:right;")
             | {{sow_auth_id[0]}}

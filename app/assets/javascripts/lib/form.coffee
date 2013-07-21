@@ -64,11 +64,12 @@ FORM = ($scope)->
 
   $scope.action_valid = (f)->
     valid f, (size, lines)->
-      f.valid = false if size < 4
       f.valid = false if f.target == "-1" && f.action != "-99"
       if size < 1 
         f.valid = false if f.target ==  "-1"
         f.valid = false if f.action == "-99"
+      else
+        f.valid = false if size < 4
 
   $scope.preview_action = (f)->
     text =
@@ -184,11 +185,13 @@ FORM = ($scope)->
       return if f.targets?
       $scope.form.confirm = f.title
 
-    param =
-      cmd: f.cmd
-      vid:  $scope.story.vid
-      target:    f.target
-      target2:   f.target2
+    param = f.clone()
+    param.vid = $scope.story.vid
+    delete param['$$hashKey']
+    delete param['is_delete']
+    delete param['targets']
+    delete param['title']
+    delete param['jst']
 
     $scope.confirm_cancel = ->
       $scope.form.confirm = null

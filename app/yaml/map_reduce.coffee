@@ -94,11 +94,13 @@ reduce = (k, vs) ->
         max: 0
         all: 0
         count: 0
+        vil: 0
       res.date.min = vv.date.min if res.date.min > vv.date.min
       res.date.max = vv.date.max if res.date.max < vv.date.max
       res.max = vv.max if res.max < vv.max
       res.all += vv.all
       res.count += vv.count
+      res.vil += vv.vil || 1
 
   logs = {}
   for v in vs

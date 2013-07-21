@@ -51,6 +51,16 @@ PERL_DEFAULT:
       ENABLED_AMBIDEXTER:   [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
       ENABLED_SUICIDE_VOTE: [1, "1:自殺投票"]
 
+PERL_NEW:
+  config: &config_new
+    trsid:
+      - all
+      - star
+      - regend
+      - heavy
+      - complexx
+      - secret
+
 PERL_GAME:
   config: &config_game
     csid: *csid_giji
@@ -70,16 +80,19 @@ PERL_GAME:
       - euro
     game:  &game_cabala
       - TABULA
-      - MILLERHOLLOW
       - LIVE_TABULA
+      - MILLERHOLLOW
+      - LIVE_MILLERHOLLOW
       - TROUBLE
       - MISTERY
+      - SECRET
     trsid: &trsid_cabala
       - all
       - star
       - regend
       - heavy
       - complexx
+      - secret
     path: &SIMPLE_PATH
       DIR_LIB:  ./lib
       DIR_HTML: ./html
@@ -102,10 +115,12 @@ PERL_UNION:
       - euro
     game:  &game_all
       - TABULA
-      - MILLERHOLLOW
       - LIVE_TABULA
+      - MILLERHOLLOW
+      - LIVE_MILLERHOLLOW
       - TROUBLE
       - MISTERY
+      - SECRET
     trsid: &trsid_all
       - sow
       - all
@@ -413,6 +428,7 @@ SOYBEAN:
   vid_code: Bs
   config:
     <<: *config_braid
+    <<: *config_new
     saycnt:
       - weak
       - juna
@@ -593,6 +609,7 @@ LOBBY:
   vid_code: L
   config:
     <<: *config_all
+    <<: *config_new
     saycnt:
       - lobby
     enable:
