@@ -1,6 +1,11 @@
-set_key = (k,v)-> v.key = k
-SOW.roles?.keys  set_key
-SOW.gifts?.keys  set_key
+set_key = (k,v)->
+  v.key = k
+set_key_and_group = (k,v)->
+  v.key = k
+  v.group = v.win || 'OTHER'
+
+SOW.roles?.keys  set_key_and_group
+SOW.gifts?.keys  set_key_and_group
 SOW.events?.keys set_key
 
 if SOW_RECORD.CABALA.events?
@@ -24,7 +29,7 @@ CGI = ($scope, $filter)->
       item.count = $scope.config.counts[item.key]
       item
 
-    roles = $scope.config.roles.map((o)-> count_set SOW.roles[o]).groupBy((o)-> if SOW.groups[o.win] then SOW.groups[o.win].name else "その他")
+    roles = $scope.config.roles.map((o)-> count_set SOW.roles[o]).groupBy((o)-> SOW.groups[o.group].name)
     gifts = $scope.config.gifts.map((o)-> count_set SOW.gifts[o]).groupBy((o)-> "恩恵")
     $scope.config.items = roles.merge(gifts)
     $scope.config.items_keys = $scope.config.items.keys()

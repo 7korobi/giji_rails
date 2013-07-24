@@ -20,8 +20,4 @@ TIMER = ($scope)->
     else
       return "....-..-..(？？？) --..時頃"
 
-  $scope.news = ()->
-    for o in GIJI.news
-      o.is_news = Date.create('3days ago') < Date.create(o.date)
-    GIJI.news
 

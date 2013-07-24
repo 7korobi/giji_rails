@@ -1,6 +1,6 @@
-label.inline.radio
-  span.btn.add-on(ng-click="search.value = search_input") ⎋
+.inline.radio
   input.input-medium(type="text" ng-model="search_input" placeholder="ログを探す")
+  span.btn.add-on(ng-click="search.value = search_input") ⎋
 
 label.inline.radio(ng-show="event.is_progress")
   a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎

@@ -23,6 +23,11 @@ CACHE = ($scope)->
     func old_base, new_base, target
 
   merge = 
+    news: (old_base, new_base, target)=>
+      for o in new_base.news
+        o.is_news = Date.create('3days ago') < Date.create(o.date)
+      merge_by.copy old_base, new_base, target
+      
     config: (old_base, new_base, target)=>
       merge_by.copy old_base, new_base, target
       $scope.deploy_config()

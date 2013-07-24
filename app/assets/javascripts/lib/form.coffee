@@ -52,6 +52,7 @@ FORM = ($scope)->
           f.action = "-99"
         else 
     $scope.submit param, ->
+      $scope.go.form.delay(100)
 
   $scope.error = (f)->
     list = $scope.errors?[f?.cmd]

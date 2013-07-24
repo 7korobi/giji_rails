@@ -18,7 +18,7 @@
   h2 更新情報
   .paragraph
     ul
-      li(ng-repeat="o in news() | limitTo:5")
+      li(ng-repeat="o in news | limitTo:5")
         span(ng-show="o.is_news" style="color:#b94a48;") New!&nbsp;
         | {{o.text}}
   - if admin?

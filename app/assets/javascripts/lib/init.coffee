@@ -5,8 +5,8 @@ INIT_FACE = (new_base)->
 
   if new_base.wins?
     new_base.role_of_wins = new_base.roles.groupBy ([k,count])->
-      role = SOW.gifts[k] || SOW.roles[k] || {win: "NONE"}
-      SOW.groups[role.win]?.name || "その他"
+      role = SOW.gifts[k] || SOW.roles[k] || {group: "OTHER"}
+      SOW.groups[role.group].name
 
 INIT_MESSAGES = (new_base)->
   return unless new_base?.messages?
@@ -28,7 +28,7 @@ INIT_MESSAGES = (new_base)->
 INIT_STORY = ($scope, story)->
   event_config = story.card.config.filter (o)->  SOW.events[o]
   role_config = story.card.config.filter (o)-> ! SOW.events[o] && ! SOW.specials[o]
-  win_config = role_config.map((o)-> SOW.gifts[o]?.win || SOW.roles[o]?.win || "NONE").filter (o)-> "NONE" != o
+  win_config = role_config.map((o)-> SOW.gifts[o]?.win || SOW.roles[o]?.win || null).filter (o)-> o
 
   story.card.discard_names = $scope.countup_config(story.card.discard).join '、'
   story.card.config_names = $scope.countup_config(story.card.config).join '、'
@@ -93,8 +93,7 @@ INIT_POTOFS = ($scope, gon)->
             win_love = SOW.loves[potof.love]?.win
 
             win = win_juror || win_love || win_zombie || win_by_role(SOW.gifts) || win_by_role(SOW.roles) || "NONE"
-            if ["PAN","WOLF","RP","PRETENSE","PERJURY","XEBEC","CRAZY"].any story.folder
-              win = 'WOLF' if win == 'EVIL'
+            win = GIJI.folders[story.folder].evil if win == 'EVIL'
             win
 
           potof.win = win_check potof, gon.story
@@ -102,7 +101,7 @@ INIT_POTOFS = ($scope, gon)->
           if gon.story.is_finish
             winner = gon.event?.winner || gon.events?.last()?.winner
 
-            if gon.story? && gon.event? && ["WOLF", "ALLSTAR", "ULTIMATE", "CABALA", "MORPHE"].any gon.story.folder
+            if gon.story? && gon.event? && ! GIJI.folders[gon.story.folder].role_play
               is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"].any gon.story.type.game
               is_dead_lose = 1 if "LONEWOLF" == potof.win
               is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
@@ -142,9 +141,11 @@ INIT_POTOFS = ($scope, gon)->
       potof.text = []
       if potof.rolestate?
         rolestate = potof.rolestate
-        SOW.maskstates.keys (mask, text)->
-          potof.text.push "#{text} " if 0 == (rolestate & mask)
-          rolestate |= mask
+        for mask in SOW.maskstate_order
+          if 0 == (rolestate & mask)
+            text = SOW.maskstates[mask]
+            potof.text.push "#{text} " if text
+            rolestate |= mask
       potof.text.push "☑" if 'pixi' == potof.sheep
       potof.text.push "♥" if 'love' == potof.love
       potof.text.push "☠" if 'hate' == potof.love
@@ -170,11 +171,17 @@ INIT_POTOFS = ($scope, gon)->
             "✎#{potof.said}"
           when 'stat_at', 'stat_type'
             potof.stat
-          when 'win_result', 'win_name','role_names', 'select_name'
+          when 'win_result', 'win_name','role_names'
             potof.role_names.join('、')
+          when 'select_name'
+            if potof.select_name
+              potof.select_name + "を希望"
+            else
+              ""
           when 'text'
             potof.text.join('')
       potof
+
 
 
 INIT = ($scope, $filter)->

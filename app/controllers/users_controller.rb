@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   before_filter :self_require, only:%w[edit update byebye_list]
 
   def index
+    gon.news = NOTE[:news]
   end
 
   def show

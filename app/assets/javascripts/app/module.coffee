@@ -1,3 +1,6 @@
+if SOW.maskstates?
+  SOW.maskstate_order = SOW.maskstates.keys().sort((o)-> -o)
+
 MODULE = ($scope, $filter)->
   $scope.head = head;
   $scope.win  = win;
@@ -65,8 +68,8 @@ MODULE = ($scope, $filter)->
 
   $scope.img_cid = (csid, face_id)->
     csid = GIJI.csids[csid]
-    csid or= 'portrate'
-    "#{URL.file}/images/#{csid}/#{face_id}.jpg"
+    csid or= GIJI.csids.default
+    "#{URL.file}#{csid.path}#{face_id}#{csid.ext}"
 
   $scope.potof_key = (o)->
     csid   = (o.csid || '*').split('_')[0]
