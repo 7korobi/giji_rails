@@ -5,6 +5,7 @@ class PerlCgi < Thor
   def init(folder)
     files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
     sync_to_servers(files) do |folder, files|
+      next if files['skip']
       files && files['lapp'] && files['lapp'][/testbed$/]
     end
   end
@@ -28,7 +29,8 @@ class PerlCgi < Thor
 
   desc "test", "push files to testbed servers"
   def test
-    sync_to_servers do |folder, files|
+    files = %w[index.html sow.cgi]
+    sync_to_servers(files) do |folder, files|
       next if files['skip']
       files && files['lapp'] && files['lapp'][/testbed$/]
     end

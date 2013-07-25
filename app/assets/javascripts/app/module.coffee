@@ -1,5 +1,5 @@
 if SOW.maskstates?
-  SOW.maskstate_order = SOW.maskstates.keys().sort((o)-> -o)
+  SOW.maskstate_order = SOW.maskstates.keys().sortBy((o)-> -o)
 
 MODULE = ($scope, $filter)->
   $scope.head = head;

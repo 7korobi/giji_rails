@@ -80,7 +80,7 @@ wins:
   WOLF:
     name: 人狼陣営
   EVIL:
-    name: 破滅陣営
+    name: 敵側の人間
   GURU:
     name: 笛吹き
   PIXI:
@@ -100,9 +100,9 @@ groups:
   OTHER:
     name: その他
   HUMAN:
-    name: 人間
+    name: 村人陣営
   WOLF:
-    name: 人狼
+    name: 人狼陣営
   EVIL:
     name: 敵側の人間
   PIXI:

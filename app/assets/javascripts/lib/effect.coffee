@@ -23,7 +23,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           if  lim_left < info_left
             content = "contentframe_navileft"
             outframe = "outframe_navimode"
-            info_left = (width - 770)/2 + 187
+            info_left = (width - 770)/2 + 187 - 10
           else
             content = "contentframe"
             outframe = "outframe"

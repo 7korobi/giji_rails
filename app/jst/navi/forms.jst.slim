@@ -14,3 +14,7 @@ div(class="{{form.win}}")
     | {{form.confirm}}
   a.btn(ng-click="confirm_cancel()") ×
   a.btn(ng-click="confirm_complete()") ◯
+
+.formpl_gm
+  .mark(ng-bind-html-unsafe="error(f)" ng-repeat="(key, f) in form.commands")
+

@@ -52,11 +52,13 @@ table.table.table-condensed(style="margin:0;")
         .note.nowrap(ng-show="potof.said")
           | ✎{{potof.said}}
       td(ng-click="potof_toggle(potof)")
-        div(ng-show="secret_is_open")
-          span.nowrap
-            | {{potof.win_name}}::{{potof.role_names.join('、')}}
-          .note.nowrap
-            strong
+        div.nowrap(ng-show="secret_is_open")
+          span.note
+            | {{potof.win_name}}::
+          span
+            | {{potof.role_names.join('、')}}
+          .note
+            span.mark
               | {{potof.win_result}}
             span.name(ng-show="potof.select_name")
               | &nbsp; {{potof.select_name}} を希望
