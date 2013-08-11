@@ -1,21 +1,3 @@
-set_key = (k,v)->
-  v.key = k
-set_key_and_group = (k,v)->
-  v.key = k
-  switch v.win 
-    when 'HUMAN', 'WOLF', 'EVIL', 'PIXI', 'OTHER'
-      v.group = v.win
-    else 
-      v.group = 'OTHER'
-
-SOW.roles?.keys  set_key_and_group
-SOW.gifts?.keys  set_key_and_group
-SOW.events?.keys set_key
-
-if SOW_RECORD.CABALA.events?
-  SOW.events.keys (k,v)->
-    v.id  = SOW_RECORD.CABALA.events.indexOf k
-
 CGI = ($scope, $filter)->
   $scope.mode_cache = 
     info: 'info_open_player'

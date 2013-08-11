@@ -1,5 +1,17 @@
+set_key = (k,v)->
+  v.key = k
+
+SOW.roles?.keys  set_key
+SOW.gifts?.keys  set_key
+SOW.events?.keys set_key
+
 if SOW.maskstates?
   SOW.maskstate_order = SOW.maskstates.keys().sortBy((o)-> -o)
+
+if SOW_RECORD.CABALA.events?
+  SOW.events.keys (k,v)->
+    v.id  = SOW_RECORD.CABALA.events.indexOf k
+    v.key = k
 
 MODULE = ($scope, $filter)->
   $scope.head = head;

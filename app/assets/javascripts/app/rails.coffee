@@ -1,8 +1,3 @@
-if SOW_RECORD.CABALA.events?
-  SOW.events.keys (k,v)->
-    v.id  = SOW_RECORD.CABALA.events.indexOf k
-    v.key = k
-
 RAILS = ($scope, $filter)->
   $scope.mode_cache = 
     info: 'info_open_player'

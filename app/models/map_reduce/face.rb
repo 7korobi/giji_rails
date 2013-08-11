@@ -48,8 +48,8 @@ class MapReduce::Face
       v = _ref2[_i];
       deploy(v || "mob", "role");
       role = SOW.roles[v];
-      if ((role != null ? role.win : void 0) != null) {
-        win = (_ref3 = SOW.groups[role.win]) != null ? _ref3.name : void 0;
+      if ((role != null ? role.group : void 0) != null) {
+        win = (_ref3 = SOW.groups[role.group]) != null ? _ref3.name : void 0;
       }
     }
   }

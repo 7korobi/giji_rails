@@ -546,6 +546,7 @@ CABALA:
   vid_code: C
   config:
     <<: *config_game
+    <<: *config_new
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]

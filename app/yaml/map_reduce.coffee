@@ -29,8 +29,8 @@ map = ->
     for v in @role
       deploy(v || "mob", "role")
       role = SOW.roles[v]
-      if role?.win?
-        win = SOW.groups[role.win]?.name
+      if role?.group?
+        win = SOW.groups[role.group]?.name
   win ||= "その他"
 
   deploy(win,    "win")
