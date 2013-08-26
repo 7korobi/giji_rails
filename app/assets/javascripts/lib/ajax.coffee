@@ -36,28 +36,19 @@ AJAX = ($scope)->
   $scope.post_submit = (href, param)->
     $("body").append("""<form id="submit_request" method="post" action="#{href.escapeURL()}##{location.hash}"></form>""")
     form_submit(param)
+    $scope.pool_nolimit()
 
   $scope.post_iframe = (href, param, cb)->
-    iframe = $('iframe')
-    if 0 == iframe.length
-      dynamic_div = document.createElement 'DIV'
-      dynamic_div.innerHTML = """<iframe name="submit_result" style="display: none;"></iframe>"""
-      document.body.appendChild dynamic_div 
+    dynamic_div = document.createElement 'DIV'
+    dynamic_div.innerHTML = """<iframe name="submit_result" style="display: none;"></iframe>"""
+    document.body.appendChild dynamic_div 
 
-      iframe = $('iframe')
-      iframe[0].contentWindow.name = "submit_result"
+    iframe = $('iframe')
+    iframe[0].contentWindow.name = "submit_result"
 
     iframe.load ->
-      new_item = $(@).contents().find("body")
-      doc = new_item.html()
-
-      if 20 < doc.length
-        if @contentWindow.gon?
-          window.gon = Object.extended(@contentWindow.gon)
-        else
-          $scope.replace_gon doc
-        cb()
-        $scope.$apply()
+      $scope.pool_nolimit()
+      $('iframe').remove()
   
     $("body").append("""<form id="submit_request" target="submit_result" method="post" action="#{href.escapeURL()}"></form>""")
     form_submit(param)

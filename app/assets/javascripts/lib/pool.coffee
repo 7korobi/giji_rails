@@ -4,13 +4,6 @@ POOL = ($scope, $filter)->
   ajax_timer = 5 * 60 * 1000
 
   apply = ->
-    popover = $('a[title]')
-    popover.each (idx, dom)->
-      $(dom).attr "data-content", $(dom).attr("title")
-      $(dom).attr "title", ''
-      $(dom).attr "rel", 'popover'
-    $('[rel="popover"]').popover()
-
     $scope.$apply()
 
   $scope.init = ->
@@ -40,6 +33,7 @@ POOL = ($scope, $filter)->
     $scope.get_news $scope.event, =>
       $scope.init()
       $scope.boot()
+  $scope.pool_nolimit = pool_button
   $scope.pool = pool_button.throttle message_first
 
   $scope.top =

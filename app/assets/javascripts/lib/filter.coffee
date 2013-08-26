@@ -52,7 +52,7 @@ FILTER = ($scope, $filter)->
     page.filter_to 'messages'
     page.filter 'event.turn'
     page.filter 'event.is_news'
-    page.filter 'event.messages.length'
+    page.filter 'event.messages.last().updated_at'
 
     $scope.deploy_mode_common()
 

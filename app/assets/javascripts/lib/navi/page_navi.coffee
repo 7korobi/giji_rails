@@ -5,17 +5,34 @@ class PageNavi extends Navi
 
     super
     @filters = []
+    @pagers  = []
+
+  do_filters: (list, filters)->
+    for [target_key, filter] in filters
+      target = @scope.$eval target_key
+      if target
+        list = filter target, list
+    list
 
   paginate: (page_per_key, func)->
-    @filter page_per_key, (page_per, list)=>
+    @pager page_per_key, (page_per, list)=>
       @length = (list.length / page_per).ceil()
       list
 
-    @filter page_per_key, func
-
-    @filter "#{@key}.value", (page, list)=>
+    @pager page_per_key, func
+    @pager "#{@key}.value", (page, list)=>
       @item_last = list.last() if list.last
       list
+
+  pager: (key, func)->
+    @scope.$watch key, =>
+      if @list_by_filter?
+        list = @do_filters(@list_by_filter, @pagers)
+        if @to_key? && list
+          eval "_this.scope.#{@to_key} = list"
+      @_move()
+
+    @pagers.push [key, func] if func
 
   filter_by: (by_key)->
     @by_key = by_key
@@ -26,11 +43,8 @@ class PageNavi extends Navi
   filter: (key, func)->
     @scope.$watch key, =>
       if @by_key?
-        list = @scope.$eval @by_key
-        for [target_key, filter] in @filters
-          target = @scope.$eval target_key
-          if target
-            list = filter target, list
+        @list_by_filter = @do_filters(@scope.$eval(@by_key), @filters)
+        list = @do_filters(@list_by_filter, @pagers)
         if @to_key? && list
           eval "_this.scope.#{@to_key} = list"
       @_move()

@@ -14,6 +14,7 @@ POTOFS = ($scope)->
         $scope.face.others = $scope.face.all.subtract $scope.face.potofs
         $scope.face.others.remove '-_none_'
         $scope.face.others.remove $scope.potof_key({})
+      $scope.do_sort_potofs()
 
   # potofs support
   calc_potof = (hide)->
