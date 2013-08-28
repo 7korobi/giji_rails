@@ -60,6 +60,14 @@ PERL_NEW:
       - heavy
       - complexx
       - secret
+    game:  &game_cabala
+      - TABULA
+      - LIVE_TABULA
+      - MILLERHOLLOW
+      - LIVE_MILLERHOLLOW
+      - TROUBLE
+      - MISTERY
+      - SECRET
 
 PERL_GAME:
   config: &config_game
@@ -85,14 +93,12 @@ PERL_GAME:
       - LIVE_MILLERHOLLOW
       - TROUBLE
       - MISTERY
-      - SECRET
     trsid: &trsid_cabala
       - all
       - star
       - regend
       - heavy
       - complexx
-      - secret
     path: &SIMPLE_PATH
       DIR_LIB:  ./lib
       DIR_HTML: ./html
