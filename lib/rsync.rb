@@ -102,10 +102,10 @@ module Giji
       rpath += "/#{name}"
       open, user, pass = set.values_at( * %w[open user pass] )
 
-      puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
-
       case protocol
       when 'ftp'
+        puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
+
         option = '-R'
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|-X #{name}|
@@ -117,6 +117,8 @@ module Giji
         @sh << line
 
       when 'ssh'
+        puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
+
         option = '--stats'
         port  = set[:options][:port] || 22
         excludes = %w[.svn-base .svn .bak].map do|name|

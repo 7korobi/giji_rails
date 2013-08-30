@@ -459,6 +459,37 @@ SOYBEAN:
     pl:  /www/giji_log/soy-bean/config.pl
     is_angular: true
 
+CIEL:
+  server: ciel.moo.jp
+  oldlog:   /cheat/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /cheat/sow.cgi?cmd=rss
+  folder: CIEL
+  info_url: /cheat/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Cc"
+  epi_url:  /cheat/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Cc
+  config:
+    <<: *config_braid
+    <<: *config_new
+    saycnt:
+      - weak
+      - juna
+      - vulcan
+      - infinity
+    cfg:
+      <<: *cfg_braid
+      RULE:           CIEL
+      URL_SW:         http://ciel.moo.jp/cheat
+      BASEDIR_CGIERR: http://ciel.moo.jp//cheat
+      NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
+      MAX_VILLAGES:   2
+      BASEDIR_DOC:    http://giji.check.jp
+    path:
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/ciel/config.pl
+    is_angular: true
+
 PERJURY:
   server: perjury.rulez.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
