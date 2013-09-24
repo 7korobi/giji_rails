@@ -31,11 +31,12 @@ sub OutHTMLAdminInfo {
   my $max_crazy    =  <%= GAME[:CRAZY  ]['config']['cfg'][:MAX_VILLAGES] %>;
   my $max_xebec    =  <%= GAME[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
   my $max_cafe     =  <%= GAME[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_ciel     =  <%= GAME[:CIEL   ]['config']['cfg'][:MAX_VILLAGES] %>;
 
   my $max_morphe   =  <%= GAME[:MORPHE ]['config']['cfg'][:MAX_VILLAGES] %>;
 
   my $max_pan      =  <%= GAME[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_all      = ( $max_perjury + $max_vage   + $max_crazy + $max_xebec )
+  my $max_all      = ( $max_perjury + $max_vage   + $max_crazy + $max_xebec + $max_ciel )
                    + ( $max_cafe )
                    + ( $max_morphe )
                    ;
@@ -64,10 +65,10 @@ sub OutHTMLAdminInfo {
 </div>
 <td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼<br>　</a>
 <tr class="link">
-<td class="$choice_lobby">  ロビー<br>　
-<td class="$choice_morphe"> 夢の形<br>　
-<td class="$choice_cabala"> 陰謀　<br>　
-<td class="$choice_braid">  ＲＰ　<br>:Braid
+<td class="$choice_lobby">  ロビー　
+<td class="$choice_morphe"> 夢の形　
+<td class="$choice_cabala"> 陰謀　　
+<td class="$choice_braid">  ＲＰ　
 <tr class="progress_log">
 <td class="$choice_lobby" style="text-align:left;">
   <a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">lobby</a><br>
@@ -93,6 +94,7 @@ sub OutHTMLAdminInfo {
   $max_vage村:<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
   $max_xebec村:<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
   $max_crazy村:<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
+  $max_ciel村:<a href="<%= GAME[:CIEL]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">ciel</a><br>
 <td class="no_choice">
   $max_pan村:pan<br>
 　<br>
@@ -122,10 +124,11 @@ sub OutHTMLAdminInfo {
   <a href="http://giji.check.jp/RP/stories">role-play</a><br>
   <a href="http://giji.check.jp/PRETENSE/stories">RP-advance</a><br>
   <a href="http://giji.check.jp/PERJURY/stories">perjury</a><br>
-  <a href="http://giji.check.jp/PERJURY/stories">xebec</a><br>
-  <a href="http://giji.check.jp/PERJURY/stories">crazy</a><br>
+  <a href="http://giji.check.jp/XEBEC/stories">xebec</a><br>
+  <a href="http://giji.check.jp/CRAZY/stories">crazy</a><br>
+  <a href="http://giji.check.jp/CIEL/stories">ciel</a><br>
 <td class="no_choice">
-  pan<br>
+  <a href="http://giji.check.jp/PAN/stories">pan</a><br>
 　<br>
 　<br>
 　<br>
@@ -171,18 +174,22 @@ _HTML_
 _HTML_
   }
 
-  if( 'BRAID--' eq $cfg->{'RULE'} ){
+  if( 'CIEL' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-こちらのページは<span style="color:#FFF">（陣営勝利を求めない）完全RP村、勝利追求を含むRP村</span>用に調整してあるよ。村枠ははやいものがち！<br>
-以下がおおざっぱな、他州との相違点なんだ。
-<ul style="font-size: smaller;">
-<li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。ガチとは違うのだよ。ガチとは。
-<li>発言ptは無制限です。</a>
-<li>村の説明は4000字まで記述\できます。
-<li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
-</ul>
+<script>
+gon.top_info = [
+{ mesicon:'',
+  name:'ようこそ！',
+  text:'<span class="mark">勝利を求めないRP村や、勝利も追求するRP村</span>用に、このページは調整してあるよ。<br>\\
+早い者勝ちがよいのだけれど、<a class="mark" href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD">企画村予\定\表\</a>という便利なページも見てみましょうね。',
+updated_at:new Date(1379511895000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c24"}
+];
+</script>
+</div>
+<div class="message_filter" ng-repeat="message in top_info" log="message">
 _HTML_
   }
+
   if( 'BRAID' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
 こちらのページは<span style="color:#FFF">（陣営勝利を求めない）完全RP村、勝利追求を含むRP村</span>用に調整してあるよ。

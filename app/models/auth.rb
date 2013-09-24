@@ -9,6 +9,8 @@ class Auth
   field :oauth_secret
 
   field :name
+  field :first_name
+  field :last_name
   field :nickname
   field :image
 

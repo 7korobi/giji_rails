@@ -2,46 +2,55 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-# If you have a Gemfile, require the gems listed there, including any gems
+# Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+Bundler.require(:default, Rails.env)
 
-=begin
+
+raise("Sprockets monkey patch for v 2.10.0. Check before moving on") unless Sprockets::VERSION == "2.10.0"
+
 module Sprockets
-  class JstProcessor
-    def evaluate(scope, locals, &block)
-      <<-JST
-#{namespace} || (#{namespace} = {});
-#{namespace}[#{scope.logical_path.inspect}] = #{indent(data).to_json};
-      JST
+  class Manifest
+    def compile(*args)
+      unless environment
+        raise Error, "manifest requires environment for compilation"
+      end
+
+      paths = environment.each_logical_path(*args).to_a +
+      args.flatten.select { |fn| Pathname.new(fn).absolute? if fn.is_a?(String)}
+
+      paths.each do |path|
+        if asset = find_asset(path)
+          files[asset.digest_path] = {
+            'logical_path' => asset.logical_path,
+            'mtime' => asset.mtime.iso8601,
+            'size' => asset.bytesize,
+            'digest' => asset.digest
+          }
+          logical_path = asset.logical_path
+          assets[asset.logical_path] = asset.digest_path
+
+          logical_target = File.join(dir, logical_path)
+          logger.info "Writing #{logical_target}"
+          asset.write_to logical_target
+          asset.write_to "#{logical_target}.gz" if asset.is_a?(BundledAsset)
+
+          save
+          asset
+        end
+      end
     end
   end
-
-  register_engine '.slim', Slim::Template
 end
-=end
+
 
 module Giji
   class Application < Rails::Application
-
-    config.generators do |g|
-      g.view_specs   false
-      g.helper_specs false
-    end
+    config.assets.precompile += %w( dic.js data_pan.js data.js base.js sow.js color_white.css color_black.css color_white_box.css color_black_box.css )
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-
-    # Custom directories with classes and modules you want to be autoloadable.
-    # config.autoload_paths += %W(#{config.root}/extras)
-
-    # Only load the plugins named here, in the order given (default is alphabetical).
-    # :all can be used as a placeholder for all plugins not explicitly named.
-    # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
-    # Activate observers that should always be running.
-    # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -49,18 +58,7 @@ module Giji
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    # config.i18n.default_locale = :de
     config.i18n.default_locale = :ja
-
-    # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
-
-    # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
-
-    # Enable the asset pipeline
-    config.assets.enabled = true
-    config.assets.version = '1.0'
-    # config.assets.initialize_on_precompile = false
-    # config.mongoid.preload_models = false
   end
 end

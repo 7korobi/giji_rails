@@ -5,15 +5,16 @@ link href="mailto:7korobi@gmail.com" rev="Made"
 
 - css = "#{cookies["theme"]}#{cookies["width"]}".html_safe if cookies["theme"] && cookies["width"]
 - css ||= "cinema800".html_safe
-link#giji_css      media="screen" rel="stylesheet" type="text/css" href="#{URL[:file]}/stylesheets/#{css}.css"
-link#giji_css_font media="screen" rel="stylesheet" type="text/css" href="#{URL[:file]}/stylesheets/font/normal.css"
+link#giji_css      media="screen" rel="stylesheet" type="text/css" data-turbolinks-track="true" href="#{URL[:file]}/stylesheets/#{css}.css"
+link#giji_css_font media="screen" rel="stylesheet" type="text/css" data-turbolinks-track="true" href="#{URL[:file]}/stylesheets/font/normal.css"
+= csrf_meta_tags
 
 meta(charset="utf-8")
 title 人狼議事
 
-script(type="text/javascript" src="http://giji.load.jp/assets/data.js")
-script(type="text/javascript" src="http://giji.load.jp/assets/base.js")
-script(type="text/javascript" src="http://giji.load.jp/assets/application.js")
+script(type="text/javascript" src="http://giji.load.jp/assets/data.js"        data-turbolinks-track="true")
+script(type="text/javascript" src="http://giji.load.jp/assets/base.js"        data-turbolinks-track="true")
+script(type="text/javascript" src="http://giji.load.jp/assets/application.js" data-turbolinks-track="true")
 = csrf_meta_tag
 
 = include_gon

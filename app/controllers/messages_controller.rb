@@ -32,10 +32,12 @@ class MessagesController < BasePastLogController
 
   protected
   def vil_info(event)
-    event.messages.unshift Message.new(
-      template: "sow/village_info",
+    msg = Message.new(
       logid:    "vilinfo00000",
     )
+    msg["template"] = "sow/village_info"
+
+    event.messages.unshift msg
     event[:has_all_messages] = true
   end
 

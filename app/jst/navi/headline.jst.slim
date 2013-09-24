@@ -6,12 +6,13 @@
     | 人狼物語Server一覧
   |（melonkoさん管理）
 - max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
-- max_crazy   = GAME[:CRAZY][:config][:cfg][:MAX_VILLAGES]
-- max_xebec   = GAME[:XEBEC][:config][:cfg][:MAX_VILLAGES]
-- max_cafe    = GAME[:CABALA][:config][:cfg][:MAX_VILLAGES]
-- max_pan     = GAME[:PAN][:config][:cfg][:MAX_VILLAGES]
-- max_morphe  = GAME[:MORPHE][:config][:cfg][:MAX_VILLAGES]
-- max_all     = ( max_vage + max_crazy + max_xebec )
+- max_crazy   = GAME[:CRAZY  ][:config][:cfg][:MAX_VILLAGES]
+- max_xebec   = GAME[:XEBEC  ][:config][:cfg][:MAX_VILLAGES]
+- max_ciel    = GAME[:CIEL   ][:config][:cfg][:MAX_VILLAGES]
+- max_cafe    = GAME[:CABALA ][:config][:cfg][:MAX_VILLAGES]
+- max_pan     = GAME[:PAN    ][:config][:cfg][:MAX_VILLAGES]
+- max_morphe  = GAME[:MORPHE ][:config][:cfg][:MAX_VILLAGES]
+- max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
 - max_all    += ( max_cafe + max_morphe )
 .choice
   table.board
@@ -54,8 +55,6 @@
         | 　
       td.no_choice
         | ＲＰ　
-        br
-        | :Braid
     tr.progress_log
       td.no_choice style="text-align:left;"
         a(href="#{GAME[:LOBBY][:config][:cfg][:URL_SW]}/sow.cgi") lobby
@@ -102,6 +101,9 @@
         br
         == "#{max_crazy}村:"
         a(href="#{GAME[:CRAZY][:config][:cfg][:URL_SW]}/sow.cgi") crazy
+        br
+        == "#{max_ciel}村:"
+        a(href="#{GAME[:CIEL][:config][:cfg][:URL_SW]}/sow.cgi") ciel
       td.no_choice style="text-align:left;"
         == "#{max_pan}村:"
         | pan
@@ -147,13 +149,15 @@
       td.no_choice style="text-align:left;"
         a(href="http://giji.check.jp/stories?folder=RP") role-play
         br
-        a(href="http://giji.check.jp/stories?folder=PRETENSE") RP-advance
+        a(href="http://giji.check.jp/stories?folder=PRETENSE") advance
         br
         a(href="http://giji.check.jp/stories?folder=PERJURY") perjury
         br
         a(href="http://giji.check.jp/stories?folder=XEBEC") xebec
         br
         a(href="http://giji.check.jp/stories?folder=CRAZY") crazy
+        br
+        a(href="http://giji.check.jp/stories?folder=CIEL") ciel
       td.no_choice style="text-align:left;"
         a(href="http://giji.check.jp/stories?folder=PAN") pan
         br

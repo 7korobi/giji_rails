@@ -1,4 +1,4 @@
-# Load the rails application
+# Load the Rails application.
 require File.expand_path('../application', __FILE__)
 Tilt::CoffeeScriptTemplate.default_bare = true
 
