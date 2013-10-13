@@ -25,6 +25,7 @@ gem 'omniauth-facebook'
 # gem 'omniauth-ldap'
 gem 'omniauth-openid'
 
+
 # data_base
 gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
 gem "redis-store"

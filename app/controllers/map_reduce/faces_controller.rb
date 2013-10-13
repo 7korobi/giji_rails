@@ -6,7 +6,7 @@ class MapReduce::FacesController < ApplicationController
       face = FACE[:Face].find{|face|face[:face_id] == o.id}
       if face
         url = map_reduce_face_url(o.id)
-        count = o.value["sow_auth_id"]["all"].to_i rescue 0
+        count = o.sow_auth_id["all"].to_i rescue 0
 
         text = <<-_HTML_ 
 <p>#{face[:name]}</p>
