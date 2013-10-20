@@ -50,11 +50,13 @@ FILTER = ($scope, $filter)->
     page.filter 'messages_raw.length'
 
   if $scope.event?.messages?
+    page.last_updated_at = ()->
+      _.last($scope.event.messages).updated_at
     page.filter_by 'event.messages'
     page.filter_to 'messages'
     page.filter 'event.turn'
     page.filter 'event.is_news'
-    page.filter 'event.messages.last().updated_at'
+    page.filter 'page.last_updated_at()'
 
     $scope.deploy_mode_common()
 

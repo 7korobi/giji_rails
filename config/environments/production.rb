@@ -25,7 +25,7 @@ Giji::Application.configure do
   config.assets.precompile += %w( dic.js data_pan.js data.js base.js sow.js color_white.css color_black.css color_white_box.css color_black_box.css )
   config.assets.compress = false
   config.assets.css_compressor = :scss
-  config.assets.js_compressor = Uglifier.new(output:{ preserve_line: false, beautify: true, indent_level:2 }, mangle: false)
+  config.assets.js_compressor = nil # Uglifier.new(output:{ preserve_line: false, beautify: true, indent_level:2 }, mangle: false)
   config.assets.digest = false  #  no fingerprinting.
   config.assets.version = '1.0'
 

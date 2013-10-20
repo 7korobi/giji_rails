@@ -101,7 +101,7 @@ INIT_POTOFS = ($scope, gon)->
           potof.win = win_check potof, gon.story
 
           if gon.story.is_finish
-            winner = gon.event?.winner || gon.events?.last()?.winner
+            winner = gon.event?.winner || gon.events? && _.last(gon.events)?.winner
 
             if gon.story? && gon.event? && ! GIJI.folders[gon.story.folder].role_play
               is_dead_lose = 1 if _.include ["LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"], gon.story.type.game
