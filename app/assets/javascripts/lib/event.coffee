@@ -43,20 +43,20 @@ win =
   history: (title, href, hash)->
 
   on_scroll: (cb)->
-    $(window).on 'scroll', cb.throttle(500)
+    $(window).on 'scroll', _.throttle(cb, 500)
     win.on_resize cb, 5000
   on_resize: (cb, delay)->
     delay ||= 100
     if window.onorientationchange? && ! head.browser.android
-      $(window).on 'orientationchange', cb.throttle delay
+      $(window).on 'orientationchange', _.throttle cb, delay
     else
-      $(window).on 'resize', cb.throttle delay
+      $(window).on 'resize', _.throttle cb, delay
 
 
 if history?.pushState?
   popstate = (e)->
     Navi.popstate()
-  $(window).on 'popstate', popstate.throttle(100)
+  $(window).on 'popstate', _.throttle(popstate, 100)
 
   win.history = (title, href, hash)->
     href || href = location.href.replace /#.*/, ""
@@ -66,23 +66,23 @@ else
     location.hash = hash
 
 
-(->
+_.delay ->
   win.on_scroll win.refresh
   win.on_resize win.refresh
 
   dummy = ()->
   if ontouchstart?
-    $(window).on 'touchstart', dummy.throttle(100)
-    $(window).on 'touchmove', dummy.throttle(100)
-    $(window).on 'touchend', dummy.throttle(100)
+    $(window).on 'touchstart', _.throttle(dummy, 100)
+    $(window).on 'touchmove', _.throttle(dummy, 100)
+    $(window).on 'touchend', _.throttle(dummy, 100)
   else
-    $(window).on 'mousedown', dummy.throttle(100)
-    $(window).on 'mouseup', dummy.throttle(100)
-    $(window).on 'mousemove', dummy.throttle(100)
+    $(window).on 'mousedown', _.throttle(dummy, 100)
+    $(window).on 'mouseup', _.throttle(dummy, 100)
+    $(window).on 'mousemove', _.throttle(dummy, 100)
 
   scan_motion = (e)->
     win.accel   = e.originalEvent.acceleration
     win.gravity = e.originalEvent.accelerationIncludingGravity
     win.rotate  = e.originalEvent.rotationRate
-  $(window).on 'devicemotion', scan_motion.throttle(100)
-).delay(500)
+  $(window).on 'devicemotion', _.throttle(scan_motion, 100)
+,500

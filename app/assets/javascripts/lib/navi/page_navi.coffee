@@ -21,13 +21,13 @@ class PageNavi extends Navi
 
     @pager page_per_key, func
     @pager "#{@key}.value", (page, list)=>
-      @item_last = list.last() if list.last
+      @item_last = _.last list if list.last
       list
 
   pager: (key, func)->
     @scope.$watch key, =>
       if @list_by_filter?
-        list = @do_filters(@list_by_filter, @pagers)
+        list = @do_filters @list_by_filter, @pagers
         if @to_key? && list
           eval "_this.scope.#{@to_key} = list"
       @_move()
@@ -43,8 +43,8 @@ class PageNavi extends Navi
   filter: (key, func)->
     @scope.$watch key, =>
       if @by_key?
-        @list_by_filter = @do_filters(@scope.$eval(@by_key), @filters)
-        list = @do_filters(@list_by_filter, @pagers)
+        @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
+        list = @do_filters @list_by_filter, @pagers
         if @to_key? && list
           eval "_this.scope.#{@to_key} = list"
       @_move()
@@ -52,11 +52,11 @@ class PageNavi extends Navi
     @filters.push [key, func] if func
 
   hide: ()->
-    @of.keys (key, item)->
+    for key, item of @of
       item.class = 'ng-cloak'
 
   _move: ()->
-    @select  = [1..@length].map (i)->
+    @select  = _.map [1..@length], (i)->
       name: i
       val:  i
       class:
@@ -87,16 +87,16 @@ class PageNavi extends Navi
       next_gap:         @value < @length - 3
 
     @of = {}
-    show.keys (key, is_show)=>
-      item = @select.find (o)-> o.val == n[key]
+    for key, is_show of show
+      item = _.extend {}, _.find @select, (o)-> o.val == n[key]
       item or=
         name: ""
         val:  null
-      item = item.clone()
       item.class = 'ng-cloak'
-      if @visible
-        item.class = null          if is_show
-        item.class = @params.class if is_show && @value == n[key]
+
+      if @visible and is_show
+        item.class = null
+        item.class = @params.class if @value == n[key]
 
       @of[key] = item
 

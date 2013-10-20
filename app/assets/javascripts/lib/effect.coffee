@@ -101,9 +101,11 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
           element.css
             display: "none"
 
-      $scope.navi.of.keys calculate
-      static_navis.keys   calculate
-      extra_navis.keys (k,v)->
+      for k,v of $scope.navi.of
+        calculate k, v
+      for k,v of static_navis
+        calculate k, v
+      for k,v of extra_navis
         calculate k, $scope.navi.of[v.parent]
 
       $("#topviewer").css
@@ -113,9 +115,9 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       $("#contentframe")[0].className = content
       $("#outframe")[0].className = outframe
 
-    (->
+    _.delay ->
       win.on_resize resize_naviitems
-    ).delay 100
+    , 100
   extra_navis = {}
   static_navis = {}
 
@@ -136,7 +138,7 @@ angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
       effect($scope)
 
     if attr.name?
-      $scope.navi.select.add
+      $scope.navi.select.push
         name: attr.name
         val:  attr.navi
     else

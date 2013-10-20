@@ -92,7 +92,7 @@ FORM = ($scope)->
       ""
 
   $scope.option = (list, key)->
-    find = list.find (o)-> o.val == key
+    find = _.find list, (o)-> o.val == key
     if find?
       find
     else
@@ -185,13 +185,14 @@ FORM = ($scope)->
       return if f.targets?
       $scope.form.confirm = f.title
 
-    param = f.clone()
+    param = _.omit f, [
+      '$$hashKey'
+      'is_delete'
+      'targets'
+      'title'
+      'jst'
+    ]
     param.vid = $scope.story.vid
-    delete param['$$hashKey']
-    delete param['is_delete']
-    delete param['targets']
-    delete param['title']
-    delete param['jst']
 
     $scope.confirm_cancel = ->
       $scope.form.confirm = null

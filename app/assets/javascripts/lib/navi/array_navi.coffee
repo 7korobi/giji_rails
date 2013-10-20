@@ -3,11 +3,11 @@ class ArrayNavi extends Navi
     super
 
   popstate: ()->
-    l = Object.fromQueryString(location[@params.location].replace(/^[#?]/,""))[@key] if location[@params.location]
+    l = @location_val(@key)
     c = document.cookie.match(@chk)?[2] if @params.is_cookie?
     value = []
-    (l or c or "").split(",").each (o)=>
-      return if @select?.all((s)=> o != s.val)
+    for o in  (l or c or "").split(",")
+      break if @select? && _.every @select, (s)-> o != s.val
       value.push @params.current_type o
     @value = value
     @value = @params.current if @value.length < 1
@@ -16,15 +16,17 @@ class ArrayNavi extends Navi
     @value = []
 
   value_add: (newVal)->
-    @value = @value.clone().remove(newVal).add newVal
+    @value = _.without(@value, newVal)
+    @value.push newVal
+    @value
 
   value_del: (newVal)->
-    @value = @value.clone().remove newVal
+    @value = _.without @value, newVal
 
   move: (newVal)->
     if newVal?
       newVal = @params.current_type newVal
-      if @value.any newVal
+      if _.include @value, newVal
         @value_del newVal
       else
         @value_add newVal
@@ -36,7 +38,7 @@ class ArrayNavi extends Navi
     if @select?
       for o in @select
         @of[o.val] = o
-        if @value.any o.val
+        if _.include @value, o.val
           o.class = @params.class
           o.show = true
         else
@@ -44,11 +46,11 @@ class ArrayNavi extends Navi
           o.show = false
 
   choice: ->
-    @select.find (o)=> o.val == @value[0]
+    _.find @select, (o)=> o.val == @value[0]
 
   choices: ->
-    @value.map (value)=>
-      @select.find (o)-> o.val == value
+    _.map @value, (value)=>
+      _.find @select, (o)-> o.val == value
 
 
 ArrayNavi.push = ($scope, key, def)->

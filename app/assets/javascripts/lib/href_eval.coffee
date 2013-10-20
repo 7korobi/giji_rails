@@ -22,7 +22,7 @@ HREF_EVAL = ($scope)->
 
 
   external = (id, uri, protocol, host, path)->
-    item = $scope.anchors.find (log)->
+    item = _.find $scope.anchors, (log)->
       log.logid == id
     idx = $scope.anchors.indexOf item
     if idx < 0
@@ -44,7 +44,7 @@ HREF_EVAL = ($scope)->
     else
       drag = $(".drag.#{id}")
       drag.fadeOut 'fast', ->
-        $scope.anchors.removeAt(idx)
+        $scope.anchors.splice idx, 1
         $scope.$apply()
 
   popup_apply = (item, turn)->
@@ -62,7 +62,7 @@ HREF_EVAL = ($scope)->
     else
       drag = $(".drag.#{item.logid}")
       drag.fadeOut 'fast', ->
-        $scope.anchors.removeAt(idx)
+        $scope.anchors.splice idx, 1
         $scope.$apply()
     idx
 
@@ -73,7 +73,7 @@ HREF_EVAL = ($scope)->
       event = $scope.events[turn]
       return null unless event?.messages?
 
-      item = event.messages.find (log)->
+      item = _.find event.messages (log)->
         log.logid == ank
       if item
         popup_apply item, turn
@@ -107,7 +107,7 @@ HREF_EVAL = ($scope)->
 
   foreground = (e)->
     logid = $(e.target).find("[name]").attr('name')
-    item  = $scope.anchors.find (o)-> logid = o.logid
+    item  = _.find $scope.anchors (o)-> logid = o.logid
     item.z = Date.now()
     $scope.$apply()
 

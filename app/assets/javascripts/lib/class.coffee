@@ -119,14 +119,16 @@ class Diary
     @version = @history().length + 1
 
   history: ->
-    Diary.history.findAll @finder
+    _.filter Diary.history, @finder
 
   versions: ->
     size = @history().length
     result = []
-    result = [@version..size].reverse() if @version <= size
-    result.add         @version - 1 if 1 < @version 
-    result.add         @version - 2 if 2 < @version 
+    if @version <= size
+      result = [@version..size]
+      result.reverse() 
+    result.push        @version - 1 if 1 < @version 
+    result.push        @version - 2 if 2 < @version 
     result
 
   at: ->
@@ -162,6 +164,6 @@ Diary.base.head = ->
 Diary.base.commit = (diary)->
   return if diary.form.text.length == 0
   item = new DiaryHistory(diary)
-  Diary.history.remove item
-  Diary.history.add item
+  Diary.history = _.without(Diary.history, item)
+  Diary.history.push item
   Diary.base.version = Diary.history.length + 1

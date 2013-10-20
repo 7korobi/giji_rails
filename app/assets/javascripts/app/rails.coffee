@@ -32,7 +32,7 @@ RAILS = ($scope, $filter)->
     $scope.post $scope.form.uri, param, ->
       $scope.init()
       cb() if cb
-  $scope.submit = submit.throttle 5000
+  $scope.submit = _.throttle submit, 5000
 
 
   MODULE   $scope, $filter

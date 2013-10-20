@@ -24,8 +24,8 @@ AJAX = ($scope)->
   form_submit = (param)->
     form = $("#submit_request")
 
-    param.keys (key,val)->
-      return unless val?
+    for key,val of param
+      break unless val?
       tag = $("""<input type="hidden" name="#{key}">""")
       tag.attr "value", val
       form.append tag

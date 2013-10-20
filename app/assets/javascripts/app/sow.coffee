@@ -15,10 +15,10 @@ CGI = ($scope, $filter)->
       item.count = $scope.config.counts[item.key]
       item
 
-    roles = $scope.config.roles.map((o)-> count_set SOW.roles[o]).groupBy((o)-> SOW.groups[o.group].name)
-    gifts = $scope.config.gifts.map((o)-> count_set SOW.gifts[o]).groupBy((o)-> "恩恵")
+    roles = _.groupBy _.map($scope.config.roles, (o)-> count_set SOW.roles[o]), (o)-> SOW.groups[o.group].name
+    gifts = _.groupBy _.map($scope.config.gifts, (o)-> count_set SOW.gifts[o]), (o)-> "恩恵"
     $scope.config.items = roles.merge(gifts)
-    $scope.config.items_keys = $scope.config.items.keys()
+    $scope.config.items_keys = _.keys $scope.config.items
 
     $scope.config.items.events = $scope.config.events.map (o)-> SOW.events[o]
 
@@ -56,7 +56,7 @@ CGI = ($scope, $filter)->
     protocol $scope.form.uri, param, ->
       $scope.init()
       cb() if cb
-  $scope.submit = submit.throttle 5000
+  $scope.submit = _.throttle submit, 5000
 
   regexp =
     uid: ///(^|\s)uid=([^;]+)///

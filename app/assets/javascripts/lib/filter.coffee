@@ -17,13 +17,13 @@ FILTER = ($scope, $filter)->
       { target: "upd_time",   key: ((o)-> o.upd.time_text),     text: String }
       { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
     ].each (filter)->
-      keys = $scope.stories.map(filter.key).unique().sort()
+      keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
       if keys.length > 1
         navigator = 
           options: OPTION.page[filter.target].options
           button:
             ALL: "- すべて -"
-        keys.each (key)->
+        for key in keys
           navigator.button[key] = filter.text(key)
 
         Navi.push $scope, filter.target, navigator
@@ -31,7 +31,7 @@ FILTER = ($scope, $filter)->
           if 'ALL' == $scope[filter.target].value
             list
           else
-            list.filter (o)->
+            _.filter list, (o)->
               filter.key(o) == $scope[filter.target].value
 
     Navi.push $scope, 'folder',   OPTION.page.folder
@@ -39,7 +39,7 @@ FILTER = ($scope, $filter)->
       if 'ALL' == $scope.folder.value
         list
       else
-        list.filter (o)->
+        _.filter list, (o)->
           o.folder == $scope.folder.value
 
   if $scope.messages_raw?
@@ -56,7 +56,7 @@ FILTER = ($scope, $filter)->
 
     $scope.deploy_mode_common()
 
-    mode_params = GIJI.modes.groupBy('val')
+    mode_params = _.groupBy GIJI.modes, 'val'
 
     Navi.push $scope, 'search',
       options:
@@ -86,14 +86,15 @@ FILTER = ($scope, $filter)->
         if "memo" == $scope.modes.face
           $scope.modes.view = "open"
 
-      $scope.mode.value = [ 
+      mode = _.compact _.uniq [ 
         $scope.modes.face
         $scope.modes.view
         'open'   if $scope.modes.open
         'last'   if $scope.modes.last
         'player' if $scope.modes.player
-      ].unique().compact(true).join("_")
-      $scope.mode_select = $scope.mode.select.filter (o)->
+      ]
+      $scope.mode.value = mode.join("_")
+      $scope.mode_select = _.filter $scope.mode.select, (o)->
         o.face == $scope.modes.face
 
       $scope.mode_cache[$scope.modes.face] = $scope.mode.value
@@ -106,7 +107,7 @@ FILTER = ($scope, $filter)->
     $scope.$watch 'modes.player', modes_change
 
     page.filter 'mode.value', (key, list)->
-      $scope.modes = $scope.mode.choice().clone()
+      $scope.modes = $scope.mode.choice()
       is_mob_open = false
       if $scope.story?
         is_mob_open = true if 'alive' == $scope.story.type.mob
@@ -152,25 +153,24 @@ FILTER = ($scope, $filter)->
       add_filter   = add_filters[$scope.modes.view]
       add_filter ||= -> false
 
-      list = list.filter (o)->
+      list = _.filter list, (o)->
         o.logid.match(mode_filter) || add_filter(o)
 
       if $scope.modes.last
         result = []
-        order   = (o)-> [o.order, o.updated_at]
-        list.groupBy($scope.potof_key).keys (key, list)->
-          result.push list.sortBy(order).last()
-        result.sortBy(order)
+        order  = (o)-> [o.order, o.updated_at]
+        for key, sublist of _.groupBy list, $scope.potof_key
+          result.push _.last _.sortBy sublist, order
+        _.sortBy result, order
       else
         list
 
-    page.filter 'hide_potofs.value', (hide_ids, list)->
-      hide_faces = hide_ids.clone()
-      if hide_faces.any 'others'
-        hide_faces.add($scope.face.others)
-      faces = $scope.face.all.subtract hide_faces
-      list.filter (o)->
-        faces.some $scope.potof_key(o)
+    page.filter 'hide_potofs.value', (hide_faces, list)->
+      if _.include hide_faces, 'others'
+        hide_faces = hide_faces.concat $scope.face.others
+      faces = _.difference $scope.face.all, hide_faces
+      _.filter list, (o)->
+        _.some faces, (face)-> face == $scope.potof_key(o)
 
   page.filter 'search.value', (search, list)->
     $scope.search_input = search
@@ -192,17 +192,15 @@ FILTER = ($scope, $filter)->
       to   =  page_no      * page_per + OPTION.page.pile
       from = (page_no - 1) * page_per
 
-    list.to(to).from(from)
+    list.slice from, to
 
   page.filter 'order.value', (key, list)->
     for log in list
       log.text = $scope.text_decolate log.log
 
     $scope.anchors = []
-    if "desc" == key
-      list.reverse()
-    else
-      list
+    list.reverse() if "desc" == key
+    list
 
   do_scrollTo = ()->
     $('div.popover').remove()
@@ -213,7 +211,7 @@ FILTER = ($scope, $filter)->
       target = $(".inframe")
 
     $(window).scrollTop  target.offset().top - 20
-  scrollTo = do_scrollTo.debounce 500
+  scrollTo = _.debounce do_scrollTo, 500
 
   form_show = ->
     if $scope.modes?

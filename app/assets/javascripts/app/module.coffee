@@ -1,15 +1,17 @@
-set_key = (k,v)->
-  v.key = k
+set_key = (obj)->
+  return unless obj?
+  for k,v of obj
+    v.key = k
 
-SOW.roles?.keys  set_key
-SOW.gifts?.keys  set_key
-SOW.events?.keys set_key
+set_key SOW.roles
+set_key SOW.gifts
+set_key SOW.events
 
 if SOW.maskstates?
-  SOW.maskstate_order = SOW.maskstates.keys().sortBy((o)-> -o)
+  SOW.maskstate_order = _.sortBy _.keys(SOW.maskstates), (o)-> -o
 
 if SOW_RECORD.CABALA.events?
-  SOW.events.keys (k,v)->
+  for k,v of SOW.events
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
@@ -42,12 +44,14 @@ MODULE = ($scope, $filter)->
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
   ///
-  link_regexp_g = link_regexp.setFlags('g')
+  link_regexp_g = ///
+      (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
+  ///g
 
   id_num = 0
   link = (log)->
     return log unless log
-    text = log.replace(/</g," <").stripTags()
+    text = log.stripTags()
     uris = text.match link_regexp_g
     if uris
       for uri in uris

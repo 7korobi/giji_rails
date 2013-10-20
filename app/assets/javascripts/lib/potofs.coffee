@@ -6,14 +6,13 @@ POTOFS = ($scope)->
     all:    []
     scan: ->
       if $scope.potofs?
-        $scope.face.potofs = $scope.potofs.map $scope.potof_key
+        $scope.face.potofs = _.map $scope.potofs, $scope.potof_key
       if $scope.event?.messages?
-        log_faces = $scope.event.messages.map $scope.potof_key
-        $scope.face.all = ($scope.face.all.concat(log_faces)).unique()
+        log_faces = _.map $scope.event.messages, $scope.potof_key
+        $scope.face.all = _.uniq $scope.face.all.concat(log_faces)
       if $scope.face.potofs?
-        $scope.face.others = $scope.face.all.subtract $scope.face.potofs
-        $scope.face.others.remove '-_none_'
-        $scope.face.others.remove $scope.potof_key({})
+        all = _.without $scope.face.all, '-_none_', $scope.potof_key({})
+        $scope.face.others = _.difference all, $scope.face.potofs
       $scope.do_sort_potofs()
 
   # potofs support
@@ -21,19 +20,19 @@ POTOFS = ($scope)->
     $scope.hide_potofs.value = hide
 
   potof_toggle = (select_face)->
-    hide = $scope.hide_potofs.value.clone()
-    if hide.any(select_face)
-      hide.remove(select_face)
+    hide = $scope.hide_potofs.value
+    hide = if _.include hide, select_face
+      _.without hide, select_face
     else
-      hide.add(select_face)
+      hide.concat select_face
 
     calc_potof hide
 
   $scope.potof_only = (potofs)->
-    all  = $scope.potofs.map $scope.potof_key
-    only = potofs.map $scope.potof_key
-    hide = all.subtract(only)
-    hide.add("others") if potofs != $scope.potofs
+    all  = _.map $scope.potofs, $scope.potof_key
+    only = _.map potofs, $scope.potof_key
+    hide = _.difference all, only
+    hide.push("others") if potofs != $scope.potofs
 
     calc_potof hide
 
@@ -66,10 +65,12 @@ POTOFS = ($scope)->
 
   potofs_sortBy = (tgt, reverse)->
     return unless $scope.potofs
-    $scope.potofs = $scope.potofs.sortBy tgt, reverse
+    list = _.sortBy $scope.potofs, (o)-> o[tgt]
+    list.reverse() if reverse
+    $scope.potofs = list
 
-    groups = $scope.potofs_groups = $scope.potofs.groupBy tgt
-    keys = $scope.potofs.map(tgt).unique()
+    groups = $scope.potofs_groups = _.groupBy $scope.potofs, (o)-> o[tgt]
+    keys = _.uniq _.map $scope.potofs, (o)-> o[tgt]
     for key in keys
       if 'deny' != head_mode[tgt] && groups[key]?
         has_head = true
@@ -84,7 +85,9 @@ POTOFS = ($scope)->
       basic: (key)-> groups[key].head
       count: (key)-> groups[key].length
     order = orders[head_order[tgt] || 'basic']
-    $scope.potofs_keys = keys.sortBy order, reverse
+    items = _.sortBy(keys, order)
+    items.reverse() if reverse
+    $scope.potofs_keys = items
 
   potofs_sortBy 'stat_at',   true
   potofs_sortBy 'stat_type', true

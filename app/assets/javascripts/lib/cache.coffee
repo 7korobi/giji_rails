@@ -37,7 +37,7 @@ CACHE = ($scope)->
       merge_by.copy old_base, new_base, target
 
     events: (old_base, new_base, target)=>
-      guard = (key)-> ["messages", "has_all_messages"].any(key)
+      guard = (key)-> _.include ["messages", "has_all_messages"], key
       filter = (o)-> o.turn
 
       # events section
@@ -50,7 +50,7 @@ CACHE = ($scope)->
       old_event = find_or_create new_base, old_base, "events"
 
       return unless new_event?
-      new_event.keys (key, o)->
+      for key, o of new_event
         old_event[key] = o unless guard(key)
 
       old_event.has_all_messages ||= new_event.has_all_messages
@@ -89,7 +89,7 @@ CACHE = ($scope)->
 
     forms: ->
     form: (old_base, new_base)->
-      guard = (key)-> ["texts"].any(key)
+      guard = (key)-> _.include ["texts"], key
       filter = (o)-> o.turn
 
       # forms section
@@ -100,7 +100,7 @@ CACHE = ($scope)->
       old_form = old_base.form
 
       return unless new_form?
-      new_form.keys (key, o)->
+      for key, o of new_form
         old_form[key] = o unless guard(key)
 
       old_base.form ||= old_form
@@ -110,7 +110,7 @@ CACHE = ($scope)->
 
 
     _form_texts: (old_base, new_base)->
-      guard = (key)-> ! ["count","targets","votes"].any(key)
+      guard = (key)-> ! _.include ["count","targets","votes"], key
       filter = (o)-> o.jst + o.switch
 
       return unless old_base? && new_base?
@@ -178,17 +178,17 @@ CACHE = ($scope)->
       return old_base.event.turn
 
   concat_merge = (olds, news, guard, filter)->
-    olds_head = olds.filter (o)->
+    olds_head = _.filter olds, (o)->
       ! o.is_delete
-    old_hash = olds_head.groupBy filter
+    old_hash = _.groupBy olds_head, filter
 
     if guard?
       for new_item in news
         key = filter new_item
         old_item = old_hash[key]?[0]
         if old_item?
-          olds_head.remove old_item
-          new_item.keys (key, o)->
+          olds_head = _.without olds_head, old_item
+          for key, o of new_item
             old_item[key] = o unless guard key
           new_item = old_item
         olds_head.push new_item
@@ -197,7 +197,7 @@ CACHE = ($scope)->
         key = filter new_item
         old_item = old_hash[key]?[0]
         if old_item?
-          olds_head.remove (o)->
+          olds_head = _.reject olds_head, (o)->
             filter(old_item) == filter(o)
 
         olds_head.push new_item

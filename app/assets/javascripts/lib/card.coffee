@@ -16,11 +16,11 @@ CARD = ($scope)->
 
   $scope.countup = (filter, list)->
     counts = []
-    group = list.groupBy()
-    group.keys (key,val)->
+    group = _.groupBy list
+    for key, val of group
       counts.push [key, val.length]
 
-    counts.sortBy ([key, size])->
+    _.sortBy counts, ([key, size])->
       size
     .map ([key, size])->
       if 1 < size
@@ -29,5 +29,5 @@ CARD = ($scope)->
         "#{filter(key)}"
 
   $scope.remove_card = (at, idx)->
-    $scope.story.card[at].removeAt idx
+    $scope.story.card[at].splice idx, 1
 

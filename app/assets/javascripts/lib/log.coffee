@@ -7,7 +7,7 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
       log.sub2id = log.logid[1]
       template = null
       for style in GIJI.message.template
-        style.keys (target, table)->
+        for target, table of style
           template or= table[log[target]]
       log.template or= "message/#{template}"
 

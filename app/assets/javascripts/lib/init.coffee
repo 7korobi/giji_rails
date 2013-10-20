@@ -1,17 +1,17 @@
 INIT_FACE = (new_base)->
   if new_base.story_ids?
-    new_base.story_id_of_folders = new_base.story_ids.groupBy ([k,count])->
+    new_base.story_id_of_folders = _.groupBy new_base.story_ids, ([k,count])->
       k.split("-")?[0]
 
   if new_base.wins?
-    new_base.role_of_wins = new_base.roles.groupBy ([k,count])->
+    new_base.role_of_wins = _.groupBy new_base.roles, ([k,count])->
       role = SOW.gifts[k] || SOW.roles[k] || {group: "OTHER"}
       SOW.groups[role.group].name
 
 INIT_MESSAGES = (new_base)->
   return unless new_base?.messages?
   if new_base.turn?
-    new_base.messages.each (message)->
+    for message in new_base.messages
       message.turn = new_base.turn
       if message.plain?
         if message.plain.type?
@@ -26,9 +26,11 @@ INIT_MESSAGES = (new_base)->
 
 
 INIT_STORY = ($scope, story)->
-  event_config = story.card.config.filter (o)->  SOW.events[o]
-  role_config = story.card.config.filter (o)-> ! SOW.events[o] && ! SOW.specials[o]
-  win_config = role_config.map((o)-> SOW.gifts[o]?.win || SOW.roles[o]?.win || null).filter (o)-> o
+  event_config = _.filter story.card.config, (o)->  SOW.events[o]
+  role_config = _.filter story.card.config, (o)-> ! SOW.events[o] && ! SOW.specials[o]
+  role_wins = _.map role_config, (o)->
+    SOW.gifts[o]?.win || SOW.roles[o]?.win || null
+  win_config = _.filter role_wins, (o)-> o
 
   story.card.discard_names = $scope.countup_config(story.card.discard).join '、'
   story.card.config_names = $scope.countup_config(story.card.config).join '、'
@@ -40,7 +42,7 @@ INIT_STORY = ($scope, story)->
   else
     story.card.event_names   = $scope.countup_config(story.card.event).join '、'
 
-  story.option_helps = story.options.map (o)-> SOW.options[o].help
+  story.option_helps = _.map story.options, (o)-> SOW.options[o].help
   story.comment = $scope.text_decolate story.comment
   story.rating_url = "#{URL.file}/images/icon/cd_#{story.rating}.png"
 
@@ -67,15 +69,15 @@ INIT_STORY = ($scope, story)->
 
 INIT_POTOFS = ($scope, gon)->
   if gon.potofs?
-    gon.potofs.each (potof)->
+    for potof in gon.potofs
       if potof.bonds?
-        bonds =  potof.bonds.map (pno_or_pl)->
+        bonds =  _.map potof.bonds, (pno_or_pl)->
           gon.potofs[pno_or_pl] || pno_or_pl
-        potof.bonds = bonds.compact()
+        potof.bonds = _.compact bonds
       if potof.pseudobonds?
-        pseudobonds = potof.pseudobonds.map (pno_or_pl)->
+        pseudobonds = _.map potof.pseudobonds, (pno_or_pl)->
           gon.potofs[pno_or_pl] || pno_or_pl
-        potof.pseudobonds = pseudobonds.compact()
+        potof.pseudobonds = _.compact pseudobonds
 
       if potof.role?
         potof.win_result = "参加"
@@ -102,16 +104,16 @@ INIT_POTOFS = ($scope, gon)->
             winner = gon.event?.winner || gon.events?.last()?.winner
 
             if gon.story? && gon.event? && ! GIJI.folders[gon.story.folder].role_play
-              is_dead_lose = 1 if ["LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"].any gon.story.type.game
+              is_dead_lose = 1 if _.includes ["LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"], gon.story.type.game
               is_dead_lose = 1 if "LONEWOLF" == potof.win
               is_dead_lose = 1 if "HUMAN"    == potof.win && "TROUBLE" == gon.story.type.game
-              is_dead_lose = 1 if "HATER"    == potof.win && ! potof.role.any "HATEDEVIL"
-              is_lone_lose = 1 if "LOVER"    == potof.win && ! potof.role.any "LOVEANGEL"
+              is_dead_lose = 1 if "HATER"    == potof.win && ! _.includes potof.role, "HATEDEVIL"
+              is_lone_lose = 1 if "LOVER"    == potof.win && ! _.includes potof.role, "LOVEANGEL"
               potof.win_result = "敗北"
               potof.win_result = "勝利" if winner == "WIN_" + potof.win
               potof.win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == potof.win
               potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
-              potof.win_result = "敗北" if is_lone_lose && gon.potofs.any (o)-> o.live != 'live' && o.bonds.any potof.pno
+              potof.win_result = "敗北" if is_lone_lose && _.any gon.potofs (o)-> o.live != 'live' && _.any o.bonds, potof.pno
               potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
               potof.win_result = "参加" if "NONE" == potof.win
         potof.win_result = "" if "suddendead" == potof.live
@@ -128,8 +130,8 @@ INIT_POTOFS = ($scope, gon)->
       potof.live_name = SOW.live[ potof.live ] || " "
       potof.auth = potof.sow_auth_id
 
-      potof.bond_names       = potof.bonds.map       (o)-> o.name
-      potof.pseudobond_names = potof.pseudobonds.map (o)-> o.name
+      potof.bond_names       = _.map potof.bonds,       (o)-> o.name
+      potof.pseudobond_names = _.map potof.pseudobonds, (o)-> o.name
 
       potof.stat_type = SOW.live_caption[ potof.live ] || " "
       if potof.deathday < 0
@@ -197,19 +199,22 @@ INIT = ($scope, $filter)->
     INIT_STORY $scope, gon.story
 
 
-  gon.keys (key, news)->
+  for key, news of gon
     $scope.merge $scope, gon, key
   $scope.merge_turn $scope, gon
 
 
   if $scope.potofs?
-    live_potofs = $scope.potofs.filter (o)->
+    live_potofs = _.filter $scope.potofs, (o)->
       o.deathday < 0
 
     $scope.potofs.mob = ->
-      $scope.potofs.filter (o)-> "mob" == o.live
+      _.filter $scope.potofs, (o)-> "mob" == o.live
     $scope.sum =
-      actaddpt: (live_potofs.sum (o)-> o.point.actaddpt)
+      actaddpt: 
+        _.reduce live_potofs, (sum, o)-> 
+          sum + o.point.actaddpt
+        , 0
 
     potofs_hash = 
       others: "他の人々"

@@ -2,18 +2,25 @@
 class Navi
   @list = {}
 
+  location_val: (find_key)->
+    if location[@params.location]
+      hash_str = location[@params.location].replace(/^[#?]/,"")
+      for key_value in hash_str.split('&')
+        [key, value] = key_value.split('=')
+        return decodeURIComponent value if key == find_key
+
   move: (newVal)->
     @value = @params.current_type newVal if newVal?
     @value
 
   choice: ->
-    @select.find (o)=> o.val == @value
+    _.find @select, (o)=> o.val == @value
 
   popstate: ()->
-    l = Object.fromQueryString(location[@params.location].replace(/^[#?]/,""))[@key] if location[@params.location]
+    l = @location_val(@key)
     c = document.cookie.match(@chk)?[2] if @params.is_cookie?
     @value = @params.current_type l or c or ""
-    @value = "" if @select?.all((o)=> @value != o.val)
+    @value = "" if @select? && _.every @select, (o)=> @value != o.val
     @value or= @params.current_type @params.current
 
   constructor: ($scope, key, def)->
@@ -27,7 +34,7 @@ class Navi
     @watch = []
     if def.button?
       @select = []
-      def.button.keys (key, val)=>
+      for key, val of def.button
         @select.push
           name: val
           val:  @params.current_type key
@@ -45,9 +52,8 @@ class Navi
       for func in @watch
         func @value
 
-      navis = Navi.list.values()
       list = {}
-      for navi in navis
+      for _, navi of Navi.list
         options = navi.params
         if navi.value
           cmd = "#{navi.key}=#{navi.value}"
