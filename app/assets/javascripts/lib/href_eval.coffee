@@ -73,7 +73,7 @@ HREF_EVAL = ($scope)->
       event = $scope.events[turn]
       return null unless event?.messages?
 
-      item = _.find event.messages (log)->
+      item = _.find event.messages, (log)->
         log.logid == ank
       if item
         popup_apply item, turn
@@ -107,7 +107,7 @@ HREF_EVAL = ($scope)->
 
   foreground = (e)->
     logid = $(e.target).find("[name]").attr('name')
-    item  = _.find $scope.anchors (o)-> logid = o.logid
+    item  = _.find $scope.anchors, (o)-> logid = o.logid
     item.z = Date.now()
     $scope.$apply()
 

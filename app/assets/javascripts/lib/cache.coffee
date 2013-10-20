@@ -82,7 +82,7 @@ CACHE = ($scope)->
       return unless new_base?.potofs?
 
       if new_base.turn?
-        new_base.potofs.each (potof)->
+        for potof in new_base.potofs
           potof.turn = new_base.turn
 
       merge_by.simple old_base, new_base, "potofs", guard, filter

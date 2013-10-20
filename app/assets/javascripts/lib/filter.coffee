@@ -7,16 +7,18 @@ FILTER = ($scope, $filter)->
     page.filter_by 'stories'
     page.filter_to 'stories_find'
 
-    [ { target: "rating",     key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
-      { target: "roletable",  key: ((o)-> o.type.roletable), text: ((key)-> SOW.roletable[key]) }
-      { target: "game_rule",  key: ((o)-> o.type.game), text: ((key)-> SOW.game_rule[key]?.CAPTION) }
-      { target: "potof_size", key: ((o)-> String(o.vpl.last())), text: ((key)-> key + "人") }
-      { target: "card_event", key: ((o)-> o.card.event_names || "(なし)"), text: String }
-      { target: "card_win",   key: ((o)-> o.card.win_names || "(なし)"), text: String }
-      { target: "card_role",  key: ((o)-> o.card.role_names || "(なし)"), text: String }
-      { target: "upd_time",   key: ((o)-> o.upd.time_text),     text: String }
+    filters = [
+      { target: "rating",       key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
+      { target: "roletable",    key: ((o)-> o.type.roletable), text: ((key)-> SOW.roletable[key]) }
+      { target: "game_rule",    key: ((o)-> o.type.game), text: ((key)-> SOW.game_rule[key]?.CAPTION) }
+      { target: "potof_size",   key: ((o)-> String _.last o.vpl), text: ((key)-> key + "人") }
+      { target: "card_event",   key: ((o)-> o.card.event_names || "(なし)"), text: String }
+      { target: "card_win",     key: ((o)-> o.card.win_names || "(なし)"), text: String }
+      { target: "card_role",    key: ((o)-> o.card.role_names || "(なし)"), text: String }
+      { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
       { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
-    ].each (filter)->
+    ]
+    for filter in filters  
       keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
       if keys.length > 1
         navigator = 
