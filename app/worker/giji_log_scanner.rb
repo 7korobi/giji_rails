@@ -56,7 +56,7 @@ class GijiLogScanner < GijiScanner
         message.name = o.chrname
       end
       event.messages << message
-      key = [{ remoteaddr: o.remoteaddr, fowardedfor: o.fowardedfor, agent: o.agent },{ sow_auth_id: o.uid }]
+      key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true
     end
     requests.keys.each do |key| request_key, sow_auth_id = key
@@ -69,6 +69,6 @@ class GijiLogScanner < GijiScanner
     event.messages.sort_by!(&:date)
     event.save
 
-    MapReduce::MessageByStory.generate(story.id) if story.is_finish
+    MapReduce::MessageByStory.generate([story.id]) if story.is_finish
   end
 end

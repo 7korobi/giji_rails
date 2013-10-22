@@ -8,6 +8,7 @@ class Message < Chat
   field :mestype
   field :csid
   field :name
+  field :sow_auth_id
   belongs_to :face,  inverse_of: :messages
   belongs_to :potof, inverse_of: :messages
   embedded_in :event,   inverse_of: :messages

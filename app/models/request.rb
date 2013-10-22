@@ -4,6 +4,7 @@ class Request
 
   field :remote_ip
   field :user_agent
+  field :fowardedfor
   has_and_belongs_to_many :sow_auths, inverse_of: nil
   has_and_belongs_to_many :users,     inverse_of: nil
 
