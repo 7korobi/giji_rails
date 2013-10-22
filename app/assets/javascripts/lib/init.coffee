@@ -113,7 +113,7 @@ INIT_POTOFS = ($scope, gon)->
               potof.win_result = "勝利" if winner == "WIN_" + potof.win
               potof.win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == potof.win
               potof.win_result = "勝利" if "victim" == potof.live && "DISH" == potof.win
-              potof.win_result = "敗北" if is_lone_lose && _.any gon.potofs (o)-> o.live != 'live' && _.any o.bonds, potof.pno
+              potof.win_result = "敗北" if is_lone_lose && _.any gon.potofs, (o)-> o.live != 'live' && _.any o.bonds, potof.pno
               potof.win_result = "敗北" if is_dead_lose && 'live' != potof.live
               potof.win_result = "参加" if "NONE" == potof.win
         potof.win_result = "" if "suddendead" == potof.live

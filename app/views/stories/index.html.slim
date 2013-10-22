@@ -25,9 +25,10 @@
     tbody
       tr(ng-repeat="story in stories_find")
         td
-          a.btn(ng-href="{{story.file}}")
-            i.icon-folder-open
-          span.small {{story._id}}
+          a.label(ng-href="{{story.file}}")
+            i.icon-white.icon-folder-open
+          span.small
+            | {{story._id}}
           a(ng-href="{{story.link}}") {{story.name}}
           img(ng-src="/images/icon/cd_{{story.rating}}.png")
           span.note(ng-hide="stories_is_small")
