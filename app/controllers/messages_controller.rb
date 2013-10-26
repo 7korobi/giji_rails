@@ -1,7 +1,14 @@
 class MessagesController < BasePastLogController
-  expose(:events_summary){ story.events.summary.cache }  
-  expose(:events){ story.events.order_by(turn:1).cache }
-  expose(:event){ story.events.where(turn: params[:turn]).cache.first }
+  expose(:story_events) do
+    if story.old_events.count 
+      story.old_events
+    else
+      story.events
+    end
+  end
+  expose(:events_summary){ story_events.summary.cache }  
+  expose(:events){ story_events.order_by(turn:1).cache }
+  expose(:event){ story_events.where(turn: params[:turn]).cache.first }
   expose(:messages){ event.messages.summary.cache }
 
   respond_to :html, :json
