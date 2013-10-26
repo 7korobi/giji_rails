@@ -51,7 +51,9 @@ FILTER = ($scope, $filter)->
 
   if $scope.event?.messages?
     page.last_updated_at = ()->
-      _.last($scope.event.messages).updated_at
+      _ref = $scope.event.messages
+      if _ref?
+        _.last(_ref)?.updated_at
     page.filter_by 'event.messages'
     page.filter_to 'messages'
     page.filter 'event.turn'
@@ -219,7 +221,9 @@ FILTER = ($scope, $filter)->
 
   form_show = ->
     if $scope.modes?
-      $scope.form_show = $scope.modes.form
+      $scope.form_show = {}
+      for key in $scope.modes.form 
+        $scope.form_show[key] = true
 
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show

@@ -17,9 +17,8 @@ CGI = ($scope, $filter)->
 
     roles = _.groupBy _.map($scope.config.roles, (o)-> count_set SOW.roles[o]), (o)-> SOW.groups[o.group].name
     gifts = _.groupBy _.map($scope.config.gifts, (o)-> count_set SOW.gifts[o]), (o)-> "恩恵"
-    $scope.config.items = roles.merge(gifts)
+    $scope.config.items = $.extend(roles, gifts);
     $scope.config.items_keys = _.keys $scope.config.items
-
     $scope.config.items.events = $scope.config.events.map (o)-> SOW.events[o]
 
   get = (href, cb)->
