@@ -107,6 +107,9 @@ chr_jobs:
 - face_id: w48
   job: 和算家
 - face_id: w49
-  job: 地図抜荷
+  job: 抜荷
+# TODO: 抜荷
 - face_id: w50
   job: 半の目
+#- face_id: w51
+#  job: 真剣師

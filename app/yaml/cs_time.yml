@@ -45,3 +45,7 @@ chr_jobs:
   job: 少年探偵団
 - face_id: t16
   job: 安全保障局
+- face_id: t17
+  job: 薔薇∴十字
+- face_id: t18
+  job: 白銀∴秘星

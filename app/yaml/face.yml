@@ -552,27 +552,27 @@ Face:
 - order: 90038
   face_id: w01
   name: "鏡花"
-  comment: "輝く月に未来を託す　暁月商事"
+  comment: "輝く月に未来を託す 暁月商事"
 - order: 90041
   face_id: w02
   name: "慶三郎"
-  comment: "カメラのことなら　MISEKI"
+  comment: "カメラのことなら MISEKI"
 - order: 90022
   face_id: w03
   name: "朔"
-  comment: "新しい議事をつくる　たき学会"
+  comment: "新しい議事をつくる たき学会"
 - order: 90034
   face_id: w04
   name: "小鈴"
-  comment: "お口の愛人　タルッティ・タルット"
+  comment: "お口の愛人 タルッティ・タルット"
 - order: 90001
   face_id: w05
   name: "定吉"
-  comment: "ぷえるとりこの旅人　エージ―エー"
+  comment: "ぷえるとりこの旅人 エージ―エー"
 - order: 90035
   face_id: w06
   name: "ゆり"
-  comment: "道を外して60年　GEDOU協会"
+  comment: "道を外して60年 GEDOU協会"
 - order: 90030
   face_id: w07
   name: "夕顔"
@@ -582,7 +582,7 @@ Face:
 - order: 90017
   face_id: w09
   name: "チャールズ"
-  comment: "チャールズ派遣ならおまかせ　O-ririn"
+  comment: "チャールズ派遣ならおまかせ O-ririn"
 - order: 90015
   face_id: w10
   name: "博史"
@@ -592,27 +592,27 @@ Face:
 - order: 90014
   face_id: w12
   name: "おみつ"
-  comment: "道を外して60年　GEDOU協会"
+  comment: "道を外して60年 GEDOU協会"
 - order: 90020
   face_id: w13
   name: "たまこ"
-  comment: "世界の道をつなぐ　議事国地図"
+  comment: "世界の道をつなぐ 議事国地図"
 - order: 90019
   face_id: w14
   name: "華月斎"
-  comment: "めげないゼラチン作り　MEGEゼラチン"
+  comment: "めげないゼラチン作り MEGEゼラチン"
 - order: 90039
   face_id: w15
   name: "八重"
-  comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
+  comment: "桃源郷ぐた国のめぐみ ふらう乳業"
 - order: 90005
   face_id: w16
   name: "勢"
-  comment: "ぶたさん印の　あおいジンギスカン"
+  comment: "ぶたさん印の あおいジンギスカン"
 - order: 90026
   face_id: w17
   name: "雷門"
-  comment: "輝く月に未来を託す　暁月商事"
+  comment: "輝く月に未来を託す 暁月商事"
 - order: 90006
   face_id: w18
   name: "菊"
@@ -622,18 +622,18 @@ Face:
 - order: 90002
   face_id: w21
   name: "鉄平"
-  comment: "日本の伝統　熊木彫"
+  comment: "日本の伝統 熊木彫"
 - order: 90003
   face_id: w22
   name: "竹三"
-  comment: "雪国の風雅　熊木彫"
+  comment: "雪国の風雅 熊木彫"
 - order: 90033
   face_id: w23
   name: "仁右衛門"
 - order: 90009
   face_id: w24
   name: "辰次"
-  comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
+  comment: "桃源郷ぐた国のめぐみ ふらう乳業"
 - order: 90016
   face_id: w25
   name: "法泉"
@@ -729,8 +729,8 @@ Face:
   face_id: mad08
   comment: "阿片窟からきました"
   order: 20008
-#　ドッツ　イボテン　ムッシモール　ムスカゾン　クベンシス
-#　リゼル　ペヨーテ　カーピ　シポ　オアスカ　アミン
+# ドッツ イボテン ムッシモール ムスカゾン クベンシス
+# リゼル ペヨーテ カーピ シポ オアスカ アミン
 
 - name: サミュエル
   face_id: t06
@@ -812,6 +812,26 @@ Face:
   comment: "負けるたびに追い博打"
   order: 90050
 
+######################### 
+# 2013-11-04 update
+
+- face_id: t17
+  name: ススム
+  comment: "おもいっきり探偵団 覇悪怒組"
+  order: 30017
+
+- face_id: t18
+  name: マユミ
+  comment: "まんがはじめて物語（二代目）"
+  order: 30018
+
+######################### 
+# xxxx-xx-xx update
+
+- face_id: w51
+  name: 萬藤
+  comment: ""
+  order: 90051
 
 
 # http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
@@ -822,7 +842,8 @@ Face:
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
-#
+# http://ja.wikipedia.org/wiki/十五少年漂流記
+# 
 # 歩き巫女 中条流 侘び茶 侘茶湯 板前 
 # 労働者 駅長 車掌 客室乗務員
 # 写真家 〜診断士 洞窟探査 鉱泉分析
@@ -831,5 +852,13 @@ Face:
 # 黒後家蜘蛛 黒い兄弟
 # 官房秘密局 時間貯蓄銀行 保険機関 観光機関 麻薬委員
 # 魔法省 学園特警
-# とんがり白帽 みつば詰草 十字に薔薇 不死の鸚哥
-# 人民の意志
+# シンボルマーク
+#  とんがり白帽 みつば詰草 不死の鸚哥 桜花会
+# 騎士団・魔術教団
+#  三百人委 啓明会 シオン修道会 テンプル騎士団
+#  十字＆王冠 黄金∴黎明
+# コミー
+#  人民の意志
+# 温泉から
+#  三助 湯もみ 湯治客（刀傷 刺青） 大旦那（サル顔）
+# 落語から
