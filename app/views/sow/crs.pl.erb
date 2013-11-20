@@ -14,14 +14,14 @@ sub GetRSChr {
   # キャラの表示順
   my @order = (
 <%  @orders.each do |order| %>
-    '<%= order.id %>',  # <%= order.id %>  <%= order.job %> <%= order.name %> <%= order.comment %>
+    '<%= order.id %>',  # <%= order.id %>  <%= order[:job] %> <%= order.name %> <%= order.comment %>
 <%  end %>
   );
 
   # キャラの肩書き
   my %chrjob = (
 <%  @lists.each do |order|  %>
-    '<%= order.id %>' => '<%= order.job %>',  # <%= order.id %>  <%= order.job %> <%= order.name %> <%= order.comment %>
+    '<%= order.id %>' => '<%= order[:job] %>',  # <%= order.id %>  <%= order[:job] %> <%= order.name %> <%= order.comment %>
 <%  end %>
     $maker => '<%= @chrset.maker %>',
     $admin => '<%= @chrset.admin %>',
@@ -30,7 +30,7 @@ sub GetRSChr {
   # キャラの名前
   my %chrname = (
 <%  @lists.each do |order|  %>
-    '<%= order.id %>' => '<%= order.name %>',   # <%= order.id %>  <%= order.job %> <%= order.name %> <%= order.comment %>
+    '<%= order.id %>' => '<%= order.name %>',   # <%= order.id %>  <%= order[:job] %> <%= order.name %> <%= order.comment %>
 <%  end %>
     $maker    => '（村建て人）',
     $admin    => '（管理人）',
