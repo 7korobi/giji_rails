@@ -164,7 +164,7 @@ FILTER = ($scope, $filter)->
 
       if $scope.modes.last
         result = []
-        order  = (o)-> [o.order, o.updated_at]
+        order  = (o)-> o.order || o.updated_at
         for key, sublist of _.groupBy list, $scope.potof_key
           result.push _.last _.sortBy sublist, order
         _.sortBy result, order

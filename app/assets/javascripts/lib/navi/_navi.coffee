@@ -34,10 +34,10 @@ class Navi
     @watch = []
     if def.button?
       @select = []
-      for key, val of def.button
+      for btn_key, btn_val of def.button
         @select.push
-          name: val
-          val:  @params.current_type key
+          name: btn_val
+          val:  @params.current_type btn_key
     else
       @select = def.select
 

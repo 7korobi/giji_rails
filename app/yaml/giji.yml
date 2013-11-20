@@ -6,6 +6,14 @@ folders:
     evil: WOLF
     role_play: false
 
+  OFFPARTY:
+    evil: EVIL
+    role_play: false
+
+  LOBBY:
+    evil: EVIL
+    role_play: false
+
   RP:
     evil: WOLF
     role_play: true
@@ -22,6 +30,9 @@ folders:
     evil: WOLF
     role_play: true
   BRAID:
+    evil: WOLF
+    role_play: true
+  CIEL:
     evil: WOLF
     role_play: true
 
