@@ -1,6 +1,6 @@
 class MessagesController < BasePastLogController
   expose(:story_events) do
-    if story.old_events.count 
+    if story.old_events.present? 
       story.old_events
     else
       story.events

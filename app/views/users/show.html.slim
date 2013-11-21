@@ -8,7 +8,6 @@
     .paragraph
       ul
         - if self?
-          li=link_to 'キャラクターに投票！', new_chr_vote_path
           li
             =link_to '自分のアカウントを編集する', edit_user_path(user)
             ul

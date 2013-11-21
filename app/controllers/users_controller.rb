@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class UsersController < ApplicationController
-  expose(:users){ User.order_by(:name.asc) }
+  expose(:users_for_admin){ users.order_by(:name.asc) }
+  expose(:users){ User }
   expose(:user)
 
   respond_to :html, :json
@@ -122,6 +123,8 @@ _HTML_
   end
 
   def new
+    p current
+    p user
     user.user_id = current.auth.try(:nickname)
     user.name    = current.auth.try(:name)
   end

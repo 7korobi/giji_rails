@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class MapReduce::FacesController < ApplicationController
+  expose(:chr_votes){ ChrVote.excludes(comment:"").where(face_id:params[:id]) }
+
   def index
     chrs = @faces = MapReduce::Face.only("value.sow_auth_id").order_by("value.sow_auth_id.all" => -1).map do |o|
       face = FACE[:Face].find{|face|face[:face_id] == o.id}

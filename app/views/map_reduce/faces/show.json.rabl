@@ -4,3 +4,7 @@ attributes :face_id, :name,  :sow_auth_ids, :story_ids, :folders, :roles, :wins,
 node :say_titles do
   MapReduce::Message::SAYS
 end
+
+node :comment_by_phase do
+  chr_votes.group_by(&:phase)
+end

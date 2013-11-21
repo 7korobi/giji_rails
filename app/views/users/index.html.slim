@@ -25,7 +25,7 @@
     h2 アカウント一覧
     .paragraph
       = ' / '
-      - users.each do |user|
+      - users_for_admin.each do |user|
         - if (user.sow_auth_ids or []).size > 0
           - if (user.byebye_ids or []).size > 0
             u
