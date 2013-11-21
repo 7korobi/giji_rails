@@ -80,7 +80,6 @@ FILTER = ($scope, $filter)->
     $scope.modes = $.extend {}, $scope.mode.choice()
 
     modes_change = (oldVal, newVal)->
-      console.log [oldVal, newVal, $scope.modes]
       if "info" == $scope.modes.face
         $scope.modes.last = false
         $scope.modes.view = "open"
