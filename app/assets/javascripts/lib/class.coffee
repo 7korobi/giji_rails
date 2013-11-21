@@ -164,6 +164,7 @@ Diary.base.head = ->
 Diary.base.commit = (diary)->
   return if diary.form.text.length == 0
   item = new DiaryHistory(diary)
-  Diary.history = _.without(Diary.history, item)
+  _.remove Diary.history, (o)->
+    o.text == item.text && o.key == item.key
   Diary.history.push item
   Diary.base.version = Diary.history.length + 1
