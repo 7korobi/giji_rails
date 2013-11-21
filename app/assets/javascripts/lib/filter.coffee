@@ -77,20 +77,20 @@ FILTER = ($scope, $filter)->
         is_cookie: false
       select: GIJI.modes
 
-    $scope.modes = $scope.mode.choice()
+    $scope.modes = $.extend {}, $scope.mode.choice()
 
     modes_change = (oldVal, newVal)->
+      console.log [oldVal, newVal, $scope.modes]
       if "info" == $scope.modes.face
         $scope.modes.last = false
         $scope.modes.view = "open"
         $scope.navi.value_add("link")
       if "memo" == $scope.modes.face
         $scope.modes.open = true
+        if "all" != $scope.modes.view
+          $scope.modes.view = "open"
       if "open" == $scope.modes.view
         $scope.modes.open = true
-      if "all" != $scope.modes.view
-        if "memo" == $scope.modes.face
-          $scope.modes.view = "open"
 
       mode = _.compact _.uniq [ 
         $scope.modes.face
@@ -113,7 +113,7 @@ FILTER = ($scope, $filter)->
     $scope.$watch 'modes.player', modes_change
 
     page.filter 'mode.value', (key, list)->
-      $scope.modes = $scope.mode.choice()
+      $scope.modes = $.extend {}, $scope.mode.choice()
       is_mob_open = false
       if $scope.story?
         is_mob_open = true if 'alive' == $scope.story.type.mob

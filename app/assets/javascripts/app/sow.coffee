@@ -86,4 +86,5 @@ CGI = ($scope, $filter)->
   MODULE $scope, $filter
   FORM    $scope
 
-
+  $scope.story_has_option = (option)->
+    _.include $scope.story.options, option
