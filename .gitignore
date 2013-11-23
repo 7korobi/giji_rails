@@ -16,4 +16,5 @@ config/initializers/resque.rb
 public/
 public_old/
 test/
+vendor/cache
 

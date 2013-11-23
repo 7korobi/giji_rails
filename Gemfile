@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'unicorn'
-gem 'rails', '4.0.0'
+gem 'rails', '4.0.1'
+gem 'activesupport', '4.0.1'
 
 # queue
 gem 'resque'
@@ -27,7 +28,8 @@ gem 'omniauth-openid'
 
 
 # data_base
-gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
+gem 'mongoid_rails4', :require => 'mongoid'
+#gem 'mongoid', github: 'mongoid/mongoid'
 gem "redis-store"
 gem "redis-rails"
 gem 'sqlite3'
