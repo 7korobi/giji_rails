@@ -21,39 +21,19 @@ class UsersController < ApplicationController
       stories = story_in active_story_ids
 
       prologue_story_ids.map do |story_id|
-        story   = stories[story_id].first
-        nation  = GAME[story.folder][:nation] rescue ' - '
-        created = story["timer.updateddt"]
-        link = message_file_path(story_id)
-
-        { story_id:  story_id,
-          folder: story.folder,
-          vid:    story.vid,
-
-          template: "message/action",
-          mestype:  "VSAY",
-          name:  "#{nation}#{story.vid} #{story.name}",
-          style: '',
-          updated_at:  created,
+        to_message(
+          story: stories[story_id].first,
+          link:  message_file_path(story_id),
+          mestype: "VSAY",
           log: "開始が楽しみだ。",
-        }
+        )
       end + progless_story_ids.map do |story_id|
-        story   = stories[story_id].first
-        nation  = GAME[story.folder][:nation] rescue ' - '
-        created = story["timer.updateddt"]
-        link = message_file_path(story_id)
-
-        { story_id:  story_id,
-          folder: story.folder,
-          vid:    story.vid,
-
-          template: "message/action",
-          mestype:  "XSAY",
-          name:  "#{nation}#{story.vid} #{story.name}",
-          style: '',
-          updated_at:  created,
+        to_message(
+          story: stories[story_id].first,
+          link:  message_file_path(story_id),
+          mestype: "XSAY",
           log: "進行中だ。",
-        }
+        )
       end
     end
   end
@@ -101,8 +81,6 @@ class UsersController < ApplicationController
 
     gon.byebyes = user_story_ids.map do |story_id|
       story   = stories[story_id].first
-      nation  = GAME[story.folder][:nation] rescue ' - '
-      created = story["timer.updateddt"]
       mestype = "VSAY"
       text = "開始が楽しみだ。"
       text = "村を抜けておいたほうがいい。" if byebye_story_ids.member? story_id
@@ -112,21 +90,12 @@ class UsersController < ApplicationController
         text = kick_names.join('、') + "に退去願おう。"
       end
 
-      link = message_file_path(story_id)
-
-      { story_id:  story_id,
-        is_byebye: byebye_story_ids === story_id,
-
-        folder: story.folder,
-        vid:    story.vid,
-
-        template: "message/action",
-        mestype:  mestype,
-        name:  "#{nation}#{story.vid} #{story.name}",
-        style: '',
-        updated_at:  created,
-        log:   text,
-      }
+      to_message(
+        story: stories[story_id].first,
+        link:  message_file_path(story_id),
+        mestype: mestype,
+        log: text,
+      )
     end
   end
 
@@ -197,6 +166,19 @@ _HTML_
   protected
   def user_params
     params.require(:user).permit(:user_id, :name, :email, :sow_auths, :byebyes)
+  end
+
+  def to_message(story: SowVillage.new, link: message_file_path(story.id), mestype: "SAY", log: "")
+    nation  = GAME[story.folder][:nation] rescue ' - '
+    created = story["timer.updateddt"]
+
+    { template: "message/action",
+      mestype:  mestype,
+      name:  "#{nation}#{story.vid} #{story.name}",
+      style: '',
+      updated_at:  created,
+      log: log,
+    }
   end
 
   def story_in(story_ids)
