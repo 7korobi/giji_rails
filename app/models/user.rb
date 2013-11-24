@@ -16,7 +16,6 @@ class User
     self[:byebye_ids]
   end
 
-
   devise :trackable, :omniauthable
   has_many :auths,    inverse_of: :user
 

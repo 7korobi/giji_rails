@@ -10,17 +10,21 @@
     | 左のどれかのボタンをクリックして、ログインしよう！
     | 左にボタンが見えないひとは、右下の「接続」ボタンを押してみよう。
 
-  h2 キャラクターの統計  
-  .paragraph
-    = link_to "集計ページ", map_reduce_faces_path
-    | に、人狼議事のキャラクターたちの活躍をまとめてある。
-
   h2 更新情報
   .paragraph
     ul
       li(ng-repeat="o in news | limitTo:5")
         span(ng-show="o.is_news" style="color:#b94a48;") New!&nbsp;
         | {{o.text}}
+
+  h2 村の情報
+  .paragraph
+    = link_to "集計ページ", map_reduce_faces_path
+    | に、人狼議事のキャラクターたちの活躍をまとめてある。
+
+  h3 開始待ちの村 / 進行中の村
+  .message_filter(ng-repeat="message in messages" log="message")
+
   - if admin?
     h2 アカウント一覧
     .paragraph

@@ -5,9 +5,11 @@ class ApplicationController < ActionController::Base
 
   helper_method :gon
   helper_method :theme
-
-  protect_from_forgery
   include CurrentAuthenticated
+
+  decent_configuration do
+    strategy DecentExposure::StrongParametersStrategy
+  end
 
 =begin
   case Rails.env

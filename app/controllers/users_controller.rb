@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   expose(:users_for_admin){ users.order_by(:name.asc) }
   expose(:users){ User }
-  expose(:user)
+  expose(:user, attributes: :user_params)
 
   respond_to :html, :json
 
@@ -13,6 +13,49 @@ class UsersController < ApplicationController
 
   def index
     gon.news = NOTE[:news]
+
+    gon.messages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
+      active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
+      prologue_story_ids = active_story_ids - SowTurn.all.in(story_id: active_story_ids).pluck(:story_id)
+      progless_story_ids = active_story_ids - prologue_story_ids
+      stories = story_in active_story_ids
+
+      prologue_story_ids.map do |story_id|
+        story   = stories[story_id].first
+        nation  = GAME[story.folder][:nation] rescue ' - '
+        created = story["timer.updateddt"]
+        link = message_file_path(story_id)
+
+        { story_id:  story_id,
+          folder: story.folder,
+          vid:    story.vid,
+
+          template: "message/action",
+          mestype:  "VSAY",
+          name:  "#{nation}#{story.vid} #{story.name}",
+          style: '',
+          updated_at:  created,
+          log: "開始が楽しみだ。",
+        }
+      end + progless_story_ids.map do |story_id|
+        story   = stories[story_id].first
+        nation  = GAME[story.folder][:nation] rescue ' - '
+        created = story["timer.updateddt"]
+        link = message_file_path(story_id)
+
+        { story_id:  story_id,
+          folder: story.folder,
+          vid:    story.vid,
+
+          template: "message/action",
+          mestype:  "XSAY",
+          name:  "#{nation}#{story.vid} #{story.name}",
+          style: '',
+          updated_at:  created,
+          log: "進行中だ。",
+        }
+      end
+    end
   end
 
   def show
@@ -28,7 +71,9 @@ class UsersController < ApplicationController
     return unless user.sow_auths.present? && user.byebyes.present?
 
     active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
-    user_story_ids   = SowUser.all.in(sow_auth_id: user[:sow_auth_ids] ).in(story_id: active_story_ids ).order_by("timer.entrieddt" => 1).pluck(:story_id).uniq
+    prologue_story_ids = active_story_ids - SowTurn.all.in(story_id: active_story_ids).pluck(:story_id)
+#    progless_story_ids = active_story_ids - prologue_story_ids
+    user_story_ids   = SowUser.all.in(sow_auth_id: user[:sow_auth_ids] ).in(story_id: prologue_story_ids ).order_by("timer.entrieddt" => 1).pluck(:story_id).uniq
     byebye_story_ids = SowUser.all.in(sow_auth_id: user[:byebye_ids]   ).in(story_id: user_story_ids   ).pluck(:story_id)
 
     kick_ids = Hash.new {|hash, key| hash[key] = [] }
@@ -150,9 +195,13 @@ _HTML_
   end
 
   protected
+  def user_params
+    params.require(:user).permit(:user_id, :name, :email, :sow_auths, :byebyes)
+  end
+
   def story_in(story_ids)
     @stories ||= {}
-    @stories[story_ids] ||= SowVillage.only(:folder, :vid, :name, :timer, :sow_auth_id, :is_finish).in(_id:story_ids).group_by(&:_id)
+    @stories[story_ids] ||= SowVillage.only(:folder, :vid, :name, :timer, :sow_auth_id, :turn, :is_finish).in(_id:story_ids).group_by(&:_id)
   end
 
 
