@@ -1,4 +1,4 @@
-FORM = ($scope)->
+FORM = ($scope, $sce)->
   $scope.stories_is_small = true
 
   calc_length = (text)->
@@ -32,7 +32,7 @@ FORM = ($scope)->
       else
         f.error = "cautiontext"
         mark = "⊘"
-      "#{mark} #{size}<sub>/#{f.max.size}字</sub>  #{lines}<sub>/#{f.max.line}行</sub>"
+      $sce.trustAsHtml "#{mark} #{size}<sub>/#{f.max.size}字</sub>  #{lines}<sub>/#{f.max.line}行</sub>"
     else
       ""
   

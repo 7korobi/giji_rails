@@ -11,7 +11,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.secret")
                 | {{f.longname}}
 
             .vote(form="ff.jst" ng-repeat="ff in f.votes")
-            .mark(ng-bind-html-unsafe="error(ff)" ng-repeat="ff in f.votes")
+            .mark(ng-bind-html="error(ff)" ng-repeat="ff in f.votes")
 
           .form-inline
             .formpl_content

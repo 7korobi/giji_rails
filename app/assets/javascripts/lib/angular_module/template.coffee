@@ -5,7 +5,7 @@ GIJI.template = ($compile, $scope, elm, name)->
   compiled = $compile(template)($scope)
   elm.append compiled
 
-angular.module("giji.directives").directive "template", ["$interpolate","$compile", ($interpolate, $compile)->
+angular.module("giji").directive "template", ["$interpolate","$compile", ($interpolate, $compile)->
   if JST?
     for key,val of JST
       if key.startsWith "message/"
@@ -21,7 +21,7 @@ angular.module("giji.directives").directive "template", ["$interpolate","$compil
     GIJI.template $compile, $scope, elm, name
 ]
 
-angular.module("giji.directives").directive "listup", ["$compile", ($compile)->
+angular.module("giji").directive "listup", ["$compile", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     elm.addClass('ng-binding').data('$binding', attr.listup);
@@ -32,7 +32,7 @@ angular.module("giji.directives").directive "listup", ["$compile", ($compile)->
       elm.html compiled
 ]
 
-angular.module("giji.directives").directive "form", ["$compile", ($compile)->
+angular.module("giji").directive "form", ["$compile", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     elm.addClass('ng-binding').data('$binding', attr.form);
@@ -42,4 +42,12 @@ angular.module("giji.directives").directive "form", ["$compile", ($compile)->
       elm.html  compiled
 ]
 
+angular.module("giji").directive "diary", ["$compile", ($compile)->
+  restrict: "A"
+  link: ($scope, elm, attr, ctrl)->
+    form_text = $scope.$eval attr.diary
+    form_text.ver = new Diary(form_text)
+    form_text.ver.versions()
+    GIJI.template $compile, $scope, elm, "form/version"
+]
 

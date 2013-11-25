@@ -13,7 +13,7 @@ hr.invisible_hr
       img(ng-src="{{story.rating_url}}")
       | {{story.announce.rating}}
 
-  p.text.head(ng-bind-html-unsafe="story.comment")
+  p.text.head(ng-bind-html="story.comment")
   p.text
     | ■
     a(href="sow.cgi?cmd=rule#rule") 国のルール
@@ -24,11 +24,11 @@ hr.invisible_hr
 
 .mes_admin.story
   dl
-    dt.text(ng-bind-html-unsafe="story.announce.trs_name")
-    dd.text(ng-bind-html-unsafe="story.announce.trs_help")
+    dt.text(ng-bind-html="story.announce.trs_name")
+    dd.text(ng-bind-html="story.announce.trs_help")
 
-    dt.text(ng-bind-html-unsafe="story.announce.game_name")
-    dd.text(ng-bind-html-unsafe="story.announce.game_help")
+    dt.text(ng-bind-html="story.announce.game_name")
+    dd.text(ng-bind-html="story.announce.game_help")
 
   dl.dl-horizontal
     dt 登場人物

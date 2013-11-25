@@ -1,4 +1,4 @@
-angular.module("giji.directives").directive "accordion", [->
+angular.module("giji").directive "accordion", [->
   restrict: "C"
   link: ($scope, elm, attr, ctrl)->
     elm.find("dd").hide()
@@ -8,7 +8,7 @@ angular.module("giji.directives").directive "accordion", [->
       $(this).next().show 'fast'
 ]
 
-angular.module("giji.directives").directive "navi", ["$compile", ($compile)->
+angular.module("giji").directive "navi", ["$compile", ($compile)->
   effect = ($scope)->
     resize_naviitems = ->
       return unless $scope.navi? && $scope.width?

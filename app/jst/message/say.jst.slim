@@ -7,11 +7,11 @@ table.say(ng-class="message.mestype")
         .msg
           h3.mesname
             | {{message.mesicon}}&nbsp;
-            b(ng-bind-html-unsafe="message.name")
-          p.text(ng-class="message.style" ng-bind-html-unsafe="message.text")
+            b(ng-bind-html="message.name")
+          p.text(ng-class="message.style" ng-bind-html="message.text")
           p.mes_date
             a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}
             span &nbsp;
             span
               | {{message.time()}}
-            span(ng-bind-html-unsafe="message.cancel_btn()")
+            span(ng-bind-html="message.cancel_btn()")

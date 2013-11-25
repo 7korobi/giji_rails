@@ -25,7 +25,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
                 h3.mesname
                   a
                     | {{option(f.csid_cids, f.csid_cid).name}}
-                p(class="{{f.style}} text" ng-bind-html-unsafe="preview(f)")
+                p(class="{{f.style}} text" ng-bind-html="preview(f)")
 
               div(ng-hide="f.is_preview")
                 p  参加する時のセリフ
@@ -38,9 +38,9 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
               select.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p
                 | {{f.caption}}
-              span(class="{{f.error}}" ng-bind-html-unsafe="text_valid(f)")
+              span(class="{{f.error}}" ng-bind-html="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
-              .mark(ng-bind-html-unsafe="error(f)")
+              .mark(ng-bind-html="error(f)")
 
 
 

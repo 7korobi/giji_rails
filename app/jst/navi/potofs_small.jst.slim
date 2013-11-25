@@ -16,7 +16,7 @@ table(class="table table-condensed" ng-repeat="key in potofs_keys")
   tbody
     tr.head(ng-show="potofs_groups[key].has_head")
       th(colspan="3")
-        span(ng-bind-html-unsafe="potofs_groups[key].head")
+        span(ng-bind-html="potofs_groups[key].head")
         span.note
           | ({{potofs_groups[key].length}}人)
       th(style="width:1ex")
@@ -27,7 +27,7 @@ table(class="table table-condensed" ng-repeat="key in potofs_keys")
         span.name
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
-        span.nowrap.note(ng-bind-html-unsafe="potof.summary()")
+        span.nowrap.note(ng-bind-html="potof.summary()")
       td(style="width:1ex")
         a.note(ng-click="potof_only([potof])") ➡
 

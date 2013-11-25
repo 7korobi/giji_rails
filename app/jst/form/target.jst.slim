@@ -1,4 +1,4 @@
 form.form-inline
   select.input-medium(name="target"  ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
   a.btn(ng-click="confirm(f)") {{f.title}}
-p.formpl_content(ng-bind-html-unsafe="f.caption")
+p.formpl_content(ng-bind-html="f.caption")

@@ -1,4 +1,4 @@
-angular.module("giji.directives").directive "log", ["$compile", ($compile)->
+angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     log = $scope.message = $scope.$eval attr.log
@@ -17,7 +17,7 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
     log.cancel_btn = ->
       if log.logid? && "q" == log.logid[0]
         if (new Date() - log.updated_at) < 25 * 1000
-          """<a class="mark" href_eval='cancel_say("#{log.logid}")'>なら削除できます。⏳</a>"""
+          $sce.trustAsHtml """<a class="mark" href_eval='cancel_say("#{log.logid}")'>なら削除できます。⏳</a>"""
         else
           ""
       else
@@ -44,7 +44,7 @@ angular.module("giji.directives").directive "log", ["$compile", ($compile)->
 
 ]
 
-angular.module("giji.directives").directive "drag", [->
+angular.module("giji").directive "drag", [->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     $scope.$watch attr.drag, (log) ->

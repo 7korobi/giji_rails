@@ -15,7 +15,7 @@ if SOW_RECORD.CABALA.events?
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
-MODULE = ($scope, $filter)->
+MODULE = ($scope, $filter, $sce)->
   $scope.head = head;
   $scope.win  = win;
   $scope.link = GIJI.link
@@ -62,7 +62,7 @@ MODULE = ($scope, $filter)->
 
   $scope.text_decolate = (log)->
     if log
-      background anchor link random log
+      $sce.trustAsHtml background anchor link random log
     else
       null
 

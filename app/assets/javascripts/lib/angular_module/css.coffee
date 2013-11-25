@@ -1,4 +1,4 @@
-angular.module("giji.directives").directive "theme", ["$compile", ($compile)->
+angular.module("giji").directive "theme", ["$compile", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     font  = OPTION.css.font

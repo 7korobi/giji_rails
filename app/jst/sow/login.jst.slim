@@ -16,4 +16,4 @@ form(ng-show="logined()" ng-submit="logout(form.login)")
       | ]
     span.mes_date ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。
     input(type="submit" value="{{form.login.uidtext}} がログアウト")
-.mark(ng-bind-html-unsafe="error(form.login)")
+.mark(ng-bind-html="error(form.login)")

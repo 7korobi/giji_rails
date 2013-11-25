@@ -1,10 +1,3 @@
-angular.module("giji.config", [], ($routeProvider, $locationProvider)->
-  $locationProvider.html5Mode true
-).value "giji.config", {}
-angular.module "giji.filters", ["giji.config"]
-angular.module "giji.directives", ["giji.config"]
-angular.module "giji", ["giji.filters", "giji.directives", "giji.config"]
-
 class FixedBox
   @list = {}
 

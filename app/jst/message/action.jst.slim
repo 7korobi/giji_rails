@@ -1,9 +1,9 @@
 div(ng-class="message.mestype")
   .action
     p.text(ng-class="message.style")
-      b(ng-bind-html-unsafe="message.name")
+      b(ng-bind-html="message.name")
       | は、
-      span(ng-bind-html-unsafe="message.text")
+      span(ng-bind-html="message.text")
     p.mes_date
       span &nbsp;
       span

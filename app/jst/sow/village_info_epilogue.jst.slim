@@ -8,7 +8,7 @@
       img(ng-src="{{story.rating_url}}")
       | {{story.announce.rating}}
 
-  p.head.text(ng-bind-html-unsafe="story.comment")
+  p.head.text(ng-bind-html="story.comment")
 
 .mes_maker.story
   dl.dl-horizontal

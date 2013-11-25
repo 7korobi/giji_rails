@@ -1,4 +1,4 @@
-RAILS = ($scope, $filter)->
+RAILS = ($scope, $filter, $sce)->
   $scope.mode_cache = 
     info: 'info_open_player'
     memo: 'memo_all_open_last_player'
@@ -35,4 +35,4 @@ RAILS = ($scope, $filter)->
   $scope.submit = _.throttle submit, 5000
 
 
-  MODULE   $scope, $filter
+  MODULE   $scope, $filter, $sce

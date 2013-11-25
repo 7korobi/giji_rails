@@ -34,7 +34,7 @@ table.table.table-condensed(style="margin:0;")
   tbody(ng-repeat="key in potofs_keys")
     tr.head(ng-show="potofs_groups[key].has_head")
       th.mark(colspan="5")
-        span(ng-bind-html-unsafe="potofs_groups[key].head")
+        span(ng-bind-html="potofs_groups[key].head")
         span
           | ({{potofs_groups[key].length}}人)
       th(style="width: 1ex")
@@ -64,7 +64,7 @@ table.table.table-condensed(style="margin:0;")
               | &nbsp; {{potof.select_name}} を希望
       td(ng-click="potof_toggle(potof)")
         div(ng-show="secret_is_open")
-          span(ng-bind-html-unsafe="potof.text.join('')")
+          span(ng-bind-html="potof.text.join('')")
           span.note(ng-show="potof.bond_names")
             | {{potof.bond_names.join('、')}}
           span.note(ng-show="potof.bond_names.length && potof.pseudobond_names.length")

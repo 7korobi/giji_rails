@@ -170,18 +170,18 @@ INIT_POTOFS = ($scope, gon)->
       potof.summary = ->
         switch $scope.potofs_order.value
           when 'said_num'
-            "✎#{potof.said}"
+            "✎#{@said}"
           when 'stat_at', 'stat_type'
-            potof.stat
+            @stat
           when 'win_result', 'win_name','role_names'
-            potof.role_names.join('、')
+            @role_names.join('、')
           when 'select_name'
-            if potof.select_name
-              potof.select_name + "を希望"
+            if @select_name
+              @select_name + "を希望"
             else
               ""
           when 'text'
-            potof.text.join('')
+            @text.join('')
       potof
 
 

@@ -16,5 +16,5 @@ div(class="{{form.win}}")
   a.btn(ng-click="confirm_complete()") ◯
 
 .formpl_gm
-  .mark(ng-bind-html-unsafe="error(f)" ng-repeat="(key, f) in form.commands")
+  .mark(ng-bind-html="error(f)" ng-repeat="(key, f) in form.commands")
 

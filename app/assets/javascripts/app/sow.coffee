@@ -1,4 +1,4 @@
-CGI = ($scope, $filter)->
+CGI = ($scope, $filter, $sce)->
   $scope.mode_cache = 
     info: 'info_open_player'
     memo: 'memo_all_open_last_player'
@@ -83,8 +83,8 @@ CGI = ($scope, $filter)->
       cmdfrom: f.cmdfrom
     $scope.submit param, ->
 
-  MODULE $scope, $filter
-  FORM    $scope
+  MODULE $scope, $filter, $sce
+  FORM   $scope, $sce
 
   $scope.story_has_option = (option)->
     _.include $scope.story.options, option
