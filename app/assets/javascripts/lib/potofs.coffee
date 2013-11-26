@@ -65,12 +65,17 @@ POTOFS = ($scope)->
 
   potofs_sortBy = (tgt, reverse)->
     return unless $scope.potofs
-    list = _.sortBy $scope.potofs, (o)-> o[tgt]
+    group = (o)-> 
+      if o[tgt] instanceof Array
+        o[tgt][0]
+      else
+        o[tgt]
+    list = _.sortBy $scope.potofs, group
     list.reverse() if reverse
     $scope.potofs = list
 
-    groups = $scope.potofs_groups = _.groupBy $scope.potofs, (o)-> o[tgt]
-    keys = _.uniq _.map $scope.potofs, (o)-> o[tgt]
+    groups = $scope.potofs_groups = _.groupBy $scope.potofs, group
+    keys = _.uniq _.map $scope.potofs, group
     for key in keys
       if 'deny' != head_mode[tgt] && groups[key]?
         has_head = true
