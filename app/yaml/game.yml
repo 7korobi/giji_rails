@@ -476,6 +476,9 @@ CIEL:
       - juna
       - vulcan
       - infinity
+    enable:
+      <<: *enable_braid
+      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
     cfg:
       <<: *cfg_braid
       RULE:           CIEL
