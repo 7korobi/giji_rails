@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 
 class MapReduce::FacesController < ApplicationController
-  expose(:chr_votes){ ChrVote.excludes(comment:"").where(face_id:params[:id]) }
+  expose(:chr_votes_in_phase){ chr_votes.desc(:created_at).group_by(&:phase) }
+  expose(:chr_votes){ ChrVote.where(face_id:params[:id]) }
+  expose(:chr_vote){ chr_votes.where(user_id: current.user.id).new }
+  expose(:chr_vote_phases){ ChrVote.phases }
+  expose(:chr_vote_phases_faces){ ChrVote.count_by_face_id }
+
+  expose(:faces){ Face.all }
+  expose(:face_titles){ Face.titles }
 
   def index
     chrs = @faces = MapReduce::Face.only("value.sow_auth_id").order_by("value.sow_auth_id.all" => -1).map do |o|

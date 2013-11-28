@@ -11,27 +11,17 @@
       .paragraph
         .sayfilter_content
           h4.sayfilter_caption_enable
-            | 顔をクリックして投票！
+            | このキャラクターに投票！
           =semantic_form_for chr_vote do |f|
-            .form-horizontal(ng-init="phase_input = #{chr_vote.phase.to_json};  navi.value=['info']")
+            div(ng-hide="true")
               =f.input :face_id, as: :hidden
               =f.input :vote,    as: :hidden
+            .form-horizontal(ng-init="phase_input = #{chr_vote.phase.to_json}")
               =f.input :comment
               =f.input :phase, collection: chr_vote_phases , input_html:{"ng-model" => "phase_input"}
               -if admin?
                 input#phase_input(name='phase_input')
-
-          #phase
-            - chr_vote_phases.each_with_index do |phase| 
-              - chr_votes = chr_votes_in_phase[phase]
-              .collapse.in(ng-show="phase_input == '#{phase}'")
-                - (chr_votes || []).each do |chr_vote|
-                  img(ng-src="/images/portrate/#{chr_vote.face_id}.jpg")
-                ul.comments
-                - (chr_votes || []).each do |chr_vote|
-                  li= chr_vote.comment
-
-
+              =f.submit "ng-click" => ""
 
 - content_for :log do
   h2
