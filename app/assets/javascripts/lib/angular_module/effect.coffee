@@ -126,7 +126,7 @@ angular.module("giji").directive "navi", ["$compile", ($compile)->
     attr_id = "navi_#{attr.navi}"
     elm.attr("id", attr_id)
 
-    if ! $scope.navi
+    if ! $scope.navi?.select?
       ArrayNavi.push $scope, 'navi',
         options:
           current: []
