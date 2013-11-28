@@ -73,6 +73,8 @@ POTOFS = ($scope)->
     list = _.sortBy $scope.potofs, group
     list.reverse() if reverse
     $scope.potofs = list
+    $scope.potofs.mob = ->
+      _.filter $scope.potofs, (o)-> "mob" == o.live
 
     groups = $scope.potofs_groups = _.groupBy $scope.potofs, group
     keys = _.uniq _.map $scope.potofs, group
