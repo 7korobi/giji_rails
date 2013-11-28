@@ -79,6 +79,7 @@ class Crs < Thor
       @rhtml_content      = "./app/views/sow/crs.pl.erb"
 
       @rhtml_src_testbed_out  = "/www/sow-giji/testbed/rs/crs_"  + @csid +".pl"
+      @rhtml_src_angular_out  = "/www/sow-giji/angular/rs/crs_"  + @csid +".pl"
       @rhtml_src_cabala_out   = "/www/sow-giji/cabala/rs/crs_"   + @csid +".pl"
 
       @rhtml_testbed_out  = "/www/giji_log/testbed/rs/crs_"  + @csid +".pl"
@@ -90,8 +91,10 @@ class Crs < Thor
       result = to_s
 
       File.open(@rhtml_src_testbed_out ,'w:sjis:utf-8'){|f| f.write( result ) }
+      File.open(@rhtml_src_angular_out ,'w:sjis:utf-8'){|f| f.write( result ) }
       File.open(@rhtml_src_cabala_out  ,'w:sjis:utf-8'){|f| f.write( result ) }
       FileUtils.chmod( 0666, @rhtml_src_testbed_out )
+      FileUtils.chmod( 0666, @rhtml_src_angular_out )
       FileUtils.chmod( 0666, @rhtml_src_cabala_out  )
 
       File.open(@rhtml_testbed_out ,'w:sjis:utf-8'){|f| f.write( result ) }
