@@ -127,11 +127,11 @@ FORM = ($scope, $sce)->
         safety: "on"
         turn: $scope.event.turn
         vid:  $scope.story.vid
-        target:    f.target
         mes:       f.text
         monospace: 0
       param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       param[f.switch] = "on"  if  f.switch
+      param.target = f.target if f.target?
       submit f, param
     else
       f.is_preview = valid
