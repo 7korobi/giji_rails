@@ -69,5 +69,5 @@ fieldset
     | 事件
 
   input(type="text" id="eventcard" name="eventcard")
-  span.btn(onclick="tokenInput['#eventcard'].eventAdd('{{item.key}}')" ng-repeat="item in config.items.events")
+  span.btn(ng-click="tokenInputAdd('#eventcard',item.key)" ng-repeat="item in config.items.events")
     | {{item.name}}

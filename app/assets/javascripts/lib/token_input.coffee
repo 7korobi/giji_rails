@@ -1,6 +1,10 @@
-tokenInput = {}
 TOKEN_INPUT = ($scope)->
-  $scope.tokenInput = (target, all, obj)->
+  tokenInput = {}
+
+  $scope.tokenInputAdd = (target, key)->
+    tokenInput[target].eventAdd(key)
+
+  tokenInputInit = (target, all, obj)->
     event_value = (key)-> all[key]
     event_add   = (key)-> $(target).tokenInput 'add', event_value(key)
     sel_values = _.map obj, event_value
@@ -19,8 +23,9 @@ TOKEN_INPUT = ($scope)->
       resultsFormatter: (item)-> "<li>#{item.name}</li>"
       tokenFormatter:   (item)-> "<li>#{item.name}</li>"
 
+
   doIt = ->
     target = $('#eventcard')
     if target.length > 0 && $scope.story.card.event?
-      $scope.tokenInput('#eventcard', SOW.events, $scope.story.card.event)
+      tokenInputInit('#eventcard', SOW.events, $scope.story.card.event)
   _.delay doIt, 1000
