@@ -246,6 +246,9 @@ OFFPARTY:
 PAN:
   <<: *CABALA
 
+CIEL:
+  <<: *CABALA
+
 TEST:
   <<: *CABALA
 

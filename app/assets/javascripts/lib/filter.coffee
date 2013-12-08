@@ -20,21 +20,21 @@ FILTER = ($scope, $filter)->
     ]
     for filter in filters  
       keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
+      navigator = 
+        options: OPTION.page[filter.target].options
+        button:
+          ALL: "- すべて -"
       if keys.length > 1
-        navigator = 
-          options: OPTION.page[filter.target].options
-          button:
-            ALL: "- すべて -"
         for key in keys
           navigator.button[key] = filter.text(key)
 
-        Navi.push $scope, filter.target, navigator
-        page.filter "#{filter.target}.value", (key, list)->
-          if 'ALL' == $scope[filter.target].value
-            list
-          else
-            _.filter list, (o)->
-              filter.key(o) == $scope[filter.target].value
+      Navi.push $scope, filter.target, navigator
+      page.filter "#{filter.target}.value", (key, list)->
+        if 'ALL' == $scope[filter.target].value
+          list
+        else
+          _.filter list, (o)->
+            filter.key(o) == $scope[filter.target].value
 
     Navi.push $scope, 'folder',   OPTION.page.folder
     page.filter 'folder.value', (key, list)->
