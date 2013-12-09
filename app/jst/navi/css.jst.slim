@@ -1,11 +1,11 @@
-span(ng-repeat="o in font.select")
-  a.mark(ng-click="font.move(o.val)"  ng-class="o.class")
+span(ng-repeat="o in css.font.select")
+  a.mark(ng-click="css.font.move(o.val)"  ng-class="o.class")
     | {{o.name}}
 | &nbsp;
-span(ng-repeat="o in width.select")
-  a.mark(ng-click="width.move(o.val)"  ng-class="o.class")
+span(ng-repeat="o in css.width.select")
+  a.mark(ng-click="css.width.move(o.val)"  ng-class="o.class")
     | {{o.name}}
 | &nbsp;
-span(ng-repeat="o in theme.select")
-  a.mark(ng-click="theme.move(o.val)"  ng-class="o.class")
+span(ng-repeat="o in css.theme.select")
+  a.mark(ng-click="css.theme.move(o.val)"  ng-class="o.class")
     | {{o.name}}

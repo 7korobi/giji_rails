@@ -1,4 +1,3 @@
-GIJI.interpolates = {}
 GIJI.jsts  = {}
 GIJI.template = ($compile, $scope, elm, name)->
   template = JST[name]
@@ -6,15 +5,6 @@ GIJI.template = ($compile, $scope, elm, name)->
   elm.append compiled
 
 angular.module("giji").directive "template", ["$interpolate","$compile", ($interpolate, $compile)->
-  if JST?
-    for key,val of JST
-      if key.startsWith "message/"
-        GIJI.interpolates[key] = $interpolate(val)
-
-  for idx,val in $("script[type='text/x-tmpl']")
-    html = $(val).html()
-    GIJI.interpolates[val.id] = $interpolate(html)
-
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     name = attr.template

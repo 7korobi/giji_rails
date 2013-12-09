@@ -1,4 +1,9 @@
-angular.module "giji", [], ($locationProvider)->
+angular.module("giji", [])
+.config ($locationProvider, $sceProvider)->
   $locationProvider.html5Mode true
-.config ($sceProvider)->
-  $sceProvider.enabled false 
+  $sceProvider.enabled false
+
+.run ($templateCache, $compile)->
+  for templateUrl, text of JST
+    $templateCache.put templateUrl, text
+  return

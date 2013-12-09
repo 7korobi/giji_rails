@@ -1,22 +1,12 @@
-angular.module("giji").directive "accordion", [->
-  restrict: "C"
-  link: ($scope, elm, attr, ctrl)->
-    elm.find("dd").hide()
-    elm.find("dt").append('<div style="line-height:0; text-align:right; margin:-0.5ex 0 0.5ex 0;">↨</div>')
-    elm.on 'click', 'dt', ->
-      $(this).parents('dl').find("dd").hide()
-      $(this).next().show 'fast'
-]
-
-angular.module("giji").directive "navi", ["$compile", ($compile)->
+angular.module("giji").directive "navi", ($compile)->
   effect = ($scope)->
     resize_naviitems = ->
-      return unless $scope.navi? && $scope.width?
+      return unless $scope.navi? && $scope.css.width?
       width = win.width
       height = win.height
       content = "contentframe"
       outframe = "outframe"
-      switch $scope.width.value
+      switch $scope.css.width.value
         when 800
           lim_left   = (  778 - 770)/2 + 187
           info_left  = (width - 770)/2 + 187 - 60
@@ -66,7 +56,7 @@ angular.module("giji").directive "navi", ["$compile", ($compile)->
         if key == 'page'
           small = max_width
 
-        switch $scope.width.value
+        switch $scope.css.width.value
           when 480
             if      small < info_left
               info_width  = info_left
@@ -90,7 +80,7 @@ angular.module("giji").directive "navi", ["$compile", ($compile)->
             gap = 5
           if head.browser.ie
             gap = 5
-          if head.browser.webkit && 480 == $scope.width.value
+          if head.browser.webkit && 480 == $scope.css.width.value
             gap = -10
         
         if params.show
@@ -150,4 +140,3 @@ angular.module("giji").directive "navi", ["$compile", ($compile)->
       for child in attr.child.split(",")
         extra_navis[child] =
           parent: attr.navi
-]

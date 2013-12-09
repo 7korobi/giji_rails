@@ -66,8 +66,8 @@ CGI = ($scope, $filter, $sce)->
     uid? && pwd?
 
   $scope.login = (f)->
-    f.uid = $("""[name="uid"]""").val()
-    f.pwd = $("""[name="pwd"]""").val()
+    f.uid = angular.element("""[name="uid"]""").val()
+    f.pwd = angular.element("""[name="pwd"]""").val()
     param =
       cmd: f.cmd
       uid: f.uid
