@@ -1,6 +1,7 @@
 doctype html
 html(lang="ja" ng-controller="RAILS")
   head
+    =render partial: 'layouts/old_support'
     =render partial: 'layouts/head'
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事" end
