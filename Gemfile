@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'unicorn'
 gem 'rails', '4.0.1'
 gem 'activesupport', '4.0.1'
+gem 'quiet_assets'
 
 # queue
 gem 'resque'
@@ -60,7 +61,7 @@ gem "formtastic"
 
 # view environment
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 gem "slim"
@@ -85,6 +86,8 @@ group :development do
 # To use debugger
   gem 'pry'
   gem 'pry-doc'
+  gem 'pry-byebug'
+  gem 'pry-stack_explorer'
   gem 'better_errors'
   gem 'binding_of_caller'
 end
