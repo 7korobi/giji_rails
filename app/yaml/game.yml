@@ -388,7 +388,6 @@ PAN:
       MAX_VILLAGES:    1
       TIMEOUT_SCRAP:  10
       TIMEOUT_ENTRY:   3
-      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -417,7 +416,6 @@ MORPHE:
       BASEDIR_CGIERR: http://morphe.sakura.ne.jp/morphe//
       NAME_HOME:      人狼議事 夢の形
       MAX_VILLAGES:   4
-      BASEDIR_DOC:   http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -452,7 +450,6 @@ SOYBEAN:
       BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/soy-bean//
       NAME_HOME:      人狼議事 鯖の味噌煮
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -486,7 +483,6 @@ CIEL:
       BASEDIR_CGIERR: http://ciel.moo.jp//cheat
       NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -516,7 +512,6 @@ PERJURY:
       BASEDIR_CGIERR: http://perjury.rulez.jp//
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
       MAX_VILLAGES:   3
-      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
@@ -538,7 +533,6 @@ XEBEC:
       BASEDIR_CGIERR: http://xebec.x0.to//xebec
       NAME_HOME:      人狼議事 xebec<br>- Role Play braid -
       MAX_VILLAGES:   3
-      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/xebec/config.pl
@@ -565,7 +559,6 @@ CRAZY:
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//crazy
       NAME_HOME:      人狼議事 crazy<br>- Role Play braid -
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
       DIR_LIB:  ./lib
@@ -598,7 +591,6 @@ CABALA:
       BASEDIR_CGIERR: http://cabala.halfmoon.jp//cafe
       NAME_HOME:      人狼議事 Cabala Cafe
       MAX_VILLAGES:   4
-      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
@@ -628,7 +620,6 @@ ALLSTAR:
       MAX_VILLAGES:   4
       TIMEOUT_ENTRY:  3
       TIMEOUT_SCRAP: 10
-      BASEDIR_DOC:   http://giji.check.jp
       ENABLED_VMAKE:  0
     path:
       <<: *SIMPLE_PATH
@@ -666,7 +657,6 @@ LOBBY:
       URL_SW:         http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby
       NAME_HOME:      人狼議事 ロビー
-      BASEDIR_DOC:    http://giji.load.jp
       ENABLED_VMAKE:    0
       MAX_VILLAGES:    10
       TIMEOUT_SCRAP:  365
