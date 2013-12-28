@@ -272,3 +272,5 @@ chr_jobs:
   job: 採集人
 - face_id: c109
   job: 村娘
+- face_id: c110
+  job: ろくでなし
