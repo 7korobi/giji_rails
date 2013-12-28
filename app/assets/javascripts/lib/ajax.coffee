@@ -55,7 +55,7 @@ AJAX = ($scope)->
 
   $scope.ajax_event = (turn, href, is_news)->    
     if $scope.events?
-      event = $scope.events[turn]
+      event = $scope.event
       change = ->
         $scope.set_turn(turn)
         $scope.event.is_news = is_news
@@ -78,4 +78,7 @@ AJAX = ($scope)->
 
     else
       location.href = href + location.hash
+
+  $scope.$watch "event.turn", (turn, oldVal)->
+    $scope.ajax_event(turn, null, !! $scope.event.is_news)
 

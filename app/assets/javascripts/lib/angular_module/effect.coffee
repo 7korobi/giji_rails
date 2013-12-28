@@ -34,27 +34,15 @@ angular.module("giji").directive "navi", ($compile)->
           max_width = width - 40
 
         gap = 0
-        if key == 'calc'
-          small = info_right
-        if key == 'diary'
-          small = info_right
-
-        if key == 'head'
-          small = 100
-        if key == 'events'
-          small = 125
-        if key == 'filter'
-          small = 150
-        if key == 'info'
-          small = 185
-        if key == 'switch'
-          small = 185
-        if key == 'link'
-          small = 185
-        if key == 'login'
-          small = 185
-        if key == 'page'
-          small = max_width
+        switch key
+          when 'calc'
+            small = info_right
+          when 'diary'
+            small = info_right
+          when 'page'
+            small = max_width
+          else
+            small = 185
 
         switch $scope.css.width.value
           when 480

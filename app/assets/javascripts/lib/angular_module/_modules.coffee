@@ -1,4 +1,4 @@
-angular.module("giji", [])
+angular.module("giji", ['ngTouch'])
 .config ($locationProvider, $sceProvider)->
   $locationProvider.html5Mode true
   $sceProvider.enabled false

@@ -23,6 +23,7 @@ module Giji
       end.each do |th|
         th.join
       end
+      puts @sh
     end
 
     def each_villages &block
@@ -113,13 +114,12 @@ module Giji
         cmd = %Q|put #{lpath} -o #{rpath}|                        if FileTest.file?      lpath
         cmd = %Q|mirror #{option} #{excludes}  #{lpath} #{rpath}| if FileTest.directory? lpath
         line = %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; #{cmd}; exit'|
-        puts line
         @sh << line
 
       when 'ssh'
         puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
 
-        option = '--stats'
+        option = ''
         port  = set[:options][:port] || 22
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|
