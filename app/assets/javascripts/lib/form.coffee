@@ -60,7 +60,9 @@ FORM = ($scope, $sce)->
 
   $scope.text_valid = (f)->
     valid f, (size, lines)->
-      f.valid = false if size < 4
+      switch f.cmd
+        when "write"
+          f.valid = false if size < 4
 
   $scope.action_valid = (f)->
     valid f, (size, lines)->
