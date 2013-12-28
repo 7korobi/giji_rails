@@ -1,18 +1,17 @@
 div(class="{{f.mestype}}" ng-show="form_show.action")
   form.form-inline(name="action_form")
     .action
+      p.text
+        | {{preview_action(f)}}
+      h6 
+        | {{f.count}} {{f.title}}
+      .mark(ng-bind-html="error(f)")
+
       .controls.controls-row.formpl_content
         select.input-medium(name="target"   ng-model="f.target" ng-options="o.val as o.longname for o in f.targets")
         select.input-medium(name="actionno" ng-model="f.action" ng-options="o.val as o.name for o in f.actions")
         input.input-block-level(type="text" name="actiontext" ng-model="f.text")
-
-      fieldset.formpl_action.action_type
-        legend  アクション内容
-      p.text
-        | {{preview_action(f)}}
       p
-        a.btn(ng-click="action(f, f.valid)") {{f.title}}
-        | {{f.count}}
+        a.btn(ng-click="action(f, f.valid)") アクション
       p
         span(class="{{f.error}}" ng-bind-html="action_valid(f)")
-        .mark(ng-bind-html="error(f)")
