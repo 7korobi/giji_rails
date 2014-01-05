@@ -1,44 +1,49 @@
-h4.sayfilter_caption_enable 場面設定
-.sayfilter_content
-  .form-inline
-    label.inline.radio
-      input(type="radio" value="info" ng-model="modes.face") 情報
-    label.inline.radio
-      input(type="radio" value="memo" ng-model="modes.face") メモ
-    label.inline.radio
-      input(type="radio" value="talk" ng-model="modes.face") ログ
+h3 表示設定
 
-  .form-inline
-    label.inline.radio
-      input(type="radio" value="open"  ng-model="modes.view") 公開
-    label.inline.radio
-      input(type="radio" value="clan"  ng-model="modes.view") 内緒話
-    label.inline.radio
-      input(type="radio" value="think" ng-model="modes.view") 独り言
-    label.inline.radio
-      input(type="radio" value="all"   ng-model="modes.view") 全部
+span.mark.form-inline
+  label.inline.radio
+    input(type="radio" value="info" ng-model="modes.face") 情報
+  label.inline.radio
+    input(type="radio" value="memo" ng-model="modes.face") メモ
+  label.inline.radio
+    input(type="radio" value="talk" ng-model="modes.face") 議事
+| &nbsp;
 
-  .form-inline
-    label.inline.radio.checkbox
-      input(type="checkbox" value="last"   ng-model="modes.last") 最後の言葉
+span.mark.form-inline
+  label.inline.radio
+    input(type="radio" value="open"  ng-model="modes.view") 公開
+  label.inline.radio
+    input(type="radio" value="clan"  ng-model="modes.view") 内緒話
+  label.inline.radio
+    input(type="radio" value="think" ng-model="modes.view") 独り言
+  label.inline.radio
+    input(type="radio" value="all"   ng-model="modes.view") 全部
+| &nbsp;
 
-    label.inline.radio.checkbox
-      input(type="checkbox" value="player" ng-model="modes.player") 中身発言
+span.mark.form-inline
+  label.inline.radio.checkbox
+    input(type="checkbox" value="last"   ng-model="modes.last") 最後の言葉
 
-    label.inline.radio.checkbox
-      input(type="checkbox" value="open"   ng-model="modes.open") 公開発言
+  label.inline.radio.checkbox
+    input(type="checkbox" value="player" ng-model="modes.player") 中身発言
 
-h4.sayfilter_caption_enable 描写設定
-.sayfilter_content(style="line-height: 3ex;")
-  div
-    span(ng-repeat="o in font.select")
-      a.mark(ng-click="font.move(o.val)"  ng-class="o.class")
-        | {{o.name}}
+  label.inline.radio.checkbox
+    input(type="checkbox" value="open"   ng-model="modes.open") 公開発言
+| &nbsp;
 
-    span(ng-repeat="o in width.select")
-      a.mark(ng-click="width.move(o.val)"  ng-class="o.class")
-        | {{o.name}}
-  div
-    span(ng-repeat="o in theme.select")
-      a.mark(ng-click="theme.move(o.val)"  ng-class="o.class")
-        | {{o.name}}
+span.mark.form-inline
+  label.inline.radio.checkbox(ng-repeat="o in css.font.select")
+    input(type="radio" value="{{o.val}}" ng-model="css.font.value")
+      | {{o.name}}
+| &nbsp;
+
+span.mark.form-inline
+  label.inline.radio.checkbox(ng-repeat="o in css.width.select")
+    input(type="radio" value="{{o.val}}" ng-model="css.width.value")
+      | {{o.name}}
+| &nbsp;
+
+span.mark.form-inline
+  label.inline.radio.checkbox(ng-repeat="o in css.theme.select")
+    input(type="radio" value="{{o.val}}" ng-model="css.theme.value")
+      | {{o.name}}

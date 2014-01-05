@@ -80,5 +80,5 @@ AJAX = ($scope)->
       location.href = href + location.hash
 
   $scope.$watch "event.turn", (turn, oldVal)->
-    $scope.ajax_event(turn, null, !! $scope.event.is_news)
+    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event?
 

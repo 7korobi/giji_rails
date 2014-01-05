@@ -100,6 +100,8 @@ CACHE = ($scope)->
       old_form = old_base.form
 
       return unless new_form?
+
+      INIT_FORM new_base.form
       for key, o of new_form
         old_form[key] = o unless guard(key)
 

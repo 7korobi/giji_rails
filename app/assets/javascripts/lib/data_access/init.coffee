@@ -1,3 +1,7 @@
+INIT_FORM = (new_base)->
+  return unless new_base?.commands?
+  new_base.command_group = _.groupBy new_base.commands, (o)-> o.jst
+
 INIT_FACE = (new_base)->
   if new_base.story_ids?
     new_base.story_id_of_folders = _.groupBy new_base.story_ids, ([k,count])->

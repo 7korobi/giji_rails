@@ -41,8 +41,14 @@ class FixedBox
       top  = @top  + win.top
       @translate(left, top)
     else
-      @box.css
-        position: "fixed"
+      if 0 == @dx
+        @box.css
+          position: "fixed"
+          left: ""
+          width: @box.parent().width() 
+      else
+        @box.css
+          position: "fixed"
 
       left = @left + win.left
       top  = @top

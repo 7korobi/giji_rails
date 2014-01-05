@@ -61,7 +61,8 @@ FORM = ($scope, $sce)->
   $scope.text_valid = (f)->
     valid f, (size, lines)->
       switch f.cmd
-        when "write"
+        when "wrmemo"
+        else
           f.valid = false if size < 4
 
   $scope.action_valid = (f)->
@@ -179,12 +180,13 @@ FORM = ($scope, $sce)->
 
   $scope.confirm = (f)->
     return if f.disabled
-    if f.targets
-      target_name = $scope.option(f.targets, f.target).name
+    if f.jst = "target"
+      f.target = $scope.form.command_target
+      target_name = $scope.option($scope.form.command_targets, $scope.form.command_target).name
     if target_name
       $scope.form.confirm = "#{target_name} - #{f.title}"
     else
-      return if f.targets?
+      return if $scope.form.command_targets?
       $scope.form.confirm = f.title
 
     param = _.omit f, [
