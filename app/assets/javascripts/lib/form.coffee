@@ -180,13 +180,14 @@ FORM = ($scope, $sce)->
 
   $scope.confirm = (f)->
     return if f.disabled
-    if f.jst = "target"
+    if f.jst == "target"
+      return unless $scope.form.command_targets?.length
       f.target = $scope.form.command_target
       target_name = $scope.option($scope.form.command_targets, $scope.form.command_target).name
+
     if target_name
       $scope.form.confirm = "#{target_name} - #{f.title}"
     else
-      return if $scope.form.command_targets?
       $scope.form.confirm = f.title
 
     param = _.omit f, [
