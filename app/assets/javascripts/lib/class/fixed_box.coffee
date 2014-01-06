@@ -33,7 +33,7 @@ class FixedBox
 
     @box.to_z_front()
 
-    if 1 < win.zoom  or  head.browser.android  or  @force_zoom
+    if 1 < win.zoom  or  @force_zoom
       @box.css
         position: "absolute"
 

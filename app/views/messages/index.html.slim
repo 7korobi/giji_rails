@@ -2,11 +2,8 @@
   | {{story.name}}
 
 - content_for :navi_top do
-  .insayfilter(navi="diary" name="手帳")
-    .paragraph(template="navi/diary")
-
-  .insayfilter(navi="calc" name="設定")
-    .paragraph(template="navi/switch")
+  .form-inline(navi="diary" name="手帳" template="navi/diary")
+  .pagenavi.form-inline(navi="calc" name="設定" template="navi/switch")
 
 - content_for :navi do
   .insayfilter(navi="link" name="移動")
