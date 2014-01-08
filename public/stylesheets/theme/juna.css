@@ -1,0 +1,512 @@
+@import url("/assets/color_white_box.css");
+@import url("/assets/application.css");
+
+table.SAY {
+  border-collapse: separate;
+}
+
+.MSAY,
+.SAY,
+.QUEUE,
+.mes_nom {
+  color: #000;  background: #e3caa7; } 
+
+.formpl_common,
+.formpl_common .msg {
+  border-color: #720;
+}
+.formpl_gm ,
+.formpl_gm  textarea{
+  border-color: #720;
+  color: #ffa;
+  background-color: #002;
+}
+
+.mes_que {
+  border: 1px solid #442;
+}
+
+.DELETED, .mes_del,
+.QUE, .mes_que,
+.SAY, .mes_nom,
+.TSAY, .mes_think,
+.VSAY, .mes_mob,
+.WSAY, .mes_wolf,
+.SPSAY, .mes_sympa,
+.BSAY, .XSAY, .mes_bat, .mes_pixi,
+.GSAY, .mes_grave {
+  margin: 0px 8px 16px 8px;
+  padding: 1px;
+}
+
+.INFONOM, .info,
+.INFOSP, .infosp,
+.INFOWOLF, .infowolf,
+.DELETED, .mes_del,
+.QUE, .mes_que,
+.SAY, .mes_nom,
+.TSAY, .mes_think,
+.VSAY, .mes_mob,
+.WSAY, .mes_wolf,
+.SPSAY, .mes_sympa,
+.BSAY, .XSAY, .mes_bat, .mes_pixi,
+.caution {
+  border: 1px dashed #554433;
+}
+
+.GSAY, .mes_grave {
+  border-top: 3px solid #eee;
+  border-left: 3px solid #eee;
+  border-bottom: 3px solid #aaa;
+  border-right: 3px solid #aaa;
+}
+
+.handler,
+body {
+  margin: 0px;
+  padding: 0px;
+  color: #fff;
+  background: #543;
+}
+
+th {
+  padding: 4px;
+  font-weight: normal;
+  text-align: left;
+}
+
+td {
+  padding: 4px;
+}
+
+img {
+  border-style: none;
+}
+
+p {
+  margin: 0px;
+  padding: 0px;
+}
+div, form, td {
+  margin: 0px;
+  padding: 0px;
+}
+
+textarea {
+  font-family: monospace;
+}
+
+textarea, input, select {
+  color: #000;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+h1 {
+  margin: 0px 0px 10px 0px;
+  padding: 0px;
+  text-align: center;
+}
+
+h2 {
+  margin: 0px 0px 10px 0px;
+  padding: 2px 8px 2px 8px;
+
+  color: #000000;
+  background: #bbbbbb;
+  border-top: 3px solid #eee;
+  border-left: 3px solid #eee;
+  border-bottom: 3px solid #aaa;
+  border-right: 3px solid #aaa;
+}
+
+h3.popover-title,
+h3 {
+  margin: 0px 0px 10px 0px;
+  padding: 2px 8px 2px 8px;
+
+  color: #000000;
+  background: #bbbbbb;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
+  border-bottom: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+}
+
+strong { }
+
+.board{
+  background-color: #000;
+  border: 1px solid #ffc;
+}
+.choice .board{
+  background-color: #000;
+  border-top: 3px double #ffc;
+}
+.choice .board th{
+  border-bottom: 1px dashed #ffc;
+}
+.choice .board td{
+  border-top:  1px dashed #ffc;
+  border-left: 1px solid  #ffc;
+}
+.choice {
+  background-color: #444;
+  border-bottom: 1px solid #444 !important;
+}
+.no_choice {
+  border-bottom:1px dashed #ffc;
+}
+
+.commitbutton {
+  text-align: center;
+}
+
+.saycancelframe {
+  text-align: center;
+}
+
+.saycancelbutton {
+  font-size: smaller;
+}
+
+.return {
+  margin: 0px;
+  padding: 0px 0px 8px 0px;
+  text-align: right;
+}
+
+
+
+.tips{
+  padding: 0px 8px;
+}
+
+.vindex {
+  background-color: #000;
+  border: 1px solid #ffc;
+  border-collapse: collapse;
+}
+
+.vindex td,.vindex th{
+  margin: 0px;
+  padding: 1px;
+  border: 1px solid #ffc;
+  border-left: 1px dashed #ffc;
+  border-right: 1px dashed #ffc;
+
+}
+
+.form_vmake {
+  margin: 0px;
+  padding: 4px 0px;
+
+  color: #000000;
+  background: #cb8;
+  border-top: 3px double #664;
+  border-bottom: 3px double #664;
+}
+
+.exevmake {
+  text-align: center;
+}
+
+.multicolumn_label {
+  display: block;
+  float: left;
+  text-align: right;
+}
+
+.multicolumn_left {
+  display: block;
+  float: left;
+}
+
+.multicolumn_right {
+  display: block;
+  float: left;
+}
+
+.multicolumn_role {
+  width: 100%;
+  color: #000;
+  font-size: smaller;
+}
+
+.multicolumn_clear {
+  clear: left;
+}
+
+
+
+.outframe {
+  color: #fff;
+  background: #543;
+}
+
+.previewsafety {
+  color: #000000;
+  background: #a55;
+}
+
+.outframe_navimode {
+  color: #fff;
+  background: #543;
+}
+
+.contentframe {
+  text-align: left;
+}
+
+.contentframe_navileft {
+  text-align: left;
+  float: right;
+}
+
+.sayfilter {
+  color: #000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+  text-align: center;
+}
+.sayfilterleft {
+  font-size: smaller;
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+  text-align: left;
+  float: left;
+}
+
+.insayfilter {
+  text-align: left;
+  border-width: 0 ;
+}
+.insayfilter .paragraph {
+  border-width: 0 ;
+}
+.sayfilter_heading {
+  border: none;
+  font-weight: bold;
+  color: #000000;
+  background: #e3caa7;
+
+  margin: 3px 0 0 0 ;
+}
+
+.sayfilter_button {
+  float: right;
+  display: none;
+}
+
+
+.sayfilter_content .head,
+.sayfilter_caption_enable {
+  border: 1px solid #000;
+
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+  padding: 1px;
+}
+
+.sayfilter_content_enable {
+  color: #000;
+  border-top: 0px none #000;
+  border-right: 1px none #000;
+  border-bottom: 1px dotted #000;
+  border-left: 1px none #000;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.sayfilter_content_disenable {
+  color: #888;
+  border-top: 0px none #000;
+  border-right: 1px none #000;
+  border-bottom: 1px dotted #000;
+  border-left: 1px none #000;
+  border-collapse: collapse;
+  width: 100%;
+
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+}
+.sayfilter_button_lump {
+  color: #000;
+  border-top: 0px none #000;
+  border-right: 1px none #000;
+  border-bottom: 1px dotted #000;
+  border-left: 1px none #000;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1px 0 0 0 ;
+}
+
+
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable ,
+.sayfilter_content           ,
+#lumpfilter ,
+#lumpfilter input {
+  margin: 1px 0 0 0 ;
+  font-weight: normal;
+}
+
+.sayfilter_incontent input {
+  display: none;
+}
+
+.login {
+  margin: 0px;
+  text-align: right;
+}
+.turnnavi    ,
+.pagenavi    ,
+.row_all     {
+  color: #fff;
+  font-weight: bold;
+}
+
+
+.viewform {
+  text-align: right;
+}
+
+
+.mes_chrimg {
+  padding: 1px;
+  text-align: center;
+  border: 1px solid #554433
+  vertical-align: middle;
+}
+
+.say {
+  border-width: 1px; border-style: solid;
+}
+
+.field, .say img {
+  margin:  0;
+  padding: 12px 8px 12px 10px;
+}
+.action {
+  margin:  0px;
+  padding: 4px;
+}
+
+.mes_maker .action *,
+.mes_maker .action,
+.mes_maker .guide *,
+.mes_maker .guide {
+  background: #e3caa7;
+  color: #000;
+}
+.mes_maker {
+  border: 2px dashed #554433;
+  color: #000;
+  background: #e3caa7;
+}
+
+.mes_admin .action *,
+.mes_admin .action,
+.mes_admin .guide *,
+.mes_admin .guide {
+  background: #d1d1d1;
+  color: #000;
+}
+.mes_admin {
+  border: 2px dashed #554433;
+  color: #000;
+  background: #d1d1d1;
+}
+
+
+.cautiontext {
+  font-weight: bold;
+  color: #f44;
+}
+
+.action_nom,
+.action {
+  border-width: 1px; border-style: solid;
+  border-color: #663;
+}
+.mes_think .action,
+.action_bm {
+  border-width: 1px; border-style: solid;
+  border-color: #663;
+}
+.mes_think .action .mes_date {
+  display: none;
+}
+
+.memo {
+  margin: 0 0 10px 0;
+  padding: 4px;
+  color: #000000;
+  border: 1px dashed #554433;
+}
+.memoleft {
+  border-color: #000;
+}
+.memoright {
+  border-color: #000;
+}
+.mesname {
+  margin: 0px;
+  padding: 1px;
+  font-weight: bold;
+  border-style: none;
+
+  color: #000000;
+  background: transparent;
+}
+
+.msg{
+  border-width: 0px; border-style: none;
+  margin:  2px;
+  padding: 4px;
+}
+
+
+.formpl_common {
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+}
+
+.formpl_commit {
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+}
+
+.formpl_chrimg {
+  text-align: center;
+  border: 1px solid #554433
+  vertical-align: middle;
+}
+
+.formpl_gm ,
+.formpl_gm  textarea{
+  border-color: #660;
+  color: #ffa;
+  background-color: #000;
+}
+
+
+/* bug-fix */
+.btn {
+  color: #333 !important;
+}
+.btn-primary,
+.btn-info,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-inverse {
+  color: #fff !important;
+}

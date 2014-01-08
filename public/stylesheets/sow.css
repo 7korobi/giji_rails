@@ -1,0 +1,9 @@
+@charset "Shift_JIS";
+@import url("size/800legacy.css");
+@import url("theme/sow.css");
+
+/* GROBAL --------------------*/
+
+.sayfilter     table{  width: 235px; }
+.sayfilterleft table{  width: 175px; }
+

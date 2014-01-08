@@ -1,0 +1,445 @@
+.config_item {
+  float: left;
+  text-align: right;
+  max-width: 145px;
+  width:     145px;
+}
+
+.inframe .vindex {
+  margin-left: 120px;
+  width: 457px;
+}
+
+h1 {
+  text-align: center;
+  margin:  0;
+  padding: 0;
+}
+
+h2 {
+  margin: 12px 0 0 0;
+  padding: 2px 0 0 0;
+}
+
+h3 {
+  padding: 2px 8px;
+}
+h3.mesname {
+  padding: 2px 0px;
+}
+
+.vindex {
+  margin: 6px 0;
+  width: 100%;
+}
+td div {
+  white-space:normal;
+}
+.menu   * ,
+.vindex * {
+  vertical-align: top;
+}
+.vindex .small{
+  font-size: smaller;
+  white-space:nowrap;
+}
+
+i {
+  display: none;
+  font-style:  normal;
+}
+
+.ie_hover i,
+div:hover > i ,
+.i_hover:hover   i ,
+.i_active:active i {
+  display: inline;
+}
+
+#checklist {
+  text-align: right;
+}
+.calc {
+  text-align: right;
+  white-space:nowrap;
+}
+
+#topviewer,
+.drag,
+.ajax,
+.memo,
+.contentframe,
+.contentframe_navileft,
+.contentframe .toppage,
+.outframe           {  width: 580px; }
+.outframe_navimode  {  width: 770px; }
+.sayfilter     table{  width: 235px; }
+.sayfilter          {  width: 250px; }
+.sayfilterleft      {  width: 190px; }
+
+.memoleft                {  width: 140px; }
+.memoright               {  width: 440px; }
+.form_vmake textarea     {  width: 550px; }
+.chrlist                 {  width: 552px; }
+.inframe,
+.inframe .memo,
+.inframe .message_filter {  width: 580px; }
+
+
+.outframe {
+  margin: 0px auto 0px auto;
+  padding: 0px;
+}
+
+
+.outframe_navimode {
+  margin: 0px auto 0px auto;
+  padding: 0px;
+}
+
+.ad {
+  text-align : center;
+}
+
+.drag,
+.ajax {
+  position:absolute;
+}
+
+.chrlist {
+  margin: 0 0 0 17px;
+}
+
+
+.contentframe .toppage{
+  margin: 0px;
+  padding: 0px;
+}
+
+.contentframe {
+  margin: 0px;
+  padding: 0px;
+  margin: 0 auto;
+}
+
+
+.contentframe_navileft {
+  margin: 0px;
+  padding: 0px;
+  margin: 0 auto;
+}
+
+
+.inframe,
+.inframe .memo {
+  margin: 0px;
+  padding: 0px;
+}
+
+
+
+
+.sayfilter {
+  margin: 0px auto 0px auto;  padding: 0px;  font-size: 100%;
+  line-height: 100%;
+}
+
+.sayfilterleft {
+  margin: 0px;  padding: 0px;  font-size: 100%;
+  line-height: 100%;
+  background-position: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+
+.insayfilter table{
+  margin:  0;
+  padding: 0;
+  width: 100%;
+}
+.insayfilter td{
+  vertical-align: top;
+  margin:  0;
+}
+.insayfilter .users {
+  padding: 0 2px 0 0 ;
+}
+.insayfilter .types {
+  width: 5ex;
+}
+.insayfilter .types div {
+  font-size: 100%;
+}
+
+.sayfilter_heading {
+  margin:  0;
+  padding: 0;
+}
+.insayfilter {
+  margin:  0;
+  padding: 0;
+}
+#lumpfilter,
+.sayfilter_content {
+  margin:  0;
+  padding: 0;
+}
+
+.sayfilter_caption_enable ,
+.sayfilter_caption_disenable ,
+.sayfilter_incontent ,
+.sayfilter_button_mestype ,
+.sayfilter_button_lump{
+  font-size: 80%;
+}
+
+.sayfilter_incontent div {
+}
+
+.sayfilter_button_mestype ,
+.sayfilter_button_lump{
+  width: 100%;
+}
+
+
+.accordion dd {
+  margin : 0 0 0 18px;
+}
+
+.paragraph {
+  margin : 0 0 0 18px;
+  padding: 0;
+}
+
+
+.turnnavi {
+  margin: 0px;
+  padding: 0px 16px;
+}
+
+.pagenavi {
+  margin: 0px;
+  padding: 0px 48px;
+}
+
+.infonologin {
+  margin: 0px;
+  padding: 0px 0px 0px 16px;
+}
+
+
+.row_all {
+  margin: 0px;
+  padding: 0px 16px;
+  font-weight: bold;
+}
+
+
+.viewform {
+  margin: 0px;
+  padding: 0px;
+}
+
+.formpl_frame {
+  margin: 0px 0px 12px 0px;
+}
+
+
+.formpl_content {
+}
+.formpl_content select { width: 150px;}
+
+.formpl_action {
+}
+
+
+.mesname {
+  margin: 0 0 4px 0;
+  padding: 0 0 2px 0;
+  font-weight: bold;
+}
+
+
+
+.MAKER .action,
+.MAKER .guide,
+.ADMIN .action,
+.ADMIN .guide,
+.mes_maker .action,
+.mes_maker .guide ,
+.mes_admin .action,
+.mes_admin .guide {
+  margin:  0 0 0 6px;
+  padding: 0;
+}
+
+.action_nom,
+.action {
+  margin: 0 0 6px 107px;
+  padding: 4px 12px 4px 10px;
+}
+
+.mes_text ,
+.mes_text_report ,
+.mes_text_monospace ,
+.memoleft ,
+.memoright {
+  word-wrap:  break-word !important;
+  word-break: break-all  !important;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+
+.memo {
+  margin: 0px;
+  padding: 4px 0;
+  border-width: 0;
+  border-collapse: separate;
+}
+.memoleft {
+  padding: 1px;
+}
+.memoright {
+  padding: 1px;
+}
+
+.inframe .message_filter {
+  display:block;
+}
+.message_filter .memo {
+  width:100%;
+}
+
+
+.CAST {
+  margin-bottom: 9px
+}
+.CAST code {
+  margin-left: 18px;
+  width: 90px;
+}
+
+.say {
+  vertical-align: middle;
+}
+
+.say .chrblank,
+.drag_head .badge,
+.say img {
+  margin-left: 18px;
+}
+
+.log .badge {
+  width: 562px;
+}
+
+.drag_head {
+  margin-top: -1.5ex;
+}
+
+.drag_head .badge {
+  width:  72px;
+}
+
+.say .field {
+  width:100%;
+}
+.say .msg{
+  margin: 0 4px 6px 12px;
+  padding: 0 4px;
+}
+.msg p {
+  width: 433px;
+  overflow: hidden;
+  overflow-x: auto;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+.action p {
+  width: 431px;
+  overflow: hidden;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+
+/* î≠åæì¸óÕóìÅiã§í Åj ---*/
+.formpl_common {
+  width: 100%;
+  margin: 0px;
+  padding: 4px 0px;
+  border-style: solid none none none;
+  border-width: 2px 0 0 0;
+}
+.formpl_commit ,
+.formpl_undef  ,
+.formpl_vil      ,
+.formpl_seer     ,
+.formpl_medium   ,
+.formpl_guard    ,
+.formpl_fm       ,
+.formpl_stigma   ,
+.formpl_sympathy ,
+.formpl_love     ,
+.formpl_wolf     ,
+.formpl_possess  ,
+.formpl_fanatic  ,
+.formpl_cpossess ,
+.formpl_cwolf    ,
+.formpl_intwolf  ,
+.formpl_pixi     ,
+.formpl_trickster,
+.formpl_hamster  ,
+.formpl_werebat  ,
+.formpl_gm       ,
+.WIN_NONE    ,
+.WIN_HUMAN   ,
+.WIN_DISH    ,
+.WIN_LONEWOLF,
+.WIN_PIXI    ,
+.WIN_GURU    ,
+.WIN_HATER   ,
+.WIN_LOVER   ,
+.WIN_WOLF    ,
+.WIN_EVIL    {
+  width: 100%;
+  margin: 0px;
+  padding: 4px 0px;
+  border-style: double none;
+  border-width: 3px 0;
+}
+
+.previewsafety {
+  margin: 0px;
+  padding: 4px;
+}
+
+.form_vmake textarea{
+}
+
+
+.multicolumn_label {
+  width: 20%;
+  padding-right: 16px;
+}
+
+
+.multicolumn_right {
+  width: 70%;
+}
+
+
+.multicolumn_role {
+  width: 100%;
+}
+.rolebox {}
+
+
+
+.multicolumn_clear {
+  clear: left;
+}
+
+

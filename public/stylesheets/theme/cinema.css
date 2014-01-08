@@ -1,0 +1,451 @@
+@import url("/assets/color_white.css");
+@import url("/assets/application.css");
+
+
+/* GROBAL --------------------*/
+.handler,
+body {
+  margin: 0px;
+  padding: 0px;
+  background: #764;
+}
+
+p {
+  margin: 0px;
+  padding: 0px;
+}
+div, form, td {
+  margin: 0px;
+  padding: 0px;
+}
+
+textarea {
+  font-family: monospace;
+}
+
+textarea, input, select {
+  color: #000;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+h1 {
+  text-align: left;
+}
+
+h2 {
+  text-align: center;
+  background: #662;
+}
+
+h3.popover-title,
+h3 {
+  font-size: 100%;
+  background: #224;
+}
+
+strong { }
+
+.board{
+  background-color: #100;
+  border: 1px solid #764;
+}
+.choice .board{
+  background-color: #100;
+  border-top: 3px double #764;
+}
+.choice .board th{
+  border-bottom: 1px dashed #764;
+}
+.choice .board td{
+  border-top:  1px dashed #764;
+  border-left: 1px solid  #764;
+}
+.choice {
+  background-color: #444;
+  border-bottom: 1px solid #444 !important;
+}
+.no_choice {
+  border-bottom:1px dashed #764;
+}
+
+/* OTHERS --------------------*/
+/* 村開始・更新ボタン ----------*/
+.commitbutton {
+  text-align: center;
+}
+
+/* 発言撤回欄 ----------*/
+.saycancelframe {
+  text-align: center;
+}
+
+/* 発言撤回ボタン ----------*/
+.saycancelbutton {
+  font-size: smaller;
+}
+
+/* 「戻る」リンク ----------*/
+.return {
+  margin: 0px;
+  padding: 0px 0px 8px 0px;
+  text-align: right;
+}
+
+
+
+/* ヒント・説明書 ----------*/
+.tips{
+  padding: 0px 8px;
+}
+
+.vindex {
+  background-color: #100;
+  border: 1px solid #764;
+  border-collapse: collapse; /* CSS2? */
+}
+
+.vindex td,.vindex th{
+  margin: 0px;
+  padding: 1px;
+  border: 1px solid #764;
+  border-left: 1px dashed #764;
+  border-right: 1px dashed #764;
+
+}
+
+/* 村作成画面 ----------*/
+.form_vmake {
+  margin: 0px;
+  padding: 4px 0px;
+
+  color: #000000;
+  background: #cb8;
+  border-top: 3px double #664;
+  border-bottom: 3px double #664;
+}
+
+/* 村作成・編集ボタン ----------*/
+.exevmake {
+  text-align: center;
+}
+
+/* 段組（ラベル） ----------*/
+.multicolumn_label {
+  display: block;
+  float: left;
+  text-align: right;
+}
+
+/* 段組（左配置） ----------*/
+.multicolumn_left {
+  display: block;
+  float: left;
+}
+
+/* 段組（右配置） ----------*/
+.multicolumn_right {
+  display: block;
+  float: left;
+}
+
+/* 段組（役割入力欄） ----------*/
+.multicolumn_role {
+  width: 100%;
+  color: #000;
+  font-size: smaller;
+}
+
+/* 段組（改行） ----------*/
+.multicolumn_clear {
+  clear: left;
+}
+
+
+/* BODY FRAME --------------------*/
+
+/* 外枠 ----------*/
+.outframe {
+  background: #444;
+}
+
+/* 誤爆防止チェック欄 ----------*/
+.previewsafety {
+  color: #000000;
+  background: #a55;
+}
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  background: #444;
+}
+
+.contentframe {
+  text-align: left;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+.contentframe_navileft {
+  text-align: left;
+  float: right;
+}
+
+/* 内枠の中身（タイトル画像は含まない） ----------*/
+.inframe,
+.inframe .memo {
+}
+
+/* フィルタ（下配置時）----------*/
+.sayfilter {
+  text-align: center;
+  color: #000;
+}
+
+/* フィルタ（左配置時）----------*/
+.sayfilterleft {
+  text-align: left;
+  color: #000;
+  float: left;
+}
+
+/* フィルタの中身 ----------*/
+.insayfilter {
+  text-align: left;
+  border-width: 0 ;
+}
+.insayfilter .paragraph {
+  border-width: 0 ;
+  background: #eed;
+  border-left:   2px solid #aa7;
+  border-right:  3px solid #863;
+}
+
+/* フィルタの見出し ----------*/
+.sayfilter_heading {
+  font-weight: bold;
+  color: #000;
+  background: #863;
+}
+
+/* フィルタ固定・配置ボタン ----------*/
+.sayfilter_button {
+  float: right;
+  display: none;
+}
+
+.sayfilter_content .head,
+.sayfilter_caption_enable    {
+  font-weight: normal;
+  margin: 0;
+  background: #aa7;
+  border-bottom: 2px solid #863;
+}
+.sayfilter_caption_disenable {
+  font-weight: normal;
+  margin: 0;
+  background: #888;
+  color: #444;
+}
+
+/* フィルタ選択欄枠----------*/
+.sayfilter_heading,
+.sayfilter_content .head,
+.sayfilter_caption_enable,
+.insayfilter .paragraph {
+          border-radius : 0.5em;
+       -o-border-radius : 0.5em;
+     -moz-border-radius : 0.5em;
+  -webkit-border-radius : 0.5em;
+}
+
+.sayfilter_content .head,
+.sayfilter_caption_enable {
+          border-bottom-left-radius : 0;
+       -o-border-bottom-left-radius : 0;
+     -moz-border-radius-bottomleft  : 0;
+  -webkit-border-bottom-left-radius : 0;
+          border-bottom-right-radius : 0;
+       -o-border-bottom-right-radius : 0;
+     -moz-border-radius-bottomright  : 0;
+  -webkit-border-bottom-right-radius : 0;
+}
+
+.sayfilter_heading {
+          border-bottom-left-radius : 0;
+       -o-border-bottom-left-radius : 0;
+     -moz-border-radius-bottomleft  : 0;
+  -webkit-border-bottom-left-radius : 0;
+          border-top-left-radius : 0;
+       -o-border-top-left-radius : 0;
+     -moz-border-radius-topleft  : 0;
+  -webkit-border-top-left-radius : 0;
+}
+
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable ,
+.sayfilter_content           ,
+#lumpfilter ,
+#lumpfilter input {
+  font-weight: normal;
+  width: 100%;
+}
+
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable ,
+.sayfilter_button_lump {
+  border-bottom: 1px dotted #863;
+}
+
+/* フィルタ選択欄（有効時）----------*/
+.sayfilter_content_enable    {
+}
+.sayfilter_content_disenable {
+  background: #888;
+  color: #444;
+}
+
+.sayfilter_incontent input {
+  display: none;
+}
+
+/* フィルタ一括操作用ボタン ----------*/
+.sayfilter_button_mestype ,
+.sayfilter_button_lump {
+  text-align: center;
+}
+
+/* ログイン欄 ----------*/
+.login {
+  margin: 0px;
+  text-align: right;
+}
+/* 日付リンク ----------*/
+/* ページリンク ----------*/
+/* 非ログイン時注意表示 ----------*/
+/* 全表示リンク ----------*/
+.turnnavi    ,
+.pagenavi    ,
+.infonologin ,
+.row_all     {
+  color: #ccf;
+  background-color: #100;
+  font-weight: bold;
+}
+
+/* 表示行数・表示順序変更フォーム ----------*/
+.viewform {
+  text-align: right;
+}
+
+.MAKER,
+.ADMIN,
+.INFONOM,
+.INFOSP,
+.INFOWOLF,
+.mes_maker ,
+.mes_admin ,
+.info      ,
+.infosp    ,
+.infowolf  ,
+.caution   {
+  border-width: 2px 0; border-style: dashed none;
+}
+.MAKER,
+.mes_maker {
+  border-color: #863;
+}
+.ADMIN,
+.mes_admin {
+  border-color: #863;
+}
+
+.INFONOM,
+.INFOSP,
+.INFOWOLF,
+.info ,
+.infosp ,
+.infowolf {
+  border-color: #863;
+}
+/* 警告・注意表示 --------*/
+.caution {
+  border-color: #ccc;
+}
+
+/* アクション ------------*/
+.action_nom,
+.action {
+  border-width: 2px 0 2px 10px; border-style: dashed none dashed solid ; border-color: #663;
+}
+/* しおり ----------------*/
+.TSAY .action .mes_date,
+.mes_think .action .mes_date {
+  display: none;
+}
+
+
+/* メモ ----------*/
+.memo {
+  border-color: #664;
+  color: #000;
+}
+/* メモの左側 ----------*/
+.memoleft {
+  border-color: #000;
+}
+/* メモの右側 ----------*/
+.memoright {
+  border-color: #000;
+}
+/* 発言者名 ----------*/
+.mesname {
+  font-weight: bold;
+  border-bottom: 1px dashed #863;
+  background: transparent;
+}
+
+/* 発言関係共通 ------*/
+.msg{
+  border-right: solid 4px #333;
+  border-bottom: solid 2px #222;
+}
+
+/* 通常発言 ------*/
+.MSAY .action,
+.MSAY .msg,
+.MSAY .memoleft,
+.MSAY .memoright,
+.SAY .action,
+TABLE.SAY .msg,
+.SAY .memoleft,
+.SAY .memoright,
+.QUEUE .msg,
+.QUEUE .memoleft,
+.QUEUE .memoright,
+.mes_nom .action,
+.mes_nom .memoleft,
+.mes_nom .memoright,
+.mes_nom .msg{
+  color: #000;  background: #cb8; } /*木欄色*/
+.formpl_gm ,
+.formpl_gm  textarea{
+  border-color: #660;
+  color: #ffa;
+  background-color: #100;
+}
+
+/* bug-fix */
+.btn {
+  color: #333 !important;
+}
+.btn-primary,
+.btn-info,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-inverse {
+  color: #fff !important;
+}

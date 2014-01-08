@@ -1,0 +1,452 @@
+@import url("/assets/color_black.css");
+@import url("/assets/application.css");
+
+/* GROBAL --------------------*/
+.handler,
+body {
+  margin: 0px;
+  padding: 0px;
+  background: #114;
+}
+
+#topviewer,
+.drag,
+.sayfilterleft {
+  background: #114;
+}
+
+
+p {
+  margin: 0px;
+  padding: 0px;
+}
+div, form, td {
+  margin: 0px;
+  padding: 0px;
+}
+
+textarea {
+  font-family: monospace;
+}
+
+textarea, input, select {
+  color: #000;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+h1 {
+  text-align: left;
+}
+
+h2 {
+  text-align: center;
+  background: #130;
+  border-bottom: 1px solid #1b7;
+}
+
+h3.popover-title,
+h3 {
+  text-align: left;
+  background: #024;
+}
+
+strong { }
+
+.board{
+  background-color: #100;
+  border: 1px solid #1b7;
+}
+.choice .board{
+  background-color: #100;
+  border-top: 3px double #1b7;
+}
+.choice .board th{
+  border-bottom: 1px dashed #448;
+}
+.choice .board td{
+  border-top:  1px dashed #448;
+  border-left: 1px solid  #1b7;
+}
+.choice {
+  background-color: #224;
+  border-bottom: 1px solid #448 !important;
+}
+.no_choice {
+  border-bottom:1px dashed #448;
+}
+
+/* OTHERS --------------------*/
+/* ‘ºŠJŽnEXVƒ{ƒ^ƒ“ ----------*/
+.commitbutton {
+  text-align: center;
+}
+
+/* ”­Œ¾“P‰ñ—“ ----------*/
+.saycancelframe {
+  text-align: center;
+}
+
+/* ”­Œ¾“P‰ñƒ{ƒ^ƒ“ ----------*/
+.saycancelbutton {
+  font-size: smaller;
+}
+
+/* u–ß‚évƒŠƒ“ƒN ----------*/
+.return {
+  margin: 0px;
+  padding: 0px 0px 8px 0px;
+  text-align: right;
+}
+
+
+
+/* ƒqƒ“ƒgEà–¾‘ ----------*/
+.tips{
+  padding: 0px 8px;
+}
+
+.vindex {
+  background-color: #100;
+  border-top   : 3px double #1b7 !important;
+  border-bottom: 1px solid  #1b7 !important;
+  border-collapse: collapse; /* CSS2? */
+}
+
+.vindex td,.vindex th{
+  margin: 0px;
+  padding: 1px;
+  border-top  : 1px solid  #224;
+  border-left : 1px dashed #224;
+  border-right: 1px dashed #224;
+
+}
+
+/* ‘ºì¬‰æ–Ê ----------*/
+.form_vmake {
+  margin: 0px;
+  padding: 4px 0px;
+
+  color: #000;
+  background: #cb8;
+  border-top: 3px double #1b7;
+  border-bottom: 3px double #1b7;
+}
+
+/* ‘ºì¬E•ÒWƒ{ƒ^ƒ“ ----------*/
+.exevmake {
+  text-align: center;
+}
+
+/* ’i‘giƒ‰ƒxƒ‹j ----------*/
+.multicolumn_label {
+  display: block;
+  float: left;
+  text-align: right;
+}
+
+/* ’i‘gi¶”z’uj ----------*/
+.multicolumn_left {
+  display: block;
+  float: left;
+}
+
+/* ’i‘gi‰E”z’uj ----------*/
+.multicolumn_right {
+  display: block;
+  float: left;
+}
+
+/* ’i‘gi–ðŠ„“ü—Í—“j ----------*/
+.multicolumn_role {
+  width: 100%;
+  color: #000;
+  font-size: smaller;
+}
+
+/* ’i‘gi‰üsj ----------*/
+.multicolumn_clear {
+  clear: left;
+}
+
+
+/* BODY FRAME --------------------*/
+
+/* ŠO˜g ----------*/
+.outframe {
+  background: #114;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center top;
+}
+
+/* Œë”š–hŽ~ƒ`ƒFƒbƒN—“ ----------*/
+.previewsafety {
+  color: #000000;
+  background: #a55;
+}
+
+/* ƒtƒBƒ‹ƒ^‚ð¶‚É”z’u‚µ‚½Žž‚ÌŠO˜g ----------*/
+.outframe_navimode {
+  background: #114;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top;
+}
+
+.contentframe {
+  text-align: left;
+}
+
+/* ƒtƒBƒ‹ƒ^‚ð¶‚É”z’u‚µ‚½Žž‚Ì“à˜g ----------*/
+.contentframe_navileft {
+  text-align: left;
+  float: right;
+}
+
+/* ƒtƒBƒ‹ƒ^i‰º”z’uŽžj----------*/
+.sayfilter {
+  text-align: center;
+}
+
+/* ƒtƒBƒ‹ƒ^i¶”z’uŽžj----------*/
+.sayfilterleft {
+  text-align: left;
+  float: left;
+}
+
+/* ƒtƒBƒ‹ƒ^‚Ì’†g ----------*/
+.insayfilter {
+  text-align: left;
+  border-width: 0 ;
+}
+.insayfilter .paragraph {
+  border-width: 0 ;
+  background: #114;
+}
+
+/* ƒtƒBƒ‹ƒ^‚ÌŒ©o‚µ ----------*/
+.sayfilter_heading {
+  font-weight: bold;
+  color: #ddf;
+  background-color: #044;
+}
+
+/* ƒtƒBƒ‹ƒ^ŒÅ’èE”z’uƒ{ƒ^ƒ“ ----------*/
+.sayfilter_button {
+  float: right;
+  display: none;
+}
+
+.sayfilter_content .head,
+.sayfilter_caption_enable    {
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+  padding: 1px;
+  background: #044;
+}
+.sayfilter_caption_disenable {
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+  background-color: #444;
+}
+
+/* ƒtƒBƒ‹ƒ^‘I‘ð—“˜g----------*/
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable ,
+.sayfilter_content           ,
+#lumpfilter ,
+#lumpfilter input {
+  margin: 1px 0 0 0 ;
+  font-weight: normal;
+}
+
+/* ƒtƒBƒ‹ƒ^‘I‘ð—“i—LŒøŽžj----------*/
+.sayfilter_content_enable    {
+  margin: 1px 0 0 0 ;
+  background: #225;
+  width: 100%;
+}
+.sayfilter_content_disenable {
+  margin: 1px 0 0 0 ;
+  background: #444;
+  width: 100%;
+}
+
+.sayfilter_incontent input {
+  display: none;
+}
+
+/* ƒtƒBƒ‹ƒ^ˆêŠ‡‘€ì—pƒ{ƒ^ƒ“ ----------*/
+.sayfilter_button_mestype ,
+.sayfilter_button_lump {
+  margin: 1px 0 0 0 ;
+  background: #225;
+  text-align: center;
+}
+
+/* ƒƒOƒCƒ“—“ ----------*/
+.login {
+  margin: 0px;
+  text-align: right;
+}
+/* “ú•tƒŠƒ“ƒN ----------*/
+/* ƒy[ƒWƒŠƒ“ƒN ----------*/
+/* ”ñƒƒOƒCƒ“Žž’ˆÓ•\Ž¦ ----------*/
+/* ‘S•\Ž¦ƒŠƒ“ƒN ----------*/
+.turnnavi    ,
+.pagenavi    ,
+.infonologin ,
+.row_all     {
+  color: #ccf;
+  background-color: #100;
+  font-weight: bold;
+}
+
+/* •\Ž¦s”E•\Ž¦‡˜•ÏXƒtƒH[ƒ€ ----------*/
+.viewform {
+  text-align: right;
+}
+
+.MAKER,
+.ADMIN,
+.INFONOM,
+.INFOSP,
+.INFOWOLF,
+.mes_maker ,
+.mes_admin ,
+.info      ,
+.infosp    ,
+.infowolf  ,
+.caution   {
+  border-width: 2px 0; border-style: dashed none;
+}
+.MAKER,
+.mes_maker {
+  border-color: #468;
+}
+.ADMIN,
+.mes_admin {
+  border-color: #468;
+}
+
+/* ƒVƒXƒeƒ€•\Ž¦ ----------*/
+.INFONOM,
+.info {
+  border-color: #366;
+  background-color: #001;
+}
+/* ƒVƒXƒeƒ€•\Ž¦i•s‰ÂŽ‹j-*/
+.INFOSP,
+.infosp {
+  border-color: #366;
+  background-color: #010;
+}
+/* ƒVƒXƒeƒ€•\Ž¦i•s‰ÂŽ‹j-*/
+.INFOWOLF,
+.infowolf {
+  border-color: #366;
+  background-color: #100;
+}
+/* ŒxE’ˆÓ•\Ž¦ --------*/
+.caution {
+  border-color: #ccc;
+  background-color: #111;
+}
+
+/* ƒAƒNƒVƒ‡ƒ“ ------------*/
+.action_nom,
+.action {
+  border-width: 2px 0 2px 10px; border-style: dashed none dashed solid ;
+}
+/* ‚µ‚¨‚è ----------------*/
+.TSAY .action .mes_date,
+.mes_think .action .mes_date {
+  display: none;
+}
+
+/* ƒƒ‚ ----------*/
+.memo {
+  border-color: #720;  color: #ddf;
+  border-width: 0;
+}
+/* ƒƒ‚‚Ì¶‘¤ ----------*/
+.memoleft {
+  border-width: 0 1px 3px 0;
+  border-color: #1b7;
+  background-color: #114 !important;
+}
+/* ƒƒ‚‚Ì‰E‘¤ ----------*/
+.memoright {
+  border-width: 0px 0px 3px 0px;
+  border-color: #1b7;
+}
+
+/* ”­Œ¾ŽÒ–¼ ----------*/
+.mesname {
+  font-weight: bold;
+  border-bottom: 1px dashed;
+}
+/* ”­Œ¾ŠÖŒW‹¤’Ê ------*/
+.msg{
+  border-width: 0 0 1px 4px; border-style: solid solid ;
+}
+
+/* ’Êí”­Œ¾ ------*/
+/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/
+.formpl_commit ,
+.formpl_undef  ,
+.formpl_vil      ,
+.formpl_seer     ,
+.formpl_medium   ,
+.formpl_guard    ,
+.formpl_fm       ,
+.formpl_stigma   ,
+.formpl_sympathy ,
+.formpl_love     ,
+.formpl_wolf     ,
+.formpl_possess  ,
+.formpl_fanatic  ,
+.formpl_cpossess ,
+.formpl_cwolf    ,
+.formpl_intwolf  ,
+.formpl_pixi     ,
+.formpl_trickster,
+.formpl_hamster  ,
+.formpl_werebat  ,
+.formpl_gm       ,
+.WIN_NONE    ,
+.WIN_HUMAN   ,
+.WIN_DISH    ,
+.WIN_LONEWOLF,
+.WIN_PIXI    ,
+.WIN_GURU    ,
+.WIN_HATER   ,
+.WIN_LOVER   ,
+.WIN_WOLF    ,
+.WIN_EVIL    {
+  background-color: #114;
+}
+.formpl_gm {
+  border-color: #999;
+  color: #ffa;
+  background-color: #100;
+}
+
+
+/* bug-fix */
+.btn {
+  color: #333 !important;
+}
+.btn-primary,
+.btn-info,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-inverse {
+  color: #fff !important;
+}

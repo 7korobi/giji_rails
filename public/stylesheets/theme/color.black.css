@@ -1,31 +1,92 @@
-//= require  ./color/black
+@import url("/assets/application.css");
+
+body {
+  color: #ccf;
+}
 
 b{
   color: #fff;
   font-weight: inherit;
 }
 
+.message_filter a{
+  color: #fff;
+}
+
+.MAKER a.res_anchor:link,
+.ADMIN a.res_anchor:link,
+.mes_maker a.res_anchor:link,
+.mes_admin a.res_anchor:link,
+a:link {
+  color: #afa;
+}
+
+.MAKER a.res_anchor:visited,
+.ADMIN a.res_anchor:visited,
+.mes_maker a.res_anchor:visited,
+.mes_admin a.res_anchor:visited,
+a:visited {
+  color: #8fc;
+}
+
+.MAKER a.res_anchor:active,
+.ADMIN a.res_anchor:active,
+.mes_maker a.res_anchor:active,
+.mes_admin a.res_anchor:active,
+a[href]:active {
+  color: #8ff;
+}
+
+.MAKER a.res_anchor:hover,
+.ADMIN a.res_anchor:hover,
+.mes_maker a.res_anchor:hover,
+.mes_admin a.res_anchor:hover,
+a[href]:hover {
+  color: #8cf;
+}
+
+a.res_anchor:link {
+  color: #8cb;
+}
+
+a.res_anchor:visited {
+  color: #8b8;
+}
+
+a.res_anchor:active {
+  color: #bbb;
+}
+
+a.res_anchor:hover {
+  color: #8bb;
+}
+
+h2 {
+  color: #ddf;
+  border-bottom: 1px solid #ddf;
+}
+
 h3 {
   color: #ffa;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿å°è¦‹å‡ºã—ï¼ˆåºƒã’ãŸæ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiL‚°‚½j----------*/
 .sayfilter_caption_enable {
   color: #eed;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿å°è¦‹å‡ºã—ï¼ˆç•³ã‚“ã æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiô‚ñ‚¾j----------*/
 .sayfilter_caption_disenable {
   color: #888;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿é¸æŠæ¬„ï¼ˆæœ‰åŠ¹æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i—LŒøj----------*/
 .sayfilter_button_lump,
 .sayfilter_content_enable {
   color: #eed;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿é¸æŠæ¬„ï¼ˆç„¡åŠ¹æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i–³Œøj----------*/
 .sayfilter_content_disenable {
   color: #888;
 }
@@ -38,21 +99,21 @@ h3 {
 }
 
 .mes_text_monospace{
-  background-image: url("/images/bg/grid_blue.gif");
+  background-image: url("/WebRecord/images/bg/grid_blue.gif");
 }
 
-/* ã‚„ã‚“ã‚ã‚Šæ³¨æ„è¡¨ç¤º ----------*/
+/* ‚â‚ñ‚í‚è’ˆÓ•\¦ ----------*/
 .infotext {
   color: #aaa;
 }
 
-/* è­¦å‘Šãƒ»æ³¨æ„ã™ã‚‹éƒ¨åˆ†ï¼ˆã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ï¼‰ ----------*/
+/* ŒxE’ˆÓ‚·‚é•”•ªiƒCƒ“ƒ‰ƒCƒ“j ----------*/
 .cautiontext {
   font-weight: bold;
   color: #f44;
 }
 
-/* ç™ºè¨€ã®æ—¥ä»˜ ----------*/
+/* ”­Œ¾‚Ì“ú•t ----------*/
 .mes_date {
   opacity: 0.5;
 }
@@ -67,7 +128,7 @@ h3 {
 .mes_think .action,
 .action_bm {  color: #cb8; background-color: rgba(  0,  0,  0, 0.33); border-color: #333 #999; font-weight: bold; }
 
-/* ç™ºè¨€è€…å ----------*/
+/* ”­Œ¾Ò–¼ ----------*/
 .mesname {
   opacity: 0.5;
   color: inherit;
@@ -90,8 +151,7 @@ h3 {
 }
 */
 
-/* ç™ºè¨€ ----------*/
-.mesname a,
+/* ”­Œ¾ ----------*/
 .MSAY .action,
 .MSAY .msg,
 .MSAY .memoleft,
@@ -109,7 +169,7 @@ h3 {
 .mes_nom .msg{
   color: #ddf; background-color: rgba(  0,  0,  0, 0.33); border-color: #999 #ddf; }
 
-/* å‰Šé™¤æ¸ˆã¿ç™ºè¨€ ----------*/
+/* íœÏ‚İ”­Œ¾ ----------*/
 .DELETED .img,
 .DELETEDADMIN .img,
 .mes_del .img{
@@ -117,92 +177,70 @@ h3 {
 }
 .DELETED .action,
 .DELETED .msg,
-.DELETED .memoleft,
-.DELETED .memoright,
-.DELETED .action,
-.DELETED .msg,
-.mes_del .memoleft,
-.mes_del .memoright,
+.DELETEDADMIN .action,
+.DELETEDADMIN .msg,
 .mes_del .action,
 .mes_del .memoleft,
 .mes_del .memoright,
 .mes_del .msg{
   color: #444; background-color: rgba( 40, 40, 40, 0.33); border-color: #222 #444; }
-/* æœªç¢ºå®šç™ºè¨€ ----------*/
+/* –¢Šm’è”­Œ¾ ----------*/
 .QUE .action,
 .QUE .msg,
-.QUE .memoleft,
-.QUE .memoright,
 .mes_que .action,
 .mes_que .memoleft,
 .mes_que .memoright,
 .mes_que .msg{
   color: #aaa; background-color: rgba(  0,  0,  0, 0.33); border-color: #555 #aaa; border: none; }
-/* ç‹¬ã‚Šè¨€ ----------*/
+/* “Æ‚èŒ¾ ----------*/
 .TSAY .action,
 .TSAY .msg,
-.TSAY .memoleft,
-.TSAY .memoright,
 .mes_think .action,
 .mes_think .memoleft,
 .mes_think .memoright,
 .mes_think .msg{
-  color: #996; background-color: rgba(  0,  0, 60, 0.33); border-color: #554 #996; } /*èŒ¶é¼ */
+  color: #996; background-color: rgba(  0,  0, 60, 0.33); border-color: #554 #996; } /*’ƒ‘l*/
 
-/* æ­»è€…ã®ã†ã‚ã ----------*/
+/* €Ò‚Ì‚¤‚ß‚« ----------*/
 .GSAY .action,
 .GSAY .msg,
-.GSAY .memoleft,
-.GSAY .memoright,
 .mes_grave .action,
 .mes_grave .memoleft,
 .mes_grave .memoright,
 .mes_grave .msg{
-  color: #99f; background-color: rgba( 30, 30,  0, 0.33); border-color: #335 #99f; } /*ç©ºè‰²*/
+  color: #99f; background-color: rgba( 30, 30,  0, 0.33); border-color: #335 #99f; } /*‹óF*/
 
-/* è¦‹ç‰©äºº ------*/
+/* Œ©•¨l ------*/
 .VSAY .action,
 .VSAY .msg,
-.VSAY .memoleft,
-.VSAY .memoright,
 .mes_mob .action,
 .mes_mob .memoleft,
 .mes_mob .memoright,
 .mes_mob .msg{
-  color: #ffb; background-color: rgba(  0,  0,  0, 0.33); border-color: #999 #ddf; } /*æ¦›è‰²*/
-/* å›ã ----------*/
+  color: #ffb; background-color: rgba(  0,  0,  0, 0.33); border-color: #999 #ddf; } /*YF*/
+/* š‘‚« ----------*/
 .WSAY .action,
 .WSAY .msg,
-.WSAY .memoleft,
-.WSAY .memoright,
 .mes_wolf .action,
 .mes_wolf .memoleft,
 .mes_wolf .memoright,
 .mes_wolf .msg{
-  color: #f78; background-color: rgba(  0, 30, 30, 0.33); border-color: #944 #f78; } /*ç´…æµ·è€èŒ¶*/
-/* å…±é³´ ----------*/
+  color: #f78; background-color: rgba(  0, 30, 30, 0.33); border-color: #944 #f78; } /*gŠC˜V’ƒ*/
+/* ‹¤–Â ----------*/
 .SPSAY .action,
 .SPSAY .msg,
-.SPSAY .memoleft,
-.SPSAY .memoright,
 .AIM .action,
 .AIM .msg,
-.AIM .memoleft,
-.AIM .memoright,
 .mes_sympa .action,
 .mes_sympa .memoleft,
 .mes_sympa .memoright,
 .mes_sympa .msg{
-  color: #fca; background-color: rgba( 20, 40, 50, 0.33); border-color: #865 #fca; } /*è–„æŸ¿*/
-/* å¿µè©± ----------*/
+  color: #fca; background-color: rgba( 20, 40, 50, 0.33); border-color: #865 #fca; } /*”–Š`*/
+/* ”O˜b ----------*/
 .BSAY .action,
 .BSAY .msg,
-.BSAY .memoleft,
-.BSAY .memoright,
 .XSAY .action,
 .XSAY .msg,
-.XSAY .memoleft,
-.XSAY .memoright,
 .mes_bat  .msg ,
 .mes_pixi .action,
 .mes_pixi .memoleft,
@@ -211,7 +249,7 @@ h3 {
   color: #9f9; background-color: rgba( 30,  0, 30, 0.33); border-color: #583 #9f9; }
 
 
-/* ç™ºè¨€å…¥åŠ›æ¬„ï¼ˆå…±é€šï¼‰ ---*/
+/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/
 .formpl_common {
   border-color: #999;
 }
@@ -287,6 +325,5 @@ h3 {
 .WIN_EVIL     a {
   color: #FFF;
 }
-
 
 

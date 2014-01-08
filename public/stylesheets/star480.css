@@ -1,0 +1,45 @@
+@charset "Shift_JIS";
+@import url("size/480baloon.css");
+@import url("theme/star.css");
+
+.contentframe {
+  background-image: url("../images/bg/star460.png");
+  background-repeat: repeat-y;
+  background-position: right;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+#topviewer,
+.drag,
+.contentframe_navileft {
+  background-image: url("../images/bg/star460.png");
+  background-repeat: repeat-y;
+  background-position: right;
+}
+
+/* 外枠 ----------*/
+.outframe ,
+.outframe_navimode {
+  background-image: url("../images/bg/jupiter_half.png");
+  background-position: right top;
+}
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+.outframe_navimode .mes_maker .guide  ,
+.outframe_navimode .mes_admin .guide  ,
+.outframe_navimode .mes_maker .action ,
+.outframe_navimode .mes_admin .action ,
+.outframe_navimode .info      .mes_text,
+.outframe_navimode .infosp    .mes_text,
+.outframe_navimode .infowolf  .mes_text,
+.outframe_navimode .caution   .mes_text,
+.outframe_navimode .action_bm .mes_text{ width:336px; }
+
+.action_nom,
+.action {
+  margin-left: 113px;
+  border-width: 0 0 1px 4px;
+  border-style: solid solid ;
+}
+
+

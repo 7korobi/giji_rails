@@ -1,31 +1,102 @@
-//= require  ./color/white
+@import url("/assets/application.css");
+
+body {
+  color: #ccc;
+}
 
 b{
   color: #004;
   font-weight: inherit;
 }
 
+.message_filter a{
+  color: #004;
+}
+
+.mesname,
+.mesname a,
+.mesname a:hover {
+  color: #333;
+}
+
+.MAKER a.res_anchor:link,
+.ADMIN a.res_anchor:link,
+.mes_maker a.res_anchor:link,
+.mes_admin a.res_anchor:link,
+a:link {
+  color: #cea;
+}
+
+.MAKER a.res_anchor:visited,
+.ADMIN a.res_anchor:visited,
+.mes_maker a.res_anchor:visited,
+.mes_admin a.res_anchor:visited,
+a:visited {
+  color: #ace;
+}
+
+.MAKER a.res_anchor:active,
+.ADMIN a.res_anchor:active,
+.mes_maker a.res_anchor:active,
+.mes_admin a.res_anchor:active,
+a[href]:active {
+  color: #eca;
+}
+
+.MAKER a.res_anchor:hover,
+.ADMIN a.res_anchor:hover,
+.mes_maker a.res_anchor:hover,
+.mes_admin a.res_anchor:hover,
+a[href]:hover {
+  color: #8bf;
+}
+
+.insayfilter a:link,
+a.res_anchor:link {
+  color: #043;
+}
+
+.insayfilter a:visited,
+a.res_anchor:visited {
+  color: #030;
+}
+
+.insayfilter a:active,
+a.res_anchor:active {
+  color: #333;
+}
+
+.insayfilter a:hover,
+a.res_anchor:hover {
+  color: #033;
+}
+
+h2 {
+  color: #ccf;
+  border-bottom: 1px solid #ccf;
+}
+
 h3 {
   color: #ffa;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿å°è¦‹å‡ºã—ï¼ˆåºƒã’ãŸæ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiL‚°‚½j----------*/
 .sayfilter_caption_enable {
   color: #000;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿å°è¦‹å‡ºã—ï¼ˆç•³ã‚“ã æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiô‚ñ‚¾j----------*/
 .sayfilter_caption_disenable {
   color: #888;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿é¸æŠæ¬„ï¼ˆæœ‰åŠ¹æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i—LŒøj----------*/
 .sayfilter_button_lump,
 .sayfilter_content_enable {
   color: #000;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿é¸æŠæ¬„ï¼ˆç„¡åŠ¹æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i–³Œøj----------*/
 .sayfilter_content_disenable {
   color: #888;
 }
@@ -38,21 +109,21 @@ h3 {
 }
 
 .mes_text_monospace{
-  background-image: url("/images/bg/grid.gif");
+  background-image: url("http://giji.load.jp/images/bg/grid.gif");
 }
 
-/* ã‚„ã‚“ã‚ã‚Šæ³¨æ„è¡¨ç¤º ----------*/
+/* ‚â‚ñ‚í‚è’ˆÓ•\¦ ----------*/
 .infotext {
   color: #999;
 }
 
-/* è­¦å‘Šãƒ»æ³¨æ„ã™ã‚‹éƒ¨åˆ†ï¼ˆã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ï¼‰ ----------*/
+/* ŒxE’ˆÓ‚·‚é•”•ªiƒCƒ“ƒ‰ƒCƒ“j ----------*/
 .cautiontext {
   font-weight: bold;
   color: #f44;
 }
 
-/* ç™ºè¨€ã®æ—¥ä»˜ ----------*/
+/* ”­Œ¾‚Ì“ú•t ----------*/
 .mes_date {
   color: #442;
 }
@@ -60,13 +131,14 @@ h3 {
 .INFONOM,  .info      {  color: #000;  background: #a97;  }
 .INFOSP,   .infosp    {  color: #440;  background: #a97;  }
 .INFOWOLF, .infowolf  {  color: #440;  background: #a55;  }
-.caution              {  color: #000;  background: #666;  }
-.action_nom, .action  {  color: #000;  background: #cb8;  }
+.caution   {  color: #000;  background: #666;  }
+.action_nom,
+.action    {  color: #000;  background: #cb8;  }
 .TSAY .action,
 .mes_think .action,
 .action_bm {  color: #000;  background: #cb8;  font-weight: bold; }
 
-/* å‰Šé™¤æ¸ˆã¿ç™ºè¨€ ----------*/
+/* íœÏ‚İ”­Œ¾ ----------*/
 .DELETED .img,
 .DELETEDADMIN .img,
 .mes_del .img{
@@ -78,14 +150,12 @@ h3 {
 .DELETED .memoright,
 .DELETEDADMIN .action,
 .DELETEDADMIN .msg,
-.DELETEDADMIN .memoleft,
-.DELETEDADMIN .memoright,
 .mes_del .action,
 .mes_del .memoleft,
 .mes_del .memoright,
 .mes_del .msg{
   color: #aaa;  background: #666;}
-/* æœªç¢ºå®šç™ºè¨€ ----------*/
+/* –¢Šm’è”­Œ¾ ----------*/
 .QUE .action,
 .QUE .msg,
 .QUE .memoleft,
@@ -95,7 +165,7 @@ h3 {
 .mes_que .memoright,
 .mes_que .msg{
   color: #664;  background: #cb8; border: none; }
-/* ç‹¬ã‚Šè¨€ ----------*/
+/* “Æ‚èŒ¾ ----------*/
 .TSAY .action,
 .TSAY .msg,
 .TSAY .memoleft,
@@ -104,20 +174,19 @@ h3 {
 .mes_think .memoleft,
 .mes_think .memoright,
 .mes_think .msg{
-  color: #000;  background: #a98;} /*èŒ¶é¼ */
+  color: #000;  background: #a98;} /*’ƒ‘l*/
 
-/* æ­»è€…ã®ã†ã‚ã ----------*/
+/* €Ò‚Ì‚¤‚ß‚« ----------*/
 .GSAY .action,
 .GSAY .msg,
 .GSAY .memoleft,
 .GSAY .memoright,
-.mes_grave .action,
 .mes_grave .memoleft,
 .mes_grave .memoright,
 .mes_grave .msg{
-  color: #000;  background: #bbd;} /*ç©ºè‰²*/
+  color: #000;  background: #bbd;} /*‹óF*/
 
-/* è¦‹ç‰©äºº ------*/
+/* Œ©•¨l ------*/
 .VSAY .action,
 .VSAY .msg,
 .VSAY .memoleft,
@@ -126,8 +195,8 @@ h3 {
 .mes_mob .memoleft,
 .mes_mob .memoright,
 .mes_mob .msg{
-  color: #000;  background: #ca6; } /*æ¦›è‰²*/
-/* å›ã ----------*/
+  color: #000;  background: #ca6; } /*YF*/
+/* š‘‚« ----------*/
 .WSAY .action,
 .WSAY .msg,
 .WSAY .memoleft,
@@ -136,8 +205,8 @@ h3 {
 .mes_wolf .memoleft,
 .mes_wolf .memoright,
 .mes_wolf .msg{
-  color: #000;  background: #a55; } /*ç´…æµ·è€èŒ¶*/
-/* å…±é³´ ----------*/
+  color: #000;  background: #a55; } /*gŠC˜V’ƒ*/
+/* ‹¤–Â ----------*/
 .SPSAY .action,
 .SPSAY .msg,
 .SPSAY .memoleft,
@@ -150,8 +219,8 @@ h3 {
 .mes_sympa .memoleft,
 .mes_sympa .memoright,
 .mes_sympa .msg{
-  color: #000;  background: #dcb; } /*è–„æŸ¿*/
-/* å¿µè©± ----------*/
+  color: #000;  background: #dcb; } /*”–Š`*/
+/* ”O˜b ----------*/
 .BSAY .action,
 .BSAY .msg,
 .BSAY .memoleft,
@@ -168,7 +237,7 @@ h3 {
   color: #000;  background: #9a7;  }
 
 
-/* ç™ºè¨€å…¥åŠ›æ¬„ï¼ˆå…±é€šï¼‰ ---*/
+/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/
 .formpl_common {
   border-color: #664;
 }
@@ -267,4 +336,5 @@ textarea, input, select {
 .WIN_EVIL     a {
   color: #111;
 }
+
 

@@ -1,31 +1,80 @@
-//= require  ./color/white
+@import url("/assets/application.css");
+
+/* GROBAL --------------------*/
+body {
+  color: #ccc;
+}
 
 b{
-  color: #004;
-  font-weight: inherit;
+  font-weight: thick;
+}
+
+.mes_maker a.res_anchor:link,
+.mes_admin a.res_anchor:link,
+a:link {
+  color: #0ff;
+}
+
+.mes_maker a.res_anchor:visited,
+.mes_admin a.res_anchor:visited,
+a:visited {
+  color: #08f;
+}
+
+.mes_maker a.res_anchor:active,
+.mes_admin a.res_anchor:active,
+a[href]:active {
+  color: #f00;
+}
+
+.mes_maker a.res_anchor:hover,
+.mes_admin a.res_anchor:hover,
+a[href]:hover {
+  color: #fff;
+}
+
+a.res_anchor:link {
+  color: #0ff;
+}
+
+a.res_anchor:visited {
+  color: #08f;
+}
+
+a.res_anchor:active {
+  color: #f00;
+}
+
+a.res_anchor:hover {
+  color: #fff;
+}
+
+h2 {
+  color: #ccf;
+  border-bottom: 1px solid #ccf;
 }
 
 h3 {
   color: #ffa;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿å°è¦‹å‡ºã—ï¼ˆåºƒã’ãŸæ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiL‚°‚½j----------*/
 .sayfilter_caption_enable {
   color: #000;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿å°è¦‹å‡ºã—ï¼ˆç•³ã‚“ã æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiô‚ñ‚¾j----------*/
 .sayfilter_caption_disenable {
   color: #888;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿é¸æŠæ¬„ï¼ˆæœ‰åŠ¹æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i—LŒøj----------*/
 .sayfilter_button_lump,
 .sayfilter_content_enable {
   color: #000;
 }
 
-/* ãƒ•ã‚£ãƒ«ã‚¿é¸æŠæ¬„ï¼ˆç„¡åŠ¹æ™‚ï¼‰----------*/
+/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i–³Œøj----------*/
 .sayfilter_content_disenable {
   color: #888;
 }
@@ -33,86 +82,72 @@ h3 {
 #topviewer,
 .drag,
 .ajax {
-  border: 0 solid #444;
-  border-width: 2px 0 2px 0;
+  border: 0px none;
 }
 
 .mes_text_monospace{
-  background-image: url("/images/bg/grid.gif");
+  background-image: url("/WebRecord/images/bg/grid.gif");
 }
 
-/* ã‚„ã‚“ã‚ã‚Šæ³¨æ„è¡¨ç¤º ----------*/
+/* ‚â‚ñ‚í‚è’ˆÓ•\¦ ----------*/
 .infotext {
   color: #999;
 }
 
-/* è­¦å‘Šãƒ»æ³¨æ„ã™ã‚‹éƒ¨åˆ†ï¼ˆã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ï¼‰ ----------*/
+/* ŒxE’ˆÓ‚·‚é•”•ªiƒCƒ“ƒ‰ƒCƒ“j ----------*/
 .cautiontext {
   font-weight: bold;
   color: #f44;
 }
 
-/* ç™ºè¨€ã®æ—¥ä»˜ ----------*/
+/* ”­Œ¾‚Ì“ú•t ----------*/
 .mes_date {
-  color: #442;
 }
 
-.INFONOM,  .info      {  color: #000;  background: #a97;  }
-.INFOSP,   .infosp    {  color: #440;  background: #a97;  }
-.INFOWOLF, .infowolf  {  color: #440;  background: #a55;  }
-.caution              {  color: #000;  background: #666;  }
-.action_nom, .action  {  color: #000;  background: #cb8;  }
-.TSAY .action,
-.mes_think .action,
-.action_bm {  color: #000;  background: #cb8;  font-weight: bold; }
+.info      {  color: #fff;  background: #000;  }
+.infosp    {  color: #aaa;  background: #000;  }
+.infowolf  {  color: #fff;  background: #622;  }
+.caution   {  color: #f44;  background: #000;  }
 
-/* å‰Šé™¤æ¸ˆã¿ç™ºè¨€ ----------*/
-.DELETED .img,
-.DELETEDADMIN .img,
+/* íœÏ‚İ”­Œ¾ ----------*/
 .mes_del .img{
   opacity: 0.25;
 }
-.DELETED,
-.DELETEDADMIN,
-.mes_del{
-  color: #aaa;  background: #666;}
-/* æœªç¢ºå®šç™ºè¨€ ----------*/
-.QUE,
-.mes_que{
-  color: #664;  background: #cb8; border: none; }
-/* ç‹¬ã‚Šè¨€ ----------*/
-.TSAY,
-.mes_think{
-  color: #000;  background: #a98;} /*èŒ¶é¼ */
+.mes_del {
+  color: #fff;  background: #000;}
+/* –¢Šm’è”­Œ¾ ----------*/
+.mes_que {
+  color: #fff;  background: #553; border: none; }
+.mes_nom {
+  color: #fff;  background: #553; border: none; }
+/* “Æ‚èŒ¾ ----------*/
+.mes_think {
+  color: #fff;  background: #444;} /*’ƒ‘l*/
 
-/* æ­»è€…ã®ã†ã‚ã ----------*/
-.GSAY,
+/* €Ò‚Ì‚¤‚ß‚« ----------*/
 .mes_grave {
-  color: #000;  background: #bbd;} /*ç©ºè‰²*/
+  color: #fff;  background: #224;} /*‹óF*/
 
-/* è¦‹ç‰©äºº ------*/
-.VSAY,
+/* Œ©•¨l ------*/
 .mes_mob {
-  color: #000;  background: #ca6; } /*æ¦›è‰²*/
-/* å›ã ----------*/
-.WSAY,
+  color: #fff;  background: #662; } /*YF*/
+/* š‘‚« ----------*/
 .mes_wolf {
-  color: #000;  background: #a55; } /*ç´…æµ·è€èŒ¶*/
-/* å…±é³´ ----------*/
-.SPSAY,
-.AIM,
+  color: #fff;  background: #622; } /*gŠC˜V’ƒ*/
+/* ‹¤–Â ----------*/
 .mes_sympa {
-  color: #000;  background: #dcb; } /*è–„æŸ¿*/
-/* å¿µè©± ----------*/
-.BSAY,
-.XSAY,
-.mes_bat,
+  color: #fff;  background: #350; } /*”–Š`*/
+/* ”O˜b ----------*/
+.mes_bat  ,
 .mes_pixi {
-  color: #000;  background: #9a7;  }
+  color: #fff;  background: #055;  }
 
 
-/* ç™ºè¨€å…¥åŠ›æ¬„ï¼ˆå…±é€šï¼‰ ---*/
-.formpl_common,
+/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/
+.formpl_common {
+  border-color: #664;
+}
+.formpl_common .msg ,
 .formpl_common textarea ,
 .formpl_commit ,
 .formpl_commit textarea ,
@@ -207,4 +242,5 @@ textarea, input, select {
 .WIN_EVIL     a {
   color: #111;
 }
+
 

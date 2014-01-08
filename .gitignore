@@ -13,7 +13,6 @@ config/omni_auth.yml
 config/rsync.yml
 config/initializers/secret.rb
 config/initializers/resque.rb
-public/
 public_old/
 test/
 vendor/cache

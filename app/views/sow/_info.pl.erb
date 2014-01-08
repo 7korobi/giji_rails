@@ -49,21 +49,18 @@ sub OutHTMLAdminInfo {
 
   my $css_select = '<a href="sow.cgi?css=ririnra">漆黒</a>｜<a href="sow.cgi?css=cinema800">煉瓦</a> <a href="sow.cgi?css=cinema480">480</a>｜<a href="sow.cgi?css=night800">月夜</a> <a href="sow.cgi?css=night480">480</a>｜<a href="sow.cgi?css=star800">蒼穹</a> <a href="sow.cgi?css=star480">480</a>｜<a href="sow.cgi?css=wa800">和の国</a> <a href="sow.cgi?css=wa480">480</a>｜<a href="sow.cgi?ua=mb">携帯</a>';
   print <<"_HTML_";
-<a href="http://melon-cirrus.sakura.ne.jp/wiki/">人狼物語専用wiki</a>
-｜
-<a href="http://melon-cirrus.sakura.ne.jp/wiki/?%A5%B5%A1%BC%A5%D0%A1%BC%A5%EA%A5%B9%A5%C8">人狼物語Server一覧</a>（melonkoさん管理）
 <div class="choice">
 <script>\$(function(){\$('.finished_log').hide()});</script>
 <table class="board">
 <tr>
-<th colspan=4>総合トップページはこちら <a href="http://giji.check.jp?$topcss"><strong>人狼議事</strong></a> 合計$max_all村を上限としています
+<th colspan=4>
 <div class="progress_log">
 <strong>進行中の村　←　</strong><a style="color: #ccc;" onclick="\$('.progress_log').hide();\$('.finished_log').show();">終了した村を見る</a>
 </div>
 <div class="finished_log">
 <a style="color: #ccc;" onclick="\$('.progress_log').show();\$('.finished_log').hide();">進行中の村を見る</a><strong>　→　終了した村</strong>
 </div>
-<td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼<br>　</a>
+<td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼</a>
 <tr class="link">
 <td class="$choice_lobby">  ロビー　
 <td class="$choice_morphe"> 夢の形　
