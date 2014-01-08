@@ -22,7 +22,20 @@ Giji::Application.configure do
   # Disable Rails's static asset server (Apache or nginx will already do this).
   config.serve_static_assets = false
   # Compress JavaScripts and CSS.
-  config.assets.precompile += %w( dic.js data_pan.js data.js base.js sow.js color_white.css color_black.css color_white_box.css color_black_box.css )
+  config.assets.precompile += %w( 
+    spec.js
+    dic.js 
+    data_pan.js 
+    data.js 
+    base.js 
+    sow.js 
+    boot.js
+
+    color_white.css 
+    color_black.css 
+    color_white_box.css 
+    color_black_box.css
+  )
   config.assets.compress = false
   config.assets.css_compressor = :scss
   config.assets.js_compressor = nil # Uglifier.new(output:{ preserve_line: false, beautify: true, indent_level:2 }, mangle: false)

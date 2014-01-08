@@ -200,9 +200,6 @@ FILTER = ($scope, $filter)->
     list.slice from, to
 
   page.filter 'order.value', (key, list)->
-    for log in list
-      log.text = $scope.text_decolate log.log
-
     $scope.anchors = []
     list.reverse() if "desc" == key
     list
