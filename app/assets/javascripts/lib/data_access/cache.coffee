@@ -42,7 +42,7 @@ CACHE = ($scope)->
 
       # events section
       for new_event in new_base.events
-        INIT_MESSAGES $scope, new_event
+        INIT_MESSAGES new_event
       merge_by.simple old_base, new_base, "events", guard, filter
 
       # event section

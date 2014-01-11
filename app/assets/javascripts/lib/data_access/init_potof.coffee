@@ -93,8 +93,10 @@ INIT_POTOF = ($scope, potof, gon)->
     potof.said     += " #{potof.point.saidpoint}pt"
 
   if potof.timer?
-    potof.timer.entried     = -> $scope.lax_time Date.create @entrieddt
-    potof.timer.entry_limit = -> $scope.lax_time Date.create @limitentrydt
+    potof.timer.entrieddt    = Date.create potof.timer.entrieddt
+    potof.timer.limitentrydt = Date.create potof.timer.limitentrydt
+    potof.timer.entried     = -> $scope.lax_time @entrieddt
+    potof.timer.entry_limit = -> $scope.lax_time @limitentrydt
 
   potof.summary = ->
     switch $scope.potofs_order.value

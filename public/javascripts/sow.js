@@ -347,18 +347,14 @@ angular.module("giji").directive("log", [
           log.img || (log.img = $scope.img_cid(log.csid, log.face_id));
         }
         log.cancel_btn = function() {
-          if ((log.logid != null) && "q" === log.logid[0]) {
-            if ((new Date() - log.updated_at) < 25 * 1000) {
-              return $sce.trustAsHtml("<a class=\"mark\" href_eval='cancel_say(\"" + log.logid + "\")'>なら削除できます。⏳</a>");
-            } else {
-              return "";
-            }
+          if ((this.logid != null) && "q" === this.logid[0] && ((new Date() - this.updated_at) < 25 * 1000)) {
+            return $sce.trustAsHtml("<a class=\"mark\" href_eval='cancel_say(\"" + this.logid + "\")'>なら削除できます。⏳</a>");
           } else {
             return "";
           }
         };
         log.time = function() {
-          return $scope.lax_time(Date.create(log.updated_at));
+          return $scope.lax_time(this.updated_at);
         };
         if ((log.anchor == null) && (log.logid != null)) {
           _ref1 = log.logid.match(/(\D)\D+(\d+)/), _ = _ref1[0], mark = _ref1[1], num = _ref1[2];
@@ -372,11 +368,8 @@ angular.module("giji").directive("log", [
           }
         }
         if (log.text == null) {
-          if (log.plain != null) {
-            log.text = $scope.text_decolate(log.plain.text);
-          } else {
-            log.text = $scope.text_decolate(log.log);
-          }
+          log.text = $scope.text_decolate(log.log);
+          delete log.log;
         }
         return GIJI.template($compile, $scope, elm, log.template);
       }
@@ -847,7 +840,7 @@ CACHE = function($scope) {
       _ref = new_base.events;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         new_event = _ref[_i];
-        INIT_MESSAGES($scope, new_event);
+        INIT_MESSAGES(new_event);
       }
       merge_by.simple(old_base, new_base, "events", guard, filter);
       new_event = new_base.event;
@@ -1197,7 +1190,7 @@ INIT_FACE = function(new_base) {
 };
 var INIT_MESSAGES;
 
-INIT_MESSAGES = function($scope, new_base) {
+INIT_MESSAGES = function(new_base) {
   var message, _i, _len, _ref, _results;
   if ((new_base != null ? new_base.messages : void 0) == null) {
     return;
@@ -1209,15 +1202,10 @@ INIT_MESSAGES = function($scope, new_base) {
       message = _ref[_i];
       message.turn = new_base.turn;
       if (message.date != null) {
-        message.updated_at = Date.create(message.date);
+        message.updated_at = message.date;
+        delete message.date;
       }
-      message.updated_at || (message.updated_at = new Date);
-      if (message.log != null) {
-        message.text = $scope.text_decolate(message.log);
-        _results.push(delete message.log);
-      } else {
-        _results.push(void 0);
-      }
+      _results.push(message.updated_at = Date.create(message.updated_at));
     }
     return _results;
   }
@@ -1380,11 +1368,13 @@ INIT_POTOF = function($scope, potof, gon) {
     potof.said += " " + potof.point.saidpoint + "pt";
   }
   if (potof.timer != null) {
+    potof.timer.entrieddt = Date.create(potof.timer.entrieddt);
+    potof.timer.limitentrydt = Date.create(potof.timer.limitentrydt);
     potof.timer.entried = function() {
-      return $scope.lax_time(Date.create(this.entrieddt));
+      return $scope.lax_time(this.entrieddt);
     };
     potof.timer.entry_limit = function() {
-      return $scope.lax_time(Date.create(this.limitentrydt));
+      return $scope.lax_time(this.limitentrydt);
     };
   }
   potof.summary = function() {
@@ -3036,13 +3026,18 @@ POTOFS = function($scope) {
 var TIMER;
 
 TIMER = function($scope) {
+  var lax_time;
   $scope.lax_date = function(date) {
     var postfix;
     postfix = ["頃", "半頃"][(date.getMinutes() / 30).floor()];
     return date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix);
   };
+  lax_time = {};
   return $scope.lax_time = function(date) {
     var limit, now, postfix, timespan;
+    if (lax_time[date] != null) {
+      return lax_time[date];
+    }
     if ((date != null) && (date.addMinutes != null)) {
       timespan = (new Date() - date) / 1000;
       limit = 3 * 60 * 60;
@@ -3061,10 +3056,10 @@ TIMER = function($scope) {
         now = date.clone();
         now.addMinutes(15);
         postfix = ["頃", "半頃"][(now.getMinutes() / 30).floor()];
-        return now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja');
+        return lax_time[date] = now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja');
       }
     } else {
-      return "....-..-..(？？？) --..時頃";
+      return lax_time[date] = "....-..-..(？？？) --..時頃";
     }
   };
 };

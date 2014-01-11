@@ -15,14 +15,11 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
       log.img  or= $scope.img_cid(log.csid, log.face_id)
 
     log.cancel_btn = ->
-      if log.logid? && "q" == log.logid[0]
-        if (new Date() - log.updated_at) < 25 * 1000
-          $sce.trustAsHtml """<a class="mark" href_eval='cancel_say("#{log.logid}")'>なら削除できます。⏳</a>"""
-        else
-          ""
+      if @logid? && "q" == @logid[0] && ((new Date() - @updated_at) < 25 * 1000)
+        $sce.trustAsHtml """<a class="mark" href_eval='cancel_say("#{@logid}")'>なら削除できます。⏳</a>"""
       else
         ""
-    log.time = -> $scope.lax_time Date.create log.updated_at
+    log.time = -> $scope.lax_time @updated_at
 
     if ! log.anchor? && log.logid?
       [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
@@ -35,10 +32,9 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
         log.anchor or= ""
 
     if ! log.text?
-      if log.plain?
-        log.text = $scope.text_decolate log.plain.text
-      else
-        log.text = $scope.text_decolate log.log
+      log.text = $scope.text_decolate log.log
+      delete log.log
+
 
     GIJI.template $compile, $scope, elm, log.template
 
