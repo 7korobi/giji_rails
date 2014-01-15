@@ -3034,11 +3034,11 @@ TIMER = function($scope) {
   };
   lax_time = {};
   return $scope.lax_time = function(date) {
-    var limit, now, postfix, timespan;
+    var limit, now, postfix, time, timespan;
     if (lax_time[date] != null) {
       return lax_time[date];
     }
-    if ((date != null) && (date.addMinutes != null)) {
+    if (date != null) {
       timespan = (new Date() - date) / 1000;
       limit = 3 * 60 * 60;
       if ((-limit < timespan && timespan < limit)) {
@@ -3053,10 +3053,14 @@ TIMER = function($scope) {
         }
         return date.relative('ja');
       } else {
-        now = date.clone();
+        now = Date.create(date);
         now.addMinutes(15);
         postfix = ["頃", "半頃"][(now.getMinutes() / 30).floor()];
-        return lax_time[date] = now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja');
+        time = now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja');
+        if (timespan < 0) {
+          lax_time[date] = time;
+        }
+        return time;
       }
     } else {
       return lax_time[date] = "....-..-..(？？？) --..時頃";
