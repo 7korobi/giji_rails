@@ -146,7 +146,7 @@ class SowRecordFile
           item[key_sym] = val.to_i
           item[key_sym] = val.to_i - 0x10000000000000000  if  0xffffffff00000000 < val.to_i
         else
-          item[key_sym] = (val.to_s.encode('UTF-8')  rescue  '- invisible text -')
+          item[key_sym] = (val.to_s.scrub("-?-").encode('UTF-8').scrub  rescue  '- invisible text -')
         end
       end
       begin

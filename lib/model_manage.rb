@@ -6,11 +6,6 @@ if defined?(Mongoid::Document)
   require 'model_manage/mongoid'
 end
 
-if defined?(ActiveRecord::Base)
-  require 'model_manage/active_record_rails_erd' if defined?(RailsERD)
-  require 'model_manage/active_record'
-end
-
 require 'model_manage/rails'
 
 if defined?(Rails)

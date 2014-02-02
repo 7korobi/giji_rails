@@ -29,12 +29,19 @@ gem 'omniauth-openid'
 
 
 # data_base
+# yum install mongo-10gen mongo-10gen-server
+# yum install redis
+# yum install mysql-server
+# yum install mysql-mroonga
+# yum install groonga-tokenizer-mecab
 gem 'mongoid_rails4', :require => 'mongoid'
 #gem 'mongoid', github: 'mongoid/mongoid'
 gem "redis-store"
 gem "redis-rails"
 gem 'sqlite3'
+gem "mysql2"
 gem "paperclip"
+gem "composite_primary_keys"
 
 # javascript
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
