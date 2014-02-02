@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 
 class Message < Chat
+  include Faceable
   field :_id, default: ->{ [subid, logid].join("-") }
   field :color
   field :style
   field :subid
   field :mestype
-  field :csid
-  field :name
   field :sow_auth_id
-  belongs_to :face,  inverse_of: :messages
   belongs_to :potof, inverse_of: :messages
   embedded_in :event,   inverse_of: :messages
 
@@ -23,10 +21,6 @@ class Message < Chat
     end
   rescue
     ""
-  end
-
-  def img
-    "/images/portrate/#{face_id}.jpg" if face_id.present?
   end
 
   def slice keys

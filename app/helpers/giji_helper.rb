@@ -34,13 +34,4 @@ module GijiHelper
       gon.templates[view] = capture{ yield(view, options) }
     end
   end
-
-  def render_message(message)
-    if message.template
-      options = message.slice %w[logid color style img name to time text]
-      render 'message/' + message.template, options
-    else
-      message.attributes.inspect
-    end
-  end
 end

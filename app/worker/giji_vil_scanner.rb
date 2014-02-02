@@ -5,7 +5,7 @@ class GijiVilScanner < GijiScanner
     rsync = Giji::RSync.new
 
     stop_vid_list = {}
-    rsync.each_villages do |folder, vid, path, fname|
+    rsync.each_villages do |folder, vid, _, path, fname|
       stop_vid_list[folder] ||= SowVillage.where(folder: folder, is_finish: true).pluck("vid")
       next if stop_vid_list[folder].member? vid
       new(path, folder, fname).save

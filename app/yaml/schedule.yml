@@ -3,35 +3,35 @@ giji_map_reduce_face:
   class: GijiMapReduce
   args:  Face
   queue: giji_schedules
-  description: giji mapreduce by face.
+  description: MapReduce::Face  を作成
 
 giji_map_reduce_message:
   cron: '57  4  *  *  *'
   class: GijiMapReduce
   args:  Message
   queue: giji_schedules
-  description: giji mapreduce by face.
+  description: MapReduce::Message  を作成
 
 giji_git_scanner:
   cron: '5  12  *  *  *'
   class: GijiScheduler
   args:  git
   queue: giji_schedules
-  description: giji git regular collection.
+  description: GIT コマンドで保管。
 
 giji_vil_scanner:
   cron: '1,21,41  *  *  *  *'
   class: GijiScheduler
   args:  vil
   queue: giji_schedules
-  description: giji rsync and vils get.
+  description: rsync <-> SowVillage  がまだ未登録のぶんを、ファイルから登録
 
 giji_log_scanner:
   cron: '59  0,12  *  *  *'
   class: GijiScheduler
   args:  log
   queue: giji_schedules
-  description: giji logs get.
+  description: SowTurn.messages がまだ空のぶんを、ファイルから登録
 
 giji_cleaner:
   cron: '55 4 * * *'
