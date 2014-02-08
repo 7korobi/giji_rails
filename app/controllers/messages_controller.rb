@@ -1,9 +1,12 @@
 class MessagesController < BasePastLogController
   expose(:story_events) do
-    if story.old_events.present? 
-      story.old_events
-    else
+    target_name = "events_of_#{story.folder.downcase}"
+    if story.send(target_name).present? 
+      story.send(target_name)
+    elsif story.events.present?
       story.events
+    else
+      story.old_events
     end
   end
   expose(:events_summary){ story_events.summary.cache }  

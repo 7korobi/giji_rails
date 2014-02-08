@@ -1,6 +1,25 @@
 class CreateTalks < ActiveRecord::Migration
+=begin
+
+set character_set_server = UTF8;
+set character_set_database = UTF8;
+
+grant all on *.* to 'giji'@'%';
+create database giji character set utf8;
+use giji
+
+DELETE IGNORE FROM mysql.plugin WHERE name = 'mroonga';
+INSTALL PLUGIN mroonga SONAME 'ha_mroonga.so';
+CREATE FUNCTION last_insert_grn_id RETURNS INTEGER SONAME 'ha_mroonga.so';
+CREATE FUNCTION mroonga_snippet RETURNS STRING SONAME 'ha_mroonga.so';
+CREATE FUNCTION mroonga_command RETURNS STRING SONAME 'ha_mroonga.so';
+
+show variables like 'mroonga_%';
+
+=end
+
   def change
-    create_table :talks, id: false do |t|
+    create_table :talks, options: "ENGINE=mroonga" do |t|
       t.string :story_id, null: false
       t.string :event_id, null: false
       t.string :logid,    null: false
@@ -18,25 +37,10 @@ class CreateTalks < ActiveRecord::Migration
       t.string :csid
       t.string :face_id
       t.string :sow_auth_id
-
-      t.index :story_id
-      t.index :event_id
-      t.index :date
-      t.index [:logid, :event_id], unique: true
-
     end
     execute <<-SQL
       ALTER TABLE talks
         CHANGE logid logid varchar(255) BINARY NOT NULL
-    SQL
-    execute <<-SQL
-      ALTER TABLE talks
-        ENGINE = mroonga 
-        COMMENT = 'engine "innodb"' DEFAULT CHARSET utf8
-    SQL
-    execute <<-SQL
-      ALTER TABLE talks
-        ADD FULLTEXT INDEX index_talks_on_log (log)
     SQL
   end
 end

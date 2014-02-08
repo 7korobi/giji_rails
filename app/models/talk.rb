@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-
 
-class Talk < ActiveRecord::Base
-  self.primary_keys = :event_id, :logid
+# event is duble
+#  wolf-47-3 wolf-128-7 wolf-189-9 wolf-202-2 wolf-211-4
+#  pan-15-0 pan-16-0 pan-32-0 pan-34-1 pan-40-1 
+#  ultimate-1-0 ultimate-8-4 ultimate-75-3 ultimate-78-1 ultimate-78-3
+#  rp-39-7
+#  perjury-24-10 perjury-48-0 perjury-63-6 perjury-64-4 
+#  soybean-3-5
+#  crazy-82-5
+#  cabala-51-4
+#  allstar-68-5 allstar-95-3
 
-  # validates_presence_of :date
-  # validates_uniqueness_of :logid, scope: :event_id
+class Talk < ActiveRecord::Base
+  # self.primary_keys = :event_id, :logid
+
+  validates_presence_of :date
+  validates_uniqueness_of :logid, scope: :event_id
 
   scope :summary, ->{ order(:date.asc) }
   scope :search_with, ->(query) { where(%Q|match(log) against("#{query}" with query expansion)|) }
@@ -20,76 +31,3 @@ class Talk < ActiveRecord::Base
     end
   end
 end
-
-=begin
-  store_in collection: "talks", database: "talks"
-
-  field :color
-  field :style
-  field :subid
-  field :mestype
-  field :sow_auth_id
-
-
-  def self.skip_stories
-    %w[
-      cabala-118
-      cabala-231
-      crazy-17
-      crazy-69
-      morphe-1
-      perjury-98
-      perjury-116
-      wolf-211
-      xebec-3
-      wolf-41
-      allstar-68
-      allstar-89
-      allstar-93
-      allstar-95
-      allstar-101
-      crazy-57
-      crazy-58
-      cabala-135
-      cabala-187
-      cabala-231
-      perjury-19
-      perjury-36
-      perjury-40
-      perjury-63
-      ultimate-72
-      xebec-18
-      xebec-78
-      wolf-211
-    ]
-  end
-
-  def self.skip_events(folder = Event)
-    skip_stories.map do |story_id|
-      folder.where(story_id: story_id).pluck(:id)
-    end.flatten.uniq
-  end
-
-  def self.listup_event_ids(folder = Event)
-    folder.all.pluck(:id) - skip_events(folder)
-  end
-
-  def self.copy_from_messages(folder = Event, events = listup_event_ids)
-    events.dup.each do |event_id|
-      event = folder.find(event_id)
-      begin
-        event.talk_copy
-        events.shift
-      rescue NoMethodError => e
-        puts "#{event_id} SKIP! #{e.inspect}"
-        events.shift
-      rescue RuntimeError => e
-        puts "#{event_id} ERROR! #{e.inspect}"
-      rescue Exception => e
-        puts "#{event_id} REJECT! #{e.inspect}"
-        raise e
-      end
-    end
-  end
-=end
-

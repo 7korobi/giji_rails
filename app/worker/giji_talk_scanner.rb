@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+require 'timeout'
+
 class GijiTalkScanner < GijiScanner
   def enqueue  type
 #    self.class.perform(@path, @fname, type, @folder, @vid, @turn)
@@ -13,9 +15,10 @@ class GijiTalkScanner < GijiScanner
 
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
-    ids = Talk.where(event_id: event_id).pluck("logid", "subid").uniq
+    stored_ids = Talk.where(event_id: event_id).pluck("logid")
+    chk_doubles = []
+    ActiveRecord::Base.clear_active_connections!
 
-    requests = Hash.new
     source.each do |o|
       logid, subid  = case fname
                       when /memo.cgi/
@@ -23,7 +26,12 @@ class GijiTalkScanner < GijiScanner
                       when /log.cgi/
                       [o.logid, o.logsubid]
                       end
-      next if ids.member? [logid, subid]
+      if chk_doubles.member? logid
+        GijiErrorReport.enqueue "event #{event_id} logid #{logid} is duble.", o
+        next
+      end
+      chk_doubles.push logid
+      stored_ids.push  logid
 
       # message embedded in
       message = Talk.new.tap do |t|
@@ -51,18 +59,23 @@ class GijiTalkScanner < GijiScanner
       else
         message.name = o.chrname
       end
-      message.save
-      key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
-      requests[ key ] = true
-    end
-    requests.keys.each do |key| request_key, sow_auth_id = key
-      account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
-      account.save
-      request = Request.where( request_key ).first || Request.new( request_key )
-      request.sow_auth_ids |= [account.id]
-      request.save
-    end
 
-#    MapReduce::MessageByStory.generate([story.id]) if story.is_finish
+      if message.mestype.blank?
+        GijiErrorReport.enqueue "mestype is null", message.attributes
+        next
+      end
+      begin
+        timeout(60) { message.save }
+      rescue ActiveRecord::RecordNotUnique => e
+        GijiErrorReport.enqueue e.inspect, o, message.attributes
+      rescue Mysql2::Error => e
+        GijiErrorReport.enqueue e.inspect, o, message.attributes
+        sleep 10
+      rescue Timeout::Error, ActiveRecord::StatementInvalid => e
+        GijiErrorReport.enqueue e.inspect, o, message.attributes
+        sleep 10
+        exit
+      end
+    end
   end
 end

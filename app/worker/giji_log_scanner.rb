@@ -2,7 +2,7 @@
 
 class GijiLogScanner < GijiScanner
   def self.save
-    SowTurn.messages_empty do |o|
+    SowTurn.messages_empty.each do |o|
       o.update_from_file
     end
   end
@@ -15,6 +15,8 @@ class GijiLogScanner < GijiScanner
 
   @queue = :giji_vils
   def self.perform  path, fname, type, folder, vid, turn
+    GijiTalkScanner.perform path, fname, type, folder, vid, turn
+
     source = SowRecordFile.send(type, path, fname, folder, vid, turn )
     return unless source
 
@@ -22,7 +24,12 @@ class GijiLogScanner < GijiScanner
     return unless story
 
     event = story.events.where( turn: turn ).first
-    return unless event
+    unless event
+      event = SowTurn.new( turn: turn, story_id: story.id )
+      event.attributes["_type"] = "SowTurn"
+      event.save
+      event = story.events.where( turn: turn ).first
+    end
 
     ids = event.messages.only(:logid,:subid).map{|o| [o.logid, o.subid]}
 

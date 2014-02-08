@@ -2,7 +2,7 @@
 
 cookie:
   expire:
-    hours: 1
+    years: 1
 
 css_wday:
   - cinema800

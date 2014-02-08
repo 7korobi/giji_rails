@@ -21,6 +21,19 @@ class SowVillage < Story
     SowTurn.messages_empty.pluck("story_id").uniq
   end
 
+  def duplicate_events
+    target_class = "Event::#{folder}".constantize
+    target_name  = "events_of_#{folder.downcase}"
+    target_class.where(story_id: id).delete
+
+    SowTurn.store_in collection: target_name
+    self.events.each do |event|
+      event.new_record = true
+      event.save!
+    end
+    SowTurn.store_in collection: "events"  
+  end
+
   def update_from_file_only_game force = true
     Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
       vid   = self.vid
@@ -31,20 +44,44 @@ class SowVillage < Story
     end
   end
 
-  def update_from_file_only_log
+  def update_from_file_only_log_cleanup
     update_from_file_only_game(false) do |folder,vid,path|
+      if self.events.blank?
+        self.old_events.each do |event|
+          self.events << event
+        end
+        self.events.each do |event|
+          event.new_record = true
+          event.attributes["messages"] = []
+          event.save!
+        end
+      end
       self.events.each do |event|
         %w[log memo].each do |type|
           turn = event.turn
           fname = "%04d_%02d%s.cgi"%[vid, turn, type]
           GijiLogScanner.new(path, folder, fname).save
+
+          if type == "log" && SowRecordFile.send(type, path, fname, folder, vid, turn )
+            hash = event.attributes.except("_id", "_type", "messages")
+            event.delete
+            turn = SowTurn.new(hash)
+            turn.messages = []
+            turn["_type"] = "SowTurn"
+            turn.save!
+          end
         end
       end
+      nil
     end
   end
 
-  def update_from_file
-    update_from_file_only_game(true) do |folder,vid,path|
+  def update_from_file_only_log
+    update_from_file false
+  end
+
+  def update_from_file force = true
+    update_from_file_only_game(force) do |folder,vid,path|
       self.events.each do |event|
         %w[log memo].each do |type|
           turn = event.turn

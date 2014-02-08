@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(version: 1) do
 
-  create_table "talks", id: false, force: true do |t|
+  create_table "talks", force: true do |t|
     t.string "story_id",    null: false
     t.string "event_id",    null: false
     t.string "logid",       null: false
@@ -29,11 +29,5 @@ ActiveRecord::Schema.define(version: 1) do
     t.string "face_id"
     t.string "sow_auth_id"
   end
-
-  add_index "talks", ["date"], name: "index_talks_on_date", using: :btree
-  add_index "talks", ["event_id"], name: "index_talks_on_event_id", using: :btree
-  add_index "talks", ["log"], name: "index_talks_on_log", type: :fulltext
-  add_index "talks", ["logid", "event_id"], name: "index_talks_on_logid_and_event_id", unique: true, using: :btree
-  add_index "talks", ["story_id"], name: "index_talks_on_story_id", using: :btree
 
 end

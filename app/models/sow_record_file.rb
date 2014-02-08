@@ -112,6 +112,7 @@ class SowRecordFile
       prefix.unshift :folder  if folder
       prefix.unshift :vid     if vid
       prefix.unshift :turn    if turn
+      prefix.unshift :is_scrub
       @struct = Struct.new( * ([name] + prefix + @keys) )
     elsif @keys
       item = @struct.new
@@ -146,7 +147,16 @@ class SowRecordFile
           item[key_sym] = val.to_i
           item[key_sym] = val.to_i - 0x10000000000000000  if  0xffffffff00000000 < val.to_i
         else
-          item[key_sym] = (val.to_s.scrub("-?-").encode('UTF-8').scrub  rescue  '- invisible text -')
+          is_scrub = false
+          value = val.to_s.scrub do |s|
+            is_scrub = true
+            "&empty;"
+          end.encode('UTF-8').scrub do |s|
+            is_scrub = true
+            "&empty;"
+          end
+          item[key_sym] = value
+          item[:is_scrub] = is_scrub
         end
       end
       begin
