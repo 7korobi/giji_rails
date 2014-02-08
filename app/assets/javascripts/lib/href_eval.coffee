@@ -37,15 +37,8 @@ HREF_EVAL = ($scope)->
         top: $scope.pageY + 24
         z: Date.now()
       $scope.anchors.push item
-      $scope.$apply()
-      drag = $(".drag.#{item.logid}")
-      drag.fadeIn 'fast', ->
-        drag.find(".badge").attr("href_eval","external('#{id}')")
     else
-      drag = $(".drag.#{id}")
-      drag.fadeOut 'fast', ->
-        $scope.anchors.splice idx, 1
-        $scope.$apply()
+      $scope.anchors.splice idx, 1
 
   popup_apply = (item, turn)->
     idx = $scope.anchors.indexOf item
@@ -54,16 +47,8 @@ HREF_EVAL = ($scope)->
       item.turn = turn
       item.z = Date.now()
       item.top = $scope.pageY + 24
-      $scope.$apply()
-
-      drag = $(".drag.#{item.logid}")
-      drag.fadeIn 'fast', ->
-        drag.find(".drag_head .badge").attr("href_eval","popup(#{item.turn},'#{item.logid}')")
     else
-      drag = $(".drag.#{item.logid}")
-      drag.fadeOut 'fast', ->
-        $scope.anchors.splice idx, 1
-        $scope.$apply()
+      $scope.anchors.splice idx, 1
     idx
 
   popup = (turn, ank)->
@@ -100,16 +85,16 @@ HREF_EVAL = ($scope)->
             popup_find turn - 1
 
   href_eval = (e)->
-    $scope.pageY = e.pageY
-    eval $(e.target).attr('href_eval')
-    $scope.$apply()
+    $scope.$apply ->
+      $scope.pageY = e.pageY
+      eval $(e.target).attr('href_eval')
     $(window).scroll()
 
   foreground = (e)->
-    logid = $(e.target).find("[name]").attr('name')
-    item  = _.find $scope.anchors, (o)-> logid = o.logid
-    item.z = Date.now()
-    $scope.$apply()
+    $scope.$apply ->
+      logid = $(e.target).find("[name]").attr('name')
+      item  = _.find $scope.anchors, (o)-> logid = o.logid
+      item?.z = Date.now()
 
   # use in interpolate
   $('#messages').on  'click', '.drag',  foreground

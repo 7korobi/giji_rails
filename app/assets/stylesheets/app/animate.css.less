@@ -1,0 +1,56 @@
+.drag {
+  &.ng-enter {
+    margin-left: 50px;    
+  }
+}
+
+.message_filter {
+  &.ng-enter,
+  &.ng-leave,
+  &.ng-move,
+  &.fade-hide,
+  &.fade-show {
+    transition-property: all;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in;
+    transition-delay: 0;
+  }
+
+  &.ng-enter {
+    opacity: 0;
+  }
+  &.ng-enter-active {
+    opacity: 1;
+    margin-left:  0px;
+  }
+
+  &.ng-leave {
+    opacity: 1;
+    margin-left:  0px;
+  }
+  &.ng-leave-active {
+    opacity: 0;
+    margin-left: -50px;
+  }
+
+  &.ng-move {
+    opacity: .5;
+  }	
+  &.ng-move-active {
+    opacity: 1;
+  }
+}
+
+.ng-remove {
+  opacity: .5;
+  position: absolute;
+}
+.ng-remove-active {
+  opacity: 0;
+}
+.ng-add {
+  opacity: 0;
+}
+.ng-add-active {
+  opacity: 1;
+}

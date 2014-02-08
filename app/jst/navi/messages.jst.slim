@@ -11,4 +11,5 @@
 
 .message_filter.drag(ng-class="message.logid" ng-repeat="message in anchors" log="message" drag="message")
   .drag_head
-    span.badge ✘
+    span.badge(href_eval="popup({{message.turn}}, '{{message.logid}}')") ✘
+

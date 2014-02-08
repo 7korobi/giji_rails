@@ -2217,7 +2217,7 @@ HREF_EVAL = function($scope) {
     }
   };
   external = function(id, uri, protocol, host, path) {
-    var drag, idx, item;
+    var idx, item;
     item = _.find($scope.anchors, function(log) {
       return log.logid === id;
     });
@@ -2234,39 +2234,21 @@ HREF_EVAL = function($scope) {
         top: $scope.pageY + 24,
         z: Date.now()
       };
-      $scope.anchors.push(item);
-      $scope.$apply();
-      drag = $(".drag." + item.logid);
-      return drag.fadeIn('fast', function() {
-        return drag.find(".badge").attr("href_eval", "external('" + id + "')");
-      });
+      return $scope.anchors.push(item);
     } else {
-      drag = $(".drag." + id);
-      return drag.fadeOut('fast', function() {
-        $scope.anchors.splice(idx, 1);
-        return $scope.$apply();
-      });
+      return $scope.anchors.splice(idx, 1);
     }
   };
   popup_apply = function(item, turn) {
-    var drag, idx;
+    var idx;
     idx = $scope.anchors.indexOf(item);
     if (idx < 0) {
       $scope.anchors.push(item);
       item.turn = turn;
       item.z = Date.now();
       item.top = $scope.pageY + 24;
-      $scope.$apply();
-      drag = $(".drag." + item.logid);
-      drag.fadeIn('fast', function() {
-        return drag.find(".drag_head .badge").attr("href_eval", "popup(" + item.turn + ",'" + item.logid + "')");
-      });
     } else {
-      drag = $(".drag." + item.logid);
-      drag.fadeOut('fast', function() {
-        $scope.anchors.splice(idx, 1);
-        return $scope.$apply();
-      });
+      $scope.anchors.splice(idx, 1);
     }
     return idx;
   };
@@ -2318,19 +2300,21 @@ HREF_EVAL = function($scope) {
     }
   };
   href_eval = function(e) {
-    $scope.pageY = e.pageY;
-    eval($(e.target).attr('href_eval'));
-    $scope.$apply();
+    $scope.$apply(function() {
+      $scope.pageY = e.pageY;
+      return eval($(e.target).attr('href_eval'));
+    });
     return $(window).scroll();
   };
   foreground = function(e) {
-    var item, logid;
-    logid = $(e.target).find("[name]").attr('name');
-    item = _.find($scope.anchors, function(o) {
-      return logid = o.logid;
+    return $scope.$apply(function() {
+      var item, logid;
+      logid = $(e.target).find("[name]").attr('name');
+      item = _.find($scope.anchors, function(o) {
+        return logid = o.logid;
+      });
+      return item != null ? item.z = Date.now() : void 0;
     });
-    item.z = Date.now();
-    return $scope.$apply();
   };
   $('#messages').on('click', '.drag', foreground);
   $('#messages').on('click', '[href_eval]', href_eval);
@@ -3389,8 +3373,8 @@ CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
     var param, _ref;
     param = {
       cmd: "login",
-      uid: f.uid,
-      pwd: f.pwd,
+      uid: f.uid = $("[name=\"uid\"]").val(),
+      pwd: f.pwd = $("[name=\"pwd\"]").val(),
       cmdfrom: f.cmdfrom
     };
     if (((_ref = $scope.story) != null ? _ref.vid : void 0) != null) {
