@@ -1,4 +1,4 @@
-AJAX = ($scope)->
+AJAX = ($scope, $http)->
   $scope.replace_gon = (data)->
     codes = data.match ///
       <script.*?>[\s\S]*?</script>
@@ -10,16 +10,16 @@ AJAX = ($scope)->
           eval code
 
   $scope.get = (href, cb)->
-    $.get href, {}, (data)->
+    $http.get(href)
+    .success (data)->
       $scope.replace_gon data
       cb()
-      $scope.$apply()
 
   $scope.post = (href, param, cb)->
-    $.post href, param, (data)->
+    $http.post(href, $.param param)
+    .success (data)->
       $scope.replace_gon data
       cb()
-      $scope.$apply()
 
   form_submit = (param)->
     form = $("#submit_request")
@@ -52,33 +52,4 @@ AJAX = ($scope)->
   
     $("body").append("""<form id="submit_request" target="submit_result" method="post" action="#{href.escapeURL()}"></form>""")
     form_submit(param)
-
-  $scope.ajax_event = (turn, href, is_news)->    
-    if $scope.events?
-      event = $scope.event
-      change = ->
-        $scope.set_turn(turn)
-        $scope.event.is_news = is_news
-        $scope.page.value = 1
-        $scope.mode.value = $scope.mode_cache.talk
-        $scope.boot()
-        href = $scope.event_url $scope.event
-        win.history "#{$scope.event.name}", href, location.hash
-
-      if event.has_all_messages
-        change()
-      else
-        if is_news
-          getter = $scope.get_news
-        else
-          getter = $scope.get_all 
-        getter event, =>
-          $scope.init()
-          change()
-
-    else
-      location.href = href + location.hash
-
-  $scope.$watch "event.turn", (turn, oldVal)->
-    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event?
 

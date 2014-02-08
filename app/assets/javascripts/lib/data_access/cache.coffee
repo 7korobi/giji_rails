@@ -1,9 +1,9 @@
 CACHE = ($scope)->
   $scope.set_turn = (turn)->
-    if $scope.events?[turn]?
-      $scope.event = $scope.events[turn]
-    if $scope.forms?[turn]?
-      $scope.form = $scope.forms[turn]
+    event = _.find $scope.events, (o)-> o.turn == turn
+    form  = _.find $scope.forms,  (o)-> o.turn == turn
+    $scope.event = event if event?
+    $scope.form  = form  if form?
     $scope.face.scan()
 
   $scope.merge_turn = (old_base, new_base)->

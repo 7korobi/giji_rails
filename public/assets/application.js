@@ -1,6 +1,6 @@
 var AJAX;
 
-AJAX = function($scope) {
+AJAX = function($scope, $http) {
   var form_submit;
   $scope.replace_gon = function(data) {
     var code, codes, dom, _i, _len, _results;
@@ -20,17 +20,15 @@ AJAX = function($scope) {
     }
   };
   $scope.get = function(href, cb) {
-    return $.get(href, {}, function(data) {
+    return $http.get(href).success(function(data) {
       $scope.replace_gon(data);
-      cb();
-      return $scope.$apply();
+      return cb();
     });
   };
   $scope.post = function(href, param, cb) {
-    return $.post(href, param, function(data) {
+    return $http.post(href, $.param(param)).success(function(data) {
       $scope.replace_gon(data);
-      cb();
-      return $scope.$apply();
+      return cb();
     });
   };
   form_submit = function(param) {
@@ -53,7 +51,7 @@ AJAX = function($scope) {
     form_submit(param);
     return $scope.pool_nolimit();
   };
-  $scope.post_iframe = function(href, param, cb) {
+  return $scope.post_iframe = function(href, param, cb) {
     var dynamic_div, iframe;
     dynamic_div = document.createElement('DIV');
     dynamic_div.innerHTML = "<iframe name=\"submit_result\" style=\"display: none;\"></iframe>";
@@ -67,44 +65,8 @@ AJAX = function($scope) {
     $("body").append("<form id=\"submit_request\" target=\"submit_result\" method=\"post\" action=\"" + (href.escapeURL()) + "\"></form>");
     return form_submit(param);
   };
-  $scope.ajax_event = function(turn, href, is_news) {
-    var change, event, getter,
-      _this = this;
-    if ($scope.events != null) {
-      event = $scope.event;
-      change = function() {
-        $scope.set_turn(turn);
-        $scope.event.is_news = is_news;
-        $scope.page.value = 1;
-        $scope.mode.value = $scope.mode_cache.talk;
-        $scope.boot();
-        href = $scope.event_url($scope.event);
-        return win.history("" + $scope.event.name, href, location.hash);
-      };
-      if (event.has_all_messages) {
-        return change();
-      } else {
-        if (is_news) {
-          getter = $scope.get_news;
-        } else {
-          getter = $scope.get_all;
-        }
-        return getter(event, function() {
-          $scope.init();
-          return change();
-        });
-      }
-    } else {
-      return location.href = href + location.hash;
-    }
-  };
-  return $scope.$watch("event.turn", function(turn, oldVal) {
-    if ((turn != null) && ($scope.event != null)) {
-      return $scope.ajax_event(turn, null, !!$scope.event.is_news);
-    }
-  });
 };
-angular.module("giji", ['ngTouch']).config(function($locationProvider, $sceProvider) {
+angular.module("giji", ['ngTouch', 'ngCookies', 'ngAnimate']).config(function($locationProvider, $sceProvider) {
   $locationProvider.html5Mode(true);
   return $sceProvider.enabled(false);
 }).run(function($templateCache, $compile) {
@@ -166,7 +128,7 @@ angular.module("giji").directive("theme", function($compile) {
     }
   };
 });
-angular.module("giji").directive("navi", function($compile) {
+angular.module("giji").directive("navi", function($compile, $timeout) {
   var effect, static_navis;
   effect = function($scope) {
     var resize_naviitems;
@@ -281,7 +243,7 @@ angular.module("giji").directive("navi", function($compile) {
       }
       return (_ref2 = $("#outframe")[0]) != null ? _ref2.className = outframe : void 0;
     };
-    return _.delay(function() {
+    return $timeout(function() {
       return win.on_resize(resize_naviitems);
     }, 100);
   };
@@ -401,70 +363,62 @@ GIJI.template = function($compile, $scope, elm, name) {
   return elm.append(compiled);
 };
 
-angular.module("giji").directive("template", [
-  "$interpolate", "$compile", function($interpolate, $compile) {
-    return {
-      restrict: "A",
-      link: function($scope, elm, attr, ctrl) {
-        var name;
-        name = attr.template;
-        return GIJI.template($compile, $scope, elm, name);
-      }
-    };
-  }
-]);
+angular.module("giji").directive("template", function($interpolate, $compile) {
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      var name;
+      name = attr.template;
+      return GIJI.template($compile, $scope, elm, name);
+    }
+  };
+});
 
-angular.module("giji").directive("listup", [
-  "$compile", function($compile) {
-    return {
-      restrict: "A",
-      link: function($scope, elm, attr, ctrl) {
-        elm.addClass('ng-binding').data('$binding', attr.listup);
-        return $scope.$watch(attr.listup, function(value) {
-          var compiled, template;
-          template = "";
-          if (value != null) {
-            template = "<p>" + value.join("</p><p>") + "</p>";
-          }
-          compiled = $compile(template)($scope);
-          return elm.html(compiled);
-        });
-      }
-    };
-  }
-]);
+angular.module("giji").directive("listup", function($compile) {
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      elm.addClass('ng-binding').data('$binding', attr.listup);
+      return $scope.$watch(attr.listup, function(value) {
+        var compiled, template;
+        template = "";
+        if (value != null) {
+          template = "<p>" + value.join("</p><p>") + "</p>";
+        }
+        compiled = $compile(template)($scope);
+        return elm.html(compiled);
+      });
+    }
+  };
+});
 
-angular.module("giji").directive("form", [
-  "$compile", function($compile) {
-    return {
-      restrict: "A",
-      link: function($scope, elm, attr, ctrl) {
-        elm.addClass('ng-binding').data('$binding', attr.form);
-        return $scope.$watch(attr.form, function(value) {
-          var compiled, template;
-          template = JST["form/" + value];
-          compiled = $compile(template)($scope);
-          return elm.html(compiled);
-        });
-      }
-    };
-  }
-]);
+angular.module("giji").directive("form", function($compile, $http) {
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      elm.addClass('ng-binding').data('$binding', attr.form);
+      return $scope.$watch(attr.form, function(value) {
+        var compiled, template;
+        template = JST["form/" + value];
+        compiled = $compile(template)($scope);
+        return elm.html(compiled);
+      });
+    }
+  };
+});
 
-angular.module("giji").directive("diary", [
-  "$compile", function($compile) {
-    return {
-      restrict: "A",
-      link: function($scope, elm, attr, ctrl) {
-        var form_text;
-        form_text = $scope.$eval(attr.diary);
-        form_text.ver = new Diary(form_text);
-        form_text.ver.versions();
-        return GIJI.template($compile, $scope, elm, "form/version");
-      }
-    };
-  }
-]);
+angular.module("giji").directive("diary", function($compile) {
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      var form_text;
+      form_text = $scope.$eval(attr.diary);
+      form_text.ver = new Diary(form_text);
+      form_text.ver.versions();
+      return GIJI.template($compile, $scope, elm, "form/version");
+    }
+  };
+});
 var CARD;
 
 CARD = function($scope) {
@@ -779,12 +733,18 @@ CACHE = function($scope) {
   var cache, concat_merge, find_or_create, find_turn, merge, merge_by,
     _this = this;
   $scope.set_turn = function(turn) {
-    var _ref, _ref1;
-    if (((_ref = $scope.events) != null ? _ref[turn] : void 0) != null) {
-      $scope.event = $scope.events[turn];
+    var event, form;
+    event = _.find($scope.events, function(o) {
+      return o.turn === turn;
+    });
+    form = _.find($scope.forms, function(o) {
+      return o.turn === turn;
+    });
+    if (event != null) {
+      $scope.event = event;
     }
-    if (((_ref1 = $scope.forms) != null ? _ref1[turn] : void 0) != null) {
-      $scope.form = $scope.forms[turn];
+    if (form != null) {
+      $scope.form = form;
     }
     return $scope.face.scan();
   };
@@ -2411,11 +2371,11 @@ Navi = (function() {
   };
 
   Navi.prototype.popstate = function() {
-    var c, l, _ref,
+    var c, l,
       _this = this;
     l = this.location_val(this.key);
     if (this.params.is_cookie != null) {
-      c = (_ref = document.cookie.match(this.chk)) != null ? _ref[2] : void 0;
+      c = win.cookies[this.key];
     }
     this.value = this.params.current_type(l || c || "");
     if ((this.select != null) && _.every(this.select, function(o) {
@@ -2449,7 +2409,6 @@ Navi = (function() {
     } else {
       this.select = def.select;
     }
-    this.chk = RegExp("(^|\\s)" + key + "=([^;]+)");
     this.popstate();
     this.scope.$watch("" + this.key + ".value", function(value, oldVal) {
       var cmd, expire, func, list, navi, options, val_hash, val_search, _, _i, _len, _name, _ref1, _ref2;
@@ -2545,15 +2504,15 @@ ArrayNavi = (function(_super) {
   }
 
   ArrayNavi.prototype.popstate = function() {
-    var c, l, o, value, _i, _len, _ref, _ref1;
+    var c, l, o, value, _i, _len, _ref;
     l = this.location_val(this.key);
     if (this.params.is_cookie != null) {
-      c = (_ref = document.cookie.match(this.chk)) != null ? _ref[2] : void 0;
+      c = win.cookies[this.key];
     }
     value = [];
-    _ref1 = (l || c || "").split(",");
-    for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-      o = _ref1[_i];
+    _ref = (l || c || "").split(",");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      o = _ref[_i];
       if ((this.select != null) && _.every(this.select, function(s) {
         return o !== s.val;
       })) {
@@ -2804,29 +2763,26 @@ PageNavi.push = function($scope, key, def) {
 };
 var POOL;
 
-POOL = function($scope, $filter) {
+POOL = function($scope, $filter, $timeout) {
   var adjust, ajax_timer, apply, do_pool_ajax, message_first, message_timer, pool_ajax, pool_button, pool_start, refresh;
   message_timer = 60 * 1000;
   message_first = 25 * 1000;
   ajax_timer = 5 * 60 * 1000;
-  apply = function() {
-    return $scope.$apply();
-  };
+  apply = function() {};
   $scope.init = function() {
     INIT($scope, $filter);
     if ($scope.event != null) {
       $scope.do_sort_potofs();
       $scope.set_turn($scope.event.turn);
     }
-    return _.delay(apply, message_first);
+    return $timeout(apply, message_first);
   };
   refresh = function() {
-    apply();
-    return _.delay(refresh, message_timer);
+    return $timeout(refresh, message_timer);
   };
   pool_start = function() {
-    _.delay(apply, message_first);
-    return _.delay(refresh, message_timer);
+    $timeout(apply, message_first);
+    return $timeout(refresh, message_timer);
   };
   do_pool_ajax = function() {
     var _ref,
@@ -2879,7 +2835,7 @@ POOL = function($scope, $filter) {
     return _.delay(adjust, 4000);
   };
   $scope.boot = function() {
-    _.delay(apply, 2000);
+    $timeout(apply, 2000);
     return $scope.adjust();
   };
   $scope.init();
@@ -3186,7 +3142,7 @@ if (SOW_RECORD.CABALA.events != null) {
   }
 }
 
-MODULE = function($scope, $filter, $sce) {
+MODULE = function($scope, $filter, $sce, $http, $timeout) {
   var anchor, background, id_num, link, link_regexp, link_regexp_g, random;
   $scope.head = head;
   $scope.win = win;
@@ -3272,22 +3228,59 @@ MODULE = function($scope, $filter, $sce) {
     face_id = o.face_id || '*';
     return "" + csid + "-" + face_id;
   };
+  $scope.ajax_event = function(turn, href, is_news) {
+    var change, event, getter,
+      _this = this;
+    if ($scope.events != null) {
+      event = $scope.event;
+      change = function() {
+        $scope.set_turn(turn);
+        $scope.event.is_news = is_news;
+        $scope.page.value = 1;
+        $scope.mode.value = $scope.mode_cache.talk;
+        $scope.boot();
+        href = $scope.event_url($scope.event);
+        return win.history("" + $scope.event.name, href, location.hash);
+      };
+      if (event.has_all_messages) {
+        return change();
+      } else {
+        if (is_news) {
+          getter = $scope.get_news;
+        } else {
+          getter = $scope.get_all;
+        }
+        return getter(event, function() {
+          $scope.init();
+          return change();
+        });
+      }
+    } else {
+      return location.href = href + location.hash;
+    }
+  };
+  $scope.$watch("event.turn", function(turn, oldVal) {
+    if ((turn != null) && ($scope.event != null)) {
+      return $scope.ajax_event(turn, null, !!$scope.event.is_news);
+    }
+  });
   TOKEN_INPUT($scope);
   HREF_EVAL($scope);
   TIMER($scope);
-  AJAX($scope);
   CARD($scope);
   CACHE($scope);
   POTOFS($scope);
+  AJAX($scope, $http);
   DIARY($scope);
   TITLE($scope);
   GO($scope);
-  return POOL($scope, $filter);
+  return POOL($scope, $filter, $timeout);
 };
 var RAILS;
 
-RAILS = function($scope, $filter, $sce) {
+RAILS = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   var get, submit;
+  win.cookies = $cookies;
   $scope.mode_cache = {
     info: 'info_open_player',
     memo: 'memo_all_open_last_player',
@@ -3339,7 +3332,7 @@ RAILS = function($scope, $filter, $sce) {
     });
   };
   $scope.submit = _.throttle(submit, 5000);
-  return MODULE($scope, $filter, $sce);
+  return MODULE($scope, $filter, $sce, $http, $timeout);
 };
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.

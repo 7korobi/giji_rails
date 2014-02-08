@@ -1,10 +1,10 @@
-POOL = ($scope, $filter)->
+POOL = ($scope, $filter, $timeout)->
   message_timer =  60 * 1000
   message_first =  25 * 1000
   ajax_timer = 5 * 60 * 1000
 
   apply = ->
-    $scope.$apply()
+#    $scope.$apply()
 
   $scope.init = ->
     INIT $scope, $filter
@@ -12,15 +12,14 @@ POOL = ($scope, $filter)->
       $scope.do_sort_potofs()
       $scope.set_turn($scope.event.turn)
 
-    _.delay apply, message_first
+    $timeout apply, message_first
 
   refresh = ->
-    apply()
-    _.delay refresh, message_timer
+    $timeout refresh, message_timer
 
   pool_start = ->
-    _.delay apply, message_first
-    _.delay refresh, message_timer
+    $timeout apply,   message_first
+    $timeout refresh, message_timer
 
   do_pool_ajax = ->
     if $scope.event?.is_news
@@ -60,7 +59,7 @@ POOL = ($scope, $filter)->
     _.delay adjust, 4000
 
   $scope.boot = ->
-    _.delay apply, 2000
+    $timeout apply, 2000
     $scope.adjust()
 
   # onload event

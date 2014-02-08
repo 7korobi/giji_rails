@@ -1,4 +1,5 @@
-CGI = ($scope, $filter, $sce)->
+CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
+  win.cookies = $cookies
   $scope.mode_cache = 
     info: 'info_open_player'
     memo: 'memo_all_open_last_player'
@@ -57,19 +58,12 @@ CGI = ($scope, $filter, $sce)->
       cb() if cb
   $scope.submit = _.throttle submit, 5000
 
-  regexp =
-    uid: ///(^|\s)uid=([^;]+)///
-    pwd: ///(^|\s)pwd=([^;]+)///
   $scope.logined = ->
-    uid = document.cookie.match(regexp.uid)?[2]
-    pwd = document.cookie.match(regexp.pwd)?[2]
-    uid? && pwd?
+    win.cookies.uid && win.cookies.pwd
 
   $scope.login = (f)->
-    f.uid = angular.element("""[name="uid"]""").val()
-    f.pwd = angular.element("""[name="pwd"]""").val()
     param =
-      cmd: f.cmd
+      cmd: "login"
       uid: f.uid
       pwd: f.pwd
       cmdfrom: f.cmdfrom
@@ -83,7 +77,7 @@ CGI = ($scope, $filter, $sce)->
       cmdfrom: f.cmdfrom
     $scope.submit param, ->
 
-  MODULE $scope, $filter, $sce
+  MODULE $scope, $filter, $sce, $http, $timeout
   FORM   $scope, $sce
 
   $scope.story_has_option = (option)->

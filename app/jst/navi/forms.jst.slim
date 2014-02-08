@@ -1,13 +1,13 @@
 .caution.text(listup="cautions")
 
-div(form="f.jst" ng-repeat="f in form.texts")
+div(form="f.jst" ng-repeat="f in form.texts" ng-show="logined()")
 
-div(class="{{form.win}}")
+div(class="{{form.win}}" ng-show="logined()")
   .secret
     p.text(listup="form.secrets")
 
 
-div(ng-hide="form.confirm")
+div(ng-hide="form.confirm" ng-show="logined()")
   .formpl_gm.form-inline(ng-repeat="f in form.command_group.commit")
     .commitbutton
       select.input-medium(name="commit" ng-change="vote_change(f)" ng-model="f.commit" ng-disabled="f.disabled" ng-options="o.val as o.name for o in f.commits")

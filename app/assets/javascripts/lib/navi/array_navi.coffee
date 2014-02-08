@@ -4,7 +4,7 @@ class ArrayNavi extends Navi
 
   popstate: ()->
     l = @location_val(@key)
-    c = document.cookie.match(@chk)?[2] if @params.is_cookie?
+    c = win.cookies[@key] if @params.is_cookie?
     value = []
     for o in  (l or c or "").split(",")
       break if @select? && _.every @select, (s)-> o != s.val

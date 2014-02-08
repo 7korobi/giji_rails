@@ -18,7 +18,7 @@ class Navi
 
   popstate: ()->
     l = @location_val(@key)
-    c = document.cookie.match(@chk)?[2] if @params.is_cookie?
+    c = win.cookies[@key] if @params.is_cookie?
     @value = @params.current_type l or c or ""
     @value = "" if @select? && _.every @select, (o)=> @value != o.val
     @value or= @params.current_type @params.current
@@ -41,9 +41,6 @@ class Navi
     else
       @select = def.select
 
-    @chk = ///
-      (^|\s)#{key}=([^;]+)
-    ///
     @popstate()
 
     @scope.$watch "#{@key}.value", (value,oldVal)=>

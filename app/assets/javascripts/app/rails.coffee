@@ -1,4 +1,5 @@
-RAILS = ($scope, $filter, $sce)->
+RAILS = ($scope, $filter, $sce, $cookies, $http, $timeout)->
+  win.cookies = $cookies
   $scope.mode_cache = 
     info: 'info_open_player'
     memo: 'memo_all_open_last_player'
@@ -35,4 +36,4 @@ RAILS = ($scope, $filter, $sce)->
   $scope.submit = _.throttle submit, 5000
 
 
-  MODULE   $scope, $filter, $sce
+  MODULE   $scope, $filter, $sce, $http, $timeout

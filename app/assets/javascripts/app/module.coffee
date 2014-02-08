@@ -15,7 +15,7 @@ if SOW_RECORD.CABALA.events?
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
-MODULE = ($scope, $filter, $sce)->
+MODULE = ($scope, $filter, $sce, $http, $timeout)->
   $scope.head = head;
   $scope.win  = win;
   $scope.link = GIJI.link
@@ -92,18 +92,47 @@ MODULE = ($scope, $filter, $sce)->
     face_id = o.face_id || '*'
     "#{csid}-#{face_id}"
 
+  $scope.ajax_event = (turn, href, is_news)->    
+    if $scope.events?
+      event = $scope.event
+      change = ->
+        $scope.set_turn(turn)
+        $scope.event.is_news = is_news
+        $scope.page.value = 1
+        $scope.mode.value = $scope.mode_cache.talk
+        $scope.boot()
+        href = $scope.event_url $scope.event
+        win.history "#{$scope.event.name}", href, location.hash
+
+      if event.has_all_messages
+        change()
+      else
+        if is_news
+          getter = $scope.get_news
+        else
+          getter = $scope.get_all 
+        getter event, =>
+          $scope.init()
+          change()
+
+    else
+      location.href = href + location.hash
+
+  $scope.$watch "event.turn", (turn, oldVal)->
+    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event?
+
 
   TOKEN_INPUT  $scope
   HREF_EVAL    $scope
   TIMER   $scope
-  AJAX    $scope
   CARD    $scope
   CACHE   $scope
   POTOFS  $scope
+  AJAX    $scope, $http
 
   DIARY   $scope
   TITLE   $scope
   GO      $scope
 
   # INIT FILTER POOL sequence
-  POOL    $scope, $filter
+  POOL    $scope, $filter, $timeout

@@ -1,4 +1,4 @@
-angular.module("giji").directive "navi", ($compile)->
+angular.module("giji").directive "navi", ($compile, $timeout)->
   effect = ($scope)->
     resize_naviitems = ->
       return unless $scope.navi? && $scope.css.width?
@@ -89,7 +89,7 @@ angular.module("giji").directive "navi", ($compile)->
       $("#contentframe")[0]?.className = content
       $("#outframe")[0]?.className = outframe
 
-    _.delay ->
+    $timeout ->
       win.on_resize resize_naviitems
     , 100
   static_navis = {}
