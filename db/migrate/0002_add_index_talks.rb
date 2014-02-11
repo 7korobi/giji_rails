@@ -5,9 +5,11 @@ class AddIndexTalks < ActiveRecord::Migration
     add_index :talks, [:date]
     add_index :talks, [:logid, :event_id], unique: true
 
+=begin
     execute <<-SQL
       ALTER TABLE talks
         ADD FULLTEXT INDEX index_talks_on_log (log) COMMENT 'parser "TokenMecab"'
     SQL
+=end
   end
 end

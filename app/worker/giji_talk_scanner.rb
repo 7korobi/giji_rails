@@ -17,6 +17,8 @@ class GijiTalkScanner < GijiScanner
     event_id = [folder.downcase, vid, turn].join '-'
     stored_ids = Talk.where(event_id: event_id).pluck("logid")
     chk_doubles = []
+    requests = Hash.new
+
     ActiveRecord::Base.clear_active_connections!
 
     source.each do |o|
@@ -27,10 +29,12 @@ class GijiTalkScanner < GijiScanner
                       [o.logid, o.logsubid]
                       end
       if chk_doubles.member? logid
-        GijiErrorReport.enqueue "event #{event_id} logid #{logid} is duble.", o
-        next
+        GijiErrorReport.enqueue "logid is double. #{logid} add 90000 number.", o  unless  stored_ids.member? logid
+        logid = logid[0..1] + (90000 + logid[2..-1].to_i).to_s
       end
       chk_doubles.push logid
+
+      next if stored_ids.member? logid
       stored_ids.push  logid
 
       # message embedded in
@@ -61,8 +65,8 @@ class GijiTalkScanner < GijiScanner
       end
 
       if message.mestype.blank?
-        GijiErrorReport.enqueue "mestype is null", message.attributes
-        next
+        GijiErrorReport.enqueue "mestype: null => BSAY", message.attributes
+        message.mestype = "BSAY"
       end
       begin
         timeout(60) { message.save }
@@ -76,6 +80,17 @@ class GijiTalkScanner < GijiScanner
         sleep 10
         exit
       end
+      key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
+      requests[ key ] = true
     end
+=begin
+    requests.keys.each do |key| request_key, sow_auth_id = key
+      account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
+      account.save
+      request = Request.where( request_key ).first || Request.new( request_key )
+      request.sow_auth_ids |= [account.id]
+      request.save
+    end
+=end
   end
 end

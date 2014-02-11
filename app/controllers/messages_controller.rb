@@ -1,18 +1,12 @@
 class MessagesController < BasePastLogController
-  expose(:story_events) do
-    target_name = "events_of_#{story.folder.downcase}"
-    if story.send(target_name).present? 
-      story.send(target_name)
-    elsif story.events.present?
-      story.events
-    else
-      story.old_events
-    end
+  expose(:events_summary){ story.events.summary.cache }  
+  expose(:events){ story.events.order_by(turn:1).cache }
+  expose(:event) do 
+    e = story.events.where(turn: params[:turn]).cache.first 
+    e.messages = Talk.in_event(e.id)
+    vil_info e
+    e
   end
-  expose(:events_summary){ story_events.summary.cache }  
-  expose(:events){ story_events.order_by(turn:1).cache }
-  expose(:event){ story_events.where(turn: params[:turn]).cache.first }
-  expose(:messages){ event.messages.summary.cache }
 
   respond_to :html, :json
 
@@ -24,16 +18,11 @@ class MessagesController < BasePastLogController
         link: messages_path(event.story_id, event.turn),
       }
     end
-    vil_info event
-    gon.event  = event
+    gon.event = event
   end
 
   def file
     base
-    events.each do |event|
-      event.name = event.name
-      vil_info event
-    end
     gon.events = events
     gon.event = {turn:0}
 
@@ -42,10 +31,10 @@ class MessagesController < BasePastLogController
 
   protected
   def vil_info(event)
-    msg = Message.new(
+    msg = {
       logid:    "vilinfo00000",
-    )
-    msg["template"] = "sow/village_info"
+      template: "sow/village_info",
+    }
 
     event.messages.unshift msg
     event[:has_all_messages] = true
