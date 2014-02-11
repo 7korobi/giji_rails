@@ -97,7 +97,11 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
       event = $scope.event
       change = ->
         $scope.set_turn(turn)
-        $scope.event.is_news = is_news
+        $scope.event.is_news = 
+          if $scope.event.has_all_messages
+            false
+          else
+            is_news
         $scope.page.value = 1
         $scope.mode.value = $scope.mode_cache.talk
         $scope.boot()
