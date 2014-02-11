@@ -92,7 +92,6 @@ group :development do
 
 # To use debugger
   gem 'pry'
-  gem 'pry-doc'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'better_errors'

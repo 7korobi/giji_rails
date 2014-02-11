@@ -146,7 +146,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji.load.jp
+      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
 
 PERL_BRAID:
   config: &config_braid
@@ -194,7 +194,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji.load.jp
+      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
       RULE:          BRAID
 
 # 内部 人狼議事

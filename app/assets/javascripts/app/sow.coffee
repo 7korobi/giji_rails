@@ -64,8 +64,8 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   $scope.login = (f)->
     param =
       cmd: "login"
-      uid: f.uid
-      pwd: f.pwd
+      uid: f.uid = $("""[name="uid"]""").val()
+      pwd: f.pwd = $("""[name="pwd"]""").val()
       cmdfrom: f.cmdfrom
     param.vid = $scope.story.vid if $scope.story?.vid?
     $scope.submit param, ->

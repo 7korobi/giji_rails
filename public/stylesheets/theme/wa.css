@@ -7,7 +7,7 @@ body {
   margin: 0px;
   padding: 0px;
   color: #ccf;
-  background-image: url("http://giji.load.jp/images/bg/nagatanienn.png");
+  background-image: url("http://7korobi.gehirn.ne.jp/images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }
@@ -172,7 +172,7 @@ strong { }
 
 /* 外枠 ----------*/
 .outframe {
-  background-image: url("http://giji.load.jp/images/bg/nagatanienn.png");
+  background-image: url("http://7korobi.gehirn.ne.jp/images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }
@@ -185,7 +185,7 @@ strong { }
 
 /* フィルタを左に配置した時の外枠 ----------*/
 .outframe_navimode {
-  background-image: url("http://giji.load.jp/images/bg/nagatanienn.png");
+  background-image: url("http://7korobi.gehirn.ne.jp/images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }
