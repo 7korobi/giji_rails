@@ -3846,7 +3846,7 @@ this.SOW = {
 
 
 this.URL = {
-  "file": "http://giji.load.jp",
+  "file": "http://7korobi.gehirn.ne.jp",
   "rails": "http://giji.check.jp"
 } ;
 

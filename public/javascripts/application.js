@@ -3219,7 +3219,7 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
       event = $scope.event;
       change = function() {
         $scope.set_turn(turn);
-        $scope.event.is_news = is_news;
+        $scope.event.is_news = $scope.event.has_all_messages ? false : is_news;
         $scope.page.value = 1;
         $scope.mode.value = $scope.mode_cache.talk;
         $scope.boot();
