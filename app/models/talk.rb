@@ -3,6 +3,16 @@
 class Talk < ActiveRecord::Base
   self.include_root_in_json = false
 
+  FOLDERS = []
+  (GIJI[:folders].keys + %w[TEST]).each do |folder|
+    klass = Class.new(ActiveRecord::Base) do |c|
+      c.include_root_in_json = false
+      scope :in_event, ->(event_id) { select(%i[logid mestype date subid talks.to color style log  name csid face_id sow_auth_id]).where(event_id: event_id).order("date asc") }
+    end
+    const_set(folder.upcase, klass)
+    FOLDERS.push klass
+  end
+
   validates_presence_of :date
   validates_uniqueness_of :logid, scope: :event_id
 

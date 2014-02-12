@@ -15,7 +15,7 @@ class GijiTalkScanner < GijiScanner
 
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
-    stored_ids = Talk.where(event_id: event_id).pluck("logid")
+    stored_ids = Talk.const_get(folder).where(event_id: event_id).pluck("logid")
     chk_doubles = []
     requests = Hash.new
 
@@ -38,7 +38,7 @@ class GijiTalkScanner < GijiScanner
       stored_ids.push  logid
 
       # message embedded in
-      message = Talk.new.tap do |t|
+      message = Talk.const_get(folder).new.tap do |t|
         t.story_id = story_id
         t.event_id = event_id
         t.logid = logid

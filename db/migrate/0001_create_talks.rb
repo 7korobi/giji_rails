@@ -39,28 +39,52 @@ show variables like 'mroonga_%';
 
   def change
     # options: %q|ENGINE=mroonga DEFAULT CHARSET=utf8 COMMENT='engine "InnoDB"'|
-    create_table :talks do |t|
-      t.string :story_id, null: false
-      t.string :event_id, null: false
-      t.string :logid,    null: false
-      t.string :mestype,  null: false
-      t.datetime :date,   null: false
+    %w[ talks
+        talk_pans
+        talk_offparties
+        talk_lobbies
+        talk_rps
+        talk_pretenses
+        talk_perjuries
+        talk_xebecs
+        talk_crazies
+        talk_braids
+        talk_ciels
+        talk_wolves
+        talk_ultimates
+        talk_allstars
+        talk_cabalas
+        talk_morphes
+        talk_tests
+    ].each do |talks|
+      create_table talks do |t|
+        t.string :story_id, null: false
+        t.string :event_id, null: false
+        t.string :logid,    null: false
+        t.string :mestype,  null: false
+        t.datetime :date,   null: false
 
-      t.string :subid
-      t.string :to
-      t.string :color
-      t.string :style
+        t.string :subid
+        t.string :to
+        t.string :color
+        t.string :style
 
-      t.text   :log
+        t.text   :log
 
-      t.string :name
-      t.string :csid
-      t.string :face_id
-      t.string :sow_auth_id
+        t.string :name
+        t.string :csid
+        t.string :face_id
+        t.string :sow_auth_id
+      end
+      execute <<-SQL
+        ALTER TABLE #{talks}
+          CHANGE logid logid varchar(255) BINARY NOT NULL
+      SQL
+
+      add_index talks, [:story_id]
+      add_index talks, [:event_id]
+      add_index talks, [:date]
+      add_index talks, [:logid, :event_id], unique: true
     end
-    execute <<-SQL
-      ALTER TABLE talks
-        CHANGE logid logid varchar(255) BINARY NOT NULL
-    SQL
   end
 end

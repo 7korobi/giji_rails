@@ -22,16 +22,19 @@ class SowVillage < Story
   end
 
   def duplicate_events
-    target_class = "Event::#{folder}".constantize
-    target_name  = "events_of_#{folder.downcase}"
-    target_class.where(story_id: id).delete
-
-    SowTurn.store_in collection: target_name
-    self.events.each do |event|
-      event.new_record = true
-      event.save!
+    Talk.const_get(folder).where(story_id: id).pluck("event_id").uniq.each do |event_id|
+      _,_,turn = event_id.split("-")
+      key = {story_id: id, turn: turn}
+      target_class = "Event::#{folder}".constantize
+      event = SowTurn.where(key).first
+      unless event
+        event = OldEvent.where(key).first || target_class.where(key).first || SowTurn.new(key)
+        event.new_record = true
+      end
+      event[:_type] = "SowTurn"
+      event.messages = []
+      event.save
     end
-    SowTurn.store_in collection: "events"  
   end
 
   def update_from_file_only_game force = true
