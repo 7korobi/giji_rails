@@ -2,18 +2,6 @@
 #topviewer
   .form-inline(navi="diary" name="手帳" template="navi/diary")
 
-  .pagenavi.form-inline(navi="calc" name="設定" template="navi/switch")
-    .note
-      | あと {{story.timer.extend}}回、更新を延長できる。
-    .note
-      | {{story.timer.nextupdatedt.relative('ja')}}に更新
-    .note
-      | {{story.timer.nextchargedt.relative('ja')}}に補充
-    .note(ng-show="story.is_totalcommit")
-      | {{story.timer.nextcommitdt.relative('ja')}}にcommit
-    .note(ng-show="story.is_prologue")
-      | {{story.timer.scraplimitdt.relative('ja')}}に廃村
-
 .sayfilter#sayfilter
   h4.sayfilter_heading(navi="head" ng-hide="navi.hide") {{story.name}}
   .insayfilter(navi="link" name="移動")

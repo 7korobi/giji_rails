@@ -49,7 +49,7 @@ face_titles:
 
 page:
   # pagenate 重ねあわせ量を調整する。
-  pile: 2
+  pile: 1
 
   folder:
     options:
