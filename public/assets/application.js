@@ -1887,7 +1887,7 @@ FILTER = function($scope, $filter) {
 var FORM;
 
 FORM = function($scope, $sce) {
-  var calc_length, calc_point, submit, valid;
+  var calc_length, calc_point, preview, submit, valid;
   $scope.stories_is_small = true;
   calc_length = function(text) {
     var ascii, other;
@@ -1910,7 +1910,7 @@ FORM = function($scope, $sce) {
     var lines, mark, point, size;
     f.valid = true;
     if (f.max) {
-      lines = f.text.lines().length;
+      lines = f.text.split("\n").length;
       size = calc_length(f.text);
       point = calc_point(size, lines);
       cb(size, lines);
@@ -1960,6 +1960,13 @@ FORM = function($scope, $sce) {
     }
     return $scope.submit(param, function() {});
   };
+  preview = function(f) {
+    if (f.text != null) {
+      return $scope.preview_decolate(f.text.escapeHTML().replace(/\n/g, "<br>"));
+    } else {
+      return "";
+    }
+  };
   $scope.error = function(f) {
     var list, _ref;
     list = (_ref = $scope.errors) != null ? _ref[f != null ? f.cmd : void 0] : void 0;
@@ -1968,13 +1975,15 @@ FORM = function($scope, $sce) {
   };
   $scope.text_valid = function(f) {
     return valid(f, function(size, lines) {
+      if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+        f.valid = false;
+      }
       switch (f.cmd) {
         case "wrmemo":
-          break;
-        default:
-          if (size < 4) {
-            return f.valid = false;
+          if (f.text === "") {
+            return f.valid = true;
           }
+          break;
       }
     });
   };
@@ -1991,7 +2000,7 @@ FORM = function($scope, $sce) {
           return f.valid = false;
         }
       } else {
-        if (size < 4) {
+        if (calc_length(f.text.replace(/\s/g, '')) < 4) {
           return f.valid = false;
         }
       }
@@ -2001,16 +2010,7 @@ FORM = function($scope, $sce) {
     var target, text, _ref;
     text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? f.text : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
     target = -1 < f.target ? $scope.option(f.targets, f.target).name : "";
-    return "" + f.shortname + "は、" + target + text;
-  };
-  $scope.preview = function(f) {
-    var lines;
-    if (f.text != null) {
-      lines = f.text.escapeHTML().lines();
-      return lines.join("<br>");
-    } else {
-      return "";
-    }
+    return $scope.preview_decolate("" + f.shortname + "は、" + target + text);
   };
   $scope.option = function(list, key) {
     var find;
@@ -2048,7 +2048,8 @@ FORM = function($scope, $sce) {
       if (f.ver != null) {
         f.ver.commit();
       }
-      return f.is_preview = valid;
+      f.is_preview = valid;
+      return f.preview = preview(f);
     }
   };
   $scope.write = function(f, valid) {
@@ -2079,7 +2080,8 @@ FORM = function($scope, $sce) {
       }
       return submit(f, param);
     } else {
-      return f.is_preview = valid;
+      f.is_preview = valid;
+      return f.preview = preview(f);
     }
   };
   $scope.action = function(f, valid) {
@@ -2318,6 +2320,7 @@ HREF_EVAL = function($scope) {
   };
   $('#messages').on('click', '.drag', foreground);
   $('#messages').on('click', '[href_eval]', href_eval);
+  $('#forms').on('click', '[href_eval]', href_eval);
   return $('#sayfilter').on('click', '[href_eval]', href_eval);
 };
 var Navi;
@@ -3127,7 +3130,7 @@ if (SOW_RECORD.CABALA.events != null) {
 }
 
 MODULE = function($scope, $filter, $sce, $http, $timeout) {
-  var anchor, background, id_num, link, link_regexp, link_regexp_g, random;
+  var anchor, background, id_num, link, link_regexp, link_regexp_g, random, random_preview, space;
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
@@ -3158,6 +3161,11 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
       return "<a class=\"mark\" href_eval=\"inner(this,'" + cmd + "','" + val + "')\">" + val + "</a>";
     });
   };
+  random_preview = function(log) {
+    return log.replace(/\[\[([^>]+)\]\]/g, function(key, val) {
+      return "<a class=\"mark\" href_eval=\"inner(this,'？','" + val + "')\">" + val + "</a>";
+    });
+  };
   link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
   link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
   id_num = 0;
@@ -3178,9 +3186,22 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     }
     return log;
   };
+  space = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/\ /g, '&nbsp;');
+  };
+  $scope.preview_decolate = function(log) {
+    if (log) {
+      return $sce.trustAsHtml(background(anchor(link(random_preview(space(log))))));
+    } else {
+      return null;
+    }
+  };
   $scope.text_decolate = function(log) {
     if (log) {
-      return $sce.trustAsHtml(background(anchor(link(random(log)))));
+      return $sce.trustAsHtml(background(anchor(link(random(space(log))))));
     } else {
       return null;
     }

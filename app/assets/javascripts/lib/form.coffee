@@ -16,7 +16,7 @@ FORM = ($scope, $sce)->
   valid = (f, cb)->
     f.valid = true
     if f.max
-      lines = f.text.lines().length
+      lines = f.text.split("\n").length
       size  = calc_length(f.text)
       point = calc_point(size, lines) 
 
@@ -53,6 +53,12 @@ FORM = ($scope, $sce)->
         else 
     $scope.submit param, ->
 
+  preview = (f)->
+    if f.text?
+      $scope.preview_decolate f.text.escapeHTML().replace(/\n/g, "<br>")
+    else
+      ""
+
   $scope.error = (f)->
     list = $scope.errors?[f?.cmd]
     list ||= []
@@ -60,10 +66,11 @@ FORM = ($scope, $sce)->
 
   $scope.text_valid = (f)->
     valid f, (size, lines)->
+      f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
       switch f.cmd
         when "wrmemo"
+          f.valid = true if f.text == ""
         else
-          f.valid = false if size < 4
 
   $scope.action_valid = (f)->
     valid f, (size, lines)->
@@ -72,7 +79,7 @@ FORM = ($scope, $sce)->
         f.valid = false if f.target ==  "-1"
         f.valid = false if f.action == "-99"
       else
-        f.valid = false if size < 4
+        f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
 
   $scope.preview_action = (f)->
     text =
@@ -85,14 +92,7 @@ FORM = ($scope, $sce)->
         $scope.option(f.targets, f.target).name
       else
         ""
-    "#{f.shortname}は、#{target}#{text}"
-
-  $scope.preview = (f)->
-    if f.text?
-      lines = f.text.escapeHTML().lines()
-      lines.join "<br>"
-    else
-      ""
+    $scope.preview_decolate "#{f.shortname}は、#{target}#{text}"
 
   $scope.option = (list, key)->
     find = _.find list, (o)-> o.val == key
@@ -119,6 +119,7 @@ FORM = ($scope, $sce)->
     else
       f.ver.commit() if f.ver?
       f.is_preview = valid
+      f.preview = preview f
 
   $scope.write = (f, valid)->
     return if f.disabled
@@ -138,6 +139,7 @@ FORM = ($scope, $sce)->
       submit f, param
     else
       f.is_preview = valid
+      f.preview = preview f
 
   $scope.action = (f, valid)->
     return if f.disabled

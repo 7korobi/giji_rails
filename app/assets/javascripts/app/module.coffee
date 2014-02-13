@@ -41,6 +41,10 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
       """<a class="mark" href_eval="inner(this,'#{cmd}','#{val}')">#{val}</a>"""
 
+  random_preview = (log)->
+    log.replace /\[\[([^>]+)\]\]/g, (key, val)->
+      """<a class="mark" href_eval="inner(this,'？','#{val}')">#{val}</a>"""
+
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
   ///
@@ -60,9 +64,19 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
         log = log.replace uri, """<span class="badge" href_eval="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
     return log
 
+  space = (log)->
+    return log unless log
+    log.replace(/\ /g, '&nbsp;')
+
+  $scope.preview_decolate = (log)->
+    if log
+      $sce.trustAsHtml background anchor link random_preview space log
+    else
+      null
+
   $scope.text_decolate = (log)->
     if log
-      $sce.trustAsHtml background anchor link random log
+      $sce.trustAsHtml background anchor link random space log
     else
       null
 

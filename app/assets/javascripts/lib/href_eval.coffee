@@ -99,4 +99,5 @@ HREF_EVAL = ($scope)->
   # use in interpolate
   $('#messages').on  'click', '.drag',  foreground
   $('#messages').on  'click', '[href_eval]', href_eval
+  $('#forms').on     'click', '[href_eval]', href_eval
   $('#sayfilter').on 'click', '[href_eval]', href_eval

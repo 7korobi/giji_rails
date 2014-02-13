@@ -18,8 +18,8 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.ope
 
           .form-inline
             .formpl_content
-              p(class="{{f.style}} text" ng-bind-html="preview(f)" ng-show="f.is_preview")
-              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview")
+              p(class="{{f.style}} text" ng-bind-html="f.preview" ng-show="f.is_preview")
+              textarea(cols="30" rows="5" ng-model="f.text" ng-trim="false" ng-hide="f.is_preview")
               h6
                 | {{option(f.targets, f.target).name}}
               .mark(ng-bind-html="error(f)")
