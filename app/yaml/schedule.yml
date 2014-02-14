@@ -1,3 +1,9 @@
+giji_table_check:
+  class: GijiScheduler
+  args:  talk
+  queue: giji_schedules
+  description: 全テーブルチェック
+
 giji_map_reduce_face:
   cron: '58  4  *  *  *'
   class: GijiMapReduce

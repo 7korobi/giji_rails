@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
 
 class Talk < ActiveRecord::Base
-  self.include_root_in_json = false
+  include Talkable
 
   FOLDERS = []
-  (GIJI[:folders].keys + %w[TEST]).each do |folder|
-    klass = Class.new(ActiveRecord::Base) do |c|
-      c.include_root_in_json = false
-      scope :in_event, ->(event_id) { select(%i[logid mestype date subid talks.to color style log  name csid face_id sow_auth_id]).where(event_id: event_id).order("date asc") }
-    end
+  VILLAGES = []
+
+  (GIJI[:folders].keys + %w[SOYBEAN TEST]).each do |folder|
+    klass = Class.new(ActiveRecord::Base) {|c| include Talkable }
     const_set(folder.upcase, klass)
     FOLDERS.push klass
   end
 
-  validates_presence_of :date
-  validates_uniqueness_of :logid, scope: :event_id
+  ( ("PRETENSE001".."PRETENSE087").to_a +
+    (  "CABALA001"..  "CABALA238").to_a + 
+    ( "PERJURY001".. "PERJURY217").to_a +
+    (   "XEBEC001"..   "XEBEC162").to_a
+  ).each do |vid|
+    klass = Class.new(ActiveRecord::Base) {|c| include Talkable }
+    const_set(vid, klass)
+    VILLAGES.push klass
+  end
 
-  scope :in_event, ->(event_id) { select(%i[logid mestype date subid talks.to color style log  name csid face_id sow_auth_id]).where(event_id: event_id).order("date asc") }
   scope :search_with, ->(query) { where(%Q|match(log) against("#{query}" with query expansion)|) }
   scope :search, ->(query) { where(%Q|match(log) against("#{query}" in boolean mode)|) }
 

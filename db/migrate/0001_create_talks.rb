@@ -55,6 +55,7 @@ show variables like 'mroonga_%';
         talk_allstars
         talk_cabalas
         talk_morphes
+        talk_soybeans
         talk_tests
     ].each do |talks|
       create_table talks do |t|

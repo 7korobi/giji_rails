@@ -13,9 +13,11 @@ class GijiTalkScanner < GijiScanner
     source = SowRecordFile.send(type, path, fname, folder, vid, turn )
     return unless source
 
+    talk_t = Talk.const_get(folder + "%03d"%[vid]) rescue Talk.const_get(folder)
+
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
-    stored_ids = Talk.const_get(folder).where(event_id: event_id).pluck("logid")
+    stored_ids = talk_t.where(event_id: event_id).pluck("logid")
     chk_doubles = []
     requests = Hash.new
 
@@ -38,7 +40,7 @@ class GijiTalkScanner < GijiScanner
       stored_ids.push  logid
 
       # message embedded in
-      message = Talk.const_get(folder).new.tap do |t|
+      message = talk_t.new.tap do |t|
         t.story_id = story_id
         t.event_id = event_id
         t.logid = logid
@@ -78,7 +80,6 @@ class GijiTalkScanner < GijiScanner
       rescue Timeout::Error, ActiveRecord::StatementInvalid => e
         GijiErrorReport.enqueue e.inspect, o, message.attributes
         sleep 10
-        exit
       end
       key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true

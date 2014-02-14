@@ -10,10 +10,6 @@ class Story
   field :is_finish,   type:Boolean
   field :is_epilogue, type:Boolean
   has_many :events, inverse_of: :story
-  GIJI[:folders].keys.each do |folder|
-    has_many :"events_of_#{folder.downcase}", inverse_of: :story, class_name: "Event::#{folder}"
-  end
-  has_many :old_events, inverse_of: :story
   has_many :potofs, inverse_of: :story
 
   scope :summary, ->(folder) { where(folder:folder).order_by(:vid.desc) }
