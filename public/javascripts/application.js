@@ -1800,11 +1800,11 @@ FILTER = function($scope, $filter) {
       list = _.filter(list, function(o) {
         return o.logid.match(mode_filter) || add_filter(o);
       });
+      order = function(o) {
+        return o.order || o.updated_at;
+      };
       if ($scope.modes.last) {
         result = [];
-        order = function(o) {
-          return o.order || o.updated_at;
-        };
         _ref1 = _.groupBy(list, $scope.potof_key);
         for (key in _ref1) {
           sublist = _ref1[key];
@@ -1812,7 +1812,7 @@ FILTER = function($scope, $filter) {
         }
         return _.sortBy(result, order);
       } else {
-        return list;
+        return _.sortBy(list, order);
       }
     });
     page.filter('hide_potofs.value', function(hide_faces, list) {
@@ -1909,11 +1909,12 @@ FORM = function($scope, $sce) {
     return point.floor();
   };
   valid = function(f, cb) {
-    var lines, mark, point, size;
+    var lines, mark, point, size, text;
     f.valid = true;
+    text = f.text.replace(/\n$/g, '\n ');
     if (f.max) {
-      lines = f.text.split("\n").length;
-      size = calc_length(f.text);
+      lines = text.split("\n").length;
+      size = calc_length(text);
       point = calc_point(size, lines);
       f.lines = 5;
       cb(size, lines);
@@ -2011,7 +2012,7 @@ FORM = function($scope, $sce) {
   };
   $scope.preview_action = function(f) {
     var target, text, _ref;
-    text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? preview(f.text) : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
+    text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? preview(f.text.replace(/\n$/g, '\n ')) : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
     target = -1 < f.target ? $scope.option(f.targets, f.target).name : "";
     return "" + f.shortname + "は、" + target + text;
   };
@@ -2038,7 +2039,7 @@ FORM = function($scope, $sce) {
         vid: $scope.story.vid,
         csid_cid: f.csid_cid,
         role: f.role,
-        mes: f.text,
+        mes: f.text.replace(/\n$/g, '\n '),
         entrypwd: f.password,
         target: -1,
         monospace: 0
@@ -2052,7 +2053,7 @@ FORM = function($scope, $sce) {
         f.ver.commit();
       }
       f.is_preview = valid;
-      return f.preview = preview(f.text);
+      return f.preview = preview(f.text.replace(/\n$/g, '\n '));
     }
   };
   $scope.write = function(f, valid) {
@@ -2084,7 +2085,7 @@ FORM = function($scope, $sce) {
       return submit(f, param);
     } else {
       f.is_preview = valid;
-      return f.preview = preview(f.text);
+      return f.preview = preview(f.text.replace(/\n$/g, '\n '));
     }
   };
   $scope.action = function(f, valid) {
