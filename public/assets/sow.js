@@ -128,12 +128,14 @@ angular.module("giji").directive("theme", function($compile) {
     }
   };
 });
-angular.module("giji").directive("navi", function($compile, $timeout) {
-  var effect, static_navis;
-  effect = function($scope) {
-    var resize_naviitems;
-    resize_naviitems = function() {
-      var calculate, content, height, info_left, k, lim_left, outframe, v, width, _ref, _ref1, _ref2;
+angular.module("giji").directive("adjust", function($compile, $timeout) {
+  var action_queue, effect, resize_page;
+  win.info = {};
+  action_queue = [];
+  resize_page = function($scope) {
+    var do_resize;
+    do_resize = function() {
+      var buttons, content, height, lim_left, outframe, width, _ref, _ref1;
       if (!(($scope.navi != null) && ($scope.css.width != null))) {
         return;
       }
@@ -144,114 +146,118 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
       switch ($scope.css.width.value) {
         case 800:
           lim_left = (778 - 770) / 2 + 187;
-          info_left = (width - 770) / 2 + 187 - 60;
-          if (lim_left < info_left) {
+          win.info.width = (width - 770) / 2 + 187 - 60;
+          if (lim_left < win.info.width) {
             content = "contentframe_navileft";
             outframe = "outframe_navimode";
-            info_left = (width - 770) / 2 + 187 - 10;
+            win.info.width = (width - 770) / 2 + 187 - 10;
           } else {
             content = "contentframe";
             outframe = "outframe";
-            info_left = (width - 580) / 2;
+            win.info.width = (width - 580) / 2;
           }
           break;
         case 480:
-          info_left = width - 476;
+          win.info.width = width - 476;
       }
-      calculate = function(key, params) {
-        var buttons, element, gap, in_fixed_box, info_width, max_width, small, style;
-        element = params.element;
-        if (!element) {
-          return;
-        }
-        in_fixed_box = $(".sayfilter").find(element).length;
-        if (params.show) {
-          style = {
-            display: ""
-          };
-        } else {
-          style = {
-            display: "none"
-          };
-        }
-        if (in_fixed_box) {
-          buttons = FixedBox.list["#buttons"];
-          if (buttons != null) {
-            max_width = buttons.left - 8;
-          } else {
-            max_width = width - 40;
-          }
-          gap = 0;
-          switch (key) {
-            case 'page':
-              small = max_width;
-              break;
-            default:
-              small = 185;
-          }
-          switch ($scope.css.width.value) {
-            case 480:
-              if (small < info_left) {
-                info_width = info_left;
-                params.is_fullwidth = false;
-              } else {
-                info_width = small;
-                params.is_fullwidth = true;
-              }
-              break;
-            case 800:
-              if (small < info_left) {
-                info_width = info_left;
-                params.is_fullwidth = false;
-              } else {
-                info_width = small;
-                params.is_fullwidth = true;
-              }
-          }
-          if (!params.is_fullwidth) {
-            if (head.browser.mozilla) {
-              gap = 5;
-            }
-            if (head.browser.opera) {
-              gap = 5;
-            }
-            if (head.browser.ie) {
-              gap = 5;
-            }
-            if (head.browser.webkit && 480 === $scope.css.width.value) {
-              gap = -10;
-            }
-          }
-          style.width = info_width - gap;
-        }
-        return element.css(style);
-      };
-      _ref = $scope.navi.of;
-      for (k in _ref) {
-        v = _ref[k];
-        calculate(k, v);
+      buttons = FixedBox.list["#buttons"];
+      if (buttons != null) {
+        win.info.width_max = buttons.left - 8;
+      } else {
+        win.info.width_max = width - 40;
       }
-      for (k in static_navis) {
-        v = static_navis[k];
-        calculate(k, v);
+      if ((_ref = $("#contentframe")[0]) != null) {
+        _ref.className = content;
       }
-      $("#sayfilter").css({
-        width: info_left
-      });
-      if ((_ref1 = $("#contentframe")[0]) != null) {
-        _ref1.className = content;
-      }
-      return (_ref2 = $("#outframe")[0]) != null ? _ref2.className = outframe : void 0;
+      return (_ref1 = $("#outframe")[0]) != null ? _ref1.className = outframe : void 0;
     };
-    return $timeout(function() {
-      return win.on_resize(resize_naviitems);
-    }, 100);
+    return action_queue.push(do_resize);
   };
-  static_navis = {};
+  effect = function($scope, adjust, element) {
+    var do_resize;
+    do_resize = function() {
+      var gap, info_width, small;
+      if (!(($scope.navi != null) && ($scope.css.width != null))) {
+        return;
+      }
+      switch (adjust) {
+        case 'left':
+          small = 185;
+          break;
+        case 'full':
+          small = win.info.width_max;
+      }
+      if (small < win.info.width) {
+        info_width = win.info.width;
+      } else {
+        info_width = small;
+      }
+      gap = 0;
+      if (head.browser.mozilla) {
+        gap = 5;
+      }
+      if (head.browser.opera) {
+        gap = 5;
+      }
+      if (head.browser.ie) {
+        gap = 5;
+      }
+      if (head.browser.webkit && 480 === $scope.css.width.value) {
+        gap = -10;
+      }
+      return element.css({
+        width: info_width - gap
+      });
+    };
+    return action_queue.push(do_resize);
+  };
+  $timeout(function() {
+    return win.on_resize(function() {
+      var action, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = action_queue.length; _i < _len; _i++) {
+        action = action_queue[_i];
+        _results.push(action());
+      }
+      return _results;
+    });
+  }, 100);
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var attr_id, _ref;
+      resize_page($scope);
+      resize_page = function() {};
+      return effect($scope, attr.adjust, elm);
+    }
+  };
+});
+
+angular.module("giji").directive("navi", function($compile, $timeout) {
+  var effect;
+  effect = function($scope, params) {
+    var do_resize;
+    do_resize = function() {
+      if (!(($scope.navi != null) && ($scope.css.width != null))) {
+        return;
+      }
+      if (params.show) {
+        return params.element.css({
+          display: ""
+        });
+      } else {
+        return params.element.css({
+          display: "none"
+        });
+      }
+    };
+    return $timeout(function() {
+      return win.on_resize(do_resize);
+    }, 100);
+  };
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      var attr_id, params, _ref;
       attr_id = "navi_" + attr.navi;
       elm.attr("id", attr_id);
       if (((_ref = $scope.navi) != null ? _ref.select : void 0) == null) {
@@ -266,19 +272,15 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
         $scope.navi.watch.push(function() {
           return $scope.adjust();
         });
-        effect($scope);
       }
       if (attr.name != null) {
-        $scope.navi.select.push({
+        params = {
           name: attr.name,
           val: attr.navi,
           element: elm
-        });
-      } else {
-        static_navis[attr.navi] = {
-          show: true,
-          element: elm
         };
+        effect($scope, params);
+        $scope.navi.select.push(params);
       }
       return $scope.navi.popstate();
     }
@@ -585,19 +587,18 @@ var FixedBox;
 FixedBox = (function() {
   FixedBox.list = {};
 
-  function FixedBox(dx, dy, fixed_box, force_zoom) {
+  function FixedBox(dx, dy, fixed_box) {
     var _this = this;
     this.dx = dx;
     this.dy = dy;
     this.box = fixed_box;
-    this.force_zoom = force_zoom;
     if (this.box) {
       this.box.css({
         left: 0,
         top: 0
       });
       win.on_resize(function() {
-        return _this.scroll();
+        return _this.resize();
       });
       win.on_scroll(function() {
         return _this.scroll();
@@ -605,8 +606,8 @@ FixedBox = (function() {
     }
   }
 
-  FixedBox.prototype.scroll = function() {
-    var height, left, top, width;
+  FixedBox.prototype.resize = function() {
+    var height, width;
     width = win.width - this.box.width();
     height = win.height - this.box.height();
     if (this.dx < 0) {
@@ -621,6 +622,19 @@ FixedBox = (function() {
     if (0 < this.dy) {
       this.top = this.dy;
     }
+    if (1 < win.zoom) {
+      return this.box.css({
+        display: "none"
+      });
+    } else {
+      return this.box.css({
+        display: ""
+      });
+    }
+  };
+
+  FixedBox.prototype.scroll = function() {
+    var left, top;
     win.left = window.pageXOffset;
     win.top = window.pageYOffset;
     if (win.max.left < win.left) {
@@ -636,14 +650,7 @@ FixedBox = (function() {
       win.top = 0;
     }
     this.box.to_z_front();
-    if (1 < win.zoom || this.force_zoom) {
-      this.box.css({
-        position: "absolute"
-      });
-      left = this.left + win.left;
-      top = this.top + win.top;
-      return this.translate(left, top);
-    } else {
+    if (1 === win.zoom) {
       if (0 === this.dx) {
         this.box.css({
           position: "fixed",
@@ -700,9 +707,9 @@ FixedBox = (function() {
 
 })();
 
-FixedBox.push = function($, dx, dy, key, force_zoom) {
+FixedBox.push = function($, dx, dy, key) {
   var _base;
-  return (_base = FixedBox.list)[key] || (_base[key] = new FixedBox(dx, dy, $(key), force_zoom));
+  return (_base = FixedBox.list)[key] || (_base[key] = new FixedBox(dx, dy, $(key)));
 };
 var Form;
 
@@ -1438,27 +1445,28 @@ DIARY = function($scope) {
     }
   };
 };
-var popstate, win, _ref, _ref1, _ref2;
+var b, popstate, win;
 
-if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
-  if ((_ref = head.browser) != null) {
-    _ref.android = true;
+if (head.browser != null) {
+  b = head.browser;
+  b.power = "pc";
+  if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
+    b.android = true;
+    b.power = "mobile";
   }
-}
-
-if (navigator.userAgent.toLowerCase().indexOf('iphone') !== -1) {
-  if ((_ref1 = head.browser) != null) {
-    _ref1.iphone = true;
+  if (navigator.userAgent.toLowerCase().indexOf('iphone') !== -1) {
+    b.iphone = true;
+    b.power = "mobile";
   }
-}
-
-if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) {
-  if ((_ref2 = head.browser) != null) {
-    _ref2.iphone = true;
+  if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) {
+    b.iphone = true;
+    b.power = "mobile";
   }
 }
 
 head.useragent = navigator.userAgent;
+
+$("html").addClass(b.power);
 
 win = {
   top: 0,
@@ -1496,17 +1504,22 @@ win = {
   zoom_start: function() {},
   zoom_end: function() {},
   history: function(title, href, hash) {},
-  on_scroll: function(cb) {
-    $(window).on('scroll', _.throttle(cb, 500));
-    return win.on_resize(cb, 5000);
+  resize_event: function() {
+    if ((window.onorientationchange != null) && !head.browser.android) {
+      return 'orientationchange';
+    } else {
+      return 'resize';
+    }
+  },
+  on_scroll: function(cb, delay) {
+    delay || (delay = 500);
+    $(window).on('scroll', _.throttle(cb, delay));
+    return $(window).on(win.resize_event(), _.throttle(cb, 5000));
   },
   on_resize: function(cb, delay) {
     delay || (delay = 100);
-    if ((window.onorientationchange != null) && !head.browser.android) {
-      return $(window).on('orientationchange', _.throttle(cb, delay));
-    } else {
-      return $(window).on('resize', _.throttle(cb, delay));
-    }
+    $(window).on(win.resize_event(), _.throttle(cb, delay));
+    return $(window).on('scroll', _.throttle(cb, 5000));
   }
 };
 
@@ -1525,7 +1538,7 @@ if ((typeof history !== "undefined" && history !== null ? history.pushState : vo
   };
 }
 
-_.delay(function() {
+angular.module("giji").run(function() {
   var dummy, scan_motion;
   win.on_scroll(win.refresh);
   win.on_resize(win.refresh);
@@ -1545,7 +1558,7 @@ _.delay(function() {
     return win.rotate = e.originalEvent.rotationRate;
   };
   return $(window).on('devicemotion', _.throttle(scan_motion, 100));
-}, 500);
+});
 var FILTER;
 
 FILTER = function($scope, $filter) {
@@ -1844,22 +1857,13 @@ FILTER = function($scope, $filter) {
     return list.slice(from, to);
   });
   page.filter('order.value', function(key, list) {
-    $scope.anchors = [];
     if ("desc" === key) {
       list.reverse();
     }
     return list;
   });
   do_scrollTo = function() {
-    var target, _ref1;
-    $('div.popover').remove();
-    target = $(".message_filter." + $scope.top.id);
-    if (((_ref1 = $scope.event) != null ? _ref1.is_news : void 0) && ((target != null ? target.offset() : void 0) != null)) {
-
-    } else {
-      target = $(".inframe");
-    }
-    return $(window).scrollTop(target.offset().top - 20);
+    return $scope.go.messages();
   };
   scrollTo = _.debounce(do_scrollTo, 500);
   form_show = function() {
@@ -1875,14 +1879,16 @@ FILTER = function($scope, $filter) {
       return _results;
     }
   };
+  $scope.$watch(page.to_key, function() {
+    return $scope.anchors = [];
+  });
   $scope.$watch('mode.value', form_show);
   $scope.$watch('event.is_news', form_show);
   $scope.$watch('event.is_news', $scope.deploy_mode_common);
   $scope.$watch('modes.face', scrollTo);
   $scope.$watch('order.value', scrollTo);
   $scope.$watch('event.turn', scrollTo);
-  $scope.$watch('page.value', scrollTo);
-  return $scope.$watch('page.value', $scope.boot);
+  return $scope.$watch('page.value', scrollTo);
 };
 var FORM;
 
@@ -1913,6 +1919,7 @@ FORM = function($scope, $sce) {
       lines = f.text.split("\n").length;
       size = calc_length(f.text);
       point = calc_point(size, lines);
+      f.lines = 5;
       cb(size, lines);
       if (f.max.size < size) {
         f.valid = false;
@@ -2066,7 +2073,7 @@ FORM = function($scope, $sce) {
         safety: "on",
         turn: $scope.event.turn,
         vid: $scope.story.vid,
-        mes: f.text,
+        mes: f.text.replace(/\n$/g, '\n '),
         monospace: 0
       };
       if (SOW.monospace[f.style]) {
@@ -2178,21 +2185,29 @@ FORM = function($scope, $sce) {
 var GO;
 
 GO = function($scope) {
+  var go_anker;
+  go_anker = function(anker) {
+    var target;
+    target = $($(anker)[0]);
+    return $(window).scrollTop(target.offset().top);
+  };
   return $scope.go = {
-    search: function() {
-      return $($("[ng-model=\"search_input\"]")[0]).focus();
+    messages: function() {
+      return go_anker("#messages");
     },
     form: function() {
-      var target;
-      target = $($("[template=\"navi/forms\"]")[0]);
-      return $(window).scrollTop(target.offset().top);
+      return go_anker("#forms");
+    },
+    search: function() {
+      return $($("[ng-model=\"search_input\"]")[0]).focus();
     }
   };
 };
 var HREF_EVAL;
 
 HREF_EVAL = function($scope) {
-  var cancel_say, external, foreground, href_eval, inner, navi, popup, popup_apply;
+  var cancel_say, external, foreground, href_eval, href_eval_event, inner, navi, popup, popup_apply;
+  href_eval_event = null;
   navi = function(link) {
     $scope.navi.move(link);
     if ($scope.potofs != null) {
@@ -2209,9 +2224,9 @@ HREF_EVAL = function($scope) {
       vid: $scope.story.vid
     });
   };
-  inner = function(dom, cmd, val) {
+  inner = function(cmd, val) {
     var item;
-    item = $(dom);
+    item = $(href_eval_event.target);
     if (0 > item.html().indexOf(cmd)) {
       return item.html("" + val + " ⇠ " + cmd);
     } else {
@@ -2228,6 +2243,7 @@ HREF_EVAL = function($scope) {
       item = {
         template: "message/external",
         mestype: "XSAY",
+        turn: -1,
         logid: id,
         protocol: protocol,
         host: host,
@@ -2258,12 +2274,17 @@ HREF_EVAL = function($scope) {
     var href, popup_ajax, popup_find;
     href = location.href.replace(location.hash, "");
     popup_find = function(turn) {
-      var event, item;
-      event = $scope.events[turn];
-      if ((event != null ? event.messages : void 0) == null) {
-        return null;
+      var event, item, list;
+      if (turn < 0) {
+        list = $scope.anchors;
+      } else {
+        event = $scope.events[turn];
+        if ((event != null ? event.messages : void 0) == null) {
+          return null;
+        }
+        list = event.messages;
       }
-      item = _.find(event.messages, function(log) {
+      item = _.find(list, function(log) {
         return log.logid === ank;
       });
       if (item) {
@@ -2302,6 +2323,7 @@ HREF_EVAL = function($scope) {
     }
   };
   href_eval = function(e) {
+    href_eval_event = e;
     $scope.$apply(function() {
       $scope.pageY = e.pageY;
       return eval($(e.target).attr('href_eval'));
@@ -2751,7 +2773,7 @@ PageNavi.push = function($scope, key, def) {
 var POOL;
 
 POOL = function($scope, $filter, $timeout) {
-  var adjust, ajax_timer, apply, do_pool_ajax, message_first, message_timer, pool_ajax, pool_button, pool_start, refresh;
+  var adjust, ajax_timer, apply, message_first, message_timer, pool_button, pool_start, refresh;
   message_timer = 60 * 1000;
   message_first = 25 * 1000;
   ajax_timer = 5 * 60 * 1000;
@@ -2771,26 +2793,14 @@ POOL = function($scope, $filter, $timeout) {
     $timeout(apply, message_first);
     return $timeout(refresh, message_timer);
   };
-  do_pool_ajax = function() {
-    var _ref,
-      _this = this;
-    if ((_ref = $scope.event) != null ? _ref.is_news : void 0) {
-      return $scope.get_news($scope.event, function() {
-        $scope.init();
-        return $scope.$apply();
-      });
-    }
-  };
-  pool_ajax = _.throttle(do_pool_ajax, ajax_timer);
   pool_button = function() {
     var _this = this;
     return $scope.get_news($scope.event, function() {
-      $scope.init();
-      return $scope.boot();
+      return $scope.init();
     });
   };
   $scope.pool_nolimit = pool_button;
-  $scope.pool = _.throttle(pool_button, message_first);
+  $scope.pool = _.debounce(pool_button, message_first);
   $scope.top = {
     focus: false,
     news_size: 0,
@@ -2813,17 +2823,14 @@ POOL = function($scope, $filter, $timeout) {
     }
   };
   adjust = function() {
-    return $(window).resize();
+    $(window).resize();
+    return $(window).scroll();
   };
   $scope.adjust = function() {
     adjust();
-    _.delay(adjust, 160);
-    _.delay(adjust, 800);
-    return _.delay(adjust, 4000);
-  };
-  $scope.boot = function() {
-    $timeout(apply, 2000);
-    return $scope.adjust();
+    _.delay(adjust, 80);
+    _.delay(adjust, 400);
+    return _.delay(adjust, 2000);
   };
   $scope.init();
   return pool_start();
@@ -3130,7 +3137,7 @@ if (SOW_RECORD.CABALA.events != null) {
 }
 
 MODULE = function($scope, $filter, $sce, $http, $timeout) {
-  var anchor, background, id_num, link, link_regexp, link_regexp_g, random, random_preview, space;
+  var anchor, anchor_preview, background, id_num, link, link_regexp, link_regexp_g, random, random_preview, space, uri_to_link;
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
@@ -3153,24 +3160,33 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
       return "<a href_eval=\"popup(" + turn + ",'" + a + "')\" class=\"mark\">&gt;&gt;" + id + "</a>";
     });
   };
+  anchor_preview = function(log) {
+    return log;
+  };
   random = function(log) {
     if (!log) {
       return log;
     }
     return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
-      return "<a class=\"mark\" href_eval=\"inner(this,'" + cmd + "','" + val + "')\">" + val + "</a>";
+      return "<a class=\"mark\" href_eval=\"inner('" + cmd + "','" + val + "')\">" + val + "</a>";
     });
   };
   random_preview = function(log) {
     return log.replace(/\[\[([^>]+)\]\]/g, function(key, val) {
-      return "<a class=\"mark\" href_eval=\"inner(this,'？','" + val + "')\">" + val + "</a>";
+      return "<a class=\"mark\" href_eval=\"inner('" + val + "','？')\">" + val + "</a>";
     });
   };
   link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
   link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
   id_num = 0;
+  uri_to_link = _.memoize(function(uri) {
+    var host, path, protocol, _ref1;
+    id_num++;
+    _ref1 = uri.match(link_regexp), uri = _ref1[0], protocol = _ref1[1], host = _ref1[2], path = _ref1[3];
+    return "<span class=\"badge\" href_eval=\"external('link_" + id_num + "','" + uri + "','" + protocol + "','" + host + "','" + path + "')\">LINK - " + protocol + "</span>";
+  });
   link = function(log) {
-    var host, path, protocol, text, uri, uris, _i, _len, _ref1;
+    var text, uri, uris, _i, _len;
     if (!log) {
       return log;
     }
@@ -3179,9 +3195,7 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     if (uris) {
       for (_i = 0, _len = uris.length; _i < _len; _i++) {
         uri = uris[_i];
-        id_num++;
-        _ref1 = uri.match(link_regexp), uri = _ref1[0], protocol = _ref1[1], host = _ref1[2], path = _ref1[3];
-        log = log.replace(uri, "<span class=\"badge\" href_eval=\"external('link_" + id_num + "','" + uri + "','" + protocol + "','" + host + "','" + path + "')\">LINK - " + protocol + "</span>");
+        log = log.replace(uri, uri_to_link(uri));
       }
     }
     return log;
@@ -3190,18 +3204,23 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     if (!log) {
       return log;
     }
-    return log.replace(/\ /g, '&nbsp;');
+    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset) {
+      var nbsps;
+      s1 || (s1 = "");
+      nbsps = s2.replace(/\ /g, '&nbsp;');
+      return "" + s1 + nbsps;
+    });
   };
   $scope.preview_decolate = function(log) {
     if (log) {
-      return $sce.trustAsHtml(background(anchor(link(random_preview(space(log))))));
+      return $sce.trustAsHtml(space(background(anchor_preview(link(random_preview(log))))));
     } else {
       return null;
     }
   };
   $scope.text_decolate = function(log) {
     if (log) {
-      return $sce.trustAsHtml(background(anchor(link(random(space(log))))));
+      return $sce.trustAsHtml(space(background(anchor(link(random(log))))));
     } else {
       return null;
     }
@@ -3243,7 +3262,6 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
         $scope.event.is_news = $scope.event.has_all_messages ? false : is_news;
         $scope.page.value = 1;
         $scope.mode.value = $scope.mode_cache.talk;
-        $scope.boot();
         href = $scope.event_url($scope.event);
         return win.history("" + $scope.event.name, href, location.hash);
       };
