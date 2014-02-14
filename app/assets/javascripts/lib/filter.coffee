@@ -161,14 +161,15 @@ FILTER = ($scope, $filter)->
       list = _.filter list, (o)->
         o.logid.match(mode_filter) || add_filter(o)
 
+      order  = (o)-> o.order || o.updated_at
+
       if $scope.modes.last
         result = []
-        order  = (o)-> o.order || o.updated_at
         for key, sublist of _.groupBy list, $scope.potof_key
           result.push _.last _.sortBy sublist, order
         _.sortBy result, order
       else
-        list
+        _.sortBy list, order
 
     page.filter 'hide_potofs.value', (hide_faces, list)->
       if _.include hide_faces, 'others'
