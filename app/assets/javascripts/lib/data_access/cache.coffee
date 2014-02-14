@@ -201,7 +201,6 @@ CACHE = ($scope)->
         if old_item?
           olds_head = _.reject olds_head, (o)->
             filter(old_item) == filter(o)
-
         olds_head.push new_item
     olds_head
 

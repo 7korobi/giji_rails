@@ -1,4 +1,6 @@
 HREF_EVAL = ($scope)->
+  href_eval_event = null
+
   navi = (link)->
     $scope.navi.move link
     if $scope.potofs?
@@ -13,8 +15,8 @@ HREF_EVAL = ($scope)->
       turn: $scope.event.turn
       vid:  $scope.story.vid
 
-  inner = (dom, cmd, val)->
-    item = $(dom)
+  inner = (cmd, val)->
+    item = $(href_eval_event.target)
     if 0 > item.html().indexOf cmd
       item.html("#{val} ⇠ #{cmd}")
     else
@@ -29,6 +31,7 @@ HREF_EVAL = ($scope)->
       item = 
         template:"message/external"
         mestype: "XSAY"
+        turn: -1
         logid: id
         protocol: protocol
         host: host
@@ -55,10 +58,14 @@ HREF_EVAL = ($scope)->
     href = location.href.replace location.hash, ""
 
     popup_find = (turn)->
-      event = $scope.events[turn]
-      return null unless event?.messages?
+      if turn < 0
+        list = $scope.anchors
+      else
+        event = $scope.events[turn]
+        return null unless event?.messages?
+        list = event.messages
 
-      item = _.find event.messages, (log)->
+      item = _.find list, (log)->
         log.logid == ank
       if item
         popup_apply item, turn
@@ -85,6 +92,7 @@ HREF_EVAL = ($scope)->
             popup_find turn - 1
 
   href_eval = (e)->
+    href_eval_event = e 
     $scope.$apply ->
       $scope.pageY = e.pageY
       eval $(e.target).attr('href_eval')

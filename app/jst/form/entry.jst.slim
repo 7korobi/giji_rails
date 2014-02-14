@@ -29,7 +29,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
 
               div(ng-hide="f.is_preview")
                 p  参加する時のセリフ
-                textarea(cols="30" rows="5" ng-model="f.text" ng-trim="false")
+                textarea(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false")
   
               a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
               a.btn(ng-click="entry(f, f.valid)") {{f.title}}
@@ -38,7 +38,7 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
               select.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p
                 | {{f.caption}}
-              span(class="{{f.error}}" ng-bind-html="f.valid_text")
+              span(class="{{f.error}}" ng-bind-html="text_valid(f)")
               span(diary="f" ng-hide="f.is_preview")
               .mark(ng-bind-html="error(f)")
 

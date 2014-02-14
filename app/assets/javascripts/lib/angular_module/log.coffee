@@ -5,6 +5,7 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
     if ! log.template? && log.logid? && log.mestype? && log.subid?
       log.sub1id = log.logid[0]
       log.sub2id = log.logid[1]
+
       template = null
       for style in GIJI.message.template
         for target, table of style

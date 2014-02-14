@@ -36,14 +36,17 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
       """<a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a>"""
 
+  anchor_preview = (log)->
+    log
+
   random = (log)->
     return log unless log
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<a class="mark" href_eval="inner(this,'#{cmd}','#{val}')">#{val}</a>"""
+      """<a class="mark" href_eval="inner('#{cmd}','#{val}')">#{val}</a>"""
 
   random_preview = (log)->
     log.replace /\[\[([^>]+)\]\]/g, (key, val)->
-      """<a class="mark" href_eval="inner(this,'？','#{val}')">#{val}</a>"""
+      """<a class="mark" href_eval="inner('#{val}','？')">#{val}</a>"""
 
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
@@ -53,30 +56,36 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
   ///g
 
   id_num = 0
+  uri_to_link = _.memoize (uri)->
+    id_num++
+    [uri, protocol, host, path] = uri.match link_regexp
+    """<span class="badge" href_eval="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
+
   link = (log)->
     return log unless log
     text = log.replace(/\s|<br>/g, ' ').stripTags()
     uris = text.match link_regexp_g
     if uris
       for uri in uris
-        id_num++
-        [uri, protocol, host, path] = uri.match link_regexp
-        log = log.replace uri, """<span class="badge" href_eval="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
+        log = log.replace uri, uri_to_link uri
     return log
 
   space = (log)->
     return log unless log
-    log.replace(/\ /g, '&nbsp;')
+    log.replace /(^|\n|<br>)(\ *)/gm, (full, s1, s2, offset)->
+      s1 ||= ""
+      nbsps = s2.replace /\ /g, '&nbsp;'
+      "#{s1}#{nbsps}"
 
   $scope.preview_decolate = (log)->
     if log
-      $sce.trustAsHtml background anchor link random_preview space log
+      $sce.trustAsHtml space background anchor_preview link random_preview log
     else
       null
 
   $scope.text_decolate = (log)->
     if log
-      $sce.trustAsHtml background anchor link random space log
+      $sce.trustAsHtml space background anchor link random log
     else
       null
 
@@ -118,7 +127,6 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
             is_news
         $scope.page.value = 1
         $scope.mode.value = $scope.mode_cache.talk
-        $scope.boot()
         href = $scope.event_url $scope.event
         win.history "#{$scope.event.name}", href, location.hash
 

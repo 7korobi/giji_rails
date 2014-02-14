@@ -200,19 +200,12 @@ FILTER = ($scope, $filter)->
     list.slice from, to
 
   page.filter 'order.value', (key, list)->
-    $scope.anchors = []
     list.reverse() if "desc" == key
     list
 
   do_scrollTo = ()->
-    $('div.popover').remove()
-    target = $(".message_filter.#{$scope.top.id}")
+    $scope.go.messages();
 
-    if $scope.event?.is_news && target?.offset()?
-    else
-      target = $(".inframe")
-
-    $(window).scrollTop  target.offset().top - 20
   scrollTo = _.debounce do_scrollTo, 500
 
   form_show = ->
@@ -221,6 +214,8 @@ FILTER = ($scope, $filter)->
       for key in $scope.modes.form 
         $scope.form_show[key] = true
 
+  $scope.$watch page.to_key, ->
+    $scope.anchors = []
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
@@ -228,4 +223,3 @@ FILTER = ($scope, $filter)->
   $scope.$watch 'order.value',   scrollTo
   $scope.$watch 'event.turn',    scrollTo
   $scope.$watch 'page.value',    scrollTo
-  $scope.$watch 'page.value',    $scope.boot

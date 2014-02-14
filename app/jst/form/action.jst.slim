@@ -1,8 +1,7 @@
 div(class="{{f.mestype}}" ng-show="form_show.action")
   form.form-inline(name="action_form")
     .action
-      p.text
-        | {{preview_action(f)}}
+      p.text(ng-bind-html="preview_action(f)")
       h6 
         | {{f.count}} {{f.title}}
       .mark(ng-bind-html="error(f)")

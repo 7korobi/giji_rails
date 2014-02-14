@@ -21,19 +21,11 @@ POOL = ($scope, $filter, $timeout)->
     $timeout apply,   message_first
     $timeout refresh, message_timer
 
-  do_pool_ajax = ->
-    if $scope.event?.is_news
-      $scope.get_news $scope.event, =>
-        $scope.init()
-        $scope.$apply()
-  pool_ajax = _.throttle do_pool_ajax, ajax_timer
-
   pool_button = ()->
     $scope.get_news $scope.event, =>
       $scope.init()
-      $scope.boot()
   $scope.pool_nolimit = pool_button
-  $scope.pool = _.throttle pool_button, message_first
+  $scope.pool = _.debounce pool_button, message_first
 
   $scope.top =
     focus: false
@@ -51,16 +43,13 @@ POOL = ($scope, $filter, $timeout)->
 
   adjust = ->
     $(window).resize()
+    $(window).scroll()
 
   $scope.adjust = ->
     adjust()
-    _.delay adjust,  160
-    _.delay adjust,  800
-    _.delay adjust, 4000
-
-  $scope.boot = ->
-    $timeout apply, 2000
-    $scope.adjust()
+    _.delay adjust,   80
+    _.delay adjust,  400
+    _.delay adjust, 2000
 
   # onload event
   $scope.init()

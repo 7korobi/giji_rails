@@ -1,56 +1,102 @@
-.drag {
-  &.ng-enter {
-    margin-left: 50px;    
+@drag-enter-transform:    rotate3d(0,0,1, 30deg) translate( 500px,   0px) scale(0  , 1);
+@message-enter-transform: rotate3d(0,0,0,  0deg) translate(   0px,-100px) scale(1.3, 1);
+
+@goal-transform:          rotate3d(0,0,0,  0deg) translate(   0px,   0px) scale(1  , 1);
+
+@drag-leave-transform:    rotate3d(0,0,1,-30deg) translate(-500px,   0px) scale(0  , 1);
+@message-leave-transform: rotate3d(0,0,0,  0deg) translate(   0px, 100px) scale(0.5, 1);
+
+.mobile, 
+.pc {
+  .message_filter.drag {
+    &.ng-enter,
+    &.ng-leave {
+      transition-property: -webkit-transform, -moz-transform, -ms-transform, -o-transform, transform, opacity;
+      transition-timing-function: ease-in;
+      transition-duration: 0.2s;
+      transition-delay:    0;
+    }
+
+    &.ng-enter {
+      -webkit-transform: @drag-enter-transform;
+      -moz-transform: @drag-enter-transform;
+      -ms-transform: @drag-enter-transform;
+      -o-transform: @drag-enter-transform;
+      transform: @drag-enter-transform;
+      opacity: 0;
+    }
+    &.ng-enter-active, &.ng-leave {
+      -webkit-transform: @goal-transform;    
+      -moz-transform: @goal-transform;   
+      -ms-transform: @goal-transform;   
+      -o-transform: @goal-transform;   
+      transform: @goal-transform;
+      opacity: 1;
+    }
+    &.ng-leave-active {
+      -webkit-transform: @drag-leave-transform;
+      -moz-transform: @drag-leave-transform;
+      -ms-transform: @drag-leave-transform;
+      -o-transform: @drag-leave-transform;
+      transform: @drag-leave-transform;
+      opacity: 0;
+    }
   }
 }
 
-.message_filter {
+.pc .message_filter {
   &.ng-enter,
-  &.ng-leave,
+  &.ng-leave {
+    transition-property: -webkit-transform, -moz-transform, -ms-transform, -o-transform, transform, opacity;
+    transition-timing-function: ease-in;
+    transition-duration: 0.2s;
+  }
+  &.ng-enter {
+    transition-delay:   0.3s;    
+  }
   &.ng-move,
   &.fade-hide,
   &.fade-show {
-    transition-property: all;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in;
-    transition-delay: 0;
+    transition-property: -webkit-transform, -moz-transform, -ms-transform, -o-transform, transform, opacity;
+    transition-duration: 0;
+    transition-delay:    0;
   }
 
   &.ng-enter {
+    -webkit-transform: @message-enter-transform;
+    -moz-transform: @message-enter-transform;
+    -ms-transform: @message-enter-transform;
+    -o-transform: @message-enter-transform;
+    transform: @message-enter-transform;
     opacity: 0;
   }
-  &.ng-enter-active {
-    opacity: 1;
-    margin-left:  0px;
-  }
-
+  &.ng-enter-active, 
   &.ng-leave {
+    -webkit-transform: @goal-transform;    
+    -moz-transform: @goal-transform;   
+    -ms-transform: @goal-transform;   
+    -o-transform: @goal-transform;   
+    transform: @goal-transform;
     opacity: 1;
-    margin-left:  0px;
   }
   &.ng-leave-active {
+    -webkit-transform: @message-leave-transform;
+    -moz-transform: @message-leave-transform;
+    -ms-transform: @message-leave-transform;
+    -o-transform: @message-leave-transform;
+    transform: @message-leave-transform;
     opacity: 0;
-    margin-left: -50px;
   }
 
   &.ng-move {
-    opacity: .5;
-  }	
+  } 
   &.ng-move-active {
-    opacity: 1;
   }
 }
 
 .ng-remove {
-  opacity: .5;
-  position: absolute;
 }
-.ng-remove-active {
-  opacity: 0;
-}
-.ng-add {
-  opacity: 0;
+.ng-remove-active, .ng-add {
 }
 .ng-add-active {
-  opacity: 1;
 }

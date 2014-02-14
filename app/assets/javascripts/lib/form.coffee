@@ -19,6 +19,7 @@ FORM = ($scope, $sce)->
       lines = f.text.split("\n").length
       size  = calc_length(f.text)
       point = calc_point(size, lines) 
+      f.lines = 5
 
       cb(size, lines)
       f.valid = false if f.max.size < size
@@ -131,7 +132,7 @@ FORM = ($scope, $sce)->
         safety: "on"
         turn: $scope.event.turn
         vid:  $scope.story.vid
-        mes:       f.text
+        mes:  f.text.replace(/\n$/g, '\n ')
         monospace: 0
       param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       param[f.switch] = "on"  if  f.switch
@@ -177,7 +178,7 @@ FORM = ($scope, $sce)->
     param =
       cmd: f.cmd
       vid:  $scope.story.vid
-      commit:    f.commit
+      commit: f.commit
     submit f, param
 
   $scope.confirm = (f)->

@@ -1,20 +1,20 @@
 class FixedBox
   @list = {}
 
-  constructor: (dx, dy, fixed_box, force_zoom)->
+  constructor: (dx, dy, fixed_box)->
     @dx = dx
     @dy = dy
     @box = fixed_box
-    @force_zoom = force_zoom
+    
 
     if @box
       @box.css
         left: 0
         top:  0
-      win.on_resize(=> @scroll())
+      win.on_resize(=> @resize())
       win.on_scroll(=> @scroll())
 
-  scroll: ()->
+  resize: ()->
     width  = win.width  - @box.width()
     height = win.height - @box.height()
 
@@ -23,6 +23,14 @@ class FixedBox
     @top = @dy + height if @dy < 0
     @top = @dy          if   0 < @dy
 
+    if 1 < win.zoom
+      @box.css
+        display: "none"
+    else
+      @box.css
+        display: ""
+
+  scroll: ()->
     win.left = window.pageXOffset
     win.top  = window.pageYOffset
 
@@ -33,14 +41,7 @@ class FixedBox
 
     @box.to_z_front()
 
-    if 1 < win.zoom  or  @force_zoom
-      @box.css
-        position: "absolute"
-
-      left = @left + win.left
-      top  = @top  + win.top
-      @translate(left, top)
-    else
+    if 1 == win.zoom
       if 0 == @dx
         @box.css
           position: "fixed"
@@ -86,5 +87,5 @@ class FixedBox
         easing: 'swing'
         queue: false
 
-FixedBox.push = ($, dx, dy, key, force_zoom)->
-  FixedBox.list[key] or= new FixedBox dx, dy, $(key), force_zoom
+FixedBox.push = ($, dx, dy, key)->
+  FixedBox.list[key] or= new FixedBox dx, dy, $(key)
