@@ -45,7 +45,7 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
       """<a class="mark" href_eval="inner('#{cmd}','#{val}')">#{val}</a>"""
 
   random_preview = (log)->
-    log.replace /\[\[([^>]+)\]\]/g, (key, val)->
+    log.replace /\[\[([^\[]+)\]\]/g, (key, val)->
       """<a class="mark" href_eval="inner('#{val}','？')">#{val}</a>"""
 
   link_regexp = ///

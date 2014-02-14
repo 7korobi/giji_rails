@@ -54,9 +54,9 @@ FORM = ($scope, $sce)->
         else 
     $scope.submit param, ->
 
-  preview = (f)->
-    if f.text?
-      $scope.preview_decolate f.text.escapeHTML().replace(/\n/g, "<br>")
+  preview = (text)->
+    if text?
+      $scope.preview_decolate text.escapeHTML().replace(/&#x2f;/g,"/").replace(/\n/g, "<br>")
     else
       ""
 
@@ -85,7 +85,7 @@ FORM = ($scope, $sce)->
   $scope.preview_action = (f)->
     text =
       if 0 < f.text?.length
-        f.text
+        preview f.text
       else
         $scope.option(f.actions, f.action).name.replace(/\(.*\)$/,"")
     target =
@@ -93,7 +93,7 @@ FORM = ($scope, $sce)->
         $scope.option(f.targets, f.target).name
       else
         ""
-    $scope.preview_decolate "#{f.shortname}は、#{target}#{text}"
+    "#{f.shortname}は、#{target}#{text}"
 
   $scope.option = (list, key)->
     find = _.find list, (o)-> o.val == key
@@ -120,7 +120,7 @@ FORM = ($scope, $sce)->
     else
       f.ver.commit() if f.ver?
       f.is_preview = valid
-      f.preview = preview f
+      f.preview = preview f.text
 
   $scope.write = (f, valid)->
     return if f.disabled
@@ -140,7 +140,7 @@ FORM = ($scope, $sce)->
       submit f, param
     else
       f.is_preview = valid
-      f.preview = preview f
+      f.preview = preview f.text
 
   $scope.action = (f, valid)->
     return if f.disabled

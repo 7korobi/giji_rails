@@ -1967,9 +1967,9 @@ FORM = function($scope, $sce) {
     }
     return $scope.submit(param, function() {});
   };
-  preview = function(f) {
-    if (f.text != null) {
-      return $scope.preview_decolate(f.text.escapeHTML().replace(/\n/g, "<br>"));
+  preview = function(text) {
+    if (text != null) {
+      return $scope.preview_decolate(text.escapeHTML().replace(/&#x2f;/g, "/").replace(/\n/g, "<br>"));
     } else {
       return "";
     }
@@ -2015,9 +2015,9 @@ FORM = function($scope, $sce) {
   };
   $scope.preview_action = function(f) {
     var target, text, _ref;
-    text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? f.text : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
+    text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? preview(f.text) : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
     target = -1 < f.target ? $scope.option(f.targets, f.target).name : "";
-    return $scope.preview_decolate("" + f.shortname + "は、" + target + text);
+    return "" + f.shortname + "は、" + target + text;
   };
   $scope.option = function(list, key) {
     var find;
@@ -2056,7 +2056,7 @@ FORM = function($scope, $sce) {
         f.ver.commit();
       }
       f.is_preview = valid;
-      return f.preview = preview(f);
+      return f.preview = preview(f.text);
     }
   };
   $scope.write = function(f, valid) {
@@ -2088,7 +2088,7 @@ FORM = function($scope, $sce) {
       return submit(f, param);
     } else {
       f.is_preview = valid;
-      return f.preview = preview(f);
+      return f.preview = preview(f.text);
     }
   };
   $scope.action = function(f, valid) {
@@ -3172,7 +3172,7 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     });
   };
   random_preview = function(log) {
-    return log.replace(/\[\[([^>]+)\]\]/g, function(key, val) {
+    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
       return "<a class=\"mark\" href_eval=\"inner('" + val + "','？')\">" + val + "</a>";
     });
   };
