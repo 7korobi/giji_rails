@@ -1863,11 +1863,13 @@ FILTER = function($scope, $filter) {
     return list;
   });
   do_scrollTo = function() {
+    $scope.anchors = [];
     return $scope.go.messages();
   };
   scrollTo = _.debounce(do_scrollTo, 500);
   form_show = function() {
     var _k, _len2, _ref1, _results;
+    $scope.anchors = [];
     if ($scope.modes != null) {
       $scope.form_show = {};
       _ref1 = $scope.modes.form;
@@ -1879,16 +1881,10 @@ FILTER = function($scope, $filter) {
       return _results;
     }
   };
-  $scope.$watch(page.to_key, function() {
-    return $scope.anchors = [];
-  });
+  $scope.$watch(page.to_key, scrollTo);
   $scope.$watch('mode.value', form_show);
   $scope.$watch('event.is_news', form_show);
-  $scope.$watch('event.is_news', $scope.deploy_mode_common);
-  $scope.$watch('modes.face', scrollTo);
-  $scope.$watch('order.value', scrollTo);
-  $scope.$watch('event.turn', scrollTo);
-  return $scope.$watch('page.value', scrollTo);
+  return $scope.$watch('event.is_news', $scope.deploy_mode_common);
 };
 var FORM;
 
@@ -2189,13 +2185,13 @@ GO = function($scope) {
   go_anker = function(anker) {
     var target;
     target = $($(anker)[0]);
-    return $(window).scrollTop(target.offset().top);
+    return $(window).scrollTop(target.offset().top - 20);
   };
   return $scope.go = {
     messages: function() {
       return go_anker("#messages");
     },
-    form: function() {
+    forms: function() {
       return go_anker("#forms");
     },
     search: function() {

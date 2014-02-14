@@ -204,22 +204,19 @@ FILTER = ($scope, $filter)->
     list
 
   do_scrollTo = ()->
+    $scope.anchors = []
     $scope.go.messages();
 
   scrollTo = _.debounce do_scrollTo, 500
 
   form_show = ->
+    $scope.anchors = []
     if $scope.modes?
       $scope.form_show = {}
       for key in $scope.modes.form 
         $scope.form_show[key] = true
-
-  $scope.$watch page.to_key, ->
-    $scope.anchors = []
+  
+  $scope.$watch page.to_key,     scrollTo
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
-  $scope.$watch 'modes.face',    scrollTo
-  $scope.$watch 'order.value',   scrollTo
-  $scope.$watch 'event.turn',    scrollTo
-  $scope.$watch 'page.value',    scrollTo
