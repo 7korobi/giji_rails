@@ -15,9 +15,10 @@ FORM = ($scope, $sce)->
 
   valid = (f, cb)->
     f.valid = true
+    text = f.text.replace(/\n$/g, '\n ')
     if f.max
-      lines = f.text.split("\n").length
-      size  = calc_length(f.text)
+      lines = text.split("\n").length
+      size  = calc_length(text)
       point = calc_point(size, lines) 
       f.lines = 5
 
@@ -85,7 +86,7 @@ FORM = ($scope, $sce)->
   $scope.preview_action = (f)->
     text =
       if 0 < f.text?.length
-        preview f.text
+        preview f.text.replace(/\n$/g, '\n ')
       else
         $scope.option(f.actions, f.action).name.replace(/\(.*\)$/,"")
     target =
@@ -111,7 +112,7 @@ FORM = ($scope, $sce)->
         vid:  $scope.story.vid
         csid_cid:  f.csid_cid
         role:      f.role
-        mes:       f.text
+        mes:       f.text.replace(/\n$/g, '\n ')
         entrypwd:  f.password
         target:    -1
         monospace: 0
@@ -120,7 +121,7 @@ FORM = ($scope, $sce)->
     else
       f.ver.commit() if f.ver?
       f.is_preview = valid
-      f.preview = preview f.text
+      f.preview = preview f.text.replace(/\n$/g, '\n ')
 
   $scope.write = (f, valid)->
     return if f.disabled
@@ -140,7 +141,7 @@ FORM = ($scope, $sce)->
       submit f, param
     else
       f.is_preview = valid
-      f.preview = preview f.text
+      f.preview = preview f.text.replace(/\n$/g, '\n ')
 
   $scope.action = (f, valid)->
     return if f.disabled
