@@ -15,7 +15,9 @@ class SowRecordFile
     res = []
     scanner = self.new
     sow_each(path+'/'+fname) do | line |
+      pno = 0
       scanner.cgi_scan_by_line(folder,vid,nil, ["uid","makeruid"],line) do |item|
+        item.pno = pno += 1 if name == "Struct::SowRecordFileUser"
         res.push item
       end
     end
@@ -112,13 +114,14 @@ class SowRecordFile
       prefix.unshift :folder  if folder
       prefix.unshift :vid     if vid
       prefix.unshift :turn    if turn
+      prefix.unshift :pno     if name == "SowRecordFileUser"
       prefix.unshift :is_scrub
       @struct = Struct.new( * ([name] + prefix + @keys) )
     elsif @keys
       item = @struct.new
-      item.folder = folder if folder
-      item.vid    = vid    if vid
-      item.turn   = turn   if turn
+      item.folder = folder   if folder
+      item.vid    = vid      if vid
+      item.turn   = turn     if turn
       @keys.each_with_index do |key_sym,i| val = ary[i]
         key = key_sym.to_s
         if ! val

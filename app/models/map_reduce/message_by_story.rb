@@ -50,7 +50,7 @@ class MapReduce::MessageByStory
       o = self.new
       o.id = story_id
 
-      Talk.const_get(folder).where(story_id: story_id).each do |talk|
+      Message.in_story(story_id).each do |talk|
         next if deny_sow_auth_ids.member? talk.sow_auth_id
         logid_head = talk.logid[0..1]
         logs = o.value[logid_head] ||= {}

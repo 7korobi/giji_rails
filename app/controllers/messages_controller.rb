@@ -1,9 +1,14 @@
 class MessagesController < BasePastLogController
   expose(:events_summary){ story.events.summary.cache }  
-  expose(:events){ story.events.order_by(turn:1).cache }
+  expose(:events) do
+    messages = Message.in_story(story.id).group_by(&:event_id)
+    story.events.order_by(turn:1).cache.tap do |e|
+      e.messages = messages[e.id]
+    end
+  end
   expose(:event) do 
     e = story.events.where(turn: params[:turn]).cache.first 
-    e.messages = Talk.const_get(story.folder).in_event(e.id)
+    e.messages = Message.in_event(e.id).to_a
     vil_info e
     e
   end

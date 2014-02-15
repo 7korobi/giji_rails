@@ -8,10 +8,6 @@ module Talkable
     scope :in_event, ->(event_id) { select(%i[logid mestype date subid talks.to color style log  name csid face_id sow_auth_id]).where(event_id: event_id).order("date asc") }
   end
 
-  def img
-    "/images/portrate/#{face_id}.jpg" if face_id.present?
-  end
-
   module ClassMethods
     def check_table
       sleep 2

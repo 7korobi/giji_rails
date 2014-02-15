@@ -18,8 +18,9 @@ class GijiLogScanner < GijiScanner
     story = SowVillage.where( folder: folder, vid: vid ).first
     return unless story
 
-    GijiTalkScanner.perform path, fname, type, folder, vid, turn
+#    GijiTalkScanner.perform  path, fname, type, folder, vid, turn
+    GijiMessageScanner.perform path, fname, type, folder, vid, turn
 
-    MapReduce::MessageByStory.generate([story.id]) if story.is_finish
+#    MapReduce::MessageByStory.generate([story.id]) if story.is_finish
   end
 end

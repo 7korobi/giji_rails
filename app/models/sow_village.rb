@@ -18,25 +18,21 @@ class SowVillage < Story
 
 
   def self.empty_ids
-    SowTurn.messages_empty.pluck("story_id").uniq
+    has_messages_ids = collection.database.collection_names.grep(/msg-/).map do |o|
+      o["msg-"] = ""
+      o
+    end
+    pluck("id") - has_messages_ids
   end
 
-  def duplicate_events
-    Talk.const_get(folder).where(story_id: id).pluck("event_id").uniq.each do |event_id|
-      _,_,turn = event_id.split("-")
-      key = {story_id: id, turn: turn}
-      target_class = "Event::#{folder}".constantize
-      event = SowTurn.where(key).first
-      unless event
-        event = OldEvent.where(key).first || target_class.where(key).first || SowTurn.new(key)
-        event.new_record = true
-      end
-      event[:_type] = "SowTurn"
-      event.messages = []
-      event.save
+  def self.repair_from_file(folders = nil)
+    rsync = Giji::RSync.new
+    rsync.each_villages([]) do |folder, vid, turn, path, fname|
+      next unless (!folders) || folders.member?(folder)
+      GijiVilScanner.new(path, folder, fname).enqueue :repair
     end
   end
-
+  
   def update_from_file_only_game force = true
     Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
       vid   = self.vid
