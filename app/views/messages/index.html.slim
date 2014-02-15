@@ -23,7 +23,7 @@
           td
             select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
 
-  .insayfilter(navi="page" ng-show="page")
+  .insayfilter(adjust="full" navi="page" ng-show="page")
     .paragraph
       .sayfilter_content.form-inline(ng-show="event.is_news")
         label.inline.radio

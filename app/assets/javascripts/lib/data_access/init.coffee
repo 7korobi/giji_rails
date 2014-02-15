@@ -7,7 +7,7 @@ INIT_POTOFS = ($scope, gon)->
     for potof in gon.potofs
       INIT_POTOF $scope, potof, gon
 
-INIT = ($scope, $filter)->
+INIT = ($scope, $filter, $timeout)->
   return unless gon?
 
   INIT_POTOFS $scope, gon
@@ -70,6 +70,6 @@ INIT = ($scope, $filter)->
     unless $scope.order?
       Navi.push     $scope, 'order', OPTION.page.order
     unless $scope.page?
-      FILTER($scope, $filter)
+      FILTER($scope, $filter, $timeout)
 
 

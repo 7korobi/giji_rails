@@ -73,8 +73,10 @@ CACHE = ($scope)->
       INIT_MESSAGES new_base
       if new_base.has_all_messages
         old_base.messages = []
-      merge_by.news old_base, new_base, 'messages', guard, filter
 
+      merge_by.news old_base, new_base, 'messages', guard, filter
+      order  = (o)-> o.order || o.updated_at
+      old_base.messages = _.sortBy old_base.messages, order
 
     _potofs: (old_base, new_base)->
       guard = null

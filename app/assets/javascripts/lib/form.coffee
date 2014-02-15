@@ -20,7 +20,7 @@ FORM = ($scope, $sce)->
       lines = text.split("\n").length
       size  = calc_length(text)
       point = calc_point(size, lines) 
-      f.lines = 5
+      f.lines = lines
 
       cb(size, lines)
       f.valid = false if f.max.size < size
@@ -188,6 +188,7 @@ FORM = ($scope, $sce)->
       return unless $scope.form.command_targets?.length
       f.target = $scope.form.command_target
       target_name = $scope.option($scope.form.command_targets, $scope.form.command_target).name
+      return unless target_name
 
     if target_name
       $scope.form.confirm = "#{target_name} - #{f.title}"

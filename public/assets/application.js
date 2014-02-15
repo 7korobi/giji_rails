@@ -829,7 +829,7 @@ CACHE = function($scope) {
     },
     event: function() {},
     _messages: function(old_base, new_base) {
-      var filter, guard;
+      var filter, guard, order;
       guard = null;
       filter = function(o) {
         return o.logid;
@@ -838,7 +838,11 @@ CACHE = function($scope) {
       if (new_base.has_all_messages) {
         old_base.messages = [];
       }
-      return merge_by.news(old_base, new_base, 'messages', guard, filter);
+      merge_by.news(old_base, new_base, 'messages', guard, filter);
+      order = function(o) {
+        return o.order || o.updated_at;
+      };
+      return old_base.messages = _.sortBy(old_base.messages, order);
     },
     _potofs: function(old_base, new_base) {
       var filter, guard, potof, _i, _len, _ref;
@@ -1054,7 +1058,7 @@ INIT_POTOFS = function($scope, gon) {
   }
 };
 
-INIT = function($scope, $filter) {
+INIT = function($scope, $filter, $timeout) {
   var has_messages, key, live_potofs, news, potof, potofs_hash, row, story, _i, _j, _len, _len1, _ref, _ref1, _ref2;
   if (typeof gon === "undefined" || gon === null) {
     return;
@@ -1130,7 +1134,7 @@ INIT = function($scope, $filter) {
       Navi.push($scope, 'order', OPTION.page.order);
     }
     if ($scope.page == null) {
-      return FILTER($scope, $filter);
+      return FILTER($scope, $filter, $timeout);
     }
   }
 };
@@ -1561,8 +1565,8 @@ angular.module("giji").run(function() {
 });
 var FILTER;
 
-FILTER = function($scope, $filter) {
-  var do_scrollTo, filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
+FILTER = function($scope, $filter, $timeout) {
+  var do_scroll, filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -1739,7 +1743,7 @@ FILTER = function($scope, $filter) {
     $scope.$watch('modes.last', modes_change);
     $scope.$watch('modes.player', modes_change);
     page.filter('mode.value', function(key, list) {
-      var add_filter, add_filters, is_mob_open, mode_filter, mode_filters, open_filters, order, result, sublist, _ref1;
+      var add_filter, add_filters, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist, _ref1;
       $scope.modes = $.extend({}, $scope.mode.choice());
       is_mob_open = false;
       if ($scope.story != null) {
@@ -1800,19 +1804,16 @@ FILTER = function($scope, $filter) {
       list = _.filter(list, function(o) {
         return o.logid.match(mode_filter) || add_filter(o);
       });
-      order = function(o) {
-        return o.order || o.updated_at;
-      };
       if ($scope.modes.last) {
         result = [];
         _ref1 = _.groupBy(list, $scope.potof_key);
         for (key in _ref1) {
           sublist = _ref1[key];
-          result.push(_.last(_.sortBy(sublist, order)));
+          result.push(_.last(sublist));
         }
-        return _.sortBy(result, order);
+        return result;
       } else {
-        return _.sortBy(list, order);
+        return list;
       }
     });
     page.filter('hide_potofs.value', function(hide_faces, list) {
@@ -1862,11 +1863,28 @@ FILTER = function($scope, $filter) {
     }
     return list;
   });
-  do_scrollTo = function() {
-    $scope.anchors = [];
-    return $scope.go.messages();
+  do_scroll = function() {
+    var form_text, go_scroll, is_show, mode, _k, _len2, _ref1, _ref2;
+    go_scroll = $scope.go.messages;
+    if ($scope.event.is_news) {
+      _ref1 = $scope.form_show;
+      for (mode in _ref1) {
+        is_show = _ref1[mode];
+        _ref2 = $scope.form.texts;
+        for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+          form_text = _ref2[_k];
+          if (is_show && mode === form_text.jst) {
+            go_scroll = $scope.go.form;
+          }
+        }
+      }
+    }
+    return go_scroll();
   };
-  scrollTo = _.debounce(do_scrollTo, 500);
+  scrollTo = function() {
+    $scope.anchors = [];
+    return $timeout(_.debounce(do_scroll, 1200));
+  };
   form_show = function() {
     var _k, _len2, _ref1, _results;
     $scope.anchors = [];
@@ -1916,7 +1934,7 @@ FORM = function($scope, $sce) {
       lines = text.split("\n").length;
       size = calc_length(text);
       point = calc_point(size, lines);
-      f.lines = 5;
+      f.lines = lines;
       cb(size, lines);
       if (f.max.size < size) {
         f.valid = false;
@@ -2154,6 +2172,9 @@ FORM = function($scope, $sce) {
       }
       f.target = $scope.form.command_target;
       target_name = $scope.option($scope.form.command_targets, $scope.form.command_target).name;
+      if (!target_name) {
+        return;
+      }
     }
     if (target_name) {
       $scope.form.confirm = "" + target_name + " - " + f.title;
@@ -2183,20 +2204,27 @@ var GO;
 
 GO = function($scope) {
   var go_anker;
-  go_anker = function(anker) {
-    var target;
+  go_anker = function(anker, offset, cb) {
+    var target, targetY;
     target = $($(anker)[0]);
-    return $(window).scrollTop(target.offset().top - 20);
+    targetY = target.offset().top - offset;
+    return $("html,body").animate({
+      scrollTop: targetY
+    }, 200, "linear", function() {
+      return typeof cb === "function" ? cb(target) : void 0;
+    });
   };
   return $scope.go = {
     messages: function() {
-      return go_anker("#messages");
+      return go_anker("#messages", win.height / 5);
     },
-    forms: function() {
-      return go_anker("#forms");
+    form: function() {
+      return go_anker("#forms", win.height / 5);
     },
     search: function() {
-      return $($("[ng-model=\"search_input\"]")[0]).focus();
+      return go_anker("[ng-model=\"search_input\"]", 0, function(o) {
+        return o.focus();
+      });
     }
   };
 };
@@ -2776,7 +2804,7 @@ POOL = function($scope, $filter, $timeout) {
   ajax_timer = 5 * 60 * 1000;
   apply = function() {};
   $scope.init = function() {
-    INIT($scope, $filter);
+    INIT($scope, $filter, $timeout);
     if ($scope.event != null) {
       $scope.do_sort_potofs();
       $scope.set_turn($scope.event.turn);
@@ -2797,7 +2825,10 @@ POOL = function($scope, $filter, $timeout) {
     });
   };
   $scope.pool_nolimit = pool_button;
-  $scope.pool = _.debounce(pool_button, message_first);
+  $scope.pool = _.debounce(pool_button, message_first, {
+    leading: true,
+    trailing: false
+  });
   $scope.top = {
     focus: false,
     news_size: 0,

@@ -77,7 +77,7 @@ else
     location.hash = hash
 
 
-angular.module("giji").run ->
+angular.module("giji").run ()->
   win.on_scroll win.refresh
   win.on_resize win.refresh
 

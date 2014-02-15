@@ -63,8 +63,8 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS")
 
       #footer
       #tab(ng-cloak)
-        #sayfilter.sayfilter
-          h4.sayfilter_heading#navi_head(ng-hide="navi.hide")
+        #sayfilter.sayfilter(adjust="left")
+          h4.sayfilter_heading#navi_head
             = yield :navi_head
           = yield :navi
           - if flash[:error]

@@ -1,4 +1,4 @@
-FILTER = ($scope, $filter)->
+FILTER = ($scope, $filter, $timeout)->
   PageNavi.push $scope, 'page',  OPTION.page.page
   page = $scope.page
   filter_filter = $filter 'filter'
@@ -161,15 +161,13 @@ FILTER = ($scope, $filter)->
       list = _.filter list, (o)->
         o.logid.match(mode_filter) || add_filter(o)
 
-      order  = (o)-> o.order || o.updated_at
-
       if $scope.modes.last
         result = []
         for key, sublist of _.groupBy list, $scope.potof_key
-          result.push _.last _.sortBy sublist, order
-        _.sortBy result, order
+          result.push _.last sublist
+        result
       else
-        _.sortBy list, order
+        list
 
     page.filter 'hide_potofs.value', (hide_faces, list)->
       if _.include hide_faces, 'others'
@@ -204,11 +202,17 @@ FILTER = ($scope, $filter)->
     list.reverse() if "desc" == key
     list
 
-  do_scrollTo = ()->
-    $scope.anchors = []
-    $scope.go.messages();
+  do_scroll = ()->
+    go_scroll = $scope.go.messages
+    if $scope.event.is_news
+      for mode, is_show of $scope.form_show
+        for form_text in $scope.form.texts
+          go_scroll = $scope.go.form if is_show and mode == form_text.jst
+    go_scroll()
 
-  scrollTo = _.debounce do_scrollTo, 500
+  scrollTo = ()->    
+    $scope.anchors = []
+    $timeout _.debounce do_scroll, 1200
 
   form_show = ->
     $scope.anchors = []

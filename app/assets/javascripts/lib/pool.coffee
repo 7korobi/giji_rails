@@ -7,7 +7,7 @@ POOL = ($scope, $filter, $timeout)->
 #    $scope.$apply()
 
   $scope.init = ->
-    INIT $scope, $filter
+    INIT $scope, $filter, $timeout
     if $scope.event?
       $scope.do_sort_potofs()
       $scope.set_turn($scope.event.turn)
@@ -25,7 +25,9 @@ POOL = ($scope, $filter, $timeout)->
     $scope.get_news $scope.event, =>
       $scope.init()
   $scope.pool_nolimit = pool_button
-  $scope.pool = _.debounce pool_button, message_first
+  $scope.pool = _.debounce pool_button, message_first, 
+    leading: true
+    trailing: false
 
   $scope.top =
     focus: false
