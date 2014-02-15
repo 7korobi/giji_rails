@@ -18,8 +18,7 @@ class GijiMessageScanner < GijiScanner
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
 
-    talk_t = Message.with(collection: "msg-#{story_id}")
-    stored_ids = talk_t.where(event_id: event_id).pluck("logid")
+    stored_ids = Message.in_event(event_id).pluck("logid")
     chk_doubles = []
     requests = Hash.new
 
@@ -40,7 +39,7 @@ class GijiMessageScanner < GijiScanner
       stored_ids.push  logid
 
       # message embedded in
-      message = talk_t.new.tap do |t|
+      message = Message.new.tap do |t|
         t.id = [event_id, logid].join("-")
         t.story_id = story_id
         t.event_id = event_id
@@ -72,8 +71,8 @@ class GijiMessageScanner < GijiScanner
         message.mestype = "BSAY"
       end
       begin
-        timeout(60) { message.save }
-      rescue RuntimeError => e
+        timeout(60) { message.with(collection:"msg-#{story_id}").save }
+      rescue Moped::Errors::OperationFailure => e
         GijiErrorReport.enqueue e.inspect, o, message.attributes
         sleep 10
       end

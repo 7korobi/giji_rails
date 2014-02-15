@@ -26,13 +26,7 @@ class GijiVilScanner < GijiScanner
     sow.attributes["_type"] = "SowVillage"
 
     turn = nil
-    event_now = sow.events.to_a.max
-    if event_now.present?
-      turn = event_now.turn
-      event_id = event_now._id
-    else
-      event_id = "#{sow._id}-#{turn}"
-    end
+    event_id = "#{sow._id}-#{turn}"
 
     source.each do |o|
       case o.class.name
@@ -101,7 +95,7 @@ class GijiVilScanner < GijiScanner
         potof.timer = dt
 
         potof.story_id = story.id
-        potof.event_id = event_now.id  if  event_now
+        potof.event_id = event_id
         potof.save
       when 'Struct::SowRecordFileVil'
         turn = o.turn.to_i
@@ -162,7 +156,7 @@ class GijiVilScanner < GijiScanner
         sow.is_finish   = (o.epilogue.to_i <  turn)
         sow.save
 
-        o.turn.to_i.times do |turn_no|
+        turn.times do |turn_no|
           event = SowTurn.find_or_initialize_by(story_id: sow.id, turn: turn_no)
           event.attributes["_type"] = "SowTurn"
           event.update_attributes(
@@ -187,11 +181,7 @@ class GijiVilScanner < GijiScanner
           end
           event.save
         end
-
-        sow = SowVillage.find_by( folder: folder, vid: vid )
-        event_now = sow.events.to_a.max
-        turn = event_now.turn
-        event_id = event_now._id
+        event_id = "#{sow.id}-#{turn}"
       end
     end
     return if repair
