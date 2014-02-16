@@ -31,7 +31,7 @@ class MapReduce::MessageByStory
     }
     res[:date][:min] = talk.date if res[:date][:min] > talk.date
     res[:date][:max] = talk.date if res[:date][:max] < talk.date
-    res.count += 1
+    res[:count] += 1
 
     size = talk.log.to_s.size
     res[:max] = size if res[:max] < size
@@ -46,8 +46,7 @@ class MapReduce::MessageByStory
     self.in(story_id: target).delete
 
     target.each do |story_id|
-      folder = story_id.split("-").upcase
-      o = self.new
+      o = self.new(value: {})
       o.id = story_id
 
       Message.in_story(story_id).each do |talk|

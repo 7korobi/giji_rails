@@ -2,14 +2,6 @@ class GijiScheduler
   @queue = :giji_schedules
   def self.perform type
     case type.to_sym
-    when :talk
-      (Talk::VILLAGES + Talk::FOLDERS + [Talk]).each do |klass|
-        begin 
-          GijiErrorReport.enqueue klass.name unless klass.is_extended_ok?
-        rescue Mysql2::Error => e
-          GijiErrorReport.enqueue klass.name
-        end
-      end
     when :git
       system <<-_SH_
         cd /www/giji_log
