@@ -7,12 +7,15 @@ class FixedBox
     @box = fixed_box
     
 
-    if @box
+    if @box && ! head.browser.simple
       @box.css
         left: 0
         top:  0
       win.on_resize(=> @resize())
       win.on_scroll(=> @scroll())
+    else
+      @box.css
+        display: "none"
 
   resize: ()->
     width  = win.width  - @box.width()
@@ -23,7 +26,7 @@ class FixedBox
     @top = @dy + height if @dy < 0
     @top = @dy          if   0 < @dy
 
-    if 1 < win.zoom
+    if 1.5 < win.zoom
       @box.css
         display: "none"
     else
@@ -41,19 +44,18 @@ class FixedBox
 
     @box.to_z_front()
 
-    if 1 == win.zoom
-      if 0 == @dx
-        @box.css
-          position: "fixed"
-          left: ""
-          width: @box.parent().width() 
-      else
-        @box.css
-          position: "fixed"
+    if 0 == @dx
+      @box.css
+        position: "fixed"
+        left: ""
+        width: @box.parent().width() 
+    else
+      @box.css
+        position: "fixed"
 
-      left = @left + win.left
-      top  = @top
-      @translate(left, top)
+    left = @left + win.left
+    top  = @top
+    @translate(left, top)
 
   translate: (left, top)->
     if head.csstransitions
