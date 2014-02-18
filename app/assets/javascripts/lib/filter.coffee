@@ -202,17 +202,16 @@ FILTER = ($scope, $filter, $timeout)->
     list.reverse() if "desc" == key
     list
 
-  do_scroll = ()->
-    go_scroll = $scope.go.messages
+  scrollTo = ()->    
+    $scope.anchors = []
+
     if $scope.event.is_news
       for mode, is_show of $scope.form_show
         for form_text in $scope.form.texts
-          go_scroll = $scope.go.form if is_show and mode == form_text.jst
-    go_scroll()
-
-  scrollTo = ()->    
-    $scope.anchors = []
-    $timeout _.debounce do_scroll, 1200
+          if is_show and mode == form_text.jst
+            $timeout _.debounce $scope.go.form, 1200
+            return 
+    $scope.go.messages()
 
   form_show = ->
     $scope.anchors = []
