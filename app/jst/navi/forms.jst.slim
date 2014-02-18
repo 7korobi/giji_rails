@@ -1,4 +1,19 @@
 .caution.text(listup="cautions")
+  ul
+    li(ng-show="story.announce.totalcommit")
+      | {{story.announce.totalcommit}}
+    li(ng-show="story.is_totalcommit")
+      | {{story.timer.nextcommitdt.relative('ja')}}にcommit
+
+    li
+      | {{story.timer.nextupdatedt.relative('ja')}}に更新
+    li
+      | {{story.timer.nextchargedt.relative('ja')}}に補充
+    li(ng-show="story.is_prologue")
+      | {{story.timer.scraplimitdt.relative('ja')}}に廃村
+    li
+      | あと {{story.timer.extend}}回、更新を延長できる。
+
 
 div(form="f.jst" ng-repeat="f in form.texts" ng-show="logined()")
 
