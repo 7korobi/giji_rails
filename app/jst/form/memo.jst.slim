@@ -16,16 +16,16 @@ table(class="say {{f.mestype}}" ng-show="form_show.memo")
           .form-inline
             .formpl_content
               p(class="{{f.style}} text" ng-bind-html="f.preview" ng-show="f.is_preview")
-              textarea(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-hide="f.is_preview")
+              textarea(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-hide="f.is_preview" ng-init="text_valid(f)" ng-change="text_valid(f)")
               h6
                 | {{f.count}} {{f.caption || f.longname}}
               .mark(ng-bind-html="error(f)")
 
               p
                 a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
-                a.btn(ng-click="write(f, f.valid)") {{f.title}}
+                a.btn(ng-click="write(f)") {{f.title}}
                 select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p
-                span(class="{{f.error}}" ng-bind-html="text_valid(f)")
+                span(class="{{f.error}}" ng-bind-html="f.valid_text")
                 span(diary="f" ng-hide="f.is_preview")
 

@@ -15,12 +15,15 @@ FORM = ($scope, $sce)->
 
   valid = (f, cb)->
     f.valid = true
-    text = f.text.replace(/\n$/g, '\n ')
     if f.max
+      text = f.text.replace(/\n$/g, '\n ')
       lines = text.split("\n").length
       size  = calc_length(text)
       point = calc_point(size, lines) 
-      f.lines = lines
+      if lines > 5
+        f.lines = lines
+      else
+        f.lines = 5
 
       cb(size, lines)
       f.valid = false if f.max.size < size
@@ -34,9 +37,9 @@ FORM = ($scope, $sce)->
       else
         f.error = "cautiontext"
         mark = "⊘"
-      $sce.trustAsHtml "#{mark} #{size}<sub>/#{f.max.size}字</sub>  #{lines}<sub>/#{f.max.line}行</sub>"
+      f.valid_text = $sce.trustAsHtml "#{mark} #{size}<sub>/#{f.max.size}字</sub>  #{lines}<sub>/#{f.max.line}行</sub>"
     else
-      ""
+      f.valid_text = ""
   
   submit = (f, param)->
     if f
@@ -61,29 +64,7 @@ FORM = ($scope, $sce)->
     else
       ""
 
-  $scope.error = (f)->
-    list = $scope.errors?[f?.cmd]
-    list ||= []
-    list.join("<br>")
-
-  $scope.text_valid = (f)->
-    valid f, (size, lines)->
-      f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
-      switch f.cmd
-        when "wrmemo"
-          f.valid = true if f.text == ""
-        else
-
-  $scope.action_valid = (f)->
-    valid f, (size, lines)->
-      f.valid = false if f.target == "-1" && f.action != "-99"
-      if size < 1 
-        f.valid = false if f.target ==  "-1"
-        f.valid = false if f.action == "-99"
-      else
-        f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
-
-  $scope.preview_action = (f)->
+  preview_action = (f)->
     text =
       if 0 < f.text?.length
         preview f.text.replace(/\n$/g, '\n ')
@@ -96,6 +77,46 @@ FORM = ($scope, $sce)->
         ""
     "#{f.shortname}は、#{target}#{text}"
 
+
+  write = (f, cb)->
+    return if f.disabled
+    $scope.text_valid f, true
+    f.ver.commit() if f.ver?
+
+    if f.valid && f.is_preview
+      cb()
+    else
+      f.ver.commit() if f.ver?
+      f.is_preview = f.valid
+      f.preview = preview f.text.replace(/\n$/g, '\n ')
+
+  $scope.error = (f)->
+    list = $scope.errors?[f?.cmd]
+    list ||= []
+    list.join("<br>")
+
+
+  $scope.text_valid = (f, force)->
+    if force || true # ! head.browser.simple
+      valid f, (size, lines)->
+        switch f.cmd
+          when "action"
+            f.preview = preview_action(f)
+            f.valid = false if f.target == "-1" && f.action != "-99"
+            if size < 1 
+              f.valid = false if f.target ==  "-1"
+              f.valid = false if f.action == "-99"
+            else
+              f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
+
+          when "wrmemo"
+            f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
+            f.valid = true  if size < 1
+
+          else
+            f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
+
+
   $scope.option = (list, key)->
     find = _.find list, (o)-> o.val == key
     if find?
@@ -103,9 +124,8 @@ FORM = ($scope, $sce)->
     else
       {}
 
-  $scope.entry = (f, valid)->
-    return if f.disabled
-    if valid && f.is_preview
+  $scope.entry = (f)->
+    write f, ->
       param =
         cmd:  'entry'
         turn: $scope.event.turn
@@ -118,16 +138,9 @@ FORM = ($scope, $sce)->
         monospace: 0
       param.monospace = SOW.monospace[f.style] if SOW.monospace[f.style]
       submit f, param
-    else
-      f.ver.commit() if f.ver?
-      f.is_preview = valid
-      f.preview = preview f.text.replace(/\n$/g, '\n ')
 
-  $scope.write = (f, valid)->
-    return if f.disabled
-    f.ver.commit() if f.ver?
-
-    if valid && f.is_preview
+  $scope.write = (f)->
+    write f, ->
       param =
         cmd: f.cmd
         safety: "on"
@@ -139,13 +152,10 @@ FORM = ($scope, $sce)->
       param[f.switch] = "on"  if  f.switch
       param.target = f.target if f.target?
       submit f, param
-    else
-      f.is_preview = valid
-      f.preview = preview f.text.replace(/\n$/g, '\n ')
 
-  $scope.action = (f, valid)->
-    return if f.disabled
-    if valid
+  $scope.action = (f)->
+    f.is_preview = true
+    write f, ->
       param =
         cmd: "action"
         turn: $scope.event.turn
