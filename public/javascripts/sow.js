@@ -592,7 +592,7 @@ FixedBox = (function() {
     this.dx = dx;
     this.dy = dy;
     this.box = fixed_box;
-    if (this.box) {
+    if (this.box && !head.browser.simple) {
       this.box.css({
         left: 0,
         top: 0
@@ -602,6 +602,10 @@ FixedBox = (function() {
       });
       win.on_scroll(function() {
         return _this.scroll();
+      });
+    } else {
+      this.box.css({
+        display: "none"
       });
     }
   }
@@ -622,7 +626,7 @@ FixedBox = (function() {
     if (0 < this.dy) {
       this.top = this.dy;
     }
-    if (1 < win.zoom) {
+    if (1.5 < win.zoom) {
       return this.box.css({
         display: "none"
       });
@@ -650,22 +654,20 @@ FixedBox = (function() {
       win.top = 0;
     }
     this.box.to_z_front();
-    if (1 === win.zoom) {
-      if (0 === this.dx) {
-        this.box.css({
-          position: "fixed",
-          left: "",
-          width: this.box.parent().width()
-        });
-      } else {
-        this.box.css({
-          position: "fixed"
-        });
-      }
-      left = this.left + win.left;
-      top = this.top;
-      return this.translate(left, top);
+    if (0 === this.dx) {
+      this.box.css({
+        position: "fixed",
+        left: "",
+        width: this.box.parent().width()
+      });
+    } else {
+      this.box.css({
+        position: "fixed"
+      });
     }
+    left = this.left + win.left;
+    top = this.top;
+    return this.translate(left, top);
   };
 
   FixedBox.prototype.translate = function(left, top) {
@@ -1449,23 +1451,30 @@ DIARY = function($scope) {
     }
   };
 };
-var b, popstate, win;
+var b, key, popstate, win, _i, _j, _len, _len1, _ref, _ref1;
 
 if (head.browser != null) {
   b = head.browser;
   b.power = "pc";
   if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
     b.android = true;
-    b.power = "mobile";
+    b.power = "simple";
   }
-  if (navigator.userAgent.toLowerCase().indexOf('iphone') !== -1) {
-    b.iphone = true;
-    b.power = "mobile";
+  _ref = ['firefox', 'chrome', 'crios', 'silk', 'mercury', 'iphone', 'ipad'];
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    key = _ref[_i];
+    if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
+      b.power = "mobile";
+    }
   }
-  if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) {
-    b.iphone = true;
-    b.power = "mobile";
+  _ref1 = ['safari', 'iphone', 'ipad'];
+  for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+    key = _ref1[_j];
+    if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
+      b.iphone = true;
+    }
   }
+  b[b.power] = true;
 }
 
 head.useragent = navigator.userAgent;
@@ -1566,7 +1575,7 @@ angular.module("giji").run(function() {
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var do_scroll, filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
+  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -1863,9 +1872,9 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return list;
   });
-  do_scroll = function() {
-    var form_text, go_scroll, is_show, mode, _k, _len2, _ref1, _ref2;
-    go_scroll = $scope.go.messages;
+  scrollTo = function() {
+    var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
+    $scope.anchors = [];
     if ($scope.event.is_news) {
       _ref1 = $scope.form_show;
       for (mode in _ref1) {
@@ -1874,16 +1883,13 @@ FILTER = function($scope, $filter, $timeout) {
         for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
           form_text = _ref2[_k];
           if (is_show && mode === form_text.jst) {
-            go_scroll = $scope.go.form;
+            $timeout(_.debounce($scope.go.form, 1200));
+            return;
           }
         }
       }
     }
-    return go_scroll();
-  };
-  scrollTo = function() {
-    $scope.anchors = [];
-    return $timeout(_.debounce(do_scroll, 1200));
+    return $scope.go.messages();
   };
   form_show = function() {
     var _k, _len2, _ref1, _results;
@@ -1907,7 +1913,7 @@ FILTER = function($scope, $filter, $timeout) {
 var FORM;
 
 FORM = function($scope, $sce) {
-  var calc_length, calc_point, preview, submit, valid;
+  var calc_length, calc_point, preview, preview_action, submit, valid, write;
   $scope.stories_is_small = true;
   calc_length = function(text) {
     var ascii, other;
@@ -1929,12 +1935,16 @@ FORM = function($scope, $sce) {
   valid = function(f, cb) {
     var lines, mark, point, size, text;
     f.valid = true;
-    text = f.text.replace(/\n$/g, '\n ');
     if (f.max) {
+      text = f.text.replace(/\n$/g, '\n ');
       lines = text.split("\n").length;
       size = calc_length(text);
       point = calc_point(size, lines);
-      f.lines = lines;
+      if (lines > 5) {
+        f.lines = lines;
+      } else {
+        f.lines = 5;
+      }
       cb(size, lines);
       if (f.max.size < size) {
         f.valid = false;
@@ -1953,9 +1963,9 @@ FORM = function($scope, $sce) {
         f.error = "cautiontext";
         mark = "⊘";
       }
-      return $sce.trustAsHtml("" + mark + " " + size + "<sub>/" + f.max.size + "字</sub>  " + lines + "<sub>/" + f.max.line + "行</sub>");
+      return f.valid_text = $sce.trustAsHtml("" + mark + " " + size + "<sub>/" + f.max.size + "字</sub>  " + lines + "<sub>/" + f.max.line + "行</sub>");
     } else {
-      return "";
+      return f.valid_text = "";
     }
   };
   submit = function(f, param) {
@@ -1989,50 +1999,73 @@ FORM = function($scope, $sce) {
       return "";
     }
   };
+  preview_action = function(f) {
+    var target, text, _ref;
+    text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? preview(f.text.replace(/\n$/g, '\n ')) : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
+    target = -1 < f.target ? $scope.option(f.targets, f.target).name : "";
+    return "" + f.shortname + "は、" + target + text;
+  };
+  write = function(f, cb) {
+    if (f.disabled) {
+      return;
+    }
+    $scope.text_valid(f, true);
+    if (f.ver != null) {
+      f.ver.commit();
+    }
+    if (f.valid && f.is_preview) {
+      return cb();
+    } else {
+      if (f.ver != null) {
+        f.ver.commit();
+      }
+      f.is_preview = f.valid;
+      return f.preview = preview(f.text.replace(/\n$/g, '\n '));
+    }
+  };
   $scope.error = function(f) {
     var list, _ref;
     list = (_ref = $scope.errors) != null ? _ref[f != null ? f.cmd : void 0] : void 0;
     list || (list = []);
     return list.join("<br>");
   };
-  $scope.text_valid = function(f) {
-    return valid(f, function(size, lines) {
-      if (calc_length(f.text.replace(/\s/g, '')) < 4) {
-        f.valid = false;
-      }
-      switch (f.cmd) {
-        case "wrmemo":
-          if (f.text === "") {
-            return f.valid = true;
-          }
-          break;
-      }
-    });
-  };
-  $scope.action_valid = function(f) {
-    return valid(f, function(size, lines) {
-      if (f.target === "-1" && f.action !== "-99") {
-        f.valid = false;
-      }
-      if (size < 1) {
-        if (f.target === "-1") {
-          f.valid = false;
+  $scope.text_valid = function(f, force) {
+    if (force || true) {
+      return valid(f, function(size, lines) {
+        switch (f.cmd) {
+          case "action":
+            f.preview = preview_action(f);
+            if (f.target === "-1" && f.action !== "-99") {
+              f.valid = false;
+            }
+            if (size < 1) {
+              if (f.target === "-1") {
+                f.valid = false;
+              }
+              if (f.action === "-99") {
+                return f.valid = false;
+              }
+            } else {
+              if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+                return f.valid = false;
+              }
+            }
+            break;
+          case "wrmemo":
+            if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+              f.valid = false;
+            }
+            if (size < 1) {
+              return f.valid = true;
+            }
+            break;
+          default:
+            if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+              return f.valid = false;
+            }
         }
-        if (f.action === "-99") {
-          return f.valid = false;
-        }
-      } else {
-        if (calc_length(f.text.replace(/\s/g, '')) < 4) {
-          return f.valid = false;
-        }
-      }
-    });
-  };
-  $scope.preview_action = function(f) {
-    var target, text, _ref;
-    text = 0 < ((_ref = f.text) != null ? _ref.length : void 0) ? preview(f.text.replace(/\n$/g, '\n ')) : $scope.option(f.actions, f.action).name.replace(/\(.*\)$/, "");
-    target = -1 < f.target ? $scope.option(f.targets, f.target).name : "";
-    return "" + f.shortname + "は、" + target + text;
+      });
+    }
   };
   $scope.option = function(list, key) {
     var find;
@@ -2045,12 +2078,9 @@ FORM = function($scope, $sce) {
       return {};
     }
   };
-  $scope.entry = function(f, valid) {
-    var param;
-    if (f.disabled) {
-      return;
-    }
-    if (valid && f.is_preview) {
+  $scope.entry = function(f) {
+    return write(f, function() {
+      var param;
       param = {
         cmd: 'entry',
         turn: $scope.event.turn,
@@ -2066,23 +2096,11 @@ FORM = function($scope, $sce) {
         param.monospace = SOW.monospace[f.style];
       }
       return submit(f, param);
-    } else {
-      if (f.ver != null) {
-        f.ver.commit();
-      }
-      f.is_preview = valid;
-      return f.preview = preview(f.text.replace(/\n$/g, '\n '));
-    }
+    });
   };
-  $scope.write = function(f, valid) {
-    var param;
-    if (f.disabled) {
-      return;
-    }
-    if (f.ver != null) {
-      f.ver.commit();
-    }
-    if (valid && f.is_preview) {
+  $scope.write = function(f) {
+    return write(f, function() {
+      var param;
       param = {
         cmd: f.cmd,
         safety: "on",
@@ -2101,17 +2119,12 @@ FORM = function($scope, $sce) {
         param.target = f.target;
       }
       return submit(f, param);
-    } else {
-      f.is_preview = valid;
-      return f.preview = preview(f.text.replace(/\n$/g, '\n '));
-    }
+    });
   };
-  $scope.action = function(f, valid) {
-    var param;
-    if (f.disabled) {
-      return;
-    }
-    if (valid) {
+  $scope.action = function(f) {
+    f.is_preview = true;
+    return write(f, function() {
+      var param;
       param = {
         cmd: "action",
         turn: $scope.event.turn,
@@ -2122,7 +2135,7 @@ FORM = function($scope, $sce) {
         monospace: 0
       };
       return submit(f, param);
-    }
+    });
   };
   $scope.vote_change = function(f) {
     if ($scope.errors != null) {
@@ -3311,7 +3324,7 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     }
   };
   $scope.$watch("event.turn", function(turn, oldVal) {
-    if ((turn != null) && ($scope.event != null)) {
+    if ((turn != null) && ($scope.event != null) && turn !== oldVal) {
       return $scope.ajax_event(turn, null, !!$scope.event.is_news);
     }
   });
