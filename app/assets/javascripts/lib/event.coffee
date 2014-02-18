@@ -3,13 +3,17 @@ if head.browser?
   b.power = "pc"
   if navigator.userAgent.toLowerCase().indexOf('android') != -1
     b.android = true
-    b.power = "mobile"
-  if navigator.userAgent.toLowerCase().indexOf('iphone') != -1
-    b.iphone = true
-    b.power = "mobile"
-  if navigator.userAgent.toLowerCase().indexOf('ipad') != -1
-    b.iphone = true
-    b.power = "mobile"
+    b.power = "simple"
+
+  for key in ['firefox','chrome','crios','silk','mercury','iphone','ipad']
+    if navigator.userAgent.toLowerCase().indexOf(key) != -1
+      b.power = "mobile"
+
+  for key in ['safari','iphone','ipad']
+    if navigator.userAgent.toLowerCase().indexOf(key) != -1
+      b.iphone = true
+  b[b.power] = true
+
 head.useragent = navigator.userAgent
 $("html").addClass b.power
 
