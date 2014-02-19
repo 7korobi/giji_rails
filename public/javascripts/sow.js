@@ -676,7 +676,7 @@ FixedBox = (function() {
   FixedBox.prototype.translate = function(left, top) {
     var transform, transition;
     if (head.csstransitions) {
-      transition = "all 250ms ease";
+      transition = "all 100ms ease";
       transform = "translate(" + left + "px, " + top + "px)";
       if (head.browser.webkit) {
         this.box.css("-webkit-transition", transition);
