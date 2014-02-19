@@ -1,8 +1,7 @@
-#topviewer
-  .form-inline(navi="diary" name="手帳" template="navi/diary")
-
-.sayfilter#sayfilter
-  h4.sayfilter_heading#navi_head(ng-hide="navi.hide") 設定
+#topviewer(ng-cloak)
+  #topframe.contentframe
+    .inframe.toppage.drag
+      .form-inline(template="navi/diary" name="手帳" navi="diary")
 
 #buttons
   nav

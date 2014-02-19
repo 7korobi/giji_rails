@@ -1,6 +1,7 @@
-
-#topviewer
-  .form-inline(navi="diary" name="手帳" template="navi/diary")
+#topviewer(ng-cloak)
+  #topframe.contentframe
+    .inframe.toppage.drag
+      .form-inline(template="navi/diary" name="手帳" navi="diary")
 
 .sayfilter#sayfilter(adjust="left")
   h4.sayfilter_heading

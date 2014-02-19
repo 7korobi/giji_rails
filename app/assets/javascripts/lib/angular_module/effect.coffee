@@ -31,6 +31,7 @@ angular.module("giji").directive "adjust", ($compile, $timeout)->
       else
         win.info.width_max = width - 40
 
+      $("#topframe")[0]?.className     = content
       $("#contentframe")[0]?.className = content
       $("#outframe")[0]?.className = outframe
 

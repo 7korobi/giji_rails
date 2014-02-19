@@ -20,8 +20,6 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS")
         .inframe
           hr.invisible_hr
           = yield :log
-          #topviewer(ng-cloak)
-            = yield :navi_top
 
           address
             | 人狼議事キャラセット by りりんら
@@ -63,6 +61,10 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS")
 
       #footer
       #tab(ng-cloak)
+        #topviewer
+          #topframe.contentframe(ng-cloak)
+            .inframe.toppage.drag
+              = yield :navi_top
         #sayfilter.sayfilter(adjust="left")
           h4.sayfilter_heading#navi_head
             = yield :navi_head
