@@ -59,7 +59,7 @@ class FixedBox
 
   translate: (left, top)->
     if head.csstransitions
-      transition = "all 250ms ease"
+      transition = "all 100ms ease"
       transform  = "translate(#{left}px, #{top}px)"
       if head.browser.webkit
         @box.css "-webkit-transition", transition
