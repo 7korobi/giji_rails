@@ -1,8 +1,6 @@
 @import url("theme/cinema.css");
 @import url("size/800baloon.css");
 
-.outframe #topviewer,
-.outframe_navimode #topviewer,
 .outframe .drag,
 .outframe_navimode .drag {
   background-image: url("../images/bg/background580.png");

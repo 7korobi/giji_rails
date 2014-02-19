@@ -1,7 +1,6 @@
 @import url("theme/wa.css");
 @import url("size/800baloon.css");
 
-#topviewer,
 .contentframe .drag,
 .contentframe_navileft .drag {
   background-image: url("../images/bg/karakusa580.png");

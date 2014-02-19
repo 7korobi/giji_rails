@@ -135,7 +135,7 @@ angular.module("giji").directive("adjust", function($compile, $timeout) {
   resize_page = function($scope) {
     var do_resize;
     do_resize = function() {
-      var buttons, content, height, lim_left, outframe, width, _ref, _ref1;
+      var buttons, content, height, lim_left, outframe, width, _ref, _ref1, _ref2;
       if (!(($scope.navi != null) && ($scope.css.width != null))) {
         return;
       }
@@ -166,10 +166,13 @@ angular.module("giji").directive("adjust", function($compile, $timeout) {
       } else {
         win.info.width_max = width - 40;
       }
-      if ((_ref = $("#contentframe")[0]) != null) {
+      if ((_ref = $("#topframe")[0]) != null) {
         _ref.className = content;
       }
-      return (_ref1 = $("#outframe")[0]) != null ? _ref1.className = outframe : void 0;
+      if ((_ref1 = $("#contentframe")[0]) != null) {
+        _ref1.className = content;
+      }
+      return (_ref2 = $("#outframe")[0]) != null ? _ref2.className = outframe : void 0;
     };
     return action_queue.push(do_resize);
   };
@@ -2220,12 +2223,14 @@ GO = function($scope) {
   go_anker = function(anker, offset, cb) {
     var target, targetY;
     target = $($(anker)[0]);
-    targetY = target.offset().top - offset;
-    return $("html,body").animate({
-      scrollTop: targetY
-    }, 200, "linear", function() {
-      return typeof cb === "function" ? cb(target) : void 0;
-    });
+    if (target.offset() != null) {
+      targetY = target.offset().top - offset;
+      return $("html,body").animate({
+        scrollTop: targetY
+      }, 200, "linear", function() {
+        return typeof cb === "function" ? cb(target) : void 0;
+      });
+    }
   };
   return $scope.go = {
     messages: function() {

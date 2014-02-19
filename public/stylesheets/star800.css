@@ -26,7 +26,6 @@
 }
 
 /* フィルタを左に配置した時の内枠 ----------*/
-#topviewer,
 .drag,
 .contentframe_navileft {
   background-image: url("../images/bg/star770.png");

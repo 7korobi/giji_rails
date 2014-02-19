@@ -10,7 +10,6 @@
 }
 
 /* フィルタを左に配置した時の外枠 ----------*/
-#topviewer,
 .drag,
 .outframe_navimode {
   border-right: 3px double #224;
