@@ -2,8 +2,10 @@ class MessagesController < BasePastLogController
   expose(:events_summary){ story.events.summary.cache }  
   expose(:events) do
     messages = Message.in_story(story.id).group_by(&:event_id)
-    story.events.order_by(turn:1).cache.tap do |e|
+    story.events.order_by(turn:1).cache.map do |e|
       e.messages = messages[e.id]
+      vil_info e
+      e
     end
   end
   expose(:event) do 

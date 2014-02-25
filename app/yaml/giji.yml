@@ -444,7 +444,7 @@ csids:
     ext:  .jpg
   bloody:  
     path: /images/bloody/
-    ext:  .jpg
+    ext:  .png
   bunmei:  
     path: /images/bunmei/
     ext:  .jpg
@@ -456,7 +456,7 @@ csids:
     ext:  .jpg
   orange: 
     path: /images/orange/
-    ext:  .jpg
+    ext:  .png
   sow:     
     path: /images/sow/
     ext:  .jpg
