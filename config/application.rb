@@ -6,8 +6,6 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
-raise("Sprockets monkey patch for v 2.10.1. Check before moving on") unless Sprockets::VERSION == "2.10.1"
-
 module Sprockets
   class Manifest
     def compile(*args)
