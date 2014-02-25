@@ -3,3 +3,10 @@
 @import url("theme/sow.css");
 
 /* GROBAL --------------------*/
+.msg p {
+  width: 417px;
+}
+
+.action p {
+  width: 543px;
+}

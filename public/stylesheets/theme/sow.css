@@ -290,6 +290,7 @@ strong { }
 .insayfilter {
   text-align: left;
   border-width: 0 ;
+  background: #556;
 }
 .insayfilter .paragraph {
   border-width: 0 ;
@@ -469,7 +470,6 @@ strong { }
   margin:  2px;
   padding: 4px;
 }
-
 
 .formpl_common {
   border-color: #ff0;

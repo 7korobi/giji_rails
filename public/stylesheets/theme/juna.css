@@ -285,6 +285,7 @@ strong { }
 .insayfilter {
   text-align: left;
   border-width: 0 ;
+  background: #e3caa7;
 }
 .insayfilter .paragraph {
   border-width: 0 ;
