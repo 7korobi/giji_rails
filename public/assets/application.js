@@ -491,14 +491,15 @@ DiaryHistory = (function() {
 
 Diary = (function() {
   function Diary(f) {
-    var filter,
-      _this = this;
+    var filter;
     filter = function(o) {
       return o.jst + o["switch"];
     };
-    this.finder = function(o) {
-      return _this.key === o.key;
-    };
+    this.finder = (function(_this) {
+      return function(o) {
+        return _this.key === o.key;
+      };
+    })(this);
     this.form = f;
     this.key = filter(f);
     this.version = this.history().length + 1;
@@ -591,7 +592,6 @@ FixedBox = (function() {
   FixedBox.list = {};
 
   function FixedBox(dx, dy, fixed_box) {
-    var _this = this;
     this.dx = dx;
     this.dy = dy;
     this.box = fixed_box;
@@ -600,12 +600,16 @@ FixedBox = (function() {
         left: 0,
         top: 0
       });
-      win.on_resize(function() {
-        return _this.resize();
-      });
-      win.on_scroll(function() {
-        return _this.scroll();
-      });
+      win.on_resize((function(_this) {
+        return function() {
+          return _this.resize();
+        };
+      })(this));
+      win.on_scroll((function(_this) {
+        return function() {
+          return _this.scroll();
+        };
+      })(this));
     } else {
       this.box.css({
         display: "none"
@@ -722,12 +726,13 @@ Form = (function() {
   function Form() {}
 
   Form.deploy = function() {
-    var _this = this;
-    return $(document).ready(function() {
-      return $('#phase_input').change(function() {
-        return $('#chr_vote_phase').val(value);
-      });
-    });
+    return $(document).ready((function(_this) {
+      return function() {
+        return $('#phase_input').change(function() {
+          return $('#chr_vote_phase').val(value);
+        });
+      };
+    })(this));
   };
 
   Form.submit_chr_vote = function(face_id) {
@@ -742,8 +747,7 @@ Form = (function() {
 var CACHE;
 
 CACHE = function($scope) {
-  var cache, concat_merge, find_or_create, find_turn, merge, merge_by,
-    _this = this;
+  var cache, concat_merge, find_or_create, find_turn, merge, merge_by;
   $scope.set_turn = function(turn) {
     var event, form;
     event = _.find($scope.events, function(o) {
@@ -784,54 +788,62 @@ CACHE = function($scope) {
     return func(old_base, new_base, target);
   };
   merge = {
-    news: function(old_base, new_base, target) {
-      var o, _i, _len, _ref;
-      _ref = new_base.news;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        o = _ref[_i];
-        o.is_news = Date.create('3days ago') < Date.create(o.date);
-      }
-      return merge_by.copy(old_base, new_base, target);
-    },
-    config: function(old_base, new_base, target) {
-      merge_by.copy(old_base, new_base, target);
-      return $scope.deploy_config();
-    },
-    face: function(old_base, new_base, target) {
-      INIT_FACE(new_base.face);
-      return merge_by.copy(old_base, new_base, target);
-    },
-    events: function(old_base, new_base, target) {
-      var filter, guard, key, new_event, o, old_event, _i, _len, _ref;
-      guard = function(key) {
-        return _.include(["messages", "has_all_messages"], key);
-      };
-      filter = function(o) {
-        return o.turn;
-      };
-      _ref = new_base.events;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        new_event = _ref[_i];
-        INIT_MESSAGES(new_event);
-      }
-      merge_by.simple(old_base, new_base, "events", guard, filter);
-      new_event = new_base.event;
-      old_event = find_or_create(new_base, old_base, "events");
-      if (new_event == null) {
-        return;
-      }
-      for (key in new_event) {
-        o = new_event[key];
-        if (!guard(key)) {
-          old_event[key] = o;
+    news: (function(_this) {
+      return function(old_base, new_base, target) {
+        var o, _i, _len, _ref;
+        _ref = new_base.news;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          o = _ref[_i];
+          o.is_news = Date.create('3days ago') < Date.create(o.date);
         }
-      }
-      old_event.has_all_messages || (old_event.has_all_messages = new_event.has_all_messages);
-      merge._messages(old_event, new_event);
-      merge._potofs(old_event, new_base);
-      old_base.potofs = old_event.potofs;
-      return old_base.event || (old_base.event = old_event);
-    },
+        return merge_by.copy(old_base, new_base, target);
+      };
+    })(this),
+    config: (function(_this) {
+      return function(old_base, new_base, target) {
+        merge_by.copy(old_base, new_base, target);
+        return $scope.deploy_config();
+      };
+    })(this),
+    face: (function(_this) {
+      return function(old_base, new_base, target) {
+        INIT_FACE(new_base.face);
+        return merge_by.copy(old_base, new_base, target);
+      };
+    })(this),
+    events: (function(_this) {
+      return function(old_base, new_base, target) {
+        var filter, guard, key, new_event, o, old_event, _i, _len, _ref;
+        guard = function(key) {
+          return _.include(["messages", "has_all_messages"], key);
+        };
+        filter = function(o) {
+          return o.turn;
+        };
+        _ref = new_base.events;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          new_event = _ref[_i];
+          INIT_MESSAGES(new_event);
+        }
+        merge_by.simple(old_base, new_base, "events", guard, filter);
+        new_event = new_base.event;
+        old_event = find_or_create(new_base, old_base, "events");
+        if (new_event == null) {
+          return;
+        }
+        for (key in new_event) {
+          o = new_event[key];
+          if (!guard(key)) {
+            old_event[key] = o;
+          }
+        }
+        old_event.has_all_messages || (old_event.has_all_messages = new_event.has_all_messages);
+        merge._messages(old_event, new_event);
+        merge._potofs(old_event, new_base);
+        old_base.potofs = old_event.potofs;
+        return old_base.event || (old_base.event = old_event);
+      };
+    })(this),
     event: function() {},
     _messages: function(old_base, new_base) {
       var filter, guard, order;
@@ -938,18 +950,20 @@ CACHE = function($scope) {
     }
   };
   cache = {
-    load: function(old_base, new_base, target, child) {
-      var filter, guard;
-      guard = function() {
-        return false;
+    load: (function(_this) {
+      return function(old_base, new_base, target, child) {
+        var filter, guard;
+        guard = function() {
+          return false;
+        };
+        filter = function(o) {
+          return o.turn;
+        };
+        old_base[target] || (old_base[target] = []);
+        merge_by.simple(old_base, new_base, target, guard, filter);
+        return old_base[child] = find_or_create(new_base, old_base, target);
       };
-      filter = function(o) {
-        return o.turn;
-      };
-      old_base[target] || (old_base[target] = []);
-      merge_by.simple(old_base, new_base, target, guard, filter);
-      return old_base[child] = find_or_create(new_base, old_base, target);
-    },
+    })(this),
     build: function(new_base, field) {
       var event, _i, _len, _name, _ref, _results;
       if ((field != null) && ((new_base != null ? new_base.events : void 0) != null)) {
@@ -2416,31 +2430,32 @@ Navi = (function() {
   };
 
   Navi.prototype.choice = function() {
-    var _this = this;
-    return _.find(this.select, function(o) {
-      return o.val === _this.value;
-    });
+    return _.find(this.select, (function(_this) {
+      return function(o) {
+        return o.val === _this.value;
+      };
+    })(this));
   };
 
   Navi.prototype.popstate = function() {
-    var c, l,
-      _this = this;
+    var c, l;
     l = this.location_val(this.key);
     if (this.params.is_cookie != null) {
       c = win.cookies[this.key];
     }
     this.value = this.params.current_type(l || c || "");
-    if ((this.select != null) && _.every(this.select, function(o) {
-      return _this.value !== o.val;
-    })) {
+    if ((this.select != null) && _.every(this.select, (function(_this) {
+      return function(o) {
+        return _this.value !== o.val;
+      };
+    })(this))) {
       this.value = "";
     }
     return this.value || (this.value = this.params.current_type(this.params.current));
   };
 
   function Navi($scope, key, def) {
-    var btn_key, btn_val, _base, _base1, _ref,
-      _this = this;
+    var btn_key, btn_val, _base, _base1, _ref;
     this.scope = $scope;
     this.params = def.options;
     (_base = this.params).current_type || (_base.current_type = String);
@@ -2462,46 +2477,48 @@ Navi = (function() {
       this.select = def.select;
     }
     this.popstate();
-    this.scope.$watch("" + this.key + ".value", function(value, oldVal) {
-      var cmd, expire, func, list, navi, options, val_hash, val_search, _, _i, _len, _name, _ref1, _ref2;
-      _this._move();
-      _ref1 = _this.watch;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        func = _ref1[_i];
-        func(_this.value);
-      }
-      list = {};
-      _ref2 = Navi.list;
-      for (_ in _ref2) {
-        navi = _ref2[_];
-        options = navi.params;
-        if (navi.value) {
-          cmd = "" + navi.key + "=" + navi.value;
-          if (options.location != null) {
-            list[_name = options.location] || (list[_name] = []);
-            list[options.location].push(cmd);
-          }
-          if (options.is_cookie) {
-            expire = new Date().advance(OPTION.cookie.expire);
-            document.cookie = "" + cmd + "; expires=" + (expire.toGMTString()) + "; path=/";
+    this.scope.$watch("" + this.key + ".value", (function(_this) {
+      return function(value, oldVal) {
+        var cmd, expire, func, list, navi, options, val_hash, val_search, _, _i, _len, _name, _ref1, _ref2;
+        _this._move();
+        _ref1 = _this.watch;
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          func = _ref1[_i];
+          func(_this.value);
+        }
+        list = {};
+        _ref2 = Navi.list;
+        for (_ in _ref2) {
+          navi = _ref2[_];
+          options = navi.params;
+          if (navi.value) {
+            cmd = "" + navi.key + "=" + navi.value;
+            if (options.location != null) {
+              list[_name = options.location] || (list[_name] = []);
+              list[options.location].push(cmd);
+            }
+            if (options.is_cookie) {
+              expire = new Date().advance(OPTION.cookie.expire);
+              document.cookie = "" + cmd + "; expires=" + (expire.toGMTString()) + "; path=/";
+            }
           }
         }
-      }
-      if (list.search) {
-        val_search = "?" + list.search.join("&");
-        if (location.search !== val_search) {
-          location.search = val_search;
+        if (list.search) {
+          val_search = "?" + list.search.join("&");
+          if (location.search !== val_search) {
+            location.search = val_search;
+          }
         }
-      }
-      if (list.hash) {
         if (list.hash) {
-          val_hash = "#" + list.hash.join("&");
+          if (list.hash) {
+            val_hash = "#" + list.hash.join("&");
+          }
+          if (location.hash !== val_hash) {
+            return win.history(null, null, val_hash);
+          }
         }
-        if (location.hash !== val_hash) {
-          return win.history(null, null, val_hash);
-        }
-      }
-    });
+      };
+    })(this));
   }
 
   Navi.prototype._move = function() {
@@ -2627,19 +2644,21 @@ ArrayNavi = (function(_super) {
   };
 
   ArrayNavi.prototype.choice = function() {
-    var _this = this;
-    return _.find(this.select, function(o) {
-      return o.val === _this.value[0];
-    });
+    return _.find(this.select, (function(_this) {
+      return function(o) {
+        return o.val === _this.value[0];
+      };
+    })(this));
   };
 
   ArrayNavi.prototype.choices = function() {
-    var _this = this;
-    return _.map(this.value, function(value) {
-      return _.find(_this.select, function(o) {
-        return o.val === value;
-      });
-    });
+    return _.map(this.value, (function(_this) {
+      return function(value) {
+        return _.find(_this.select, function(o) {
+          return o.val === value;
+        });
+      };
+    })(this));
   };
 
   return ArrayNavi;
@@ -2680,32 +2699,36 @@ PageNavi = (function(_super) {
   };
 
   PageNavi.prototype.paginate = function(page_per_key, func) {
-    var _this = this;
-    this.pager(page_per_key, function(page_per, list) {
-      _this.length = (list.length / page_per).ceil();
-      return list;
-    });
+    this.pager(page_per_key, (function(_this) {
+      return function(page_per, list) {
+        _this.length = (list.length / page_per).ceil();
+        return list;
+      };
+    })(this));
     this.pager(page_per_key, func);
-    return this.pager("" + this.key + ".value", function(page, list) {
-      if (list.last) {
-        _this.item_last = _.last(list);
-      }
-      return list;
-    });
+    return this.pager("" + this.key + ".value", (function(_this) {
+      return function(page, list) {
+        if (list.last) {
+          _this.item_last = _.last(list);
+        }
+        return list;
+      };
+    })(this));
   };
 
   PageNavi.prototype.pager = function(key, func) {
-    var _this = this;
-    this.scope.$watch(key, function() {
-      var list;
-      if (_this.list_by_filter != null) {
-        list = _this.do_filters(_this.list_by_filter, _this.pagers);
-        if ((_this.to_key != null) && list) {
-          eval("_this.scope." + _this.to_key + " = list");
+    this.scope.$watch(key, (function(_this) {
+      return function() {
+        var list;
+        if (_this.list_by_filter != null) {
+          list = _this.do_filters(_this.list_by_filter, _this.pagers);
+          if ((_this.to_key != null) && list) {
+            eval("_this.scope." + _this.to_key + " = list");
+          }
         }
-      }
-      return _this._move();
-    });
+        return _this._move();
+      };
+    })(this));
     if (func) {
       return this.pagers.push([key, func]);
     }
@@ -2720,18 +2743,19 @@ PageNavi = (function(_super) {
   };
 
   PageNavi.prototype.filter = function(key, func) {
-    var _this = this;
-    this.scope.$watch(key, function() {
-      var list;
-      if (_this.by_key != null) {
-        _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
-        list = _this.do_filters(_this.list_by_filter, _this.pagers);
-        if ((_this.to_key != null) && list) {
-          eval("_this.scope." + _this.to_key + " = list");
+    this.scope.$watch(key, (function(_this) {
+      return function() {
+        var list;
+        if (_this.by_key != null) {
+          _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
+          list = _this.do_filters(_this.list_by_filter, _this.pagers);
+          if ((_this.to_key != null) && list) {
+            eval("_this.scope." + _this.to_key + " = list");
+          }
         }
-      }
-      return _this._move();
-    });
+        return _this._move();
+      };
+    })(this));
     if (func) {
       return this.filters.push([key, func]);
     }
@@ -2837,10 +2861,11 @@ POOL = function($scope, $filter, $timeout) {
     return $timeout(refresh, message_timer);
   };
   pool_button = function() {
-    var _this = this;
-    return $scope.get_news($scope.event, function() {
-      return $scope.init();
-    });
+    return $scope.get_news($scope.event, (function(_this) {
+      return function() {
+        return $scope.init();
+      };
+    })(this));
   };
   $scope.pool_nolimit = pool_button;
   $scope.pool = _.debounce(pool_button, message_first, {
@@ -3299,8 +3324,7 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     return "" + csid + "-" + face_id;
   };
   $scope.ajax_event = function(turn, href, is_news) {
-    var change, event, getter,
-      _this = this;
+    var change, event, getter;
     if ($scope.events != null) {
       event = $scope.event;
       change = function() {
@@ -3319,10 +3343,12 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
         } else {
           getter = $scope.get_all;
         }
-        return getter(event, function() {
-          $scope.init();
-          return change();
-        });
+        return getter(event, (function(_this) {
+          return function() {
+            $scope.init();
+            return change();
+          };
+        })(this));
       }
     } else {
       return location.href = href + location.hash;
