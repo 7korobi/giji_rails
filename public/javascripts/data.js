@@ -2199,7 +2199,7 @@ this.GIJI = {
     },
     "bloody": {
       "path": "/images/bloody/",
-      "ext": ".jpg"
+      "ext": ".png"
     },
     "bunmei": {
       "path": "/images/bunmei/",
@@ -2215,7 +2215,7 @@ this.GIJI = {
     },
     "orange": {
       "path": "/images/orange/",
-      "ext": ".jpg"
+      "ext": ".png"
     },
     "sow": {
       "path": "/images/sow/",
