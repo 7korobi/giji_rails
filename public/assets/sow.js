@@ -315,7 +315,7 @@ angular.module("giji").directive("log", [
         }
         log.cancel_btn = function() {
           if ((this.logid != null) && "q" === this.logid[0] && ((new Date() - this.updated_at) < 25 * 1000)) {
-            return $sce.trustAsHtml("<a class=\"mark\" href_eval='cancel_say(\"" + this.logid + "\")'>なら削除できます。⏳</a>");
+            return $sce.trustAsHtml("<a class=\"mark\" href_eval='cancel_say(\"" + this.logid + "\")'>なら削除できます。<span class=\"glyphicon glyphicon-trash\"></span></a>");
           } else {
             return "";
           }
@@ -1124,7 +1124,8 @@ INIT = function($scope, $filter, $timeout) {
     if ($scope.hide_potofs == null) {
       ArrayNavi.push($scope, 'hide_potofs', {
         options: {
-          "class": 'btn-inverse',
+          class_select: 'inverse',
+          class_default: 'plane',
           current: [],
           location: 'hash',
           is_cookie: true
@@ -1370,7 +1371,7 @@ INIT_POTOF = function($scope, potof, gon) {
   potof.summary = function() {
     switch ($scope.potofs_order.value) {
       case 'said_num':
-        return "✎" + this.said;
+        return "<span class=\"glyphicon glyphicon-pencil\"></span>" + this.said;
       case 'stat_at':
       case 'stat_type':
         return this.stat;
@@ -1592,7 +1593,7 @@ angular.module("giji").run(function() {
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
+  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, old_hide_faces, page, scrollTo, _i, _j, _len, _len1, _ref, _ref1;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -1842,6 +1843,7 @@ FILTER = function($scope, $filter, $timeout) {
         return list;
       }
     });
+    old_hide_faces = [];
     page.filter('hide_potofs.value', function(hide_faces, list) {
       var faces;
       if (_.include(hide_faces, 'others')) {
@@ -1889,7 +1891,7 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return list;
   });
-  scrollTo = function() {
+  scrollTo = function(newVal, oldVal, three) {
     var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
     $scope.anchors = [];
     if ($scope.event.is_news) {
@@ -1922,7 +1924,14 @@ FILTER = function($scope, $filter, $timeout) {
       return _results;
     }
   };
-  $scope.$watch(page.to_key, scrollTo);
+  if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
+    $scope.$watch("event.turn", scrollTo);
+    $scope.$watch("event.is_news", scrollTo);
+    $scope.$watch("mode.value", scrollTo);
+  }
+  $scope.$watch("search.value", scrollTo);
+  $scope.$watch("row.value", scrollTo);
+  $scope.$watch("order.value", scrollTo);
   $scope.$watch('mode.value', form_show);
   $scope.$watch('event.is_news', form_show);
   return $scope.$watch('event.is_news', $scope.deploy_mode_common);
@@ -2455,11 +2464,12 @@ Navi = (function() {
   };
 
   function Navi($scope, key, def) {
-    var btn_key, btn_val, _base, _base1, _ref;
+    var btn_key, btn_val, _base, _base1, _base2, _ref;
     this.scope = $scope;
     this.params = def.options;
     (_base = this.params).current_type || (_base.current_type = String);
-    (_base1 = this.params)["class"] || (_base1["class"] = 'btn-success');
+    (_base1 = this.params).class_select || (_base1.class_select = 'btn-success');
+    (_base2 = this.params).class_default || (_base2.class_default = 'btn-default');
     this.of = {};
     this.key = key;
     this.watch = [];
@@ -2530,10 +2540,10 @@ Navi = (function() {
         o = _ref[_i];
         this.of[o.val] = o;
         if (o.val === this.value) {
-          o["class"] = this.params["class"];
+          o["class"] = this.params.class_select;
           _results.push(o.show = true);
         } else {
-          o["class"] = null;
+          o["class"] = this.params.class_default;
           _results.push(o.show = false);
         }
       }
@@ -2632,10 +2642,10 @@ ArrayNavi = (function(_super) {
         o = _ref[_i];
         this.of[o.val] = o;
         if (_.include(this.value, o.val)) {
-          o["class"] = this.params["class"];
+          o["class"] = this.params.class_select;
           _results.push(o.show = true);
         } else {
-          o["class"] = null;
+          o["class"] = this.params.class_default;
           _results.push(o.show = false);
         }
       }
@@ -2818,9 +2828,10 @@ PageNavi = (function(_super) {
       });
       item["class"] = 'ng-cloak';
       if (this.visible && is_show) {
+        item["class"] = this.params.class_default;
         item["class"] = null;
         if (this.value === n[key]) {
-          item["class"] = this.params["class"];
+          item["class"] = this.params.class_select;
         }
       }
       _results1.push(this.of[key] = item);

@@ -95,8 +95,9 @@ class PageNavi extends Navi
       item.class = 'ng-cloak'
 
       if @visible and is_show
+        item.class = @params.class_default
         item.class = null
-        item.class = @params.class if @value == n[key]
+        item.class = @params.class_select if @value == n[key]
 
       @of[key] = item
 

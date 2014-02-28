@@ -8,4 +8,4 @@
     div(ng-repeat="o in navi.select")
       a.btn(ng-class="o.class" ng-click="navi.move(o.val)") {{o.name}}
     div
-      a.btn(ng-click="navi.blank()") ✗
+      a.btn.btn-default(ng-click="navi.blank()") ✗

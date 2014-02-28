@@ -38,6 +38,7 @@ show variables like 'mroonga_%';
 =end
 
   def change
+    return
     # options: %q|ENGINE=mroonga DEFAULT CHARSET=utf8 COMMENT='engine "InnoDB"'|
     %w[ talks
         talk_pans

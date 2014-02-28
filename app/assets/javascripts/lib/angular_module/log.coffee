@@ -17,7 +17,7 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
 
     log.cancel_btn = ->
       if @logid? && "q" == @logid[0] && ((new Date() - @updated_at) < 25 * 1000)
-        $sce.trustAsHtml """<a class="mark" href_eval='cancel_say("#{@logid}")'>なら削除できます。⏳</a>"""
+        $sce.trustAsHtml """<a class="mark" href_eval='cancel_say("#{@logid}")'>なら削除できます。<span class="glyphicon glyphicon-trash"></span></a>"""
       else
         ""
     log.time = -> $scope.lax_time @updated_at

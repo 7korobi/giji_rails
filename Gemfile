@@ -73,8 +73,7 @@ gem "formtastic"
 gem 'jbuilder', '~> 1.2'
 gem "slim"
 gem "less-rails"
-gem 'jquery-rails'
-gem 'twitter-bootstrap-rails'
+gem "bootstrap-sass"
 
 # control support
 gem "kaminari"

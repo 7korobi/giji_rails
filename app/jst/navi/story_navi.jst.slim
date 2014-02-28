@@ -1,47 +1,49 @@
-.inline.radio
-  input.input-medium(type="text" ng-model="search_input" placeholder="ログを探す")
-  span.btn.add-on(ng-click="search.value = search_input") ⎋
+.form-inline.radio
+  .input-group
+    input.form-control.input-medium(type="text" ng-model="search_input" placeholder="ログを探す")
+    span.btn.input-group-addon.glyphicon.glyphicon-search(ng-click="search.value = search_input")
 
-label.inline.radio
-  select.input-mini(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
+  label
+    select.form-control.input-mini(ng-model="order.value" ng-options="o.val as o.name for o in order.select" )
 
-label.inline.radio
-  select.input-mini(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
+  label
+    select.form-control.input-mini(ng-model="row.value"   ng-options="o.val as o.name for o in row.select" )
 
 br
 
-label.inline.radio
-  select.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
+.form-inline.radio
+  label
+    select.form-control.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
 
-label.inline.radio
-  select.input-small( ng-model="folder.value"  ng-options="o.val as o.name for o in folder.select")
+  label
+    select.form-control.input-small( ng-model="folder.value"  ng-options="o.val as o.name for o in folder.select")
 
-label.inline.radio(ng-show="game_rule")
-  select.input-small( ng-model="game_rule.value"  ng-options="o.val as o.name for o in game_rule.select")
+  label(ng-show="game_rule")
+    select.form-control.input-small( ng-model="game_rule.value"  ng-options="o.val as o.name for o in game_rule.select")
 
-label.inline.radio(ng-show="rating")
-  select.input-small( ng-model="rating.value"  ng-options="o.val as o.name for o in rating.select")
-
-
-label.inline.radio(ng-show="potof_size")
-  select.input-mini( ng-model="potof_size.value"  ng-options="o.val as o.name for o in potof_size.select")
-
-label.inline.radio(ng-show="upd_interval")
-  select.input-mini( ng-model="upd_interval.value"  ng-options="o.val as o.name for o in upd_interval.select")
-
-label.inline.radio(ng-show="upd_time")
-  select.input-small( ng-model="upd_time.value"  ng-options="o.val as o.name for o in upd_time.select")
+  label(ng-show="rating")
+    select.form-control.input-small( ng-model="rating.value"  ng-options="o.val as o.name for o in rating.select")
 
 
-label.inline.radio(ng-show="roletable")
-  select.input-small( ng-model="roletable.value"  ng-options="o.val as o.name for o in roletable.select")
+  label(ng-show="potof_size")
+    select.form-control.input-mini( ng-model="potof_size.value"  ng-options="o.val as o.name for o in potof_size.select")
 
-label.inline.radio(ng-show="card_win")
-  select.input-mini( ng-model="card_win.value"  ng-options="o.val as o.name for o in card_win.select")
+  label(ng-show="upd_interval")
+    select.form-control.input-mini( ng-model="upd_interval.value"  ng-options="o.val as o.name for o in upd_interval.select")
 
-label.inline.radio(ng-show="card_role")
-  select.input-mini( ng-model="card_role.value"  ng-options="o.val as o.name for o in card_role.select")
+  label(ng-show="upd_time")
+    select.form-control.input-small( ng-model="upd_time.value"  ng-options="o.val as o.name for o in upd_time.select")
 
-label.inline.radio(ng-show="card_event")
-  select.input-mini( ng-model="card_event.value"  ng-options="o.val as o.name for o in card_event.select")
+
+  label(ng-show="roletable")
+    select.form-control.input-small( ng-model="roletable.value"  ng-options="o.val as o.name for o in roletable.select")
+
+  label(ng-show="card_win")
+    select.form-control.input-mini( ng-model="card_win.value"  ng-options="o.val as o.name for o in card_win.select")
+
+  label(ng-show="card_role")
+    select.form-control.input-mini( ng-model="card_role.value"  ng-options="o.val as o.name for o in card_role.select")
+
+  label(ng-show="card_event")
+    select.form-control.input-mini( ng-model="card_event.value"  ng-options="o.val as o.name for o in card_event.select")
 

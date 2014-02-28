@@ -1,47 +1,47 @@
-span.mark.form-inline
-  label.inline.radio
+span.mark.form-inline.radio
+  label
     input(type="radio" value="info" ng-model="modes.face") 情報
-  label.inline.radio
+  label
     input(type="radio" value="memo" ng-model="modes.face") メモ
-  label.inline.radio
+  label
     input(type="radio" value="talk" ng-model="modes.face") 議事
 | &nbsp;
 
-span.mark.form-inline
-  label.inline.radio
+span.mark.form-inline.radio
+  label
     input(type="radio" value="open"  ng-model="modes.view") 公開
-  label.inline.radio
+  label
     input(type="radio" value="clan"  ng-model="modes.view") 内緒話
-  label.inline.radio
+  label
     input(type="radio" value="think" ng-model="modes.view") 独り言
-  label.inline.radio
+  label
     input(type="radio" value="all"   ng-model="modes.view") 全部
 | &nbsp;
 
-span.mark.form-inline
-  label.inline.radio.checkbox
+span.mark.form-inline.radio
+  label.checkbox
     input(type="checkbox" value="last"   ng-model="modes.last") 最後の言葉
 
-  label.inline.radio.checkbox
+  label.checkbox
     input(type="checkbox" value="player" ng-model="modes.player") 中身発言
 
-  label.inline.radio.checkbox
+  label.checkbox
     input(type="checkbox" value="open"   ng-model="modes.open") 公開発言
 | &nbsp;
 
-span.mark.form-inline
-  label.inline.radio.checkbox(ng-repeat="o in css.font.select")
+span.mark.form-inline.radio
+  label.checkbox(ng-repeat="o in css.font.select")
     input(type="radio" value="{{o.val}}" ng-model="css.font.value")
       | {{o.name}}
 | &nbsp;
 
-span.mark.form-inline
-  label.inline.radio.checkbox(ng-repeat="o in css.width.select")
+span.mark.form-inline.radio
+  label.checkbox(ng-repeat="o in css.width.select")
     input(type="radio" value="{{o.val}}" ng-model="css.width.value")
       | {{o.name}}
 | &nbsp;
 
-span.mark.form-inline
-  label.inline.radio.checkbox(ng-repeat="o in css.theme.select")
+span.mark.form-inline.radio
+  label.checkbox(ng-repeat="o in css.theme.select")
     input(type="radio" value="{{o.val}}" ng-model="css.theme.value")
       | {{o.name}}

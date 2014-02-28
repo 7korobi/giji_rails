@@ -1,5 +1,6 @@
 class CreateCafeVillageTalks < ActiveRecord::Migration
   def change
+    return
     ("001".."238").to_a.each do |vid|
       execute <<-SQL
         CREATE TABLE talk_cabala#{vid}s LIKE talks;

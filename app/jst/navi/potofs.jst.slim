@@ -31,7 +31,7 @@ table.table.table-condensed(style="margin:0;")
           | &nbsp;
           code(ng-click="sort_potofs('select_name','')") 希望
       th(style="width: 1ex")
-        a(ng-click="potof_only(potofs)") ➡
+        a.glyphicon.glyphicon-pushpin(ng-click="potof_only(potofs)")
 
 table.table.table-condensed(style="margin:0;")
   tbody(ng-repeat="key in potofs_keys")
@@ -41,19 +41,21 @@ table.table.table-condensed(style="margin:0;")
         span
           | ({{potofs_groups[key].length}}人)
       th(style="width: 1ex")
-        a(ng-click="potof_only(potofs_groups[key])") ➡
+        a.glyphicon.glyphicon-pushpin(ng-click="potof_only(potofs_groups[key])")
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
-        span.name
+        .name
           | {{potof.longname || potof.name}}
         .note.name(ng-show="potof.auth")
-          | ☺ {{potof.auth}}
+          span.glyphicon.glyphicon-user
+          | {{potof.auth}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
         span.nowrap
           | {{potof.stat}}
         .note.nowrap(ng-show="potof.said")
-          | ✎{{potof.said}}
+          span.glyphicon.glyphicon-pencil
+          | {{potof.said}}
       td(ng-click="potof_toggle(potof)")
         div.nowrap(ng-show="secret_is_open")
           span.note
@@ -75,5 +77,5 @@ table.table.table-condensed(style="margin:0;")
           s.note(ng-show="potof.pseudobond_names")
             | {{potof.pseudobond_names.join('、')}}
       td(style="width: 1ex")
-        a(ng-click="potof_only([potof])") ➡
+        a.glyphicon.glyphicon-pushpin(ng-click="potof_only([potof])")
 

@@ -19,37 +19,37 @@ fieldset
       label(for="vplcnt")
         | 定員
     dd
-      input.input-mini#vplcnt(type="text" name="vplcnt" ng-model="event.player.limit" size="5")
+      input.form-control.input-mini#vplcnt(type="text" name="vplcnt" ng-model="event.player.limit" size="5")
       | 人
     dt
       label(for="vplcntstart")
         | 最低人数
     dd
-      input.input-mini#vplcntstart(type="text" name="vplcntstart" ng-model="event.player.start" size="5")
+      input.form-control.input-mini#vplcntstart(type="text" name="vplcntstart" ng-model="event.player.start" size="5")
       | 人  ※開始方法が人狼BBS型の時のみ
     dt
       label(for="updhour")
         | 更新時間
     dd
-      select.input-small#updhour(ng-model="story.upd.hour" ng-options="o.val as o.name for o in config.hours")
-      select.input-small#updminite(ng-model="story.upd.minute" ng-options="o.val as o.name for o in config.minutes")
+      select.form-control.input-small#updhour(ng-model="story.upd.hour" ng-options="o.val as o.name for o in config.hours")
+      select.form-control.input-small#updminite(ng-model="story.upd.minute" ng-options="o.val as o.name for o in config.minutes")
       | に更新
     dt
       label(for="updinterval")
         | 更新間隔
     dd
-      select.input-large#updinterval(ng-model="story.upd.interval" ng-options="o.val as o.name for o in config.intervals")
+      select.form-control.input-large#updinterval(ng-model="story.upd.interval" ng-options="o.val as o.name for o in config.intervals")
       | ごとに更新
     dt
       label(for="votetype")
         | 投票方法
     dd
-      select.input-large#votetype(ng-model="story.type.vote" ng-options="o.val as o.name for o in config.votetypes")
+      select.form-control.input-large#votetype(ng-model="story.type.vote" ng-options="o.val as o.name for o in config.votetypes")
     dt
       label(for="roletable")
         | 役職配分
     dd
-      select.input-large#roletable(ng-model="story.type.roletable" ng-options="o.val as o.name for o in config.roletables")
+      select.form-control.input-large#roletable(ng-model="story.type.roletable" ng-options="o.val as o.name for o in config.roletables")
 
 fieldset(ng-show="story.type.roletable == 'custom'")
   legend
@@ -58,11 +58,11 @@ fieldset(ng-show="story.type.roletable == 'custom'")
   div(ng-repeat="title in config.items_keys")
     h3
       | {{title}}
-    .config_item.input-append.input-prepend(ng-repeat="item in config.items[title]")
-      label.add-on(for="cnt{{item.key}}")
+    .config_item.input-group(ng-repeat="item in config.items[title]")
+      label.input-group-addon(for="cnt{{item.key}}")
         | {{item.name}}
-      input.input-tiny(size="2" type="text" id="cnt{{item.key}}" name="cnt{{item.key}}" ng-model="item.count")
-      span.add-on
+      input.form-control.input-tiny(size="2" type="text" id="cnt{{item.key}}" name="cnt{{item.key}}" ng-model="item.count")
+      span.input-group-addon
         | 人
 fieldset
   h3

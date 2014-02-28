@@ -46,7 +46,8 @@ INIT = ($scope, $filter, $timeout)->
     unless $scope.hide_potofs?
       ArrayNavi.push $scope, 'hide_potofs',
         options:
-          class: 'btn-inverse'
+          class_select: 'inverse'
+          class_default: 'plane'
           current: []
           location: 'hash'
           is_cookie: true

@@ -11,16 +11,16 @@ class ApplicationController < ActionController::Base
     strategy DecentExposure::StrongParametersStrategy
   end
 
-=begin
   case Rails.env
   when 'development'    
     before_filter :debug
     def debug
+      current.user ||= User.where(name:'ななころび').first
       current.auth ||= Auth.where(nickname:'7korobi').first
+      p current
       current_save
     end
   end
-=end
 
   protected
   def theme

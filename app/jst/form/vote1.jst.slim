@@ -1,3 +1,3 @@
-.inline.radio
-  a.btn(ng-click="vote(ff, f)") {{ff.title}}
-  select.input-medium(name="target" ng-change="vote_change(ff)" ng-model="ff.target1" ng-options="o.val as o.name for o in ff.targets")
+.form-inline.radio
+  a.btn.btn-default(ng-click="vote(ff, f)") {{ff.title}}
+  select.form-control.input-medium(name="target" ng-change="vote_change(ff)" ng-model="ff.target1" ng-options="o.val as o.name for o in ff.targets")

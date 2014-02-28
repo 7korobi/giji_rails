@@ -101,7 +101,7 @@ INIT_POTOF = ($scope, potof, gon)->
   potof.summary = ->
     switch $scope.potofs_order.value
       when 'said_num'
-        "✎#{@said}"
+        """<span class="glyphicon glyphicon-pencil"></span>#{@said}"""
       when 'stat_at', 'stat_type'
         @stat
       when 'win_result', 'win_name','role_names'

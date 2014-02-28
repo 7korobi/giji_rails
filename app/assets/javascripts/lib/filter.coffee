@@ -169,6 +169,7 @@ FILTER = ($scope, $filter, $timeout)->
       else
         list
 
+    old_hide_faces = []
     page.filter 'hide_potofs.value', (hide_faces, list)->
       if _.include hide_faces, 'others'
         hide_faces = hide_faces.concat $scope.face.others
@@ -202,7 +203,7 @@ FILTER = ($scope, $filter, $timeout)->
     list.reverse() if "desc" == key
     list
 
-  scrollTo = ()->    
+  scrollTo = (newVal, oldVal, three)->    
     $scope.anchors = []
 
     if $scope.event.is_news
@@ -220,7 +221,14 @@ FILTER = ($scope, $filter, $timeout)->
       for key in $scope.modes.form 
         $scope.form_show[key] = true
   
-  $scope.$watch page.to_key,     scrollTo
+  if $scope.event?.messages?
+    $scope.$watch "event.turn",    scrollTo
+    $scope.$watch "event.is_news", scrollTo
+    $scope.$watch "mode.value",    scrollTo
+  $scope.$watch "search.value",    scrollTo
+  $scope.$watch "row.value",       scrollTo
+  $scope.$watch "order.value",     scrollTo
+
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', $scope.deploy_mode_common

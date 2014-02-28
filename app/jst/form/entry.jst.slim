@@ -6,18 +6,18 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
       form(name="write_form")
         .msg
           .form-horizontal
-            .control-group(ng-show="story.entry.limit == 'password'")
-              label.control-label(for="entrypwd") 参加パスワード
-              .controls
-                input.input-medium#entrypwd(type="password" maxlength="8" size="8" ng-model="f.password")
-            .control-group
-              label.control-label(for="selectid") 希望する配役
-              .controls
-                select.input-medium#selectid(ng-model="f.csid_cid" ng-options="o.val as o.name for o in f.csid_cids")
-            .control-group
-              label.control-label(for="selectrole") 希望する役職
-              .controls
-                select.input-medium#selectrole(ng-model="f.role" ng-options="o.val as o.name for o in f.roles")
+            .form-group(ng-show="story.entry.limit == 'password'")
+              label.control-label.col-sm-6(for="entrypwd") 参加パスワード
+              .col-sm-6
+                input.form-control#entrypwd(type="password" maxlength="8" size="8" ng-model="f.password")
+            .form-group
+              label.control-label.col-sm-6(for="selectid") 希望する配役
+              .col-sm-6
+                select.form-control#selectid(ng-model="f.csid_cid" ng-options="o.val as o.name for o in f.csid_cids")
+            .form-group
+              label.control-label.col-sm-6(for="selectrole") 希望する役職
+              .col-sm-6
+                select.form-control#selectrole(ng-model="f.role" ng-options="o.val as o.name for o in f.roles")
 
           .form-inline
             .formpl_content
@@ -29,13 +29,13 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
 
               div(ng-hide="f.is_preview")
                 p  参加する時のセリフ
-                textarea(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-init="text_valid(f)" ng-change="text_valid(f)")
+                textarea.form-control(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-init="text_valid(f)" ng-change="text_valid(f)")
   
-              a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
-              a.btn(ng-click="entry(f)") {{f.title}}
+              a.btn.btn-default(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
+              a.btn.btn-default(ng-click="entry(f)") {{f.title}}
               | {{f.count}}
 
-              select.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
+              select.form-control.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p
                 | {{f.caption}}
               span(class="{{f.error}}" ng-bind-html="f.valid_text")

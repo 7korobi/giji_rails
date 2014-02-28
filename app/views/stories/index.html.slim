@@ -18,15 +18,15 @@
       tr
         th(scope="col")
           code(ng-click="stories_toggle()")
-            i.icon-resize-full(ng-show="stories_is_small")
-            i.icon-resize-small(ng-hide="stories_is_small")
+            i.glyphicon.glyphicon-icon-resize-full(ng-show="stories_is_small")
+            i.glyphicon.glyphicon-icon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
         th(scope="col" ng-hide="stories_is_small") ルール
     tbody
       tr(ng-repeat="story in stories_find")
         td
           a.label(ng-href="{{story.file}}")
-            i.icon-white.icon-folder-open
+            i.glyphicon.glyphicon-icon-folder-open
           span.small
             | {{story._id}}
           a(ng-href="{{story.link}}") {{story.name}}
@@ -50,8 +50,8 @@
       tr
         th(scope="col")
           code(ng-click="stories_toggle()")
-            i.icon-resize-full(ng-show="stories_is_small")
-            i.icon-resize-small(ng-hide="stories_is_small")
+            i.glyphicon.glyphicon-icon-resize-full(ng-show="stories_is_small")
+            i.glyphicon.glyphicon-icon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
         th(scope="col" ng-hide="stories_is_small") ルール
 

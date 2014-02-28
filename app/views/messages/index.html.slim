@@ -21,32 +21,11 @@
       table.sayfilter_content
         tr
           td
-            select.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
+            select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
 
   .insayfilter(adjust="full" navi="page" ng-show="page")
     .paragraph
-      .sayfilter_content.form-inline(ng-show="event.is_news")
-        label.inline.radio
-          a.mark(ng-repeat="a in mode_common" style="font-size: 2.5ex;" ng-click="mode.value = a.value") {{a.name}}
-        label.inline.radio(ng-show="event.is_progress")
-          a.btn(ng-click="ajax_event(event.turn, null, false)") ページ表示
-        label.inline.radio(ng-show="event.is_progress")
-          a.mark(style="font-size: 2.5ex;" ng-click="pool()") ♻
-        label.inline.radio
-          | &nbsp;
-          a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
-          a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
-
-      .sayfilter_content.form-inline(ng-hide="event.is_news")
-        label.inline.radio
-          a.mark(ng-repeat="a in mode_common" style="font-size: 2.5ex;" ng-click="mode.value = a.value") {{a.name}}
-        label.inline.radio(ng-show="event.is_progress")
-          a.btn(ng-click="ajax_event(event.turn, null, true)") 最新の発言
-        label.inline.radio(template="navi/paginate")
-        label.inline.radio
-          | &nbsp;
-          a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
-          a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
+      .sayfilter_content(template="navi/toolbox")
 
 - content_for :log do
   h2

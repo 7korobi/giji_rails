@@ -2,10 +2,10 @@ form(ng-hide="logined()" ng-submit="login(form.login)")
   p.form-inline
     label
       span.mark  user id:
-      input.input-small(type="text" size="10" name="uid" ng-model="form.login.uid")
+      input.form-control.input-small(type="text" size="10" name="uid" ng-model="form.login.uid")
     label
       span.mark  password:
-      input.input-small(type="password" size="10" name="pwd" ng-model="form.login.pwd")
+      input.form-control.input-small(type="password" size="10" name="pwd" ng-model="form.login.pwd")
     input(type="submit" value="ログイン")
 
 form(ng-show="logined()" ng-submit="logout(form.login)")

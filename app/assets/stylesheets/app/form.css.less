@@ -25,7 +25,7 @@ form.login {
 fieldset.action_type  select,
 .formpl_content textarea,
 .formpl_actiontext {
-  width: 96%;
+  width: 100% !important;
 }
 .formpl_content label { display: inline;}
 .formpl_action {
@@ -55,6 +55,14 @@ fieldset.action_type  select,
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;  
+}
+
+select {
+  white-space: nowrap;
+}
+
+.form-control {
+  padding: 0;
 }
 
 .input-mini {

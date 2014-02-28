@@ -39,10 +39,10 @@ class ArrayNavi extends Navi
       for o in @select
         @of[o.val] = o
         if _.include @value, o.val
-          o.class = @params.class
+          o.class = @params.class_select
           o.show = true
         else
-          o.class = null
+          o.class = @params.class_default
           o.show = false
 
   choice: ->

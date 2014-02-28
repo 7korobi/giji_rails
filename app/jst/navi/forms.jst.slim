@@ -25,20 +25,20 @@ div(class="{{form.win}}" ng-show="logined()")
 div(ng-hide="form.confirm" ng-show="logined()")
   .formpl_gm.form-inline(ng-repeat="f in form.command_group.commit")
     .commitbutton
-      select.input-medium(name="commit" ng-change="vote_change(f)" ng-model="f.commit" ng-disabled="f.disabled" ng-options="o.val as o.name for o in f.commits")
-      a.btn(ng-disabled="f.disabled" ng-click="commit(f)") {{f.title}}
+      select.form-control.input-medium(name="commit" ng-change="vote_change(f)" ng-model="f.commit" ng-disabled="f.disabled" ng-options="o.val as o.name for o in f.commits")
+      a.btn.btn-default(ng-disabled="f.disabled" ng-click="commit(f)") {{f.title}}
     .mark(ng-bind-html="error(f)")
     div(ng-bind-html="f.caption")
 
   .formpl_gm(ng-if="form.command_group.target && form.command_targets")
     p.commitbutton
-      select.input-medium(name="target" ng-model="form.command_target" ng-options="o.val as o.name for o in form.command_targets")
+      select.form-control.input-medium(name="target" ng-model="form.command_target" ng-options="o.val as o.name for o in form.command_targets")
     p.commitbutton
-      a.btn(ng-repeat="f in form.command_group.target" ng-disabled="f.disabled" ng-click="confirm(f)") {{f.title}}
+      a.btn.btn-default(ng-repeat="f in form.command_group.target" ng-disabled="f.disabled" ng-click="confirm(f)") {{f.title}}
 
   .formpl_gm
     p.commitbutton
-      a.btn(ng-repeat="f in form.command_group.button" ng-disabled="f.disabled" ng-click="confirm(f)") {{f.title}}
+      a.btn.btn-default(ng-repeat="f in form.command_group.button" ng-disabled="f.disabled" ng-click="confirm(f)") {{f.title}}
 
   .formpl_gm
     .mark(ng-bind-html="error(f)" ng-repeat="f in form.command_group.target")
@@ -47,6 +47,6 @@ div(ng-hide="form.confirm" ng-show="logined()")
 .formpl_gm(ng-show="form.confirm")
   h3
     | {{form.confirm}}
-  a.btn(ng-click="confirm_cancel()") ×
-  a.btn(ng-click="confirm_complete()") ◯
+  a.btn.btn-default(ng-click="confirm_cancel()") ×
+  a.btn.btn-default(ng-click="confirm_complete()") ◯
 

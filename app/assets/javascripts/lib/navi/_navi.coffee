@@ -26,8 +26,9 @@ class Navi
   constructor: ($scope, key, def)->
     @scope = $scope
     @params = def.options
-    @params.current_type or= String
-    @params.class or= 'btn-success'
+    @params.current_type  or= String
+    @params.class_select  or= 'btn-success'
+    @params.class_default or= 'btn-default'
 
     @of = {}
     @key = key
@@ -79,10 +80,10 @@ class Navi
       for o in @select
         @of[o.val] = o
         if o.val == @value
-          o.class = @params.class
+          o.class = @params.class_select
           o.show = true
         else
-          o.class = null
+          o.class = @params.class_default
           o.show = false
 
 
