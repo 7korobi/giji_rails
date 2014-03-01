@@ -346,6 +346,7 @@ _PERL_
         :URL_SW         ,
         :NAME_HOME      ,
         :RULE           ,
+        :TYPE           ,
         :MAX_VILLAGES   ,
         :TIMEOUT_SCRAP  ,
         :TIMEOUT_ENTRY  ,

@@ -837,12 +837,31 @@ Face:
   order: 30019
 
 #########################
-# xxxx-xx-xx update
+# 2014-02-28 update かぎりなく3月1日めいた瞬間
 
 - face_id: w51
-  name: 萬藤
-  comment: ""
+  name: 鬼丞
+  comment: "リニューアル記念！"
   order: 90051
+
+- face_id: w52
+  name: 櫻子
+  comment: "リニューアル記念！"
+  order: 90052
+
+
+- face_id: c111
+  name: スージー
+  comment: "リニューアル記念！"
+  order: 93
+
+- face_id: c113
+  name: ジェレミー
+  comment: "リニューアル記念！"
+  order: 94
+
+#########################
+# xxxx-xx-xx update
 
 
 # http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911

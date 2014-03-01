@@ -138,6 +138,8 @@ PERL_UNION:
       - millerhollow
       - ultimate
     cfg: &cfg_union
+      TYPE: CABALA
+      RULE: UNION
       USERID_NPC:    master
       USERID_ADMIN:  admin
       ENABLED_VMAKE:  1
@@ -186,6 +188,8 @@ PERL_BRAID:
       ENABLED_AMBIDEXTER:   [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
       ENABLED_SUICIDE_VOTE: [0, "1:自殺投票"]
     cfg: &cfg_braid
+      TYPE: BRAID
+      RULE: BRAID
       USERID_NPC:    master
       USERID_ADMIN:  admin
       ENABLED_VMAKE:  1
@@ -195,7 +199,6 @@ PERL_BRAID:
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
       BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
-      RULE:          BRAID
 
 # 内部 人狼議事
 #
@@ -238,7 +241,7 @@ PERJURY_OLD:
   server: utage.family.jp
   oldlog:   /perjury/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /perjury/sow.cgi?cmd=rss
-  folder: PERJURY
+  folder: PERJURY_OLD
   info_url: /perjury/sow.cgi?ua=mb&vid=%s&cmd=vinfo
   nation: "人狼議事RP:Bp"
   epi_url:  /perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
@@ -258,6 +261,7 @@ PERJURY_OLD:
     path:
       <<: *GIJI_PATH
     pl:  /www/giji_log/perjury/config.pl
+
 PRETENSE:
   server: utage.family.jp
   oldlog:   /pretense/sow.cgi?cmd=oldlog&rowall=on
@@ -478,11 +482,12 @@ CIEL:
       ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
     cfg:
       <<: *cfg_braid
-      RULE:           CIEL
-      URL_SW:         http://ciel.moo.jp/cheat
       BASEDIR_CGIERR: http://ciel.moo.jp//cheat
-      NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
+      URL_SW:         http://ciel.moo.jp/cheat
+      TYPE:           CHEAT
+      RULE:           CIEL
       MAX_VILLAGES:   2
+      NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -495,7 +500,7 @@ PERJURY:
   livelog:  /sow.cgi?cmd=rss
   folder: PERJURY
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bp"
+  nation: "人狼議事RP:Cp"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: Bp
   config:
@@ -507,14 +512,16 @@ PERJURY:
       - infinity
     cfg:
       <<: *cfg_braid
-      RULE:           PERJURY
-      URL_SW:         http://perjury.rulez.jp
       BASEDIR_CGIERR: http://perjury.rulez.jp//
-      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
+      URL_SW:         http://perjury.rulez.jp
+      TYPE:           CHEAT
+      RULE:           PERJURY
       MAX_VILLAGES:   3
+      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play Cheat -
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
+    is_angular: true
 
 XEBEC:
   server: xebec.x0.to

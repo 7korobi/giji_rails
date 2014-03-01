@@ -203,15 +203,17 @@ _HTML_
   }
   if( 'PERJURY' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-こちらのページは<span style="color:#FFF">（陣営勝利を求めない）完全RP村、勝利追求を含むRP村</span>用に調整してあるよ。<a href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD" ng-href="{{link.plan}}">企画村予\定\表\</a>を参考に、譲り合いの精神で調整してほしい。<br>
-以下がおおざっぱな、他州との相違点なんだ。
-<ul style="font-size: smaller;">
-<li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。ガチとは違うのだよ。ガチとは。
-<li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
-<li>村の説明は4000字まで記述\できます。
-<li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
-<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
-</ul>
+<script>
+gon.top_info = [
+{ mesicon:'',
+  name:'ようこそ！',
+  text:'<span class="mark">勝利を求めないRP村や、勝利も追求するRP村</span>用に、このページは調整してあるのだ。<br>\\
+紳士淑女の諸君には、<a class="mark" href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD">企画村予\定\表\</a>を参考に、譲り合いの精神で調整してほしい。',
+updated_at:new Date(1393597313000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c25"}
+];
+</script>
+</div>
+<div class="message_filter" ng-repeat="message in top_info" log="message">
 _HTML_
   }
 

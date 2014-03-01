@@ -274,3 +274,7 @@ chr_jobs:
   job: 村娘
 - face_id: c110
   job: ろくでなし
+- face_id: c111
+  job: 愛人
+- face_id: c113
+  job: 紐
