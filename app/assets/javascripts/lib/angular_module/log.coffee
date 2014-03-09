@@ -2,6 +2,7 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     log = $scope.message = $scope.$eval attr.log
+    log.is_show = true
     if ! log.template? && log.logid? && log.mestype? && log.subid?
       log.sub1id = log.logid[0]
       log.sub2id = log.logid[1]
@@ -17,13 +18,13 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
 
     log.cancel_btn = ->
       if @logid? && "q" == @logid[0] && ((new Date() - @updated_at) < 25 * 1000)
-        $sce.trustAsHtml """<a class="mark" href_eval='cancel_say("#{@logid}")'>なら削除できます。<span class="glyphicon glyphicon-trash"></span></a>"""
+        $sce.trustAsHtml """なら削除できます。<a href_eval='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
       else
         ""
     log.time = -> $scope.lax_time @updated_at
 
-    if ! log.anchor? && log.logid?
-      [_, mark, num] = log.logid.match(/(\D)\D+(\d+)/)
+    if ! log.anchor? && log.logid? && match_data = log.logid.match(/(\D)\D+(\d+)/)
+      [_, mark, num] = match_data
       anchor_ok = false
       anchor_ok ||= (mark != 'T')
       anchor_ok ||= $scope.story?.is_epilogue
