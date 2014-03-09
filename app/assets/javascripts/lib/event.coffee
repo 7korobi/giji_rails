@@ -5,7 +5,7 @@ if head.browser?
     b.android = true
     b.power = "simple"
 
-  for key in ['firefox','chrome','crios','silk','mercury','iphone','ipad']
+  for key in ['crios','silk','mercury','iphone','ipad']
     if navigator.userAgent.toLowerCase().indexOf(key) != -1
       b.power = "mobile"
 
@@ -13,9 +13,7 @@ if head.browser?
     if navigator.userAgent.toLowerCase().indexOf(key) != -1
       b.iphone = true
   b[b.power] = true
-
 head.useragent = navigator.userAgent
-$("html").addClass b.power
 
 win =
   top:    0
