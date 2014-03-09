@@ -25,7 +25,7 @@ POOL = ($scope, $filter, $timeout)->
     $scope.get_news $scope.event, =>
       $scope.init()
   $scope.pool_nolimit = pool_button
-  $scope.pool = _.debounce pool_button, message_first, 
+  $scope.pool_hand = _.debounce pool_button, message_first, 
     leading: true
     trailing: false
 

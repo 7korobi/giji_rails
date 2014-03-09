@@ -14,7 +14,7 @@ class Navi
     @value
 
   choice: ->
-    _.find @select, (o)=> o.val == @value
+    _.assign {}, _.find @select, (o)=> o.val == @value
 
   popstate: ()->
     l = @location_val(@key)
@@ -50,21 +50,8 @@ class Navi
       for func in @watch
         func @value
 
-      list = {}
-      for _, navi of Navi.list
-        options = navi.params
-        if navi.value
-          cmd = "#{navi.key}=#{navi.value}"
-
-          if options.location?
-            list[options.location] or= []
-            list[options.location].push cmd
-
-          if options.is_cookie
-            expire = new Date().advance OPTION.cookie.expire
-            document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
-
-
+      Navi.set_cookie()
+      list = Navi.to_hash()
       if list.search
         val_search = "?" + list.search.join "&"
         if location.search != val_search
@@ -86,6 +73,32 @@ class Navi
           o.class = @params.class_default
           o.show = false
 
+
+Navi.set_cookie = ()->
+  for _, navi of Navi.list
+    options = navi.params
+    if navi.value
+      cmd = "#{navi.key}=#{navi.value}"
+      if options.is_cookie
+        expire = new Date().advance OPTION.cookie.expire
+        document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
+
+Navi.to_hash = (append)->
+  list = {}
+  scanner = (location, navi)->
+    if navi.value
+      cmd = "#{navi.key}=#{navi.value}"
+
+      if location?
+        list[location] or= []
+        list[location].push cmd
+  scanner(navi.params.location, navi) for        _, navi of Navi.list
+  scanner(location,             navi) for location, navi of append
+  list
+
+Navi.to_url = (append)->
+  hash = Navi.to_hash(append)
+  ""
 
 Navi.popstate = ()->
   for navi in Navi.list

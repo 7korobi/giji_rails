@@ -1,18 +1,53 @@
+
 class PageNavi extends Navi
   constructor: ($scope, key, def)->
     def.options.current_type = Number
     def.options.per or= 1
 
     super
+    @nop = (target,list)-> list
+
     @filters = []
     @pagers  = []
+
+    @filter_action = =>
+      if @by_key?
+        @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
+      @pager_action()
+
+    @pager_action = =>
+      if @list_by_filter?
+        list = @do_filters @list_by_filter, @pagers
+        if @to_key? && list
+          eval "_this.scope.#{@to_key} = list"
+      @_move()
+
+  start: ->
+    for [key, _] in @filters
+      @scope.$watch key, @filter_action
+    for [key, _] in @pagers
+      @scope.$watch key, @pager_action
+    @filter_action()
+
 
   do_filters: (list, filters)->
     for [target_key, filter] in filters
       target = @scope.$eval target_key
-      if target
+      if target && filter
         list = filter target, list
     list
+
+  filter_by: (by_key)->
+    @by_key = by_key
+
+  filter_to: (to_key)->
+    @to_key = to_key
+
+  filter: (key, func)->
+    @filters.push [key, func]
+
+  pager: (key, func)->
+    @pagers.push [key, func]
 
   paginate: (page_per_key, func)->
     @pager page_per_key, (page_per, list)=>
@@ -23,33 +58,6 @@ class PageNavi extends Navi
     @pager "#{@key}.value", (page, list)=>
       @item_last = _.last list if list.last
       list
-
-  pager: (key, func)->
-    @scope.$watch key, =>
-      if @list_by_filter?
-        list = @do_filters @list_by_filter, @pagers
-        if @to_key? && list
-          eval "_this.scope.#{@to_key} = list"
-      @_move()
-
-    @pagers.push [key, func] if func
-
-  filter_by: (by_key)->
-    @by_key = by_key
-
-  filter_to: (to_key)->
-    @to_key = to_key
-
-  filter: (key, func)->
-    @scope.$watch key, =>
-      if @by_key?
-        @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
-        list = @do_filters @list_by_filter, @pagers
-        if @to_key? && list
-          eval "_this.scope.#{@to_key} = list"
-      @_move()
-
-    @filters.push [key, func] if func
 
   hide: ()->
     for key, item of @of
@@ -88,7 +96,7 @@ class PageNavi extends Navi
 
     @of = {}
     for key, is_show of show
-      item = _.extend {}, _.find @select, (o)-> o.val == n[key]
+      item = _.assign {}, _.find @select, (o)-> o.val == n[key]
       item or=
         name: ""
         val:  null

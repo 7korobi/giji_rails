@@ -46,11 +46,11 @@ class ArrayNavi extends Navi
           o.show = false
 
   choice: ->
-    _.find @select, (o)=> o.val == @value[0]
+    _.assign {}, _.find @select, (o)=> o.val == @value[0]
 
   choices: ->
     _.map @value, (value)=>
-      _.find @select, (o)-> o.val == value
+      _.assign {}, _.find @select, (o)-> o.val == value
 
 
 ArrayNavi.push = ($scope, key, def)->
