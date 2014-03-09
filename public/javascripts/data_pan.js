@@ -61,9 +61,6 @@ this.JST["message/say"] = "<table class=\"say\" ng-class=\"message.mestype\"><tb
 this.JST["navi/chr_list"] = "<hr style=\"border-color:black;\" /><div class=\"chrbox\" ng-repeat=\"chr in chrs\"><img ng-src=\"{{chr.img}}\" /><div class=\"chrblank\" ng-bind-html=\"chr.text\"></div></div><hr style=\"border-color:black;\" />";
 
 
-this.JST["navi/css"] = "<span ng-repeat=\"o in css.font.select\"><a class=\"mark\" ng-class=\"o.class\" ng-click=\"css.font.move(o.val)\">{{o.name}}</a></span>&nbsp;<span ng-repeat=\"o in css.width.select\"><a class=\"mark\" ng-class=\"o.class\" ng-click=\"css.width.move(o.val)\">{{o.name}}</a></span>&nbsp;<span ng-repeat=\"o in css.theme.select\"><a class=\"mark\" ng-class=\"o.class\" ng-click=\"css.theme.move(o.val)\">{{o.name}}</a></span>";
-
-
 this.JST["navi/diary"] = "<table class=\"say SAY\"><tbody><tr><td class=\"img\"><img ng-src=\"{{img_cid(null, &#39;blank&#39;)}}\" /></td><td class=\"field\"><div class=\"msg\"><div class=\"form-inline\"><div class=\"formpl_content\"><textarea class=\"form-control input-block-level\" cols=\"30\" ng-model=\"diary.form.text\" rows=\"5\"></textarea><h6>{{diary.head()}}</h6><p><span>&nbsp;履歴:<code ng-click=\"diary.back(version)\" ng-repeat=\"version in diary.versions()\">{{version}}</code></span></p></div></div></div></td></tr></tbody></table>";
 
 
@@ -79,7 +76,7 @@ this.JST["navi/headline"] = "<div class=\"choice\"><table class=\"board\"><tr><t
 this.JST["navi/messages"] = "<div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\" ng-show=\"page\"> 前のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter\" log=\"message\" ng-class=\"message.logid\" ng-repeat=\"message in messages\"></div><div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\" ng-show=\"page\"> 次のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter drag\" drag=\"message\" log=\"message\" ng-class=\"message.logid\" ng-repeat=\"message in anchors\"><div class=\"drag_head\"><span class=\"badge\" href_eval=\"popup({{message.turn}}, &#39;{{message.logid}}&#39;)\">✘</span></div></div>";
 
 
-this.JST["navi/page_navi"] = "<div class=\"form-inline radio\"><input class=\"form-control input-medium\" ng-blur=\"search.value = search_input\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /><label><select class=\"form-control input-mini\" ng-model=\"order.value\" ng-options=\"o.val as o.name for o in order.select\"></select></label><label><select class=\"form-control input-mini\" ng-model=\"row.value\" ng-options=\"o.val as o.name for o in row.select\"></select></label></div><br /><div class=\"form-inline radio\"><label ng-show=\"mode\"><select class=\"form-control input-small\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\"></select></label><label ng-show=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, false)\" ng-show=\"event.is_news\">ページ表示</a><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, true)\" ng-hide=\"event.is_news\">最新の発言</a></label><label ng-show=\"events\"><select class=\"form-control input-medium\" ng-model=\"event\" ng-options=\"e as e.name for e in events\"></select></label></div><br /><div class=\"form-inline radio\"><label><span ng-repeat=\"a in mode_common\"><a class=\"mark\" ng-click=\"mode.value = a.value\" style=\"font-size: 2.5ex;\">{{a.name}}</a></span></label><label ng-hide=\"event.is_news\"><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></label><label ng-show=\"event.is_progress\"><a class=\"mark glyphicon glyphicon-pencil\" ng-click=\"go.form()\" style=\"font-size: 2.5ex;\"></a></label></div>";
+this.JST["navi/page_navi"] = "<div class=\"form-inline radio\"><label ng-show=\"css\"><select class=\"form-control input-small\" ng-model=\"css.value\" ng-options=\"o.val as o.name group by o.group for o in css.select\"></select></label></div><div class=\"form-inline radio\"><input class=\"form-control input-medium\" ng-blur=\"search.value = search_input\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /><label><select class=\"form-control input-mini\" ng-model=\"order.value\" ng-options=\"o.val as o.name for o in order.select\"></select></label><label><select class=\"form-control input-mini\" ng-model=\"row.value\" ng-options=\"o.val as o.name for o in row.select\"></select></label></div><br /><div class=\"form-inline radio\"><label ng-show=\"mode\"><select class=\"form-control input-small\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\"></select></label><label ng-show=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, false)\" ng-show=\"event.is_news\">ページ表示</a><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, true)\" ng-hide=\"event.is_news\">最新の発言</a></label><label ng-show=\"events\"><select class=\"form-control input-medium\" ng-model=\"event\" ng-options=\"e as e.name for e in events\"></select></label></div><br /><div class=\"form-inline radio\"><label><span ng-repeat=\"a in mode_common\"><a class=\"mark\" ng-click=\"mode.value = a.value\" style=\"font-size: 2.5ex;\">{{a.name}}</a></span></label><label ng-hide=\"event.is_news\"><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></label><label ng-show=\"event.is_progress\"><a class=\"mark glyphicon glyphicon-pencil\" ng-click=\"go.form()\" style=\"font-size: 2.5ex;\"></a></label></div>";
 
 
 this.JST["navi/paginate"] = "<a class=\"btn btn-default\" ng-class=\"page.of.first.class\" ng-click=\"page.move(page.of.first.val)\">{{page.of.first.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.second.class\" ng-click=\"page.move(page.of.second.val)\">{{page.of.second.name}}</a><span ng-class=\"page.of.prev_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\">{{page.of.prev.name}}</a><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"pno.val as pno.name for pno in page.select\"></select><a class=\"btn btn-default\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\">{{page.of.next.name}}</a><span ng-class=\"page.of.next_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.penu.class\" ng-click=\"page.move(page.of.penu.val)\">{{page.of.penu.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.last.class\" ng-click=\"page.move(page.of.last.val)\">{{page.of.last.name}}</a>";
@@ -122,6 +119,9 @@ this.JST["sow/village_info_epilogue"] = "<div class=\"mes_maker story\"><dl clas
 
 
 this.JST["style/giji"] = "<style>\nbody * {\n  border-color: red;\n}\n</style>";
+
+
+this.JST["theme/css"] = "<a class=\"mark\" ng-click=\"styles.font = &#39;std-font&#39;\">大判</a><a class=\"mark\" ng-click=\"styles.font = &#39;small-font&#39;\">繊細</a>&nbsp;<a class=\"mark\" ng-click=\"styles.width = &#39;center-msg&#39;\">中央</a><a class=\"mark\" ng-click=\"styles.width = &#39;right-msg&#39;\">右付</a><a class=\"mark\" ng-click=\"styles.width = &#39;mini-msg&#39;\">携帯用</a>&nbsp;<a class=\"mark\" ng-click=\"styles.theme = &#39;cinema&#39;\">煉瓦</a><a class=\"mark\" ng-click=\"styles.theme = &#39;night&#39;\">月夜</a><a class=\"mark\" ng-click=\"styles.theme = &#39;star&#39;\">蒼穹</a><a class=\"mark\" ng-click=\"styles.theme = &#39;wa&#39;\">和の国</a>";
 
 
 this.FACES = [
@@ -404,6 +404,20 @@ this.FACES = [
     "face_id": "c110",
     "name": "リー",
     "order": 92
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c111",
+    "name": "スージー",
+    "order": 93
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c113",
+    "name": "ジェレミー",
+    "order": 94
   },
   {
     "caption": "人狼議事",
@@ -1489,6 +1503,20 @@ this.FACES = [
     "face_id": "w50",
     "name": "丁助",
     "order": 90050
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w51",
+    "name": "鬼丞",
+    "order": 90051
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w52",
+    "name": "櫻子",
+    "order": 90052
   }
 ]
 ;
@@ -1579,6 +1607,292 @@ this.GIJI = {
     "plan": "http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD",
     "wiki": "http://melon-cirrus.sakura.ne.jp/wiki/",
     "scedure": "http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD"
+  },
+  "styles": {
+    "pan": [
+      {
+        "val": "juna_center-msg_std-font",
+        "name": "審問 - 大判",
+        "group": "審問",
+        "item": "box-msg",
+        "color": "white",
+        "theme": "juna",
+        "width": "center-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "juna_center-msg_small-font",
+        "name": "審問 - 繊細",
+        "group": "審問",
+        "item": "box-msg",
+        "color": "white",
+        "theme": "juna",
+        "width": "center-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "sow_center-msg_std-font",
+        "name": "物語 - 大判",
+        "group": "物語",
+        "item": "box-msg",
+        "color": "white",
+        "theme": "sow",
+        "width": "center-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "sow_center-msg_small-font",
+        "name": "物語 - 繊細",
+        "group": "物語",
+        "item": "box-msg",
+        "color": "white",
+        "theme": "sow",
+        "width": "center-msg",
+        "font": "small-font"
+      }
+    ],
+    "giji": [
+      {
+        "val": "cinema_center-msg_std-font",
+        "name": "煉瓦 - 大判 中央",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema",
+        "width": "center-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "cinema_right-msg_std-font",
+        "name": "煉瓦 - 大判 右付",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema",
+        "width": "right-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "cinema_mini-msg_std-font",
+        "name": "煉瓦 - 大判 携帯用",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema",
+        "width": "mini-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "cinema_center-msg_small-font",
+        "name": "煉瓦 - 繊細 中央",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema",
+        "width": "center-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "cinema_right-msg_small-font",
+        "name": "煉瓦 - 繊細 右付",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema",
+        "width": "right-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "cinema_mini-msg_small-font",
+        "name": "煉瓦 - 繊細 携帯用",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema",
+        "width": "mini-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "wa_center-msg_std-font",
+        "name": "和の国 - 大判 中央",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa",
+        "width": "center-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "wa_right-msg_std-font",
+        "name": "和の国 - 大判 右付",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa",
+        "width": "right-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "wa_mini-msg_std-font",
+        "name": "和の国 - 大判 携帯用",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa",
+        "width": "mini-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "wa_center-msg_small-font",
+        "name": "和の国 - 繊細 中央",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa",
+        "width": "center-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "wa_right-msg_small-font",
+        "name": "和の国 - 繊細 右付",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa",
+        "width": "right-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "wa_mini-msg_small-font",
+        "name": "和の国 - 繊細 携帯用",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa",
+        "width": "mini-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "star_center-msg_std-font",
+        "name": "蒼穹 - 大判 中央",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star",
+        "width": "center-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "star_right-msg_std-font",
+        "name": "蒼穹 - 大判 右付",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star",
+        "width": "right-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "star_mini-msg_std-font",
+        "name": "蒼穹 - 大判 携帯用",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star",
+        "width": "mini-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "star_center-msg_small-font",
+        "name": "蒼穹 - 繊細 中央",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star",
+        "width": "center-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "star_right-msg_small-font",
+        "name": "蒼穹 - 繊細 右付",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star",
+        "width": "right-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "star_mini-msg_small-font",
+        "name": "蒼穹 - 繊細 携帯用",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star",
+        "width": "mini-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "night_center-msg_std-font",
+        "name": "月夜 - 大判 中央",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night",
+        "width": "center-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "night_right-msg_std-font",
+        "name": "月夜 - 大判 右付",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night",
+        "width": "right-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "night_mini-msg_std-font",
+        "name": "月夜 - 大判 携帯用",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night",
+        "width": "mini-msg",
+        "font": "std-font"
+      },
+      {
+        "val": "night_center-msg_small-font",
+        "name": "月夜 - 繊細 中央",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night",
+        "width": "center-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "night_right-msg_small-font",
+        "name": "月夜 - 繊細 右付",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night",
+        "width": "right-msg",
+        "font": "small-font"
+      },
+      {
+        "val": "night_mini-msg_small-font",
+        "name": "月夜 - 繊細 携帯用",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night",
+        "width": "mini-msg",
+        "font": "small-font"
+      }
+    ]
   },
   "modes": [
     {
@@ -2281,61 +2595,28 @@ this.OPTION = {
       "years": 1
     }
   },
-  "css_wday": [
-    "cinema800",
-    "cinema800",
-    "star800",
-    "cinema800",
-    "cinema800",
-    "star800",
-    "wa800"
-  ],
   "head_img": {
-    "cinema800": [
+    "cinema": [
       "r",
       "c"
     ],
-    "cinema480": [
+    "star": [
       "r",
       "c"
     ],
-    "star800": [
-      "r",
-      "c"
-    ],
-    "star480": [
-      "r",
-      "c"
-    ],
-    "wa800": [
+    "wa": [
       "b",
       "w"
     ],
-    "wa480": [
+    "night": [
       "b",
       "w"
     ],
-    "night800": [
-      "b",
-      "w"
-    ],
-    "night480": [
-      "b",
-      "w"
-    ],
-    "sow800": [
+    "sow": [
       "r",
       "c"
     ],
-    "sow480": [
-      "r",
-      "c"
-    ],
-    "juna800": [
-      "b",
-      "w"
-    ],
-    "juna480": [
+    "juna": [
       "b",
       "w"
     ]
@@ -2615,56 +2896,9 @@ this.OPTION = {
   "css": {
     "h1": {
       "widths": {
-        "480": 458,
-        "800": 580
-      }
-    },
-    "font": {
-      "options": {
-        "is_cookie": true,
-        "location": "hash",
-        "current": "normal"
-      },
-      "button": {
-        "normal": "普通",
-        "small": "繊細"
-      }
-    },
-    "width": {
-      "options": {
-        "is_cookie": true,
-        "location": "hash",
-        "current": 800
-      },
-      "button": {
-        "480": 480,
-        "800": 800
-      }
-    },
-    "themes": {
-      "pan": {
-        "options": {
-          "is_cookie": true,
-          "location": "hash",
-          "current": "sow"
-        },
-        "button": {
-          "juna": "審問",
-          "sow": "物語"
-        }
-      },
-      "giji": {
-        "options": {
-          "is_cookie": true,
-          "location": "hash",
-          "current": "cinema"
-        },
-        "button": {
-          "cinema": "煉瓦",
-          "night": "月夜",
-          "star": "蒼穹",
-          "wa": "和の国"
-        }
+        "center-msg": 580,
+        "right-msg": 580,
+        "mini-msg": 458
       }
     }
   },
@@ -3849,7 +4083,7 @@ this.SOW = {
 
 
 this.URL = {
-  "file": "http://7korobi.gehirn.ne.jp",
+  "file": "http://localhost",
   "rails": "http://giji.check.jp"
 } ;
 

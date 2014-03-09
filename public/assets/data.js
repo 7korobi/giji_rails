@@ -7,7 +7,7 @@ this.JST || (this.JST = {});
 this.JST["form/action"] = "<div class=\"{{f.mestype}}\" ng-show=\"form_show.action\"><form name=\"action_form\"><div class=\"action\"><p class=\"text\" ng-bind-html=\"f.preview\"></p><h6>{{f.count}} {{f.title}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div class=\"controls controls-row formpl_content\"><div class=\"form-inline\"><select class=\"form-control input-medium\" name=\"target\" ng-change=\"text_valid(f)\" ng-model=\"f.target\" ng-options=\"o.val as o.longname for o in f.targets\"></select><select class=\"form-control input-medium\" name=\"actionno\" ng-change=\"text_valid(f)\" ng-model=\"f.action\" ng-options=\"o.val as o.name for o in f.actions\"></select></div><input class=\"form-control input-block-level\" name=\"actiontext\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" type=\"text\" /></div><p><a class=\"btn btn-default\" ng-click=\"action(f)\">アクション</a></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span></p></div></form></div>";
 
 
-this.JST["form/entry"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.entry\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><div class=\"form-group\" ng-show=\"story.entry.limit == &#39;password&#39;\"><label class=\"control-label col-sm-6\" for=\"entrypwd\">参加パスワード</label><div class=\"col-sm-6\"><input class=\"form-control\" id=\"entrypwd\" maxlength=\"8\" ng-model=\"f.password\" size=\"8\" type=\"password\" /></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectid\">希望する配役</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectid\" ng-model=\"f.csid_cid\" ng-options=\"o.val as o.name for o in f.csid_cids\"></select></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectrole\">希望する役職</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectrole\" ng-model=\"f.role\" ng-options=\"o.val as o.name for o in f.roles\"></select></div></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><div ng-show=\"f.is_preview\"><h3 class=\"mesname\"><a>{{option(f.csid_cids, f.csid_cid).name}}</a></h3><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\"></p></div><div ng-hide=\"f.is_preview\"><p> 参加する時のセリフ</p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea></div><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"entry(f)\">{{f.title}}</a>{{f.count}}<select class=\"form-control input-small\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select><p>{{f.caption}}</p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span><div class=\"mark\" ng-bind-html=\"error(f)\"></div></div></div></div></form></td></tr></table>";
+this.JST["form/entry"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.entry\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><div class=\"form-group\" ng-show=\"story.entry.limit == &#39;password&#39;\"><label class=\"control-label col-sm-6\" for=\"entrypwd\">参加パスワード</label><div class=\"col-sm-6\"><input class=\"form-control\" id=\"entrypwd\" maxlength=\"8\" ng-model=\"f.password\" size=\"8\" type=\"password\" /></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectid\">希望する配役</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectid\" ng-model=\"f.csid_cid\" ng-options=\"o.val as o.name for o in f.csid_cids\"></select></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectrole\">希望する役職</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectrole\" ng-model=\"f.role\" ng-options=\"o.val as o.name for o in f.roles\"></select></div></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><div ng-show=\"f.is_preview\"><h3 class=\"mesname\"><a>{{option(f.csid_cids, f.csid_cid).name}}</a></h3><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\"></p></div><div ng-hide=\"f.is_preview\"><p> 参加する時のセリフ</p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><div class=\"mark\" ng-bind-html=\"error(f)\"></div></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"entry(f)\">{{f.title}}</a>{{f.count}}<select class=\"form-control input-small\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p>{{f.caption}}<span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
 
 
 this.JST["form/memo"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.memo\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{f.count}} {{f.caption || f.longname}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
@@ -31,10 +31,10 @@ this.JST["form/vote1"] = "<div class=\"form-inline radio\"><a class=\"btn btn-de
 this.JST["form/vote2"] = "<div class=\"form-inline radio\"><a class=\"btn btn-default\" ng-click=\"vote(ff, f)\">{{ff.title}}</a><select class=\"form-control input-medium\" name=\"target1\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target1\" ng-options=\"o.val as o.name for o in ff.targets\"></select>と<select class=\"form-control input-medium\" name=\"target2\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target2\" ng-options=\"o.val as o.name for o in ff.targets\"></select></div>";
 
 
-this.JST["message/action"] = "<div ng-class=\"message.mestype\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><b ng-bind-html=\"message.name\"></b>は、<span ng-bind-html=\"message.text\"></span></p><p class=\"mes_date\"><span>&nbsp;</span><span>{{message.time()}}</span></p><hr class=\"invisible_hr\" /></div></div>";
+this.JST["message/action"] = "<div ng-class=\"message.mestype\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><b ng-bind-html=\"message.name\"></b><span>は、</span><span ng-bind-html=\"message.text\"></span></p><p class=\"mes_date\"><span>&nbsp;</span><span>{{message.time()}}</span></p><hr class=\"invisible_hr\" /></div></div>";
 
 
-this.JST["message/admin"] = "<div ng-class=\"message.mestype\"><div class=\"guide\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p><hr class=\"invisible_hr\" /></div></div>";
+this.JST["message/admin"] = "<div class=\"guide\" ng-class=\"message.mestype\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p><hr class=\"invisible_hr\" /></div>";
 
 
 this.JST["message/aim"] = "<table class=\"say\" ng-class=\"message.mestype\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b>&nbsp;→&nbsp;<b ng-bind-html=\"message.to\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
@@ -52,7 +52,7 @@ this.JST["message/external"] = "<div ng-class=\"message.mestype\"><div class=\"a
 this.JST["message/info"] = "<p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.mestype\"></p><hr class=\"invisible_hr\" />";
 
 
-this.JST["message/memo"] = "<table class=\"memo\" ng-class=\"message.mestype\"><tbody><tr><td class=\"memoleft\"><h5 ng-bind-html=\"message.name\"></h5></td><td class=\"memoright\"><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\">{{message.time()}}</p></td></tr></tbody></table>";
+this.JST["message/memo"] = "<table class=\"memo\" ng-class=\"message.mestype\"><tbody><tr><td class=\"memoleft\"><h5 ng-bind-html=\"message.name\"></h5></td><td class=\"memoright\"><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\" ng-if=\"message.text\"></p><p class=\"text\" ng-class=\"message.style\" ng-if=\"! message.text\">メモをはがした</p><p class=\"mes_date\">{{message.time()}}</p></td></tr></tbody></table>";
 
 
 this.JST["message/say"] = "<table class=\"say\" ng-class=\"message.mestype\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\">{{message.mesicon}}&nbsp;<b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
@@ -61,67 +61,64 @@ this.JST["message/say"] = "<table class=\"say\" ng-class=\"message.mestype\"><tb
 this.JST["navi/chr_list"] = "<hr style=\"border-color:black;\" /><div class=\"chrbox\" ng-repeat=\"chr in chrs\"><img ng-src=\"{{chr.img}}\" /><div class=\"chrblank\" ng-bind-html=\"chr.text\"></div></div><hr style=\"border-color:black;\" />";
 
 
-this.JST["navi/css"] = "<span ng-repeat=\"o in css.font.select\"><a class=\"mark\" ng-class=\"o.class\" ng-click=\"css.font.move(o.val)\">{{o.name}}</a></span>&nbsp;<span ng-repeat=\"o in css.width.select\"><a class=\"mark\" ng-class=\"o.class\" ng-click=\"css.width.move(o.val)\">{{o.name}}</a></span>&nbsp;<span ng-repeat=\"o in css.theme.select\"><a class=\"mark\" ng-class=\"o.class\" ng-click=\"css.theme.move(o.val)\">{{o.name}}</a></span>";
-
-
 this.JST["navi/diary"] = "<table class=\"say SAY\"><tbody><tr><td class=\"img\"><img ng-src=\"{{img_cid(null, &#39;blank&#39;)}}\" /></td><td class=\"field\"><div class=\"msg\"><div class=\"form-inline\"><div class=\"formpl_content\"><textarea class=\"form-control input-block-level\" cols=\"30\" ng-model=\"diary.form.text\" rows=\"5\"></textarea><h6>{{diary.head()}}</h6><p><span>&nbsp;履歴:<code ng-click=\"diary.back(version)\" ng-repeat=\"version in diary.versions()\">{{version}}</code></span></p></div></div></div></td></tr></tbody></table>";
 
 
-this.JST["navi/events"] = "<ul class=\"nav nav-list unstyled\"><li ng-click=\"set_turn(e.turn)\" ng-repeat=\"e in events\"><a><i class=\"glyphicon glyphicon-film\" ng-show=\"e.turn == event.turn\"></i><i class=\"glyphicon glyphicon-minus\" ng-hide=\"e.turn == event.turn\"></i>{{e.name}}</a></li></ul><br />";
+this.JST["navi/events"] = "<ul class=\"nav nav-list unstyled\"><li ng-click=\"set_turn(e.turn)\" ng-repeat=\"e in events\"><a><i class=\"glyphicon glyphicon-film\" ng-if=\"e.turn == event.turn\"></i><i class=\"glyphicon glyphicon-minus\" ng-if=\"e.turn != event.turn\"></i>{{e.name}}</a></li></ul><br />";
 
 
-this.JST["navi/forms"] = "<div class=\"caution text\" listup=\"cautions\"><ul><li ng-show=\"story.announce.totalcommit\">{{story.announce.totalcommit}}</li><li ng-show=\"story.is_totalcommit\">{{story.timer.nextcommitdt.relative('ja')}}にcommit</li><li>{{story.timer.nextupdatedt.relative('ja')}}に更新</li><li>{{story.timer.nextchargedt.relative('ja')}}に補充</li><li ng-show=\"story.is_prologue\">{{story.timer.scraplimitdt.relative('ja')}}に廃村</li><li>あと {{story.timer.extend}}回、更新を延長できる。</li></ul></div><div form=\"f.jst\" ng-repeat=\"f in form.texts\" ng-show=\"logined()\"></div><div class=\"{{form.win}}\" ng-show=\"logined()\"><div class=\"secret\"><p class=\"text\" listup=\"form.secrets\"></p></div></div><div ng-hide=\"form.confirm\" ng-show=\"logined()\"><div class=\"formpl_gm form-inline\" ng-repeat=\"f in form.command_group.commit\"><div class=\"commitbutton\"><select class=\"form-control input-medium\" name=\"commit\" ng-change=\"vote_change(f)\" ng-disabled=\"f.disabled\" ng-model=\"f.commit\" ng-options=\"o.val as o.name for o in f.commits\"></select><a class=\"btn btn-default\" ng-click=\"commit(f)\" ng-disabled=\"f.disabled\">{{f.title}}</a></div><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div ng-bind-html=\"f.caption\"></div></div><div class=\"formpl_gm\" ng-if=\"form.command_group.target &amp;&amp; form.command_targets\"><p class=\"commitbutton\"><select class=\"form-control input-medium\" name=\"target\" ng-model=\"form.command_target\" ng-options=\"o.val as o.name for o in form.command_targets\"></select></p><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.target\">{{f.title}}</a></p></div><div class=\"formpl_gm\"><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.button\">{{f.title}}</a></p></div><div class=\"formpl_gm\"><div class=\"mark\" ng-bind-html=\"error(f)\" ng-repeat=\"f in form.command_group.target\"></div><div class=\"mark\" ng-bind-html=\"error(f)\" ng-repeat=\"f in form.command_group.button\"></div></div></div><div class=\"formpl_gm\" ng-show=\"form.confirm\"><h3>{{form.confirm}}</h3><a class=\"btn btn-default\" ng-click=\"confirm_cancel()\">×</a><a class=\"btn btn-default\" ng-click=\"confirm_complete()\">◯</a></div>";
+this.JST["navi/forms"] = "<div class=\"caution\"><div class=\"text\" listup=\"cautions\"></div><div class=\"text\"><ul><li ng-if=\"story.announce.totalcommit\">{{story.announce.totalcommit}}</li><li ng-if=\"story.is_totalcommit\">{{story.timer.nextcommitdt.relative('ja')}}にcommit</li><li>{{story.timer.nextupdatedt.relative('ja')}}に更新</li><li>{{story.timer.nextchargedt.relative('ja')}}に補充</li><li ng-if=\"story.is_prologue\">{{story.timer.scraplimitdt.relative('ja')}}に廃村</li><li>あと {{story.timer.extend}}回、更新を延長できる。</li></ul></div></div><div form=\"f.jst\" ng-repeat=\"f in form.texts\" ng-show=\"logined()\"></div><div class=\"{{form.win}}\" ng-if=\"logined()\"><div class=\"secret\"><p class=\"text\" listup=\"form.secrets\"></p></div></div><div ng-hide=\"form.confirm\" ng-show=\"logined()\"><div class=\"formpl_gm form-inline\" ng-repeat=\"f in form.command_group.commit\"><div class=\"commitbutton\"><select class=\"form-control\" name=\"commit\" ng-change=\"vote_change(f)\" ng-disabled=\"f.disabled\" ng-model=\"f.commit\" ng-options=\"o.val as o.name for o in f.commits\"></select><a class=\"btn btn-default\" ng-click=\"commit(f)\" ng-disabled=\"f.disabled\">{{f.title}}</a></div><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div ng-bind-html=\"f.caption\"></div></div><div class=\"formpl_gm\" ng-if=\"form.command_group.target &amp;&amp; form.command_targets\"><p class=\"commitbutton\"><select class=\"form-control\" name=\"target\" ng-model=\"form.command_target\" ng-options=\"o.val as o.name for o in form.command_targets\"></select></p><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.target\">{{f.title}}</a></p></div><div class=\"formpl_gm\"><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.button\">{{f.title}}</a></p></div></div><div class=\"formpl_gm\" ng-if=\"form.confirm\"><h3>{{form.confirm}}</h3><a class=\"btn btn-default\" ng-click=\"confirm_cancel()\">×</a><a class=\"btn btn-default\" ng-click=\"confirm_complete()\">◯</a></div>";
 
 
 this.JST["navi/headline"] = "<div class=\"choice\"><table class=\"board\"><tr><th class=\"no_choice\" colspan=\"4\" style=\"text-align:center;\"><div class=\"progress_log\"><strong>進行中の村　←　</strong><a onclick=\"$(&#39;.progress_log&#39;).hide();$(&#39;.finished_log&#39;).show();\">終了した村を見る</a></div><div class=\"finished_log\"><a onclick=\"$(&#39;.progress_log&#39;).show();$(&#39;.finished_log&#39;).hide();\">進行中の村を見る</a><strong>　→　終了した村</strong></div></th><td class=\"no_choice link\" rowspan=\"2\"><a href=\"http://soy-bean.sakura.ne.jp/pan/sow.cgi\">似顔絵<br />人狼</a></td></tr><tr class=\"link\"><td class=\"no_choice\">ロビー</td><td class=\"no_choice\">夢の形</td><td class=\"no_choice\">陰謀</td><td class=\"no_choice\">ＲＰ　</td></tr><tr class=\"progress_log\"><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi\">lobby</a><br />offparty<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\">4村:<a href=\"http://morphe.sakura.ne.jp/morphe/sow.cgi\">morphe</a><br />　<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\">wolf<br />ultimate<br />allstar<br />4村:<a href=\"http://cabala.halfmoon.jp/cafe/sow.cgi\">cafe</a><br />　</td><td class=\"no_choice\" style=\"text-align:left;\">role-play<br />RP-advance<br />3村:<a href=\"http://perjury.rulez.jp/sow.cgi\">perjury</a><br />3村:<a href=\"http://xebec.x0.to/xebec/sow.cgi\">xebec</a><br />2村:<a href=\"http://crazy-crazy.sakura.ne.jp/crazy/sow.cgi\">crazy</a><br />2村:<a href=\"http://ciel.moo.jp/cheat/sow.cgi\">ciel</a></td><td class=\"no_choice\" style=\"text-align:left;\">1村:pan<br />　<br />　<br />　<br />　</td></tr><tr class=\"finished_log\"><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=LOBBY\">lobby</a><br /><a href=\"http://giji.check.jp/stories?folder=OFFPARTY\">offparty</a><br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=MORPHE\">morphe</a><br />　<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=WOLF\">wolf</a><br /><a href=\"http://giji.check.jp/stories?folder=ULTIMATE\">ultimate</a><br /><a href=\"http://giji.check.jp/stories?folder=ALLSTAR\">allstar</a><br /><a href=\"http://giji.check.jp/stories?folder=CABALA\">cafe</a><br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=RP\">role-play</a><br /><a href=\"http://giji.check.jp/stories?folder=PRETENSE\">advance</a><br /><a href=\"http://giji.check.jp/stories?folder=PERJURY\">perjury</a><br /><a href=\"http://giji.check.jp/stories?folder=XEBEC\">xebec</a><br /><a href=\"http://giji.check.jp/stories?folder=CRAZY\">crazy</a><br /><a href=\"http://giji.check.jp/stories?folder=CIEL\">ciel</a></td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=PAN\">pan</a><br />　<br />　<br />　<br />　</td></tr></table></div>";
 
 
-this.JST["navi/messages"] = "<div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\" ng-show=\"page\"> 前のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter\" log=\"message\" ng-class=\"message.logid\" ng-repeat=\"message in messages\"></div><div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\" ng-show=\"page\"> 次のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter drag\" drag=\"message\" log=\"message\" ng-class=\"message.logid\" ng-repeat=\"message in anchors\"><div class=\"drag_head\"><span class=\"badge\" href_eval=\"popup({{message.turn}}, &#39;{{message.logid}}&#39;)\">✘</span></div></div>";
-
-
-this.JST["navi/page_navi"] = "<div class=\"form-inline radio\"><input class=\"form-control input-medium\" ng-blur=\"search.value = search_input\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /><label><select class=\"form-control input-mini\" ng-model=\"order.value\" ng-options=\"o.val as o.name for o in order.select\"></select></label><label><select class=\"form-control input-mini\" ng-model=\"row.value\" ng-options=\"o.val as o.name for o in row.select\"></select></label></div><br /><div class=\"form-inline radio\"><label ng-show=\"mode\"><select class=\"form-control input-small\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\"></select></label><label ng-show=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, false)\" ng-show=\"event.is_news\">ページ表示</a><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, true)\" ng-hide=\"event.is_news\">最新の発言</a></label><label ng-show=\"events\"><select class=\"form-control input-medium\" ng-model=\"event\" ng-options=\"e as e.name for e in events\"></select></label></div><br /><div class=\"form-inline radio\"><label><span ng-repeat=\"a in mode_common\"><a class=\"mark\" ng-click=\"mode.value = a.value\" style=\"font-size: 2.5ex;\">{{a.name}}</a></span></label><label ng-hide=\"event.is_news\"><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></label><label ng-show=\"event.is_progress\"><a class=\"mark glyphicon glyphicon-pencil\" ng-click=\"go.form()\" style=\"font-size: 2.5ex;\"></a></label></div>";
+this.JST["navi/messages"] = "<div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\" ng-if=\"page\"> 前のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter\" log=\"message\" ng-repeat=\"message in messages\"></div><div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\" ng-if=\"page\"> 次のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter drag\" drag=\"message\" ng-repeat=\"message in anchors\"><div class=\"contentframe\" log=\"message\"><div class=\"drag_head\"><span class=\"badge\" href_eval=\"popup({{message.turn}}, &#39;{{message.logid}}&#39;)\">✘</span></div></div></div>";
 
 
 this.JST["navi/paginate"] = "<a class=\"btn btn-default\" ng-class=\"page.of.first.class\" ng-click=\"page.move(page.of.first.val)\">{{page.of.first.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.second.class\" ng-click=\"page.move(page.of.second.val)\">{{page.of.second.name}}</a><span ng-class=\"page.of.prev_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\">{{page.of.prev.name}}</a><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"pno.val as pno.name for pno in page.select\"></select><a class=\"btn btn-default\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\">{{page.of.next.name}}</a><span ng-class=\"page.of.next_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.penu.class\" ng-click=\"page.move(page.of.penu.val)\">{{page.of.penu.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.last.class\" ng-click=\"page.move(page.of.last.val)\">{{page.of.last.name}}</a>";
 
 
-this.JST["navi/potofs"] = "<table class=\"table table-condensed\" style=\"margin:0;\"><thead class=\"head\"><tr><th><span class=\"name\" ng-show=\"sum.actaddpt\">&nbsp;あと{{sum.actaddpt}}促</span><span class=\"name\" ng-show=\"potofs.length\">&nbsp;({{potofs.length}}人)</span></th><th colspan=\"4\" style=\"text-align: right;\"><span><br /><code ng-click=\"secret_toggle()\">ネタバレ</code>&nbsp;</span><span ng-hide=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></span><span ng-show=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></span></th><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only(potofs)\"></a></th></tr></thead></table><table class=\"table table-condensed\" style=\"margin:0;\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-show=\"potofs_groups[key].has_head\"><th class=\"mark\" colspan=\"5\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span>({{potofs_groups[key].length}}人)</span></th><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only(potofs_groups[key])\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof_key(potof)].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><div class=\"name\">{{potof.longname || potof.name}}</div><div class=\"note name\" ng-show=\"potof.auth\"><span class=\"glyphicon glyphicon-user\"></span>{{potof.auth}}</div></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap\">{{potof.stat}}</span><div class=\"note nowrap\" ng-show=\"potof.said\"><span class=\"glyphicon glyphicon-pencil\"></span>{{potof.said}}</div></td><td ng-click=\"potof_toggle(potof)\"><div class=\"nowrap\" ng-show=\"secret_is_open\"><span class=\"note\">{{potof.win_name}}::</span><span>{{potof.role_names.join('、')}}</span><div class=\"note\"><span class=\"mark\">{{potof.win_result}}</span><span class=\"name\" ng-show=\"potof.select_name\">&nbsp; {{potof.select_name}} を希望</span></div></div></td><td ng-click=\"potof_toggle(potof)\"><div ng-show=\"secret_is_open\"><span ng-bind-html=\"potof.text.join(&#39;&#39;)\"></span><span class=\"note\" ng-show=\"potof.bond_names\">{{potof.bond_names.join('、')}}</span><span class=\"note\" ng-show=\"potof.bond_names.length &amp;&amp; potof.pseudobond_names.length\">、</span><s class=\"note\" ng-show=\"potof.pseudobond_names\">{{potof.pseudobond_names.join('、')}}</s></div></td><td style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only([potof])\"></a></td></tr></tbody></table>";
+this.JST["navi/potofs"] = "<table class=\"potofs\"><thead class=\"head\"><tr><th><span class=\"name\" ng-if=\"sum.actaddpt\">&nbsp;あと{{sum.actaddpt}}促</span><span class=\"name\" ng-if=\"potofs.length\">&nbsp;({{potofs.length}}人)</span></th><th colspan=\"4\" style=\"text-align: right;\"><span><br /><code ng-click=\"secret_toggle()\">ネタバレ</code>&nbsp;</span><span ng-if=\"! secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></span><span ng-if=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></span></th><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only(potofs)\"></a></th></tr></thead></table><table class=\"potofs\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-if=\"potofs_groups[key].has_head\"><th class=\"mark\" colspan=\"5\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span>({{potofs_groups[key].length}}人)</span></th><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only(potofs_groups[key])\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof_key(potof)].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><div class=\"name\">{{potof.longname || potof.name}}</div><div class=\"note name\" ng-if=\"potof.auth\"><span class=\"glyphicon glyphicon-user\"></span>{{potof.auth}}</div></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap\">{{potof.stat}}</span><div class=\"note nowrap\" ng-if=\"potof.said\"><span class=\"glyphicon glyphicon-pencil\"></span>{{potof.said}}</div></td><td ng-click=\"potof_toggle(potof)\"><div class=\"nowrap\" ng-if=\"secret_is_open\"><span class=\"note\">{{potof.win_name}}::</span><span>{{potof.role_names.join('、')}}</span><div class=\"note\"><span class=\"mark\">{{potof.win_result}}</span><span class=\"name\" ng-if=\"potof.select_name\">&nbsp; {{potof.select_name}} を希望</span></div></div></td><td ng-click=\"potof_toggle(potof)\"><div ng-if=\"secret_is_open\"><span ng-bind-html=\"potof.text.join(&#39;&#39;)\"></span><span class=\"note\" ng-if=\"potof.bond_names\">{{potof.bond_names.join('、')}}</span><span class=\"note\" ng-if=\"potof.bond_names.length &amp;&amp; potof.pseudobond_names.length\">、</span><s class=\"note\" ng-if=\"potof.pseudobond_names\">{{potof.pseudobond_names.join('、')}}</s></div></td><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only([potof])\"></a></th></tr></tbody></table>";
 
 
-this.JST["navi/potofs_small"] = "<table class=\"table table-condensed\"><thead class=\"head\"><tr><th><span class=\"name\" ng-show=\"sum.actaddpt\">&nbsp;{{sum.actaddpt}}促</span></th><th colspan=\"2\" style=\"text-align: right;\"><span><code ng-click=\"secret_toggle()\">ネタバレ</code></span>&nbsp;</th><th style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only(potofs)\"></a></th></tr></thead></table><table class=\"table table-condensed\" ng-repeat=\"key in potofs_keys\"><tbody><tr class=\"head\" ng-show=\"potofs_groups[key].has_head\"><th colspan=\"3\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span class=\"note\">({{potofs_groups[key].length}}人)</span></th><th style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only(potofs_groups[key])\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof_key(potof)].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><span class=\"name\">{{potof.name}}</span></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap note\" ng-bind-html=\"potof.summary()\"></span></td><td style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only([potof])\"></a></td></tr></tbody></table><table class=\"table table-condensed\"><tbody><tr class=\"head\"><th colspan=\"4\"></th></tr><tr ng-class=\"hide_potofs.of.others.class\"><td colspan=\"4\" ng-click=\"other_toggle()\"><span class=\"name\">他の人々</span></td></tr><tr class=\"head\"><th colspan=\"4\"><div class=\"nowrap\" ng-hide=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></div><div class=\"nowrap\" ng-show=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></div></th></tr></tbody></table>";
+this.JST["navi/potofs_small"] = "<table class=\"potofs\"><thead class=\"head\"><tr><th><span class=\"name\" ng-if=\"sum.actaddpt\">&nbsp;{{sum.actaddpt}}促</span></th><th colspan=\"2\" style=\"text-align: right;\"><span><code ng-click=\"secret_toggle()\">ネタバレ</code></span>&nbsp;</th><th style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only(potofs)\"></a></th></tr></thead></table><table class=\"potofs\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-if=\"potofs_groups[key].has_head\"><th colspan=\"3\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span class=\"note\">({{potofs_groups[key].length}}人)</span></th><th style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only(potofs_groups[key])\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof_key(potof)].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><span class=\"name\">{{potof.name}}</span></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap note\" ng-bind-html=\"potof.summary()\"></span></td><td style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only([potof])\"></a></td></tr></tbody></table><table class=\"potofs\"><tbody><tr class=\"head\"><th colspan=\"4\"></th></tr><tr ng-class=\"hide_potofs.of.others.class\"><td colspan=\"4\" ng-click=\"other_toggle()\"><span class=\"name\">他の人々</span></td></tr><tr class=\"head\"><th colspan=\"4\"><div class=\"nowrap\" ng-if=\"! secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></div><div class=\"nowrap\" ng-if=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></div></th></tr></tbody></table>";
 
 
-this.JST["navi/story_navi"] = "<div class=\"form-inline radio\"><div class=\"input-group\"><input class=\"form-control input-medium\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /><span class=\"btn input-group-addon glyphicon glyphicon-search\" ng-click=\"search.value = search_input\"></span></div><label><select class=\"form-control input-mini\" ng-model=\"order.value\" ng-options=\"o.val as o.name for o in order.select\"></select></label><label><select class=\"form-control input-mini\" ng-model=\"row.value\" ng-options=\"o.val as o.name for o in row.select\"></select></label></div><br /><div class=\"form-inline radio\"><label><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></label><label><select class=\"form-control input-small\" ng-model=\"folder.value\" ng-options=\"o.val as o.name for o in folder.select\"></select></label><label ng-show=\"game_rule\"><select class=\"form-control input-small\" ng-model=\"game_rule.value\" ng-options=\"o.val as o.name for o in game_rule.select\"></select></label><label ng-show=\"rating\"><select class=\"form-control input-small\" ng-model=\"rating.value\" ng-options=\"o.val as o.name for o in rating.select\"></select></label><label ng-show=\"potof_size\"><select class=\"form-control input-mini\" ng-model=\"potof_size.value\" ng-options=\"o.val as o.name for o in potof_size.select\"></select></label><label ng-show=\"upd_interval\"><select class=\"form-control input-mini\" ng-model=\"upd_interval.value\" ng-options=\"o.val as o.name for o in upd_interval.select\"></select></label><label ng-show=\"upd_time\"><select class=\"form-control input-small\" ng-model=\"upd_time.value\" ng-options=\"o.val as o.name for o in upd_time.select\"></select></label><label ng-show=\"roletable\"><select class=\"form-control input-small\" ng-model=\"roletable.value\" ng-options=\"o.val as o.name for o in roletable.select\"></select></label><label ng-show=\"card_win\"><select class=\"form-control input-mini\" ng-model=\"card_win.value\" ng-options=\"o.val as o.name for o in card_win.select\"></select></label><label ng-show=\"card_role\"><select class=\"form-control input-mini\" ng-model=\"card_role.value\" ng-options=\"o.val as o.name for o in card_role.select\"></select></label><label ng-show=\"card_event\"><select class=\"form-control input-mini\" ng-model=\"card_event.value\" ng-options=\"o.val as o.name for o in card_event.select\"></select></label></div>";
+this.JST["navi/story_navi"] = "<div class=\"form-inline radio\"><label><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></label><label><select class=\"form-control input-small\" ng-model=\"folder.value\" ng-options=\"o.val as o.name for o in folder.select\"></select></label><label ng-if=\"game_rule\"><select class=\"form-control input-small\" ng-model=\"game_rule.value\" ng-options=\"o.val as o.name for o in game_rule.select\"></select></label><label ng-if=\"rating\"><select class=\"form-control input-small\" ng-model=\"rating.value\" ng-options=\"o.val as o.name for o in rating.select\"></select></label><label ng-if=\"potof_size\"><select class=\"form-control input-mini\" ng-model=\"potof_size.value\" ng-options=\"o.val as o.name for o in potof_size.select\"></select></label><label ng-if=\"upd_interval\"><select class=\"form-control input-mini\" ng-model=\"upd_interval.value\" ng-options=\"o.val as o.name for o in upd_interval.select\"></select></label><label ng-if=\"upd_time\"><select class=\"form-control input-small\" ng-model=\"upd_time.value\" ng-options=\"o.val as o.name for o in upd_time.select\"></select></label><label ng-if=\"roletable\"><select class=\"form-control input-small\" ng-model=\"roletable.value\" ng-options=\"o.val as o.name for o in roletable.select\"></select></label><label ng-if=\"card_win\"><select class=\"form-control input-mini\" ng-model=\"card_win.value\" ng-options=\"o.val as o.name for o in card_win.select\"></select></label><label ng-if=\"card_role\"><select class=\"form-control input-mini\" ng-model=\"card_role.value\" ng-options=\"o.val as o.name for o in card_role.select\"></select></label><label ng-if=\"card_event\"><select class=\"form-control input-mini\" ng-model=\"card_event.value\" ng-options=\"o.val as o.name for o in card_event.select\"></select></label></div>";
 
 
-this.JST["navi/switch"] = "<span class=\"mark form-inline radio\"><label><input ng-model=\"modes.face\" type=\"radio\" value=\"info\">情報</input></label><label><input ng-model=\"modes.face\" type=\"radio\" value=\"memo\">メモ</input></label><label><input ng-model=\"modes.face\" type=\"radio\" value=\"talk\">議事</input></label></span>&nbsp;<span class=\"mark form-inline radio\"><label><input ng-model=\"modes.view\" type=\"radio\" value=\"open\">公開</input></label><label><input ng-model=\"modes.view\" type=\"radio\" value=\"clan\">内緒話</input></label><label><input ng-model=\"modes.view\" type=\"radio\" value=\"think\">独り言</input></label><label><input ng-model=\"modes.view\" type=\"radio\" value=\"all\">全部</input></label></span>&nbsp;<span class=\"mark form-inline radio\"><label class=\"checkbox\"><input ng-model=\"modes.last\" type=\"checkbox\" value=\"last\">最後の言葉</input></label><label class=\"checkbox\"><input ng-model=\"modes.player\" type=\"checkbox\" value=\"player\">中身発言</input></label><label class=\"checkbox\"><input ng-model=\"modes.open\" type=\"checkbox\" value=\"open\">公開発言</input></label></span>&nbsp;<span class=\"mark form-inline radio\"><label class=\"checkbox\" ng-repeat=\"o in css.font.select\"><input ng-model=\"css.font.value\" type=\"radio\" value=\"{{o.val}}\">{{o.name}}</input></label></span>&nbsp;<span class=\"mark form-inline radio\"><label class=\"checkbox\" ng-repeat=\"o in css.width.select\"><input ng-model=\"css.width.value\" type=\"radio\" value=\"{{o.val}}\">{{o.name}}</input></label></span>&nbsp;<span class=\"mark form-inline radio\"><label class=\"checkbox\" ng-repeat=\"o in css.theme.select\"><input ng-model=\"css.theme.value\" type=\"radio\" value=\"{{o.val}}\">{{o.name}}</input></label></span>";
+this.JST["navi/toolbox"] = "<div class=\"form-inline\"><div class=\"form-group\"><label><a class=\"mark click\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\">{{a.name}}</a></label></div>&thinsp;<div class=\"form-group\"><label ng-if=\"event.is_progress\"><a class=\"mark click glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\"></a></label></div>&thinsp;<div class=\"form-group\"><label><a class=\"mark click glyphicon glyphicon-search\" ng-click=\"go.search()\"></a><a class=\"mark click glyphicon glyphicon-pencil\" ng-click=\"go.form()\"></a></label></div><div class=\"form-group\" ng-if=\"event.is_news\"><label ng-if=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, false)\">ページ表示</a></label></div><div class=\"form-group\" ng-if=\"! event.is_news\"><label ng-if=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, true)\">最新の発言</a></label><label template=\"navi/paginate\"></label></div></div>";
 
 
-this.JST["navi/toolbox"] = "<div class=\"form-inline\" ng-show=\"event.is_news\"><label><a class=\"mark\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\" style=\"font-size: 2.5ex;\">{{a.name}}</a></label><label ng-show=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, false)\">ページ表示</a></label><label ng-show=\"event.is_progress\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool()\" style=\"font-size: 2.5ex;\"></a></label><label>&nbsp;<a class=\"mark glyphicon glyphicon-search\" ng-click=\"go.search()\" style=\"font-size: 2.5ex;\"></a><a class=\"mark glyphicon glyphicon-pencil\" ng-click=\"go.form()\" style=\"font-size: 2.5ex;\"></a></label></div><div class=\"form-inline\" ng-hide=\"event.is_news\"><label><a class=\"mark\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\" style=\"font-size: 2.5ex;\">{{a.name}}</a></label><label ng-show=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, true)\">最新の発言</a></label><label template=\"navi/paginate\"></label><label>&nbsp;<a class=\"mark glyphicon glyphicon-search\" ng-click=\"go.search()\" style=\"font-size: 2.5ex;\"></a><a class=\"mark glyphicon glyphicon-pencil\" ng-click=\"go.form()\" style=\"font-size: 2.5ex;\"></a></label></div>";
+this.JST["sow/form/configs"] = "<fieldset><div style=\"display:none;\"><input name=\"trsid\" ng-model=\"config.trsid\" type=\"text\" /><input name=\"hour\" ng-model=\"story.upd.hour\" type=\"text\" /><input name=\"minite\" ng-model=\"story.upd.minute\" type=\"text\" /><input name=\"updinterval\" ng-model=\"story.upd.interval\" type=\"text\" /><input name=\"votetype\" ng-model=\"story.type.vote\" type=\"text\" /><input name=\"roletable\" ng-model=\"story.type.roletable\" type=\"text\" /></div><legend>基本設定</legend><dl><dt>{{config.trs.caption}}</dt><dd>{{config.trs.help}}</dd></dl><dl class=\"dl-horizontal\"><dt><label for=\"vplcnt\">定員</label></dt><dd><div class=\"input-group\"><input class=\"form-control\" id=\"vplcnt\" name=\"vplcnt\" ng-model=\"event.player.limit\" size=\"5\" type=\"number\" /><div class=\"input-group-addon\">人</div></div></dd><dt><label for=\"vplcntstart\">最低人数</label></dt><dd><div class=\"input-group\"><input class=\"form-control\" id=\"vplcntstart\" name=\"vplcntstart\" ng-model=\"event.player.start\" size=\"5\" type=\"number\" /><div class=\"input-group-addon\">人</div></div>※開始方法が人狼BBS型の時のみ</dd><dt><label for=\"updhour\">更新時間</label></dt><dd class=\"row\"><div class=\"form-inline\"><div class=\"form-group\"><select class=\"form-control\" id=\"updhour\" ng-model=\"story.upd.hour\" ng-options=\"o.val as o.name for o in config.hours\"></select></div><div class=\"form-group\"><select class=\"form-control\" id=\"updminite\" ng-model=\"story.upd.minute\" ng-options=\"o.val as o.name for o in config.minutes\"></select></div></div></dd><dt><label for=\"updinterval\">更新間隔</label></dt><dd><div class=\"input-group\"><select class=\"form-control\" id=\"updinterval\" ng-model=\"story.upd.interval\" ng-options=\"o.val as o.name for o in config.intervals\"></select><div class=\"input-group-addon\">ごとに更新</div></div></dd><dt><label for=\"votetype\">投票方法</label></dt><dd><select class=\"form-control\" id=\"votetype\" ng-model=\"story.type.vote\" ng-options=\"o.val as o.name for o in config.votetypes\"></select></dd><dt><label for=\"roletable\">役職配分</label></dt><dd><select class=\"form-control\" id=\"roletable\" ng-model=\"story.type.roletable\" ng-options=\"o.val as o.name for o in config.roletables\"></select></dd></dl></fieldset><fieldset ng-show=\"story.type.roletable == &#39;custom&#39;\"><legend>役職配分自由設定</legend><div ng-repeat=\"title in config.items_keys\"><h3>{{title}}</h3><div class=\"form-inline row\"><div class=\"form-group input-medium\" ng-repeat=\"item in config.items[title]\"><div class=\"input-group\"><div class=\"input-group-addon\" for=\"cnt{{item.key}}\">{{item.name}}</div><input class=\"form-control\" id=\"cnt{{item.key}}\" name=\"cnt{{item.key}}\" ng-model=\"item.count\" size=\"2\" type=\"number\" /></div></div></div></div></fieldset><h3>事件</h3><fieldset class=\"token-input\"><input id=\"eventcard\" name=\"eventcard\" type=\"text\" /><span class=\"btn btn-default\" ng-click=\"tokenInputAdd(&#39;#eventcard&#39;,item.key)\" ng-repeat=\"item in config.items.events\">{{item.name}}</span></fieldset>";
 
 
-this.JST["sow/form/configs"] = "<fieldset><div style=\"display:none;\"><input name=\"trsid\" ng-model=\"config.trsid\" type=\"text\" /><input name=\"hour\" ng-model=\"story.upd.hour\" type=\"text\" /><input name=\"minite\" ng-model=\"story.upd.minute\" type=\"text\" /><input name=\"updinterval\" ng-model=\"story.upd.interval\" type=\"text\" /><input name=\"votetype\" ng-model=\"story.type.vote\" type=\"text\" /><input name=\"roletable\" ng-model=\"story.type.roletable\" type=\"text\" /></div><legend>基本設定</legend><dl><dt>{{config.trs.caption}}</dt><dd>{{config.trs.help}}</dd></dl><dl class=\"dl-horizontal\"><dt><label for=\"vplcnt\">定員</label></dt><dd><input class=\"form-control input-mini\" id=\"vplcnt\" name=\"vplcnt\" ng-model=\"event.player.limit\" size=\"5\" type=\"text\" />人</dd><dt><label for=\"vplcntstart\">最低人数</label></dt><dd><input class=\"form-control input-mini\" id=\"vplcntstart\" name=\"vplcntstart\" ng-model=\"event.player.start\" size=\"5\" type=\"text\" />人  ※開始方法が人狼BBS型の時のみ</dd><dt><label for=\"updhour\">更新時間</label></dt><dd><select class=\"form-control input-small\" id=\"updhour\" ng-model=\"story.upd.hour\" ng-options=\"o.val as o.name for o in config.hours\"></select><select class=\"form-control input-small\" id=\"updminite\" ng-model=\"story.upd.minute\" ng-options=\"o.val as o.name for o in config.minutes\"></select>に更新</dd><dt><label for=\"updinterval\">更新間隔</label></dt><dd><select class=\"form-control input-large\" id=\"updinterval\" ng-model=\"story.upd.interval\" ng-options=\"o.val as o.name for o in config.intervals\"></select>ごとに更新</dd><dt><label for=\"votetype\">投票方法</label></dt><dd><select class=\"form-control input-large\" id=\"votetype\" ng-model=\"story.type.vote\" ng-options=\"o.val as o.name for o in config.votetypes\"></select></dd><dt><label for=\"roletable\">役職配分</label></dt><dd><select class=\"form-control input-large\" id=\"roletable\" ng-model=\"story.type.roletable\" ng-options=\"o.val as o.name for o in config.roletables\"></select></dd></dl></fieldset><fieldset ng-show=\"story.type.roletable == &#39;custom&#39;\"><legend>役職配分自由設定</legend><div ng-repeat=\"title in config.items_keys\"><h3>{{title}}</h3><div class=\"config_item input-group\" ng-repeat=\"item in config.items[title]\"><label class=\"input-group-addon\" for=\"cnt{{item.key}}\">{{item.name}}</label><input class=\"form-control input-tiny\" id=\"cnt{{item.key}}\" name=\"cnt{{item.key}}\" ng-model=\"item.count\" size=\"2\" type=\"text\" /><span class=\"input-group-addon\">人</span></div></div></fieldset><fieldset><h3>事件</h3><input id=\"eventcard\" name=\"eventcard\" type=\"text\" /><span class=\"btn\" ng-click=\"tokenInputAdd(&#39;#eventcard&#39;,item.key)\" ng-repeat=\"item in config.items.events\">{{item.name}}</span></fieldset>";
+this.JST["sow/log_last"] = "<div class=\"caution text\" ng-if=\"event.is_progress\" style=\"padding-left: 0;\"><table><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\" style=\"font-size: 4ex;\"></a></td><td style=\"padding-left: 11px;\">⇚ {{ message.updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja') }} より先を見る。<br /></td></table></div><hr class=\"invisible_hr\" />";
 
 
-this.JST["sow/log_last"] = "<div class=\"caution text\" style=\"padding-left: 0;\"><table><tr><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool()\" style=\"font-size: 4ex;\"></a></td><td ng-bind-html=\"message.text\" style=\"padding-left: 11px;\"></td></tr></table></div><hr class=\"invisible_hr\" />";
+this.JST["sow/login"] = "<form ng-if=\"! logined()\" ng-submit=\"login(form.login)\"><p class=\"form-inline\"><label><span class=\"mark\"> user id:</span><input class=\"form-control input-small\" name=\"uid\" ng-model=\"form.login.uid\" size=\"10\" type=\"text\" /></label><label><span class=\"mark\"> password:</span><input class=\"form-control input-small\" name=\"pwd\" ng-model=\"form.login.pwd\" size=\"10\" type=\"password\" /></label><input class=\"form-control\" type=\"submit\" value=\"ログイン\" /></p></form><form ng-if=\"logined()\" ng-submit=\"logout(form.login)\"><p class=\"form-inline\"><span class=\"mes_date\" ng-if=\"form.login.is_admin\">[<a ng-href=\"{{form.login.admin_uri}}\">管理画面</a>]</span><span class=\"mes_date\">ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。</span><input type=\"submit\" value=\"{{form.login.uidtext}} がログアウト\" /></p></form>";
 
 
-this.JST["sow/login"] = "<form ng-hide=\"logined()\" ng-submit=\"login(form.login)\"><p class=\"form-inline\"><label><span class=\"mark\"> user id:</span><input class=\"form-control input-small\" name=\"uid\" ng-model=\"form.login.uid\" size=\"10\" type=\"text\" /></label><label><span class=\"mark\"> password:</span><input class=\"form-control input-small\" name=\"pwd\" ng-model=\"form.login.pwd\" size=\"10\" type=\"password\" /></label><input type=\"submit\" value=\"ログイン\" /></p></form><form ng-show=\"logined()\" ng-submit=\"logout(form.login)\"><p class=\"form-inline\"><span class=\"mes_date\" ng-show=\"form.login.is_admin\">[<a ng-href=\"{{form.login.admin_uri}}\">管理画面</a>]</span><span class=\"mes_date\">ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。</span><input type=\"submit\" value=\"{{form.login.uidtext}} がログアウト\" /></p></form><div class=\"mark\" ng-bind-html=\"error(form.login)\"></div>";
+this.JST["sow/navi"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"drag\" id=\"topframe\"><div class=\"contentframe form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div><div adjust=\"left\" class=\"sayfilter\" id=\"sayfilter\"><div class=\"sayfilter_heading\">{{story.name}}</div><div class=\"insayfilter\" name=\"移動\" navi=\"link\"><div class=\"paragraph\"><div class=\"sayfilter_caption_enable\"> 他の章へ</div><div class=\"sayfilter_content\" template=\"navi/events\"></div></div></div><div class=\"insayfilter\" name=\"名簿\" navi=\"info\"><div class=\"paragraph\" ng-if=\"potofs\"><div class=\"sayfilter_content\" template=\"navi/potofs_small\"></div></div></div><div class=\"insayfilter\" navi=\"page_filter\" ng-if=\"page\"><div class=\"paragraph\"><table class=\"sayfilter_content\"><tr><td><select class=\"form-control input-block-level\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\" style=\"margin-bottom: 0;\"></select></td></tr></table></div></div><div class=\"sayfilter_heading bottom\"></div><div adjust=\"full\" class=\"toolbox\" navi=\"page\" ng-if=\"page\" template=\"navi/toolbox\"></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
 
 
-this.JST["sow/navi"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"contentframe\" id=\"topframe\"><div class=\"inframe toppage drag\"><div class=\"form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div></div><div adjust=\"left\" class=\"sayfilter\" id=\"sayfilter\"><h4 class=\"sayfilter_heading\">{{story.name}}</h4><div class=\"insayfilter\" name=\"移動\" navi=\"link\"><div class=\"paragraph\"><h4 class=\"sayfilter_caption_enable\"> 他の章へ</h4><div class=\"sayfilter_content\" template=\"navi/events\"></div></div></div><div class=\"insayfilter\" name=\"名簿\" navi=\"info\"><div class=\"paragraph\" ng-show=\"potofs\"><div class=\"sayfilter_content\" template=\"navi/potofs_small\"></div></div></div><div class=\"insayfilter\" navi=\"page_filter\" ng-show=\"page\"><div class=\"paragraph\"><table class=\"sayfilter_content\"><tr><td><select class=\"form-control input-block-level\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\" style=\"margin-bottom: 0;\"></select></td></tr></table></div></div><div adjust=\"full\" class=\"insayfilter\" navi=\"page\" ng-show=\"page\"><div class=\"paragraph\"><div class=\"sayfilter_content\" template=\"navi/toolbox\"></div></div></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
+this.JST["sow/navi_edit"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"drag\" id=\"topframe\"><div class=\"contentframe form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
 
 
-this.JST["sow/navi_edit"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"contentframe\" id=\"topframe\"><div class=\"inframe toppage drag\"><div class=\"form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
+this.JST["sow/status_info"] = "";
 
 
-this.JST["sow/village_info"] = "<p class=\"caution\" ng-show=\"story.is_prologue\">あと {{story.vpl[0] + potofs.mob().length - potofs.length}} 人参加できます。</p><hr class=\"invisible_hr\" /><div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"text head\" ng-bind-html=\"story.comment\"></p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#rule\">国のルール</a></p><p class=\"text\" ng-repeat=\"nrule in story.announce.nrules\">{{nrule}}</p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#mind\">心構え</a></p></div><div class=\"mes_admin story\"><dl><dt class=\"text\" ng-bind-html=\"story.announce.trs_name\"></dt><dd class=\"text\" ng-bind-html=\"story.announce.trs_help\"></dd><dt class=\"text\" ng-bind-html=\"story.announce.game_name\"></dt><dd class=\"text\" ng-bind-html=\"story.announce.game_help\"></dd></dl><dl class=\"dl-horizontal\"><dt>登場人物</dt><dd>{{story.announce.csidcaptions}}</dd><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}<br />{{story.card.config_names}}<br />{{story.card.event_names}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-show=\"story.is_wbbs\">最低人数</dt><dd ng-show=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>廃村期限</dt><dd>{{lax_time(story.timer.scraplimitdt)}}</dd></dl></div><div class=\"mes_admin story\"><ul><li class=\"text\">{{story.announce.starttype}}</li><li class=\"text\" ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></div><div class=\"formpl_gm\" template=\"navi/potofs\"></div><h3>時刻情報</h3><div class=\"footnote\"><ul><li>{{story.announce.totalcommit}}</li><li ng-show=\"story.is_totalcommit\">{{story.timer.nextcommitdt.relative('ja')}}にcommit</li><li>{{story.timer.nextupdatedt.relative('ja')}}に更新</li><li>{{story.timer.nextchargedt.relative('ja')}}に補充</li><li ng-show=\"story.is_prologue\">{{story.timer.scraplimitdt.relative('ja')}}に廃村</li><li>あと {{story.timer.extend}}回、更新を延長できる。</li></ul></div>";
+this.JST["sow/village_info"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"text head\" ng-bind-html=\"story.comment\"></p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#rule\">国のルール</a></p><p class=\"text\" ng-repeat=\"nrule in story.announce.nrules\">{{nrule}}</p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#mind\">心構え</a></p></div><div class=\"mes_admin story\"><dl><dt class=\"text\" ng-bind-html=\"story.announce.trs_name\"></dt><dd><div class=\"text\" ng-bind-html=\"story.announce.trs_help\"></div></dd><dt class=\"text\" ng-bind-html=\"story.announce.game_name\"></dt><dd><ul class=\"text\" ng-bind-html=\"story.announce.game_help\"></ul></dd><dt class=\"text\">オプション設定</dt><dd><ul class=\"text\"><li>{{story.announce.starttype}}</li><li ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></dd></dl></div><div class=\"mes_admin story\"><dl class=\"dl-horizontal\"><dt>登場人物</dt><dd>{{story.announce.csidcaptions}}</dd><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}<br />{{story.card.config_names}}<br />{{story.card.event_names}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-if=\"story.is_wbbs\">最低人数</dt><dd ng-if=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>廃村期限</dt><dd>{{lax_time(story.timer.scraplimitdt)}}</dd></dl></div>";
 
 
-this.JST["sow/village_info_epilogue"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"head text\" ng-bind-html=\"story.comment\"></p></div><div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-show=\"story.is_wbbs\">最低人数</dt><dd ng-show=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}</dd></dl><div class=\"form-horizontal\"><div class=\"control-group\"><code>編成</code>： {{story.card.config_names}}</div><div class=\"control-group\"><code>残存事件</code>： {{story.card.event_names}}</div><div class=\"control-group\"><code>破棄役職</code>： {{story.card.discard_names}}</div></div></div><div class=\"mes_maker story\"><ul><li class=\"text\" ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></div><div class=\"formpl_gm\" template=\"navi/potofs\"></div>";
+this.JST["sow/village_info_epilogue"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"head text\" ng-bind-html=\"story.comment\"></p></div><div class=\"mes_maker story\"><dl><dt class=\"text\">オプション設定</dt><dd><ul class=\"text\"><li ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></dd></dl></div><div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-if=\"story.is_wbbs\">最低人数</dt><dd ng-if=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}</dd></dl><div class=\"form-horizontal\"><div class=\"control-group\"><code>編成</code>： {{story.card.config_names}}</div><div class=\"control-group\"><code>残存事件</code>： {{story.card.event_names}}</div><div class=\"control-group\"><code>破棄役職</code>： {{story.card.discard_names}}</div></div></div>";
 
 
-this.JST["style/giji"] = "<style>\nbody * {\n  border-color: red;\n}\n</style>";
+this.JST["theme/css"] = "<span><a class=\"mark\" ng-click=\"styles.width = &#39;center-msg&#39;\">800</a><a class=\"mark\" ng-click=\"styles.width = &#39;mini-msg&#39;\">480</a></span>&nbsp;<span><a class=\"mark\" ng-click=\"styles.theme = &#39;cinema&#39;\">煉瓦</a><a class=\"mark\" ng-click=\"styles.theme = &#39;night&#39;\">月夜</a><a class=\"mark\" ng-click=\"styles.theme = &#39;star&#39;\">蒼穹</a><a class=\"mark\" ng-click=\"styles.theme = &#39;wa&#39;\">和の国</a></span>&nbsp;<a class=\"glyphicon glyphicon-cog\" ng-click=\"show_style_navi = ! show_style_navi\" style=\"font-size: 36px; margin-bottom: -26px; vertical-align: -26px;\"></a>";
+
+
+this.JST["theme/style_navi"] = "<div class=\"pagenavi\"><h6 ng-if=\"show_style_navi\">スタイル：ログの見た目 &emsp;&emsp;&emsp;&emsp;</h6><dl class=\"dl-horizontal\" ng-if=\"show_style_navi\"><dt ng-if=\"css\"><select class=\"form-control input-block-level\" ng-model=\"css.value\" ng-options=\"o.val as o.name group by o.group for o in css.select\"></select></dt><dd class=\"form-inline\" ng-if=\"css\"><div class=\"form-group mark\"><label class=\"checkbox\" ng-repeat=\"key in selector_keys.font\"><input ng-model=\"styles.font\" type=\"radio\" value=\"{{key}}\">{{selectors.font[key]}}</input></label></div>&thinsp;<div class=\"form-group mark\"><label class=\"checkbox\" ng-repeat=\"key in selector_keys.width\"><input ng-model=\"styles.width\" type=\"radio\" value=\"{{key}}\">{{selectors.width[key]}}</input></label></div></dd></dl><h6 ng-if=\"show_style_navi &amp;&amp; page\">ログの表示方法 &emsp;&emsp;&emsp;&emsp;</h6><dl class=\"dl-horizontal\" ng-if=\"show_style_navi &amp;&amp; msg_style\"><dt><select class=\"form-control input-block-level\" ng-model=\"msg_style.value\" ng-options=\"o.val as o.name group by o.group for o in msg_style.select\"></select></dt><dd class=\"form-inline\"><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.power\" ng-options=\"key as selectors.power[key] for key in selector_keys.power\"></select></label>&thinsp;</div><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.order\" ng-options=\"key as selectors.order[key] for key in selector_keys.order\"></select></label>&thinsp;</div><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.row\" ng-options=\"key as selectors.row[key] for key in selector_keys.row\"></select></label>&thinsp;</div></dd></dl><h6 ng-if=\"mode\">フィルタ：表示するログ &emsp;&emsp;&emsp;&emsp;</h6><dl class=\"dl-horizontal\" ng-if=\"mode\"><dt><select class=\"form-control input-block-level\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\"></select></dt><dd class=\"form-inline\"><div class=\"form-group\"><a class=\"mark click\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\">{{a.name}}</a></div>&thinsp;<div class=\"form-group mark\" ng-if=\"show_style_navi\"><label><input ng-model=\"modes.view\" type=\"radio\" value=\"open\">公開</input></label><label><input ng-model=\"modes.view\" type=\"radio\" value=\"clan\">内緒話</input></label><label><input ng-model=\"modes.view\" type=\"radio\" value=\"think\">独り言</input></label><label><input ng-model=\"modes.view\" type=\"radio\" value=\"all\">全部</input></label></div>&thinsp;<div class=\"form-group mark\" ng-if=\"show_style_navi\"><label class=\"checkbox\"><input ng-model=\"modes.last\" type=\"checkbox\">最後の言葉</input></label><label class=\"checkbox\"><input ng-model=\"modes.open\" type=\"checkbox\">公開発言</input></label><label class=\"checkbox\"><input ng-model=\"msg_styles.pl\" type=\"checkbox\">中身発言</input></label></div></dd></dl><h6 ng-if=\"page\">ページ、日程の移動 &emsp;&emsp;&emsp;&emsp;</h6><dl class=\"dl-horizontal\" ng-if=\"page\"><dt><select class=\"form-control input-block-level\" ng-change=\"set_turn(event.turn)\" ng-model=\"event\" ng-options=\"e as e.name for e in events\"></select></dt><dd class=\"form-inline\"><div class=\"form-group\"><label ng-if=\"! event.is_news\"><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></label></div>&thinsp;<div class=\"form-group\"><label ng-if=\"event.is_progress\"><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, false)\" ng-if=\"  event.is_news\">ページ表示</a><a class=\"btn btn-default\" ng-click=\"ajax_event(event.turn, null, true)\" ng-if=\"! event.is_news\">最新の発言</a></label></div>&thinsp;<div class=\"form-group\"><label><input class=\"form-control input-medium\" ng-blur=\"search.value = search_input\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /></label></div>&thinsp;<div class=\"form-group\"><label ng-if=\"event.is_progress\"><a class=\"mark click glyphicon glyphicon-pencil\" ng-click=\"go.form()\"></a></label></div></dd></dl></div>";
 
 
 this.FACES = [
@@ -404,6 +401,20 @@ this.FACES = [
     "face_id": "c110",
     "name": "リー",
     "order": 92
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c111",
+    "name": "スージー",
+    "order": 93
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c113",
+    "name": "ジェレミー",
+    "order": 94
   },
   {
     "caption": "人狼議事",
@@ -1489,6 +1500,20 @@ this.FACES = [
     "face_id": "w50",
     "name": "丁助",
     "order": 90050
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w51",
+    "name": "鬼丞",
+    "order": 90051
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w52",
+    "name": "櫻子",
+    "order": 90052
   }
 ]
 ;
@@ -1580,35 +1605,94 @@ this.GIJI = {
     "wiki": "http://melon-cirrus.sakura.ne.jp/wiki/",
     "scedure": "http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD"
   },
+  "style_groups": {
+    "pan": [
+      {
+        "val": "juna",
+        "group": "審問",
+        "item": "box-msg",
+        "color": "white",
+        "theme": "juna"
+      },
+      {
+        "val": "sow",
+        "group": "物語",
+        "item": "box-msg",
+        "color": "white",
+        "theme": "sow"
+      }
+    ],
+    "giji": [
+      {
+        "val": "cinema",
+        "group": "煉瓦",
+        "item": "speech",
+        "color": "white",
+        "theme": "cinema"
+      },
+      {
+        "val": "wa",
+        "group": "和の国",
+        "item": "speech",
+        "color": "white",
+        "theme": "wa"
+      },
+      {
+        "val": "star",
+        "group": "蒼穹",
+        "item": "speech",
+        "color": "black",
+        "theme": "star"
+      },
+      {
+        "val": "night",
+        "group": "月夜",
+        "item": "speech",
+        "color": "black",
+        "theme": "night"
+      }
+    ]
+  },
   "modes": [
     {
-      "val": "info_open",
-      "name": "情報 - BG close",
-      "group": "情報と名簿",
+      "val": "info_all_open",
+      "name": "設定と情報",
+      "group": "情報",
       "form": [
         "action"
       ],
-      "regexp": "info",
+      "regexp": "info_all_open",
       "face": "info",
-      "view": "open",
+      "view": "all",
       "open": true
     },
     {
-      "val": "info_open_player",
-      "name": "情報",
-      "group": "情報と名簿",
+      "val": "info_all",
+      "name": "進行状況",
+      "group": "情報",
       "form": [
         "action"
       ],
-      "regexp": "info",
+      "regexp": "info_all",
+      "face": "info",
+      "view": "all"
+    },
+    {
+      "val": "info_open_last",
+      "name": "村の設定",
+      "group": "情報",
+      "form": [
+
+      ],
+      "regexp": "info_open_last",
       "face": "info",
       "view": "open",
       "open": true,
-      "player": true
+      "last": true
     },
     {
       "val": "memo_all_open",
-      "name": "メモ履歴-全部 - BG close",
+      "name": "メモ履歴-全部",
       "group": "メモ履歴",
       "form": [
         "entry",
@@ -1622,7 +1706,7 @@ this.GIJI = {
     },
     {
       "val": "memo_open",
-      "name": "メモ履歴-公開 - BG close",
+      "name": "メモ履歴-公開",
       "group": "メモ履歴",
       "form": [
         "entry",
@@ -1635,38 +1719,8 @@ this.GIJI = {
       "open": true
     },
     {
-      "val": "memo_all_open_player",
-      "name": "メモ履歴-全部",
-      "group": "メモ履歴",
-      "form": [
-        "entry",
-        "action",
-        "memo"
-      ],
-      "regexp": "memo_all",
-      "face": "memo",
-      "view": "all",
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "memo_open_player",
-      "name": "メモ履歴-公開",
-      "group": "メモ履歴",
-      "form": [
-        "entry",
-        "action",
-        "memo"
-      ],
-      "regexp": "memo_open",
-      "face": "memo",
-      "view": "open",
-      "open": true,
-      "player": true
-    },
-    {
       "val": "memo_all_open_last",
-      "name": "メモ-全部 - BG close",
+      "name": "メモ-全部",
       "group": "メモ",
       "form": [
         "entry",
@@ -1681,7 +1735,7 @@ this.GIJI = {
     },
     {
       "val": "memo_open_last",
-      "name": "メモ-公開 - BG close",
+      "name": "メモ-公開",
       "group": "メモ",
       "form": [
         "entry",
@@ -1695,40 +1749,8 @@ this.GIJI = {
       "last": true
     },
     {
-      "val": "memo_all_open_last_player",
-      "name": "メモ-全部",
-      "group": "メモ",
-      "form": [
-        "entry",
-        "action",
-        "memo"
-      ],
-      "regexp": "memo_all",
-      "face": "memo",
-      "view": "all",
-      "open": true,
-      "last": true,
-      "player": true
-    },
-    {
-      "val": "memo_open_last_player",
-      "name": "メモ-公開",
-      "group": "メモ",
-      "form": [
-        "entry",
-        "action",
-        "memo"
-      ],
-      "regexp": "memo_open",
-      "face": "memo",
-      "view": "open",
-      "open": true,
-      "last": true,
-      "player": true
-    },
-    {
       "val": "talk_all",
-      "name": "秘密議事全部 - BG close",
+      "name": "秘密議事全部",
       "group": "秘密議事録",
       "form": [
         "entry",
@@ -1743,7 +1765,7 @@ this.GIJI = {
     },
     {
       "val": "talk_think",
-      "name": "独り言 - BG close",
+      "name": "独り言",
       "group": "秘密議事録",
       "form": [
         "entry",
@@ -1758,7 +1780,7 @@ this.GIJI = {
     },
     {
       "val": "talk_clan",
-      "name": "内緒話/狼/鳴/… - BG close",
+      "name": "内緒話/狼/鳴/…",
       "group": "秘密議事録",
       "form": [
         "entry",
@@ -1773,7 +1795,7 @@ this.GIJI = {
     },
     {
       "val": "talk_all_last",
-      "name": "非公開の最後の言葉 - BG close",
+      "name": "非公開の最後の言葉全部",
       "group": "非公開の最後の言葉",
       "form": [
         "entry",
@@ -1789,7 +1811,7 @@ this.GIJI = {
     },
     {
       "val": "talk_think_last",
-      "name": "最後の言葉-独り言 - BG close",
+      "name": "最後の言葉-独り言",
       "group": "非公開の最後の言葉",
       "form": [
         "entry",
@@ -1805,7 +1827,7 @@ this.GIJI = {
     },
     {
       "val": "talk_clan_last",
-      "name": "最後の言葉-内緒話/狼/鳴/… - BG close",
+      "name": "最後の言葉-内緒話/狼/鳴/…",
       "group": "非公開の最後の言葉",
       "form": [
         "entry",
@@ -1820,107 +1842,8 @@ this.GIJI = {
       "last": true
     },
     {
-      "val": "talk_all_player",
-      "name": "秘密議事全部",
-      "group": "秘密議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_all",
-      "face": "talk",
-      "view": "all",
-      "player": true
-    },
-    {
-      "val": "talk_think_player",
-      "name": "独り言",
-      "group": "秘密議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_think",
-      "face": "talk",
-      "view": "think",
-      "player": true
-    },
-    {
-      "val": "talk_clan_player",
-      "name": "内緒話/狼/鳴/…",
-      "group": "秘密議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_clan",
-      "face": "talk",
-      "view": "clan",
-      "player": true
-    },
-    {
-      "val": "talk_all_last_player",
-      "name": "非公開の最後の言葉全部",
-      "group": "非公開の最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_all_last",
-      "face": "talk",
-      "view": "all",
-      "last": true,
-      "player": true
-    },
-    {
-      "val": "talk_think_last_player",
-      "name": "最後の言葉-独り言",
-      "group": "非公開の最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_think_last",
-      "face": "talk",
-      "view": "think",
-      "last": true,
-      "player": true
-    },
-    {
-      "val": "talk_clan_last_player",
-      "name": "最後の言葉-内緒話/狼/鳴/…",
-      "group": "非公開の最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_clan_last",
-      "face": "talk",
-      "view": "clan",
-      "last": true,
-      "player": true
-    },
-    {
       "val": "talk_all_open",
-      "name": "議事全部 - BG close",
+      "name": "議事全部",
       "group": "議事録",
       "form": [
         "entry",
@@ -1936,7 +1859,7 @@ this.GIJI = {
     },
     {
       "val": "talk_think_open",
-      "name": "公開議事録+独り言 - BG close",
+      "name": "公開議事録+独り言",
       "group": "議事録",
       "form": [
         "entry",
@@ -1952,7 +1875,7 @@ this.GIJI = {
     },
     {
       "val": "talk_clan_open",
-      "name": "公開議事録+内緒話/狼/鳴/… - BG close",
+      "name": "公開議事録+内緒話/狼/鳴/…",
       "group": "議事録",
       "form": [
         "entry",
@@ -1968,7 +1891,7 @@ this.GIJI = {
     },
     {
       "val": "talk_open",
-      "name": "公開議事録 - BG close",
+      "name": "公開議事録",
       "group": "議事録",
       "form": [
         "entry",
@@ -1984,7 +1907,7 @@ this.GIJI = {
     },
     {
       "val": "talk_all_open_last",
-      "name": "最後の言葉全部 - BG close",
+      "name": "最後の言葉全部",
       "group": "最後の言葉",
       "form": [
         "entry",
@@ -2001,7 +1924,7 @@ this.GIJI = {
     },
     {
       "val": "talk_think_open_last",
-      "name": "最後の言葉-公開or独り言 - BG close",
+      "name": "最後の言葉-公開or独り言",
       "group": "最後の言葉",
       "form": [
         "entry",
@@ -2018,7 +1941,7 @@ this.GIJI = {
     },
     {
       "val": "talk_clan_open_last",
-      "name": "最後の言葉-公開or内緒話/狼/鳴/… - BG close",
+      "name": "最後の言葉-公開or内緒話/狼/鳴/…",
       "group": "最後の言葉",
       "form": [
         "entry",
@@ -2035,145 +1958,6 @@ this.GIJI = {
     },
     {
       "val": "talk_open_last",
-      "name": "最後の言葉-公開 - BG close",
-      "group": "最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_open_last",
-      "face": "talk",
-      "view": "open",
-      "last": true,
-      "open": true
-    },
-    {
-      "val": "talk_all_open_player",
-      "name": "議事全部",
-      "group": "議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_all_open",
-      "face": "talk",
-      "view": "all",
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_think_open_player",
-      "name": "公開議事録+独り言",
-      "group": "議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_think_open",
-      "face": "talk",
-      "view": "think",
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_clan_open_player",
-      "name": "公開議事録+内緒話/狼/鳴/…",
-      "group": "議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_clan_open",
-      "face": "talk",
-      "view": "clan",
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_open_player",
-      "name": "公開議事録",
-      "group": "議事録",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_open",
-      "face": "talk",
-      "view": "open",
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_all_open_last_player",
-      "name": "最後の言葉全部",
-      "group": "最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_all_open_last",
-      "face": "talk",
-      "view": "all",
-      "last": true,
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_think_open_last_player",
-      "name": "最後の言葉-公開or独り言",
-      "group": "最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_think_open_last",
-      "face": "talk",
-      "view": "think",
-      "last": true,
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_clan_open_last_player",
-      "name": "最後の言葉-公開or内緒話/狼/鳴/…",
-      "group": "最後の言葉",
-      "form": [
-        "entry",
-        "action",
-        "open",
-        "secret",
-        "silent"
-      ],
-      "regexp": "talk_clan_open_last",
-      "face": "talk",
-      "view": "clan",
-      "last": true,
-      "open": true,
-      "player": true
-    },
-    {
-      "val": "talk_open_last_player",
       "name": "最後の言葉-公開",
       "group": "最後の言葉",
       "form": [
@@ -2187,8 +1971,7 @@ this.GIJI = {
       "face": "talk",
       "view": "open",
       "last": true,
-      "open": true,
-      "player": true
+      "open": true
     }
   ],
   "csids": {
@@ -2281,61 +2064,28 @@ this.OPTION = {
       "years": 1
     }
   },
-  "css_wday": [
-    "cinema800",
-    "cinema800",
-    "star800",
-    "cinema800",
-    "cinema800",
-    "star800",
-    "wa800"
-  ],
   "head_img": {
-    "cinema800": [
+    "cinema": [
       "r",
       "c"
     ],
-    "cinema480": [
+    "star": [
       "r",
       "c"
     ],
-    "star800": [
-      "r",
-      "c"
-    ],
-    "star480": [
-      "r",
-      "c"
-    ],
-    "wa800": [
+    "wa": [
       "b",
       "w"
     ],
-    "wa480": [
+    "night": [
       "b",
       "w"
     ],
-    "night800": [
-      "b",
-      "w"
-    ],
-    "night480": [
-      "b",
-      "w"
-    ],
-    "sow800": [
+    "sow": [
       "r",
       "c"
     ],
-    "sow480": [
-      "r",
-      "c"
-    ],
-    "juna800": [
-      "b",
-      "w"
-    ],
-    "juna480": [
+    "juna": [
       "b",
       "w"
     ]
@@ -2472,30 +2222,18 @@ this.OPTION = {
         "is_cookie": false
       }
     },
-    "order": {
+    "css": {
       "options": {
-        "current": "asc",
+        "current": "cinema_center-msg_std-font",
         "location": "hash",
         "is_cookie": true
-      },
-      "button": {
-        "asc": "上から下へ",
-        "desc": "下から上へ"
       }
     },
-    "row": {
+    "msg_style": {
       "options": {
-        "current": 50,
+        "current": "simple_asc_50",
         "location": "hash",
         "is_cookie": true
-      },
-      "button": {
-        "10": "10行",
-        "20": "20行",
-        "30": "30行",
-        "50": "50行",
-        "100": "100行",
-        "200": "200行"
       }
     },
     "potofs": {
@@ -2513,6 +2251,49 @@ this.OPTION = {
         "role_names": "役割",
         "select_name": "希望",
         "text": "補足"
+      }
+    }
+  },
+  "selectors": {
+    "order": {
+      "asc": "上から下へ",
+      "desc": "下から上へ"
+    },
+    "row": {
+      "10": "10行",
+      "20": "20行",
+      "30": "30行",
+      "50": "50行",
+      "100": "100行",
+      "200": "200行"
+    },
+    "power": {
+      "simple": "シンプル",
+      "mobile": "携帯用",
+      "pc": "ＰＣ用"
+    },
+    "font": {
+      "large-font": "大判",
+      "novel-font": "明朝",
+      "std-font": "ゴシック",
+      "small-font": "小文字"
+    },
+    "width": {
+      "large-msg": "大判",
+      "center-msg": "中央",
+      "game-msg": "大判左",
+      "right-msg": "左半分",
+      "mini-msg": "携帯用"
+    }
+  },
+  "css": {
+    "h1": {
+      "widths": {
+        "large-msg": 770,
+        "game-msg": 770,
+        "center-msg": 580,
+        "right-msg": 580,
+        "mini-msg": 458
       }
     }
   },
@@ -2610,62 +2391,6 @@ this.OPTION = {
     "alert": {
       "caption": "要注意",
       "alt": ""
-    }
-  },
-  "css": {
-    "h1": {
-      "widths": {
-        "480": 458,
-        "800": 580
-      }
-    },
-    "font": {
-      "options": {
-        "is_cookie": true,
-        "location": "hash",
-        "current": "normal"
-      },
-      "button": {
-        "normal": "普通",
-        "small": "繊細"
-      }
-    },
-    "width": {
-      "options": {
-        "is_cookie": true,
-        "location": "hash",
-        "current": 800
-      },
-      "button": {
-        "480": 480,
-        "800": 800
-      }
-    },
-    "themes": {
-      "pan": {
-        "options": {
-          "is_cookie": true,
-          "location": "hash",
-          "current": "sow"
-        },
-        "button": {
-          "juna": "審問",
-          "sow": "物語"
-        }
-      },
-      "giji": {
-        "options": {
-          "is_cookie": true,
-          "location": "hash",
-          "current": "cinema"
-        },
-        "button": {
-          "cinema": "煉瓦",
-          "night": "月夜",
-          "star": "蒼穹",
-          "wa": "和の国"
-        }
-      }
     }
   },
   "gon": {
@@ -3306,12 +3031,12 @@ this.SOW = {
     "256": "能力対象外",
     "64": "感染",
     "32": "負傷",
-    "8": "投票喪失",
-    "7": "全能力喪失",
-    "4": "恩恵喪失",
-    "3": "能力枯渇",
-    "2": "毒薬枯渇",
-    "1": "蘇生薬枯渇"
+    "8": "<s>投票</s>",
+    "7": "<s>全能力</s>",
+    "4": "<s>恩恵</s>",
+    "3": "<s>能力</s>",
+    "2": "<s>毒薬</s>",
+    "1": "<s>蘇生薬</s>"
   },
   "live": {
     "live": "生存者",

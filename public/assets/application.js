@@ -92,39 +92,72 @@ angular.module("giji").directive("accordion", function() {
 angular.module("giji").directive("theme", function($compile) {
   return {
     restrict: "A",
-    templateUrl: "navi/css",
+    templateUrl: "theme/css",
     link: function($scope, elm, attr, ctrl) {
-      var font, move, theme, width;
-      font = OPTION.css.font;
-      width = OPTION.css.width;
-      width.options.current_type = Number;
-      theme = OPTION.css.themes[attr.theme];
-      move = function() {
-        var css, css_font, date, value;
-        value = "" + $scope.css.theme.value + $scope.css.width.value;
-        date = new Date;
-        css = "" + URL.file + "/stylesheets/" + value + ".css";
-        if (css !== $("#giji_css").attr('href')) {
-          $("#giji_css").attr('href', css);
+      var css_apply, css_change, html_class, key, msg_apply, msg_change, val, _ref;
+      $scope.selectors = OPTION.selectors;
+      $scope.selector_keys = {};
+      _ref = OPTION.selectors;
+      for (key in _ref) {
+        val = _ref[key];
+        $scope.selector_keys[key] = Object.keys(val);
+      }
+      Navi.push($scope, 'css', {
+        options: OPTION.page.css.options,
+        select: GIJI.styles[attr.theme]
+      });
+      html_class = function() {
+        if ($scope.styles == null) {
+          return;
         }
-        css_font = "" + URL.file + "/stylesheets/font/" + $scope.css.font.value + ".css";
-        if (css_font !== $("#giji_css_font").attr('href')) {
-          $("#giji_css_font").attr('href', css_font);
+        if ($scope.msg_styles == null) {
+          return;
         }
-        $scope.h1 = {
-          type: OPTION.head_img[value][(date / 60 * 60 * 12).ceil() % 2],
-          width: OPTION.css.h1.widths[String($scope.css.width.value)]
-        };
-        $scope.h1.path = "" + URL.file + "/images/banner/title" + $scope.h1.width + $scope.h1.type + ".jpg";
-        return $scope.adjust();
+        $scope.adjust();
+        return $scope.html_class = [$scope.styles.item, $scope.styles.color, $scope.styles.theme, $scope.styles.width, $scope.styles.pixel, $scope.styles.font, $scope.msg_styles.power, !$scope.msg_styles.pl ? 'no-player' : void 0];
       };
-      $scope.css = {};
-      Navi.push($scope, 'css.width', width);
-      Navi.push($scope, 'css.theme', theme);
-      Navi.push($scope, 'css.font', font);
-      $scope.css.width.watch.push(move);
-      $scope.css.theme.watch.push(move);
-      return $scope.css.font.watch.push(move);
+      css_apply = function() {
+        $scope.styles = $scope.css.choice();
+        return html_class();
+      };
+      css_change = function() {
+        var css, date, font, theme, width;
+        css = _.compact(_.uniq([theme = $scope.styles.theme, width = $scope.styles.width, font = $scope.styles.font]));
+        $scope.css.value = css.join("_");
+        date = new Date;
+        $scope.h1 = {
+          type: OPTION.head_img[theme][(date / 60 * 60 * 12).ceil() % 2],
+          width: OPTION.css.h1.widths[width]
+        };
+        return $scope.h1.path = "" + URL.file + "/images/banner/title" + $scope.h1.width + $scope.h1.type + ".jpg";
+      };
+      css_apply();
+      Navi.push($scope, 'msg_style', {
+        options: OPTION.page.msg_style.options,
+        select: GIJI.msg_styles
+      });
+      msg_apply = function() {
+        $scope.msg_styles = $scope.msg_style.choice();
+        return html_class();
+      };
+      msg_change = function() {
+        var msg;
+        msg = _.compact(_.uniq([head.browser.power = $scope.msg_styles.power, $scope.msg_styles.order, $scope.msg_styles.row, !$scope.msg_styles.pl ? "no-player" : void 0]));
+        return $scope.msg_style.value = msg.join("_");
+      };
+      msg_apply();
+      _.delay(function() {
+        return $scope.msg_styles.power = head.browser.power;
+      }, 2000);
+      $scope.$watch('css.value', css_apply);
+      $scope.$watch('styles.theme', css_change);
+      $scope.$watch('styles.width', css_change);
+      $scope.$watch('styles.font', css_change);
+      $scope.$watch('msg_style.value', msg_apply);
+      $scope.$watch('msg_styles.power', msg_change);
+      $scope.$watch('msg_styles.order', msg_change);
+      $scope.$watch('msg_styles.row', msg_change);
+      return $scope.$watch('msg_styles.pl', msg_change);
     }
   };
 });
@@ -135,52 +168,35 @@ angular.module("giji").directive("adjust", function($compile, $timeout) {
   resize_page = function($scope) {
     var do_resize;
     do_resize = function() {
-      var buttons, content, height, lim_left, outframe, width, _ref, _ref1, _ref2;
-      if (!(($scope.navi != null) && ($scope.css.width != null))) {
+      var buttons, height, msg_width, width, _ref;
+      if (!(($scope.navi != null) && (((_ref = $scope.styles) != null ? _ref.width : void 0) != null))) {
         return;
       }
       width = win.width;
       height = win.height;
-      content = "contentframe";
-      outframe = "outframe";
-      switch ($scope.css.width.value) {
-        case 800:
-          lim_left = (778 - 770) / 2 + 187;
-          win.info.width = (width - 770) / 2 + 187 - 60;
-          if (lim_left < win.info.width) {
-            content = "contentframe_navileft";
-            outframe = "outframe_navimode";
-            win.info.width = (width - 770) / 2 + 187 - 10;
-          } else {
-            content = "contentframe";
-            outframe = "outframe";
-            win.info.width = (width - 580) / 2;
-          }
+      msg_width = OPTION.css.h1.widths[$scope.styles.width];
+      switch ($scope.styles.width) {
+        case "center-msg":
+        case "large-msg":
+          win.info.width = (width - msg_width) / 2;
           break;
-        case 480:
-          win.info.width = width - 476;
+        default:
+          win.info.width = width - msg_width;
       }
       buttons = FixedBox.list["#buttons"];
       if (buttons != null) {
-        win.info.width_max = buttons.left - 8;
+        return win.info.width_max = buttons.left - 8;
       } else {
-        win.info.width_max = width - 40;
+        return win.info.width_max = width - 40;
       }
-      if ((_ref = $("#topframe")[0]) != null) {
-        _ref.className = content;
-      }
-      if ((_ref1 = $("#contentframe")[0]) != null) {
-        _ref1.className = content;
-      }
-      return (_ref2 = $("#outframe")[0]) != null ? _ref2.className = outframe : void 0;
     };
     return action_queue.push(do_resize);
   };
   effect = function($scope, adjust, element) {
     var do_resize;
     do_resize = function() {
-      var gap, info_width, small;
-      if (!(($scope.navi != null) && ($scope.css.width != null))) {
+      var info_width, small, _ref;
+      if (!(($scope.navi != null) && (((_ref = $scope.styles) != null ? _ref.width : void 0) != null))) {
         return;
       }
       switch (adjust) {
@@ -195,21 +211,8 @@ angular.module("giji").directive("adjust", function($compile, $timeout) {
       } else {
         info_width = small;
       }
-      gap = 0;
-      if (head.browser.mozilla) {
-        gap = 5;
-      }
-      if (head.browser.opera) {
-        gap = 5;
-      }
-      if (head.browser.ie) {
-        gap = 5;
-      }
-      if (head.browser.webkit && 480 === $scope.css.width.value) {
-        gap = -10;
-      }
       return element.css({
-        width: info_width - gap
+        width: info_width
       });
     };
     return action_queue.push(do_resize);
@@ -240,7 +243,8 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
   effect = function($scope, params) {
     var do_resize;
     do_resize = function() {
-      if (!(($scope.navi != null) && ($scope.css.width != null))) {
+      var _ref;
+      if (!(($scope.navi != null) && (((_ref = $scope.styles) != null ? _ref.width : void 0) != null))) {
         return;
       }
       if (params.show) {
@@ -294,8 +298,9 @@ angular.module("giji").directive("log", [
     return {
       restrict: "A",
       link: function($scope, elm, attr, ctrl) {
-        var anchor_ok, log, mark, num, style, table, target, template, _, _i, _len, _ref, _ref1, _ref2;
+        var anchor_ok, log, mark, match_data, num, style, table, target, template, _, _i, _len, _ref, _ref1;
         log = $scope.message = $scope.$eval(attr.log);
+        log.is_show = true;
         if ((log.template == null) && (log.logid != null) && (log.mestype != null) && (log.subid != null)) {
           log.sub1id = log.logid[0];
           log.sub2id = log.logid[1];
@@ -315,7 +320,7 @@ angular.module("giji").directive("log", [
         }
         log.cancel_btn = function() {
           if ((this.logid != null) && "q" === this.logid[0] && ((new Date() - this.updated_at) < 25 * 1000)) {
-            return $sce.trustAsHtml("<a class=\"mark\" href_eval='cancel_say(\"" + this.logid + "\")'>なら削除できます。<span class=\"glyphicon glyphicon-trash\"></span></a>");
+            return $sce.trustAsHtml("なら削除できます。<a href_eval='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a>");
           } else {
             return "";
           }
@@ -323,11 +328,11 @@ angular.module("giji").directive("log", [
         log.time = function() {
           return $scope.lax_time(this.updated_at);
         };
-        if ((log.anchor == null) && (log.logid != null)) {
-          _ref1 = log.logid.match(/(\D)\D+(\d+)/), _ = _ref1[0], mark = _ref1[1], num = _ref1[2];
+        if ((log.anchor == null) && (log.logid != null) && (match_data = log.logid.match(/(\D)\D+(\d+)/))) {
+          _ = match_data[0], mark = match_data[1], num = match_data[2];
           anchor_ok = false;
           anchor_ok || (anchor_ok = mark !== 'T');
-          anchor_ok || (anchor_ok = (_ref2 = $scope.story) != null ? _ref2.is_epilogue : void 0);
+          anchor_ok || (anchor_ok = (_ref1 = $scope.story) != null ? _ref1.is_epilogue : void 0);
           if ((SOW.log.anchor[mark] != null) && anchor_ok) {
             log.anchor || (log.anchor = "" + SOW.log.anchor[mark] + (Number(num)));
           } else {
@@ -359,8 +364,6 @@ angular.module("giji").directive("drag", [
     };
   }
 ]);
-GIJI.jsts = {};
-
 GIJI.template = function($compile, $scope, elm, name) {
   var compiled, template;
   template = JST[name];
@@ -420,6 +423,9 @@ angular.module("giji").directive("diary", function($compile) {
       form_text = $scope.$eval(attr.diary);
       form_text.ver = new Diary(form_text);
       form_text.ver.versions();
+      if (form_text.text) {
+        form_text.ver.commit();
+      }
       return GIJI.template($compile, $scope, elm, "form/version");
     }
   };
@@ -595,7 +601,7 @@ FixedBox = (function() {
     this.dx = dx;
     this.dy = dy;
     this.box = fixed_box;
-    if (this.box && !head.browser.simple) {
+    if (this.box) {
       this.box.css({
         left: 0,
         top: 0
@@ -610,36 +616,38 @@ FixedBox = (function() {
           return _this.scroll();
         };
       })(this));
-    } else {
-      this.box.css({
-        display: "none"
-      });
     }
   }
 
   FixedBox.prototype.resize = function() {
     var height, width;
-    width = win.width - this.box.width();
-    height = win.height - this.box.height();
-    if (this.dx < 0) {
-      this.left = this.dx + width;
-    }
-    if (0 < this.dx) {
-      this.left = this.dx;
-    }
-    if (this.dy < 0) {
-      this.top = this.dy + height;
-    }
-    if (0 < this.dy) {
-      this.top = this.dy;
-    }
-    if (1.5 < win.zoom) {
-      return this.box.css({
-        display: "none"
-      });
+    if (this.box && head.browser.power !== "simple") {
+      width = win.width - this.box.width();
+      height = win.height - this.box.height();
+      if (this.dx < 0) {
+        this.left = this.dx + width;
+      }
+      if (0 < this.dx) {
+        this.left = this.dx;
+      }
+      if (this.dy < 0) {
+        this.top = this.dy + height;
+      }
+      if (0 < this.dy) {
+        this.top = this.dy;
+      }
+      if (1.5 < win.zoom) {
+        return this.box.css({
+          display: "none"
+        });
+      } else {
+        return this.box.css({
+          display: ""
+        });
+      }
     } else {
       return this.box.css({
-        display: ""
+        display: "none"
       });
     }
   };
@@ -660,45 +668,45 @@ FixedBox = (function() {
     if (win.top < 0) {
       win.top = 0;
     }
-    this.box.to_z_front();
-    if (0 === this.dx) {
-      this.box.css({
-        position: "fixed",
-        left: "",
-        width: this.box.parent().width()
-      });
+    if (this.box && head.browser.power !== "simple") {
+      this.box.to_z_front();
+      if (0 === this.dx) {
+        this.box.css({
+          position: "fixed",
+          left: "",
+          width: this.box.parent().width()
+        });
+      } else {
+        this.box.css({
+          position: "fixed"
+        });
+      }
+      left = this.left + win.left;
+      top = this.top;
+      return this.translate(left, top);
     } else {
-      this.box.css({
-        position: "fixed"
+      return this.box.css({
+        display: "none"
       });
     }
-    left = this.left + win.left;
-    top = this.top;
-    return this.translate(left, top);
   };
 
   FixedBox.prototype.translate = function(left, top) {
-    var transform, transition;
+    var transform;
     if (head.csstransitions) {
-      transition = "all 100ms ease";
       transform = "translate(" + left + "px, " + top + "px)";
       if (head.browser.webkit) {
-        this.box.css("-webkit-transition", transition);
         this.box.css("-webkit-transform", transform);
       }
       if (head.browser.mozilla) {
-        this.box.css("-moz-transition", transition);
         this.box.css("-moz-transform", transform);
       }
       if (head.browser.ie) {
-        this.box.css("-ms-transition", transition);
         this.box.css("-ms-transform", transform);
       }
       if (head.browser.opera) {
-        this.box.css("-o-transition", transition);
         this.box.css("-o-transform", transform);
       }
-      this.box.css("transition", transition);
       return this.box.css("transform", transform);
     } else {
       return this.box.animate({
@@ -856,6 +864,7 @@ CACHE = function($scope) {
         old_base.messages = [];
       }
       merge_by.news(old_base, new_base, 'messages', guard, filter);
+      merge_by.copy(old_base, new_base, 'last_memo');
       order = function(o) {
         return o.order || o.updated_at;
       };
@@ -1078,7 +1087,7 @@ INIT_POTOFS = function($scope, gon) {
 };
 
 INIT = function($scope, $filter, $timeout) {
-  var has_messages, key, live_potofs, news, potof, potofs_hash, row, story, _i, _j, _len, _len1, _ref, _ref1, _ref2;
+  var has_messages, key, live_potofs, news, potof, potofs_hash, story, _i, _j, _len, _len1, _ref, _ref1, _ref2;
   if (typeof gon === "undefined" || gon === null) {
     return;
   }
@@ -1144,18 +1153,8 @@ INIT = function($scope, $filter, $timeout) {
   has_messages || (has_messages = ((_ref2 = $scope.event) != null ? _ref2.messages : void 0) != null);
   has_messages || (has_messages = $scope.messages_raw != null);
   has_messages || (has_messages = $scope.stories != null);
-  if (has_messages) {
-    row = OPTION.page.row;
-    row.options.current_type = Number;
-    if ($scope.row == null) {
-      Navi.push($scope, 'row', row);
-    }
-    if ($scope.order == null) {
-      Navi.push($scope, 'order', OPTION.page.order);
-    }
-    if ($scope.page == null) {
-      return FILTER($scope, $filter, $timeout);
-    }
+  if (has_messages && ($scope.page == null)) {
+    return FILTER($scope, $filter, $timeout);
   }
 };
 var INIT_FACE;
@@ -1182,11 +1181,12 @@ INIT_FACE = function(new_base) {
 var INIT_MESSAGES;
 
 INIT_MESSAGES = function(new_base) {
-  var message, _i, _len, _ref, _results;
+  var key, message, _i, _len, _ref, _results;
   if ((new_base != null ? new_base.messages : void 0) == null) {
     return;
   }
   if (new_base.turn != null) {
+    new_base.last_memo = {};
     _ref = new_base.messages;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1196,7 +1196,20 @@ INIT_MESSAGES = function(new_base) {
         message.updated_at = message.date;
         delete message.date;
       }
-      _results.push(message.updated_at = Date.create(message.updated_at));
+      message.updated_at = Date.create(message.updated_at);
+      if ("M" === message.subid) {
+        key = "" + message.mestype + ":" + message.csid + "/" + message.face_id;
+        if ((!new_base.last_memo[key]) || new_base.last_memo[key].updated_at < message.updated_at) {
+          _results.push(new_base.last_memo[key] = {
+            log: message.log,
+            updated_at: message.updated_at
+          });
+        } else {
+          _results.push(void 0);
+        }
+      } else {
+        _results.push(void 0);
+      }
     }
     return _results;
   }
@@ -1447,6 +1460,113 @@ INIT_STORY = function($scope, story) {
   }
   return story;
 };
+var DECOLATE;
+
+DECOLATE = function($scope, $sce) {
+  var anchor, anchor_preview, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unrandom, uri_to_link;
+  player = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/(\/\*)(.*?)(\*\/|$)/g, '<em>$1<span class="player">$2</span>$3</em>');
+  };
+  unanchor = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
+      return ">>" + id;
+    });
+  };
+  anchor = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
+      return "<a href_eval=\"popup(" + turn + ",'" + a + "')\" class=\"mark\">&gt;&gt;" + id + "</a>";
+    });
+  };
+  anchor_preview = function(log) {
+    return log;
+  };
+  unrandom = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
+      return cmd;
+    });
+  };
+  random = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
+      return "<a class=\"mark\" href_eval=\"inner('" + cmd + "','" + val + "')\">" + val + "</a>";
+    });
+  };
+  random_preview = function(log) {
+    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
+      return "<a class=\"mark\" href_eval=\"inner('" + val + "','？')\">" + val + "</a>";
+    });
+  };
+  link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
+  link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
+  id_num = 0;
+  uri_to_link = _.memoize(function(uri) {
+    var host, path, protocol, _ref;
+    id_num++;
+    _ref = uri.match(link_regexp), uri = _ref[0], protocol = _ref[1], host = _ref[2], path = _ref[3];
+    return "<span class=\"badge\" href_eval=\"external('link_" + id_num + "','" + uri + "','" + protocol + "','" + host + "','" + path + "')\">LINK - " + protocol + "</span>";
+  });
+  link = function(log) {
+    var text, uri, uris, _i, _len;
+    if (!log) {
+      return log;
+    }
+    text = log.replace(/\s|<br>/g, ' ').stripTags();
+    uris = text.match(link_regexp_g);
+    if (uris) {
+      for (_i = 0, _len = uris.length; _i < _len; _i++) {
+        uri = uris[_i];
+        log = log.replace(uri, uri_to_link(uri));
+      }
+    }
+    return log;
+  };
+  space = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset) {
+      var nbsps;
+      s1 || (s1 = "");
+      nbsps = s2.replace(/\ /g, '&nbsp;');
+      return "" + s1 + nbsps;
+    });
+  };
+  $scope.preview_decolate = function(log) {
+    if (log) {
+      return $sce.trustAsHtml(space(player(anchor_preview(link(random_preview(log))))));
+    } else {
+      return null;
+    }
+  };
+  $scope.text_decolate = function(log) {
+    if (log) {
+      return $sce.trustAsHtml(space(player(anchor(link(random(log))))));
+    } else {
+      return null;
+    }
+  };
+  return $scope.undecolate = function(log) {
+    if (log) {
+      return unanchor(unrandom(log));
+    } else {
+      return null;
+    }
+  };
+};
 var DIARY;
 
 DIARY = function($scope) {
@@ -1478,7 +1598,7 @@ if (head.browser != null) {
     b.android = true;
     b.power = "simple";
   }
-  _ref = ['firefox', 'chrome', 'crios', 'silk', 'mercury', 'iphone', 'ipad'];
+  _ref = ['crios', 'silk', 'mercury', 'iphone', 'ipad'];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     key = _ref[_i];
     if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
@@ -1496,8 +1616,6 @@ if (head.browser != null) {
 }
 
 head.useragent = navigator.userAgent;
-
-$("html").addClass(b.power);
 
 win = {
   top: 0,
@@ -1593,7 +1711,7 @@ angular.module("giji").run(function() {
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_change, navigator, old_hide_faces, page, scrollTo, _i, _j, _len, _len1, _ref, _ref1;
+  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_apply, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -1711,10 +1829,10 @@ FILTER = function($scope, $filter, $timeout) {
   }
   if (((_ref = $scope.event) != null ? _ref.messages : void 0) != null) {
     page.last_updated_at = function() {
-      var _ref1;
-      _ref = $scope.event.messages;
-      if (_ref != null) {
-        return (_ref1 = _.last(_ref)) != null ? _ref1.updated_at : void 0;
+      var last;
+      last = _.last($scope.event.messages);
+      if (last != null) {
+        return last.updated_at;
       }
     };
     page.filter_by('event.messages');
@@ -1739,13 +1857,18 @@ FILTER = function($scope, $filter, $timeout) {
       },
       select: GIJI.modes
     });
-    $scope.modes = $.extend({}, $scope.mode.choice());
-    modes_change = function(oldVal, newVal) {
+    modes_apply = function() {
+      return $scope.modes = $scope.mode.choice();
+    };
+    modes_change = function() {
       var mode;
       if ("info" === $scope.modes.face) {
-        $scope.modes.last = false;
-        $scope.modes.view = "open";
-        $scope.navi.value_add("link");
+        if ("all" === $scope.modes.view) {
+          $scope.modes.last = false;
+        } else {
+          $scope.modes.view = "open";
+          $scope.modes.last = true;
+        }
       }
       if ("memo" === $scope.modes.face) {
         $scope.modes.open = true;
@@ -1756,7 +1879,7 @@ FILTER = function($scope, $filter, $timeout) {
       if ("open" === $scope.modes.view) {
         $scope.modes.open = true;
       }
-      mode = _.compact(_.uniq([$scope.modes.face, $scope.modes.view, $scope.modes.open ? 'open' : void 0, $scope.modes.last ? 'last' : void 0, $scope.modes.player ? 'player' : void 0]));
+      mode = _.compact(_.uniq([$scope.modes.face, $scope.modes.view, $scope.modes.open ? 'open' : void 0, $scope.modes.last ? 'last' : void 0]));
       $scope.mode.value = mode.join("_");
       $scope.mode_select = _.filter($scope.mode.select, function(o) {
         return o.face === $scope.modes.face;
@@ -1764,14 +1887,14 @@ FILTER = function($scope, $filter, $timeout) {
       $scope.mode_cache[$scope.modes.face] = $scope.mode.value;
       return $scope.deploy_mode_common();
     };
+    modes_apply();
+    $scope.$watch('mode.value', modes_apply);
     $scope.$watch('modes.face', modes_change);
     $scope.$watch('modes.view', modes_change);
     $scope.$watch('modes.open', modes_change);
     $scope.$watch('modes.last', modes_change);
-    $scope.$watch('modes.player', modes_change);
     page.filter('mode.value', function(key, list) {
       var add_filter, add_filters, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist, _ref1;
-      $scope.modes = $.extend({}, $scope.mode.choice());
       is_mob_open = false;
       if ($scope.story != null) {
         if ('alive' === $scope.story.type.mob) {
@@ -1785,7 +1908,9 @@ FILTER = function($scope, $filter, $timeout) {
         }
       }
       mode_filters = {
-        info: /^[aAm]|(vilinfo)/,
+        info_open_last: /^[aAm]|(vilinfo)/,
+        info_all_open: /^[aAm]|(vilinfo)|(potofs)|(status)/,
+        info_all: /^[aAm]|(potofs)|(status)/,
         memo_all: /^(.M)/,
         memo_open: /^([qcaAmIMS][MX])/,
         talk_all: /^[^S][^M]\d+/,
@@ -1843,7 +1968,6 @@ FILTER = function($scope, $filter, $timeout) {
         return list;
       }
     });
-    old_hide_faces = [];
     page.filter('hide_potofs.value', function(hide_faces, list) {
       var faces;
       if (_.include(hide_faces, 'others')) {
@@ -1861,8 +1985,9 @@ FILTER = function($scope, $filter, $timeout) {
     $scope.search_input = search;
     return filter_filter(list, search);
   });
-  page.paginate('row.value', function(page_per, list) {
-    var from, page_no, to, _ref1;
+  page.paginate('msg_styles.row', function(row, list) {
+    var from, page_no, page_per, to, _ref1;
+    page_per = Number(row);
     if ((_ref1 = $scope.event) != null ? _ref1.is_news : void 0) {
       $scope.page.visible = false;
       to = list.length;
@@ -1885,11 +2010,17 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return list.slice(from, to);
   });
-  page.filter('order.value', function(key, list) {
+  page.filter('msg_styles.order', function(key, list) {
+    var order;
+    order = "desc" === key ? function(o) {
+      return -o.updated_at;
+    } : function(o) {
+      return +o.updated_at;
+    };
     if ("desc" === key) {
       list.reverse();
     }
-    return list;
+    return _.sortBy(list, order);
   });
   scrollTo = function(newVal, oldVal, three) {
     var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
@@ -1902,7 +2033,6 @@ FILTER = function($scope, $filter, $timeout) {
         for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
           form_text = _ref2[_k];
           if (is_show && mode === form_text.jst) {
-            $timeout(_.debounce($scope.go.form, 1200));
             return;
           }
         }
@@ -1911,27 +2041,33 @@ FILTER = function($scope, $filter, $timeout) {
     return $scope.go.messages();
   };
   form_show = function() {
-    var _k, _len2, _ref1, _results;
+    var _k, _len2, _ref1, _ref2, _results;
     $scope.anchors = [];
-    if ($scope.modes != null) {
+    if (((_ref1 = $scope.modes) != null ? _ref1.form : void 0) != null) {
       $scope.form_show = {};
-      _ref1 = $scope.modes.form;
+      _ref2 = $scope.modes.form;
       _results = [];
-      for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-        key = _ref1[_k];
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        key = _ref2[_k];
         _results.push($scope.form_show[key] = true);
       }
       return _results;
     }
   };
-  if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
-    $scope.$watch("event.turn", scrollTo);
-    $scope.$watch("event.is_news", scrollTo);
-    $scope.$watch("mode.value", scrollTo);
-  }
-  $scope.$watch("search.value", scrollTo);
-  $scope.$watch("row.value", scrollTo);
-  $scope.$watch("order.value", scrollTo);
+  _.delay(function() {
+    var _ref1;
+    if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
+      $scope.$watch("event.turn", scrollTo);
+      $scope.$watch("event.is_news", scrollTo);
+      $scope.$watch("mode.value", scrollTo);
+    }
+    $scope.$watch("page.value", scrollTo);
+    $scope.$watch("search.value", scrollTo);
+    $scope.$watch("msg_style.value", scrollTo);
+    return $scope.$apply(function() {
+      return page.start();
+    });
+  }, 1000);
   $scope.$watch('mode.value', form_show);
   $scope.$watch('event.is_news', form_show);
   return $scope.$watch('event.is_news', $scope.deploy_mode_common);
@@ -1939,7 +2075,7 @@ FILTER = function($scope, $filter, $timeout) {
 var FORM;
 
 FORM = function($scope, $sce) {
-  var calc_length, calc_point, preview, preview_action, submit, valid, write;
+  var calc_length, calc_point, is_input, preview, preview_action, set_last_memo, submit, valid, write;
   $scope.stories_is_small = true;
   calc_length = function(text) {
     var ascii, other;
@@ -2003,6 +2139,7 @@ FORM = function($scope, $sce) {
       f.is_delete = true;
       switch (f.cmd) {
         case "wrmemo":
+          f.is_last_memo = false;
           f.is_preview = false;
           break;
         case "write":
@@ -2016,7 +2153,9 @@ FORM = function($scope, $sce) {
           break;
       }
     }
-    return $scope.submit(param, function() {});
+    return $scope.submit(param, function() {
+      return set_last_memo(f);
+    });
   };
   preview = function(text) {
     if (text != null) {
@@ -2049,6 +2188,31 @@ FORM = function($scope, $sce) {
       return f.preview = preview(f.text.replace(/\n$/g, '\n '));
     }
   };
+  set_last_memo = function(f) {
+    var log, _ref, _ref1, _ref2;
+    if ("wrmemo" !== f.cmd) {
+      return;
+    }
+    if (!(f.text || f.is_last_memo)) {
+      log = (_ref = $scope.event) != null ? (_ref1 = _ref.last_memo) != null ? (_ref2 = _ref1["" + f.mestype + ":" + f.csid_cid]) != null ? _ref2.log : void 0 : void 0 : void 0;
+      if (log != null) {
+        f.text = $scope.undecolate(log);
+        if (f.ver != null) {
+          f.ver.commit();
+        }
+        return f.is_last_memo = true;
+      }
+    }
+  };
+  is_input = function(f) {
+    if (f.text == null) {
+      return false;
+    }
+    if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+      return false;
+    }
+    return true;
+  };
   $scope.error = function(f) {
     var list, _ref;
     list = (_ref = $scope.errors) != null ? _ref[f != null ? f.cmd : void 0] : void 0;
@@ -2061,6 +2225,9 @@ FORM = function($scope, $sce) {
         switch (f.cmd) {
           case "action":
             f.preview = preview_action(f);
+            if (f.target === "-1" && f.action === "-2") {
+              return;
+            }
             if (f.target === "-1" && f.action !== "-99") {
               f.valid = false;
             }
@@ -2072,13 +2239,14 @@ FORM = function($scope, $sce) {
                 return f.valid = false;
               }
             } else {
-              if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+              if (!is_input(f)) {
                 return f.valid = false;
               }
             }
             break;
           case "wrmemo":
-            if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+            set_last_memo(f);
+            if (!is_input(f)) {
               f.valid = false;
             }
             if (size < 1) {
@@ -2086,7 +2254,7 @@ FORM = function($scope, $sce) {
             }
             break;
           default:
-            if (calc_length(f.text.replace(/\s/g, '')) < 4) {
+            if (!is_input(f)) {
               return f.valid = false;
             }
         }
@@ -2243,30 +2411,27 @@ var GO;
 
 GO = function($scope) {
   var go_anker;
-  go_anker = function(anker, offset, cb) {
-    var target, targetY;
-    target = $($(anker)[0]);
-    if (target.offset() != null) {
-      targetY = target.offset().top - offset;
-      return $("html,body").animate({
-        scrollTop: targetY
-      }, 200, "linear", function() {
-        return typeof cb === "function" ? cb(target) : void 0;
-      });
-    }
+  go_anker = function(anker, cb) {
+    return _.throttle(function() {
+      var offset, target, targetY;
+      target = $($(anker)[0]);
+      offset = win.height / 10;
+      if (target.offset() != null) {
+        targetY = target.offset().top - offset;
+        return $("html,body").animate({
+          scrollTop: targetY
+        }, 200, "linear", function() {
+          return typeof cb === "function" ? cb(target) : void 0;
+        });
+      }
+    }, 300);
   };
   return $scope.go = {
-    messages: function() {
-      return go_anker("#messages", win.height / 5);
-    },
-    form: function() {
-      return go_anker("#forms", win.height / 5);
-    },
-    search: function() {
-      return go_anker("[ng-model=\"search_input\"]", 0, function(o) {
-        return o.focus();
-      });
-    }
+    messages: go_anker(".css_changer"),
+    form: go_anker("#forms"),
+    search: go_anker("[ng-model=\"search_input\"]", function(o) {
+      return o.focus();
+    })
   };
 };
 var HREF_EVAL;
@@ -2282,14 +2447,19 @@ HREF_EVAL = function($scope) {
     }
     return $scope.$apply();
   };
-  cancel_say = function(queid) {
-    return $scope.submit({
-      cmd: 'cancel',
-      queid: queid,
-      turn: $scope.event.turn,
-      vid: $scope.story.vid
+  cancel_say = _.memoize(function(queid) {
+    return _.debounce(function() {
+      return $scope.submit({
+        cmd: 'cancel',
+        queid: queid,
+        turn: $scope.event.turn,
+        vid: $scope.story.vid
+      });
+    }, 25000, {
+      leading: true,
+      trailing: false
     });
-  };
+  });
   inner = function(cmd, val) {
     var item;
     item = $(href_eval_event.target);
@@ -2439,11 +2609,11 @@ Navi = (function() {
   };
 
   Navi.prototype.choice = function() {
-    return _.find(this.select, (function(_this) {
+    return _.assign({}, _.find(this.select, (function(_this) {
       return function(o) {
         return o.val === _this.value;
       };
-    })(this));
+    })(this)));
   };
 
   Navi.prototype.popstate = function() {
@@ -2489,30 +2659,15 @@ Navi = (function() {
     this.popstate();
     this.scope.$watch("" + this.key + ".value", (function(_this) {
       return function(value, oldVal) {
-        var cmd, expire, func, list, navi, options, val_hash, val_search, _, _i, _len, _name, _ref1, _ref2;
+        var func, list, val_hash, val_search, _i, _len, _ref1;
         _this._move();
         _ref1 = _this.watch;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           func = _ref1[_i];
           func(_this.value);
         }
-        list = {};
-        _ref2 = Navi.list;
-        for (_ in _ref2) {
-          navi = _ref2[_];
-          options = navi.params;
-          if (navi.value) {
-            cmd = "" + navi.key + "=" + navi.value;
-            if (options.location != null) {
-              list[_name = options.location] || (list[_name] = []);
-              list[options.location].push(cmd);
-            }
-            if (options.is_cookie) {
-              expire = new Date().advance(OPTION.cookie.expire);
-              document.cookie = "" + cmd + "; expires=" + (expire.toGMTString()) + "; path=/";
-            }
-          }
-        }
+        Navi.set_cookie();
+        list = Navi.to_hash();
         if (list.search) {
           val_search = "?" + list.search.join("&");
           if (location.search !== val_search) {
@@ -2554,6 +2709,59 @@ Navi = (function() {
   return Navi;
 
 })();
+
+Navi.set_cookie = function() {
+  var cmd, expire, navi, options, _, _ref, _results;
+  _ref = Navi.list;
+  _results = [];
+  for (_ in _ref) {
+    navi = _ref[_];
+    options = navi.params;
+    if (navi.value) {
+      cmd = "" + navi.key + "=" + navi.value;
+      if (options.is_cookie) {
+        expire = new Date().advance(OPTION.cookie.expire);
+        _results.push(document.cookie = "" + cmd + "; expires=" + (expire.toGMTString()) + "; path=/");
+      } else {
+        _results.push(void 0);
+      }
+    } else {
+      _results.push(void 0);
+    }
+  }
+  return _results;
+};
+
+Navi.to_hash = function(append) {
+  var list, location, navi, scanner, _, _ref;
+  list = {};
+  scanner = function(location, navi) {
+    var cmd;
+    if (navi.value) {
+      cmd = "" + navi.key + "=" + navi.value;
+      if (location != null) {
+        list[location] || (list[location] = []);
+        return list[location].push(cmd);
+      }
+    }
+  };
+  _ref = Navi.list;
+  for (_ in _ref) {
+    navi = _ref[_];
+    scanner(navi.params.location, navi);
+  }
+  for (location in append) {
+    navi = append[location];
+    scanner(location, navi);
+  }
+  return list;
+};
+
+Navi.to_url = function(append) {
+  var hash;
+  hash = Navi.to_hash(append);
+  return "";
+};
 
 Navi.popstate = function() {
   var navi, _i, _len, _ref, _results;
@@ -2654,19 +2862,19 @@ ArrayNavi = (function(_super) {
   };
 
   ArrayNavi.prototype.choice = function() {
-    return _.find(this.select, (function(_this) {
+    return _.assign({}, _.find(this.select, (function(_this) {
       return function(o) {
         return o.val === _this.value[0];
       };
-    })(this));
+    })(this)));
   };
 
   ArrayNavi.prototype.choices = function() {
     return _.map(this.value, (function(_this) {
       return function(value) {
-        return _.find(_this.select, function(o) {
+        return _.assign({}, _.find(_this.select, function(o) {
           return o.val === value;
-        });
+        }));
       };
     })(this));
   };
@@ -2692,20 +2900,74 @@ PageNavi = (function(_super) {
     def.options.current_type = Number;
     (_base = def.options).per || (_base.per = 1);
     PageNavi.__super__.constructor.apply(this, arguments);
+    this.nop = function(target, list) {
+      return list;
+    };
     this.filters = [];
     this.pagers = [];
+    this.filter_action = (function(_this) {
+      return function() {
+        if (_this.by_key != null) {
+          _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
+        }
+        return _this.pager_action();
+      };
+    })(this);
+    this.pager_action = (function(_this) {
+      return function() {
+        var list;
+        if (_this.list_by_filter != null) {
+          list = _this.do_filters(_this.list_by_filter, _this.pagers);
+          if ((_this.to_key != null) && list) {
+            eval("_this.scope." + _this.to_key + " = list");
+          }
+        }
+        return _this._move();
+      };
+    })(this);
   }
+
+  PageNavi.prototype.start = function() {
+    var key, _, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
+    _ref = this.filters;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      _ref1 = _ref[_i], key = _ref1[0], _ = _ref1[1];
+      this.scope.$watch(key, this.filter_action);
+    }
+    _ref2 = this.pagers;
+    for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+      _ref3 = _ref2[_j], key = _ref3[0], _ = _ref3[1];
+      this.scope.$watch(key, this.pager_action);
+    }
+    return this.filter_action();
+  };
 
   PageNavi.prototype.do_filters = function(list, filters) {
     var filter, target, target_key, _i, _len, _ref;
     for (_i = 0, _len = filters.length; _i < _len; _i++) {
       _ref = filters[_i], target_key = _ref[0], filter = _ref[1];
       target = this.scope.$eval(target_key);
-      if (target) {
+      if (target && filter) {
         list = filter(target, list);
       }
     }
     return list;
+  };
+
+  PageNavi.prototype.filter_by = function(by_key) {
+    return this.by_key = by_key;
+  };
+
+  PageNavi.prototype.filter_to = function(to_key) {
+    return this.to_key = to_key;
+  };
+
+  PageNavi.prototype.filter = function(key, func) {
+    return this.filters.push([key, func]);
+  };
+
+  PageNavi.prototype.pager = function(key, func) {
+    return this.pagers.push([key, func]);
   };
 
   PageNavi.prototype.paginate = function(page_per_key, func) {
@@ -2724,51 +2986,6 @@ PageNavi = (function(_super) {
         return list;
       };
     })(this));
-  };
-
-  PageNavi.prototype.pager = function(key, func) {
-    this.scope.$watch(key, (function(_this) {
-      return function() {
-        var list;
-        if (_this.list_by_filter != null) {
-          list = _this.do_filters(_this.list_by_filter, _this.pagers);
-          if ((_this.to_key != null) && list) {
-            eval("_this.scope." + _this.to_key + " = list");
-          }
-        }
-        return _this._move();
-      };
-    })(this));
-    if (func) {
-      return this.pagers.push([key, func]);
-    }
-  };
-
-  PageNavi.prototype.filter_by = function(by_key) {
-    return this.by_key = by_key;
-  };
-
-  PageNavi.prototype.filter_to = function(to_key) {
-    return this.to_key = to_key;
-  };
-
-  PageNavi.prototype.filter = function(key, func) {
-    this.scope.$watch(key, (function(_this) {
-      return function() {
-        var list;
-        if (_this.by_key != null) {
-          _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
-          list = _this.do_filters(_this.list_by_filter, _this.pagers);
-          if ((_this.to_key != null) && list) {
-            eval("_this.scope." + _this.to_key + " = list");
-          }
-        }
-        return _this._move();
-      };
-    })(this));
-    if (func) {
-      return this.filters.push([key, func]);
-    }
   };
 
   PageNavi.prototype.hide = function() {
@@ -2819,7 +3036,7 @@ PageNavi = (function(_super) {
     _results1 = [];
     for (key in show) {
       is_show = show[key];
-      item = _.extend({}, _.find(this.select, function(o) {
+      item = _.assign({}, _.find(this.select, function(o) {
         return o.val === n[key];
       }));
       item || (item = {
@@ -2879,7 +3096,7 @@ POOL = function($scope, $filter, $timeout) {
     })(this));
   };
   $scope.pool_nolimit = pool_button;
-  $scope.pool = _.debounce(pool_button, message_first, {
+  $scope.pool_hand = _.debounce(pool_button, message_first, {
     leading: true,
     trailing: false
   });
@@ -3182,10 +3399,73 @@ TOKEN_INPUT = function($scope) {
   };
   return _.delay(doIt, 1000);
 };
-var MODULE, k, set_key, v, _ref;
+var MODULE, font, fontname, game, k, msg, o, order, ordername, pixels, pl, plname, power, powername, row, rowname, set_key, style, styles, v, width, widthname, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
+
+GIJI.msg_styles = [];
+
+_ref = [true, false];
+for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+  pl = _ref[_i];
+  _ref1 = OPTION.selectors.power;
+  for (power in _ref1) {
+    powername = _ref1[power];
+    _ref2 = OPTION.selectors.row;
+    for (row in _ref2) {
+      rowname = _ref2[row];
+      _ref3 = OPTION.selectors.order;
+      for (order in _ref3) {
+        ordername = _ref3[order];
+        o = {
+          group: rowname,
+          power: power,
+          order: order,
+          row: row,
+          pl: pl
+        };
+        plname = pl ? "" : "/**/ close";
+        msg = _.compact(_.uniq([power, order, row, !pl ? "no-player" : void 0]));
+        o.val = msg.join("_");
+        o.name = "" + ordername + " " + powername + " " + plname;
+        GIJI.msg_styles.push(o);
+      }
+    }
+  }
+}
+
+GIJI.styles = {};
+
+_ref4 = GIJI.style_groups;
+for (game in _ref4) {
+  styles = _ref4[game];
+  GIJI.styles[game] = [];
+  for (_j = 0, _len1 = styles.length; _j < _len1; _j++) {
+    style = styles[_j];
+    _ref5 = OPTION.selectors.font;
+    for (font in _ref5) {
+      fontname = _ref5[font];
+      _ref6 = OPTION.selectors.width;
+      for (width in _ref6) {
+        widthname = _ref6[width];
+        pixels = OPTION.css.h1.widths[width];
+        o = {
+          font: font,
+          width: width,
+          pixel: "w" + pixels
+        };
+        for (k in style) {
+          v = style[k];
+          o[k] = v;
+        }
+        o.val = "" + style.val + "_" + width + "_" + font;
+        o.name = "" + style.group + " " + fontname + " " + widthname;
+        GIJI.styles[game].push(o);
+      }
+    }
+  }
+}
 
 set_key = function(obj) {
-  var k, v, _results;
+  var _results;
   if (obj == null) {
     return;
   }
@@ -3210,103 +3490,18 @@ if (SOW.maskstates != null) {
 }
 
 if (SOW_RECORD.CABALA.events != null) {
-  _ref = SOW.events;
-  for (k in _ref) {
-    v = _ref[k];
+  _ref7 = SOW.events;
+  for (k in _ref7) {
+    v = _ref7[k];
     v.id = SOW_RECORD.CABALA.events.indexOf(k);
     v.key = k;
   }
 }
 
 MODULE = function($scope, $filter, $sce, $http, $timeout) {
-  var anchor, anchor_preview, background, id_num, link, link_regexp, link_regexp_g, random, random_preview, space, uri_to_link;
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
-  background = function(log) {
-    var _ref1;
-    if (!log) {
-      return log;
-    }
-    if ((_ref1 = $scope.modes) != null ? _ref1.player : void 0) {
-      return log.replace(/(\/\*)(.*?)(\*\/|$)/g, '<em>$1$2$3</em>');
-    } else {
-      return log.replace(/(\/\*)(.*?)(\*\/|$)/g, '<span>$1 B.G $3</span>');
-    }
-  };
-  anchor = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
-      return "<a href_eval=\"popup(" + turn + ",'" + a + "')\" class=\"mark\">&gt;&gt;" + id + "</a>";
-    });
-  };
-  anchor_preview = function(log) {
-    return log;
-  };
-  random = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
-      return "<a class=\"mark\" href_eval=\"inner('" + cmd + "','" + val + "')\">" + val + "</a>";
-    });
-  };
-  random_preview = function(log) {
-    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
-      return "<a class=\"mark\" href_eval=\"inner('" + val + "','？')\">" + val + "</a>";
-    });
-  };
-  link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
-  link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
-  id_num = 0;
-  uri_to_link = _.memoize(function(uri) {
-    var host, path, protocol, _ref1;
-    id_num++;
-    _ref1 = uri.match(link_regexp), uri = _ref1[0], protocol = _ref1[1], host = _ref1[2], path = _ref1[3];
-    return "<span class=\"badge\" href_eval=\"external('link_" + id_num + "','" + uri + "','" + protocol + "','" + host + "','" + path + "')\">LINK - " + protocol + "</span>";
-  });
-  link = function(log) {
-    var text, uri, uris, _i, _len;
-    if (!log) {
-      return log;
-    }
-    text = log.replace(/\s|<br>/g, ' ').stripTags();
-    uris = text.match(link_regexp_g);
-    if (uris) {
-      for (_i = 0, _len = uris.length; _i < _len; _i++) {
-        uri = uris[_i];
-        log = log.replace(uri, uri_to_link(uri));
-      }
-    }
-    return log;
-  };
-  space = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset) {
-      var nbsps;
-      s1 || (s1 = "");
-      nbsps = s2.replace(/\ /g, '&nbsp;');
-      return "" + s1 + nbsps;
-    });
-  };
-  $scope.preview_decolate = function(log) {
-    if (log) {
-      return $sce.trustAsHtml(space(background(anchor_preview(link(random_preview(log))))));
-    } else {
-      return null;
-    }
-  };
-  $scope.text_decolate = function(log) {
-    if (log) {
-      return $sce.trustAsHtml(space(background(anchor(link(random(log))))));
-    } else {
-      return null;
-    }
-  };
   $scope.$watch('title', function(value, oldVal) {
     return $('title').text(value);
   });
@@ -3315,9 +3510,9 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     return $scope.adjust();
   };
   $scope.img_csid_cid = function(csid_cid) {
-    var cid, csid, _ref1;
+    var cid, csid, _ref8;
     if (csid_cid != null) {
-      _ref1 = csid_cid.split('/'), csid = _ref1[0], cid = _ref1[1];
+      _ref8 = csid_cid.split('/'), csid = _ref8[0], cid = _ref8[1];
       return $scope.img_cid(csid, cid);
     } else {
       return $scope.img_cid(null, 'undef');
@@ -3372,6 +3567,7 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
   });
   TOKEN_INPUT($scope);
   HREF_EVAL($scope);
+  DECOLATE($scope, $sce);
   TIMER($scope);
   CARD($scope);
   CACHE($scope);
@@ -3388,9 +3584,9 @@ RAILS = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   var get, submit;
   win.cookies = $cookies;
   $scope.mode_cache = {
-    info: 'info_open_player',
-    memo: 'memo_all_open_last_player',
-    talk: 'talk_all_open_player'
+    info: 'info_open_last',
+    memo: 'memo_all_open_last',
+    talk: 'talk_all_open'
   };
   $scope.deploy_mode_common = function() {
     return $scope.mode_common = $scope.mode != null ? [
