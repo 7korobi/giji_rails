@@ -1,5 +1,5 @@
-@import url("/assets/color_white_box.css");
-@import url("/assets/application.css");
+@import url("/stylesheets/theme/color.whitebox.css");
+@import url("/stylesheets/application.css");
 
 table.SAY {
   border-collapse: separate;
