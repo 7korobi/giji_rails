@@ -8,12 +8,16 @@ HREF_EVAL = ($scope)->
       $scope.secret_is_open  = true
     $scope.$apply()
 
-  cancel_say = (queid)->
-    $scope.submit
-      cmd:   'cancel'
-      queid: queid
-      turn: $scope.event.turn
-      vid:  $scope.story.vid
+  cancel_say = _.memoize (queid)->
+    _.debounce ->
+      $scope.submit
+        cmd:   'cancel'
+        queid: queid
+        turn: $scope.event.turn
+        vid:  $scope.story.vid
+    , 25000, 
+      leading: true
+      trailing: false
 
   inner = (cmd, val)->
     item = $(href_eval_event.target)
@@ -21,7 +25,6 @@ HREF_EVAL = ($scope)->
       item.html("#{val} ⇠ #{cmd}")
     else
       item.html("#{val}")
-
 
   external = (id, uri, protocol, host, path)->
     item = _.find $scope.anchors, (log)->
