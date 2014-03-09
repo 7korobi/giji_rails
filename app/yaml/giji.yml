@@ -59,381 +59,242 @@ link:
   wiki:     http://melon-cirrus.sakura.ne.jp/wiki/
   scedure:  http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD
 
+style_groups:
+  pan:
+  - val: juna
+    group: 審問
+    item:  box-msg
+    color: white
+    theme: juna
+
+  - val: sow
+    group: 物語
+    item:  box-msg
+    color: white
+    theme: sow
+
+  giji:
+  - val: cinema
+    group: 煉瓦
+    item:  speech
+    color: white
+    theme: cinema
+
+  - val: wa
+    group: 和の国
+    item:  speech
+    color: white
+    theme: wa
+
+  - val: star
+    group: 蒼穹
+    item:  speech
+    color: black
+    theme: star
+
+  - val: night
+    group: 月夜
+    item:  speech
+    color: black
+    theme: night
+
+
 modes:
-- val: info_open
-  name: 情報 - BG close
-  group: 情報と名簿
-  form: [action]
-  regexp: info
-  face: info
-  view: open
-  open: true
+  - val: info_all_open
+    name: 設定と情報
+    group: 情報
+    form: [action]
+    regexp: info_all_open
+    face: info
+    view: all
+    open: true
 
-- val: info_open_player
-  name: 情報
-  group: 情報と名簿
-  form: [action]
-  regexp: info
-  face: info
-  view: open
-  open: true
-  player: true
+  - val: info_all
+    name: 進行状況
+    group: 情報
+    form: [action]
+    regexp: info_all
+    face: info
+    view: all
 
-- val: memo_all_open
-  name: メモ履歴-全部 - BG close
-  group: メモ履歴
-  form: [entry, action, memo]
-  regexp: memo_all
-  face: memo
-  view: all
-  open: true
+  - val: info_open_last
+    name: 村の設定
+    group: 情報
+    form: []
+    regexp: info_open_last
+    face: info
+    view: open
+    open: true
+    last: true
 
-- val: memo_open
-  name: メモ履歴-公開 - BG close
-  group: メモ履歴
-  form: [entry, action, memo]
-  regexp: memo_open
-  face: memo
-  view: open
-  open: true
+  - val: memo_all_open
+    name: メモ履歴-全部
+    group: メモ履歴
+    form: [entry, action, memo]
+    regexp: memo_all
+    face: memo
+    view: all
+    open: true
 
-- val: memo_all_open_player
-  name: メモ履歴-全部
-  group: メモ履歴
-  form: [entry, action, memo]
-  regexp: memo_all
-  face: memo
-  view: all
-  open: true
-  player: true
-
-- val: memo_open_player
-  name: メモ履歴-公開
-  group: メモ履歴
-  form: [entry, action, memo]
-  regexp: memo_open
-  face: memo
-  view: open
-  open: true
-  player: true
+  - val: memo_open
+    name: メモ履歴-公開
+    group: メモ履歴
+    form: [entry, action, memo]
+    regexp: memo_open
+    face: memo
+    view: open
+    open: true
 
 
-- val: memo_all_open_last
-  name: メモ-全部 - BG close
-  group: メモ
-  form: [entry, action, memo]
-  regexp: memo_all
-  face: memo
-  view: all
-  open: true
-  last: true
+  - val: memo_all_open_last
+    name: メモ-全部
+    group: メモ
+    form: [entry, action, memo]
+    regexp: memo_all
+    face: memo
+    view: all
+    open: true
+    last: true
 
-- val: memo_open_last
-  name: メモ-公開 - BG close
-  group: メモ
-  form: [entry, action, memo]
-  regexp: memo_open
-  face: memo
-  view: open
-  open: true
-  last: true
-
-- val: memo_all_open_last_player
-  name: メモ-全部
-  group: メモ
-  form: [entry, action, memo]
-  regexp: memo_all
-  face: memo
-  view: all
-  open: true
-  last: true
-  player: true
-
-- val: memo_open_last_player
-  name: メモ-公開
-  group: メモ
-  form: [entry, action, memo]
-  regexp: memo_open
-  face: memo
-  view: open
-  open: true
-  last: true
-  player: true
+  - val: memo_open_last
+    name: メモ-公開
+    group: メモ
+    form: [entry, action, memo]
+    regexp: memo_open
+    face: memo
+    view: open
+    open: true
+    last: true
 
 
-- val: talk_all
-  name: 秘密議事全部 - BG close
-  group: 秘密議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all
-  face: talk
-  view: all
+  - val: talk_all
+    name: 秘密議事全部
+    group: 秘密議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_all
+    face: talk
+    view: all
 
-- val: talk_think
-  name: 独り言 - BG close
-  group: 秘密議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think
-  face: talk
-  view: think
+  - val: talk_think
+    name: 独り言
+    group: 秘密議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_think
+    face: talk
+    view: think
 
-- val: talk_clan
-  name: 内緒話/狼/鳴/… - BG close
-  group: 秘密議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan
-  face: talk
-  view: clan
+  - val: talk_clan
+    name: 内緒話/狼/鳴/…
+    group: 秘密議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_clan
+    face: talk
+    view: clan
 
-- val: talk_all_last
-  name: 非公開の最後の言葉 - BG close
-  group: 非公開の最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all_last
-  face: talk
-  view: all
-  last: true
+  - val: talk_all_last
+    name: 非公開の最後の言葉全部
+    group: 非公開の最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_all_last
+    face: talk
+    view: all
+    last: true
 
-- val: talk_think_last
-  name: 最後の言葉-独り言 - BG close
-  group: 非公開の最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think_last
-  face: talk
-  view: think
-  last: true
+  - val: talk_think_last
+    name: 最後の言葉-独り言
+    group: 非公開の最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_think_last
+    face: talk
+    view: think
+    last: true
 
-- val: talk_clan_last
-  name: 最後の言葉-内緒話/狼/鳴/… - BG close
-  group: 非公開の最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan_last
-  face: talk
-  view: clan
-  last: true
-
-
-- val: talk_all_player
-  name: 秘密議事全部
-  group: 秘密議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all
-  face: talk
-  view: all
-  player: true
-
-- val: talk_think_player
-  name: 独り言
-  group: 秘密議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think
-  face: talk
-  view: think
-  player: true
-
-- val: talk_clan_player
-  name: 内緒話/狼/鳴/…
-  group: 秘密議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan
-  face: talk
-  view: clan
-  player: true
-
-- val: talk_all_last_player
-  name: 非公開の最後の言葉全部
-  group: 非公開の最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all_last
-  face: talk
-  view: all
-  last: true
-  player: true
-
-- val: talk_think_last_player
-  name: 最後の言葉-独り言
-  group: 非公開の最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think_last
-  face: talk
-  view: think
-  last: true
-  player: true
-
-- val: talk_clan_last_player
-  name: 最後の言葉-内緒話/狼/鳴/…
-  group: 非公開の最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan_last
-  face: talk
-  view: clan
-  last: true
-  player: true
+  - val: talk_clan_last
+    name: 最後の言葉-内緒話/狼/鳴/…
+    group: 非公開の最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_clan_last
+    face: talk
+    view: clan
+    last: true
 
 
-- val: talk_all_open
-  name: 議事全部 - BG close
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all_open
-  face: talk
-  view: all
-  open: true
+  - val: talk_all_open
+    name: 議事全部
+    group: 議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_all_open
+    face: talk
+    view: all
+    open: true
 
-- val: talk_think_open
-  name: 公開議事録+独り言 - BG close
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think_open
-  face: talk
-  view: think
-  open: true
+  - val: talk_think_open
+    name: 公開議事録+独り言
+    group: 議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_think_open
+    face: talk
+    view: think
+    open: true
 
-- val: talk_clan_open
-  name: 公開議事録+内緒話/狼/鳴/… - BG close
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan_open
-  face: talk
-  view: clan
-  open: true
+  - val: talk_clan_open
+    name: 公開議事録+内緒話/狼/鳴/…
+    group: 議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_clan_open
+    face: talk
+    view: clan
+    open: true
 
-- val: talk_open
-  name: 公開議事録 - BG close
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_open
-  face: talk
-  view: open
-  open: true
-
-
-- val: talk_all_open_last
-  name: 最後の言葉全部 - BG close
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all_open_last
-  face: talk
-  view: all
-  last: true
-  open: true
+  - val: talk_open
+    name: 公開議事録
+    group: 議事録
+    form: [entry, action, open, secret, silent]
+    regexp: talk_open
+    face: talk
+    view: open
+    open: true
 
 
-- val: talk_think_open_last
-  name: 最後の言葉-公開or独り言 - BG close
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think_open_last
-  face: talk
-  view: think
-  last: true
-  open: true
+  - val: talk_all_open_last
+    name: 最後の言葉全部
+    group: 最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_all_open_last
+    face: talk
+    view: all
+    last: true
+    open: true
 
-- val: talk_clan_open_last
-  name: 最後の言葉-公開or内緒話/狼/鳴/… - BG close
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan_open_last
-  face: talk
-  view: clan
-  last: true
-  open: true
+  - val: talk_think_open_last
+    name: 最後の言葉-公開or独り言
+    group: 最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_think_open_last
+    face: talk
+    view: think
+    last: true
+    open: true
 
-- val: talk_open_last
-  name: 最後の言葉-公開 - BG close
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_open_last
-  face: talk
-  view: open
-  last: true
-  open: true
+  - val: talk_clan_open_last
+    name: 最後の言葉-公開or内緒話/狼/鳴/…
+    group: 最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_clan_open_last
+    face: talk
+    view: clan
+    last: true
+    open: true
 
-
-- val: talk_all_open_player
-  name: 議事全部
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all_open
-  face: talk
-  view: all
-  open: true
-  player: true
-
-- val: talk_think_open_player
-  name: 公開議事録+独り言
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think_open
-  face: talk
-  view: think
-  open: true
-  player: true
-
-- val: talk_clan_open_player
-  name: 公開議事録+内緒話/狼/鳴/…
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan_open
-  face: talk
-  view: clan
-  open: true
-  player: true
-
-- val: talk_open_player
-  name: 公開議事録
-  group: 議事録
-  form: [entry, action, open, secret, silent]
-  regexp: talk_open
-  face: talk
-  view: open
-  open: true
-  player: true
-
-
-- val: talk_all_open_last_player
-  name: 最後の言葉全部
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_all_open_last
-  face: talk
-  view: all
-  last: true
-  open: true
-  player: true
-
-- val: talk_think_open_last_player
-  name: 最後の言葉-公開or独り言
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_think_open_last
-  face: talk
-  view: think
-  last: true
-  open: true
-  player: true
-
-- val: talk_clan_open_last_player
-  name: 最後の言葉-公開or内緒話/狼/鳴/…
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_clan_open_last
-  face: talk
-  view: clan
-  last: true
-  open: true
-  player: true
-
-- val: talk_open_last_player
-  name: 最後の言葉-公開
-  group: 最後の言葉
-  form: [entry, action, open, secret, silent]
-  regexp: talk_open_last
-  face: talk
-  view: open
-  last: true
-  open: true
-  player: true
+  - val: talk_open_last
+    name: 最後の言葉-公開
+    group: 最後の言葉
+    form: [entry, action, open, secret, silent]
+    regexp: talk_open_last
+    face: talk
+    view: open
+    last: true
+    open: true
 
 csids:
   default:

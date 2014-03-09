@@ -1,3 +1,47 @@
+GIJI.msg_styles = []
+for pl in [true, false] 
+  for power, powername of OPTION.selectors.power
+    for row, rowname of OPTION.selectors.row
+      for order, ordername of OPTION.selectors.order
+        o = 
+          group: rowname
+          power: power
+          order: order
+          row: row 
+          pl: pl 
+
+        plname = if pl
+          ""
+        else
+          "/**/ close"
+        msg = _.compact _.uniq [
+          power
+          order
+          row
+          "no-player" unless pl
+        ]
+        o.val = msg.join("_")
+        o.name = "#{ordername} #{powername} #{plname}"
+        GIJI.msg_styles.push o
+
+GIJI.styles = {}
+for game, styles of GIJI.style_groups
+  GIJI.styles[game] = []
+  for style in styles
+    for font, fontname of OPTION.selectors.font
+      for width, widthname of OPTION.selectors.width
+        pixels = OPTION.css.h1.widths[width]
+        o =
+          font: font
+          width: width
+          pixel: "w#{pixels}"
+
+        for k, v of style
+          o[k] = v
+        o.val = "#{style.val}_#{width}_#{font}"
+        o.name = "#{style.group} #{fontname} #{widthname}"
+        GIJI.styles[game].push o
+
 set_key = (obj)->
   return unless obj?
   for k,v of obj
@@ -15,79 +59,11 @@ if SOW_RECORD.CABALA.events?
     v.id  = SOW_RECORD.CABALA.events.indexOf k
     v.key = k
 
+
 MODULE = ($scope, $filter, $sce, $http, $timeout)->
   $scope.head = head;
   $scope.win  = win;
   $scope.link = GIJI.link
-
-  background = (log)->
-    return log unless log
-    if $scope.modes?.player
-      log.replace ///
-        (/\*)(.*?)(\*/|$)
-      ///g,'<em>$1$2$3</em>'
-    else
-      log.replace ///
-        (/\*)(.*?)(\*/|$)
-      ///g,'<span>$1 B.G $3</span>'
-
-  anchor = (log)->
-    return log unless log
-    log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """<a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a>"""
-
-  anchor_preview = (log)->
-    log
-
-  random = (log)->
-    return log unless log
-    log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<a class="mark" href_eval="inner('#{cmd}','#{val}')">#{val}</a>"""
-
-  random_preview = (log)->
-    log.replace /\[\[([^\[]+)\]\]/g, (key, val)->
-      """<a class="mark" href_eval="inner('#{val}','？')">#{val}</a>"""
-
-  link_regexp = ///
-      (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
-  ///
-  link_regexp_g = ///
-      (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
-  ///g
-
-  id_num = 0
-  uri_to_link = _.memoize (uri)->
-    id_num++
-    [uri, protocol, host, path] = uri.match link_regexp
-    """<span class="badge" href_eval="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
-
-  link = (log)->
-    return log unless log
-    text = log.replace(/\s|<br>/g, ' ').stripTags()
-    uris = text.match link_regexp_g
-    if uris
-      for uri in uris
-        log = log.replace uri, uri_to_link uri
-    return log
-
-  space = (log)->
-    return log unless log
-    log.replace /(^|\n|<br>)(\ *)/gm, (full, s1, s2, offset)->
-      s1 ||= ""
-      nbsps = s2.replace /\ /g, '&nbsp;'
-      "#{s1}#{nbsps}"
-
-  $scope.preview_decolate = (log)->
-    if log
-      $sce.trustAsHtml space background anchor_preview link random_preview log
-    else
-      null
-
-  $scope.text_decolate = (log)->
-    if log
-      $sce.trustAsHtml space background anchor link random log
-    else
-      null
 
   $scope.$watch 'title', (value, oldVal)->
     $('title').text(value);
@@ -150,6 +126,7 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
 
   TOKEN_INPUT  $scope
   HREF_EVAL    $scope
+  DECOLATE $scope, $sce
   TIMER   $scope
   CARD    $scope
   CACHE   $scope
