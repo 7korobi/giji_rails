@@ -1,0 +1,204 @@
+.cinema {
+  .drag,
+  .outframe {
+    background-repeat: repeat;
+    background-position: right;
+    background-image: url("../images/bg/renga.png");
+  }
+
+  &.large-msg,
+  &.center-msg {
+    .outframe {
+      border-right: 3px double #863;
+      border-left : 3px double #863;
+    }
+  }
+
+  &.mini-msg,
+  &.game-msg,
+  &.right-msg {
+    .outframe {
+      border-left : 3px double #863;
+    }    
+  }
+
+  &.w770 {
+    #sayfilter{ padding-right: 4px; }
+    .contentframe {
+      background-image: url("../images/bg/film770.png");
+      background-repeat: repeat-y;
+      background-position: right;
+    }
+  }
+
+  &.w580 {
+    #sayfilter{ padding-right: 4px; }
+    .contentframe {
+      background-image: url("../images/bg/film580.png");
+      background-repeat: repeat-y;
+      background-position: right;
+    }
+  }
+
+  &.w458 {
+    #sayfilter{ padding-right: 6px; }
+    .contentframe {
+      background-image: url("../images/bg/film460.png");
+      background-repeat: repeat-y;
+      background-position: center;
+    }
+  }
+
+  @include border-theme-white(#444, #765);
+  @include vivid(#100, #664, #ccf);
+  @include main-theme(#000, #cb8, #664);
+
+  .insayfilter {
+    .paragraph {
+        border-width: 0 ;
+        background: #eed;
+        border-left:   2px solid #aa7;
+        border-right:  3px solid #863;
+    }
+    div, th, td {
+      color: #333;
+    }
+  }
+
+  .sayfilter_heading {
+    font-weight: bold;
+    background: #863;
+  }
+
+  .sayfilter_content .head,
+  .sayfilter_caption_enable {
+    background: #aa7;
+  }
+  .sayfilter_caption_disenable {
+    background: #888;
+    color: #444;
+  }
+  .sayfilter_heading,
+  .sayfilter_content .head,
+  .sayfilter_caption_enable,
+  .insayfilter .paragraph {
+            border-radius : 0.5em;
+         -o-border-radius : 0.5em;
+       -moz-border-radius : 0.5em;
+    -webkit-border-radius : 0.5em;
+  }
+
+  .sayfilter_content .head,
+  .sayfilter_caption_enable {
+            border-bottom-left-radius : 0;
+         -o-border-bottom-left-radius : 0;
+       -moz-border-radius-bottomleft  : 0;
+    -webkit-border-bottom-left-radius : 0;
+            border-bottom-right-radius : 0;
+         -o-border-bottom-right-radius : 0;
+       -moz-border-radius-bottomright  : 0;
+    -webkit-border-bottom-right-radius : 0;
+  }
+
+  .sayfilter_heading {
+            border-bottom-left-radius : 0;
+         -o-border-bottom-left-radius : 0;
+       -moz-border-radius-bottomleft  : 0;
+    -webkit-border-bottom-left-radius : 0;
+            border-top-left-radius : 0;
+         -o-border-top-left-radius : 0;
+       -moz-border-radius-topleft  : 0;
+    -webkit-border-top-left-radius : 0;
+  }
+
+  .sayfilter_content_enable    ,
+  .sayfilter_content_disenable ,
+  .sayfilter_content           ,
+  #lumpfilter ,
+  #lumpfilter input {
+    font-weight: normal;
+    width: 100%;
+  }
+
+  .sayfilter_content_enable    ,
+  .sayfilter_content_disenable ,
+  .sayfilter_button_lump {
+    border-bottom: 1px dotted #863;
+  }
+  .sayfilter_content_disenable {
+    background: #888;
+    color: #444;
+  }
+
+
+  .MAKER.guide,
+  .mes_maker,
+  .ADMIN.guide,
+  .mes_admin,
+  .INFONOM,
+  .INFOSP,
+  .INFOWOLF,
+  .info ,
+  .infosp ,
+  .infowolf {
+    border-width: 2px 0; 
+    border-style: dashed none;
+    border-color: #863;
+  }
+  .caution {
+    border-width: 2px 0; 
+    border-style: dashed none;
+    border-color: #ccc;
+  }
+  .action_nom,
+  .action {
+    border-style: dashed none dashed solid ;
+    border-color: #663;
+  }
+
+  .memo {
+    border-color: #664;
+    color: #000;
+  }
+  .memoleft {
+    border-color: #000;
+  }
+  .memoright {
+    border-color: #000;
+  }
+  .mesname {
+    @include line-bottom();
+    font-weight: bold;
+    background: transparent;
+    padding-top: 4px;
+  }
+
+  .msg{
+    border-right: solid 4px #333;
+    border-bottom: solid 2px #222;
+  }
+
+  .formpl_gm ,
+  .formpl_gm  textarea{
+    border-color: #660;
+    color: #ffa;
+    background-color: #100;
+  }
+
+  .toolbox,
+  body {
+    background: #764;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h2 {
+    background: #662;
+  }
+
+  h3 {
+    background: #224;
+  }  
+}

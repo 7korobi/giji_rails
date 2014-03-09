@@ -1,0 +1,107 @@
+@mixin font($size-base, $family) {
+  rt,
+  sup,
+  sub {
+    font-size: $size-base * 0.7;
+  }
+
+  .mesname,
+  body {
+    font-family: $family;
+    font-size: $size-base;
+    line-height: $size-base * 1.40;
+  }
+  .badge {
+    font-size: $size-base;
+    line-height: $size-base * 1.20;
+  }
+
+  .insayfilter .types {
+    width: $size-base * 4.00;
+  }
+
+  .drag_head {
+    margin-top: - $size-base * 0.80;
+  }
+
+  .mesname {
+    margin: 0 0 4px 0;
+    padding: 0 0 2px 0;
+    font-weight: bold;
+    line-height: $size-base * 1.80;
+  }
+
+  #clipboard,
+  #cliptext,
+  .action_type legend,
+  .action_type,
+  .mes_date,
+  .small,
+  .note {
+    font-size: $size-base * 0.80;
+    line-height: $size-base * 1.00;
+  }
+}
+
+.large-font {
+  @include font(21px, serif);
+}
+
+.novel-font {
+  @include font(15px, serif);
+}
+
+.std-font {
+  @include font(15px, sans-serif);
+}
+
+.small-font {
+  @include font(12px, sans-serif);
+}
+
+
+input {
+  padding: 4px 0px;
+}
+
+address {
+  font-size: $font-size-h6;
+}
+
+#tab textarea,
+.sayfilter_heading,
+.insayfilter .small,
+.insayfilter .note,
+.chrblank, 
+.chrM, 
+.chrF {
+  font-size: $font-size-base * 0.80;
+  line-height: $font-size-base * 1.10;
+}
+
+.form-inline,
+.insayfilter,
+code {
+  font-size: $font-size-base;
+  line-height: $font-size-base * 1.20;
+}
+
+.choice,
+.board td a,
+.board td,
+.board th {
+  font-size: $font-size-base;
+  line-height: $font-size-base * 1.50;
+}
+
+.click {
+  font-size: $font-size-base + 10px;
+}
+
+.say {
+  vertical-align: middle;
+}
+
+
+
+

@@ -11,6 +11,15 @@
   p.head.text(ng-bind-html="story.comment")
 
 .mes_maker.story
+  dl
+    dt.text
+      | オプション設定
+    dd
+      ul.text
+        li(ng-repeat="option_help in story.option_helps")
+          | {{option_help}}
+
+.mes_maker.story
   dl.dl-horizontal
     dt 更新時間
     dd
@@ -29,8 +38,8 @@
     dt 人数
     dd
       | {{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）
-    dt(ng-show="story.is_wbbs") 最低人数
-    dd(ng-show="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
+    dt(ng-if="story.is_wbbs") 最低人数
+    dd(ng-if="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
     dt 投票方法
     dd
       | {{story.type.vote_text.CAPTION}}
@@ -51,10 +60,3 @@
     .control-group
       code 破棄役職
       | ： {{story.card.discard_names}}
-
-.mes_maker.story
-  ul
-    li.text(ng-repeat="option_help in story.option_helps")
-      | {{option_help}}
-
-.formpl_gm(template="navi/potofs")

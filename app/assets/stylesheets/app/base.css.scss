@@ -1,11 +1,21 @@
-$font-family-base:       serif;
+$font-family-base:       sans-serif;
 $font-family-sans-serif: sans-serif;
 $font-family-serif:      serif;
 $font-family-monospace:  monospace;
-$screen-xs: 320px;
-$screen-sm: 320px;
-$screen-md: 320px;
-$screen-lg: 320px;
+
+$link-color: #333;
+$link-hover-color: #043;
+
+$font-size-h6: 12px;
+
+$border-radius-small:  6px;
+$border-radius-base:   9px;
+$border-radius-large: 12px;
+
+$screen-xs: 360px;
+$screen-sm: 458px;
+$screen-md: 580px;
+$screen-lg: 770px;
 
 
 // Core variables and mixins
@@ -21,7 +31,7 @@ $screen-lg: 320px;
 @import "bootstrap/type";
 @import "bootstrap/code";
 @import "bootstrap/grid";
-@import "bootstrap/tables";
+// @import "bootstrap/tables";
 @import "bootstrap/forms";
 @import "bootstrap/buttons";
 
@@ -58,21 +68,77 @@ $screen-lg: 320px;
 @import "bootstrap/utilities";
 @import "bootstrap/responsive-utilities";
 
+@import "lib/lib";
+@import "lib/box";
+@import "lib/font";
+@import "lib/giji";
+@import "lib/layout";
+@import "lib/message";
+@import "lib/player";
+@import "lib/table";
+@import "lib/theme";
+@import "lib/width";
+@import "lib/win";
+
+@import "theme/cinema";
+@import "theme/wa";
+
+@import "theme/star";
+@import "theme/night";
+
+.btn-default {
+  color: $link-color !important;
+}
+
+.potofs td {
+  padding: 1px 3px;
+}
 
 .inverse {
   background-color: #222;
   color: $text-color;
 }
 
-.badge {
-  line-height: 1.2em;
-  font-size: large;
+.action p {
+  overflow: hidden;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+
+.text .mark,
+.pagenavi .mark {
+  display: inline-block;
+}
+
+.mark {
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  padding: 5px 0.25em;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.pagenavi ul {
+  border-radius: 9px;
+  padding: 0.10em 0.25em;
+  font-weight: bold;
+  width: 100%;
+
+  color: #000;
+  background-color: rgba(255,255,255,0.75);
+}
+
+.footnote,
+.toppage .paragraph,
+.accordion dt,
+.accordion dd {
+  background-color: rgba(0,0,0,0.5);
 }
 
 body {
   color: $text-color;
-  font-size: $font-size-base;
-  line-height: $line-height-base;
+  padding: 0;
 }
 
 h2,
@@ -91,6 +157,7 @@ a {
 code a,
 .btn a {
   color: $gray;
+  background-color: rgba(255,255,255,0.5);
 }
 
 ul.unstyled, ol.unstyled {

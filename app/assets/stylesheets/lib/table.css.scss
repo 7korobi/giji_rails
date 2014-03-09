@@ -1,0 +1,225 @@
+@mixin vivid($black-color, $hover-color, $white-color){
+  .board,
+  .choice .board {
+    background-color: $black-color;
+  }
+
+  .vindex,
+  .table {
+    background-color: $black-color;
+  }
+
+  // Hover effect
+  //
+  // Placed here since it has to come after the potential zebra striping
+
+  .potofs,
+  .table {
+    > tbody > tr:hover {
+      > td,
+      > th {
+        background-color: $hover-color;
+      }
+    }
+  }
+
+  // Zebra-striping
+  //
+  // Default zebra-stripe styles (alternating gray and transparent backgrounds)
+
+  .table-striped {
+    > tbody > tr:nth-child(odd) {
+      > td,
+      > th {
+        background-color: $black-color;
+      }
+    }
+  }
+
+  .turnnavi    ,
+  .pagenavi    ,
+  .infonologin ,
+  .row_all     {
+    color: $white-color;
+    background-color: $black-color;
+    font-weight: bold;
+  }
+}
+
+@mixin border-theme-black($back-color, $gray-color, $border-color){
+  .choice {
+    background-color: $back-color;
+    border-bottom: 1px solid $gray-color !important;
+    .board{
+      border-top: 3px double $border-color;
+      th{
+        border-bottom: 1px dashed $gray-color;
+      }
+      td{
+        border-top:  1px dashed $gray-color;
+        border-left: 1px solid  $border-color;
+      }
+    }
+  }
+  .no_choice {
+    border-bottom: 1px dashed $gray-color;
+  }
+
+  .board {
+    border: 1px solid $border-color;
+  }
+
+
+  .vindex,
+  .table {
+    border: 1px solid;
+    border-collapse: collapse; /* CSS2? */
+    td, th {
+      border: 1px solid $back-color;
+      border-left: 1px dashed $back-color;
+      border-right: 1px dashed $back-color;
+
+    }
+    > thead > tr > th {
+      vertical-align: bottom;
+      border-bottom: 2px solid $border-color;
+    }
+    // Remove top border from thead by default
+    > caption + thead,
+    > colgroup + thead,
+    > thead:first-child {
+      > tr:first-child {
+        > th,
+        > td {
+          border-top: 0;
+        }
+      }
+    }
+    // Account for multiple tbody instances
+    > tbody + tbody {
+      border-top: 2px solid $border-color;
+    }
+  }
+}
+
+
+@mixin border-theme-white($gray-color, $border-color){
+  .choice {
+    background-color: $gray-color;
+    border-bottom: 1px solid $gray-color !important;
+    .board{
+      border-top: 3px double $border-color;
+      th{
+        border-bottom: 1px dashed $border-color;
+      }
+      td{
+        border-top:  1px dashed $border-color;
+        border-left: 1px solid  $border-color;
+      }
+    }
+  }
+  .no_choice {
+    border-bottom:1px dashed $border-color;
+  }
+
+  .board {
+    border: 1px solid $border-color;
+  }
+
+  .vindex,
+  .table {
+    border: 1px solid $border-color;
+    border-collapse: collapse; /* CSS2? */
+    td, th {
+      border: 1px solid $border-color;
+      border-left: 1px dashed $border-color;
+      border-right: 1px dashed $border-color;
+
+    }
+    > thead > tr > th {
+      vertical-align: bottom;
+      border-bottom: 2px solid $border-color;
+    }
+    // Remove top border from thead by default
+    > caption + thead,
+    > colgroup + thead,
+    > thead:first-child {
+      > tr:first-child {
+        > th,
+        > td {
+          border-top: 0;
+        }
+      }
+    }
+    // Account for multiple tbody instances
+    > tbody + tbody {
+      border-top: 2px solid $border-color;
+    }
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.table-condensed td {
+  line-height: 2ex;
+}
+
+.vindex,
+.potofs,
+.table {
+  margin: 0;
+  th {
+    font-weight: bold;
+  }
+}
+
+:not(.table-swipe) {
+  .potofs,
+  .table,
+  .vindex {
+    width: 100%;  
+  }
+}
+
+.table-swipe {
+  width: 100%;
+  margin-bottom: ($line-height-computed * 0.75);
+  overflow-y: hidden;
+  overflow-x: scroll;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  -webkit-overflow-scrolling: touch;
+
+  // Tighten up spacing
+  > .potofs,
+  > .table {
+    margin-bottom: 0;
+
+    // Ensure the content doesn't wrap
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th,
+        > td {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+
+// Table backgrounds
+//
+// Exact selectors below required to override `.table-striped` and prevent
+// inheritance to nested tables.
+
+// Generate the contextual variants
+@include table-row-variant('active', $table-bg-active);
+@include table-row-variant('success', $state-success-bg);
+@include table-row-variant('info', $state-info-bg);
+@include table-row-variant('warning', $state-warning-bg);
+@include table-row-variant('danger', $state-danger-bg);
+

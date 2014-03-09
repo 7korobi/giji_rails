@@ -30,17 +30,18 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
               div(ng-hide="f.is_preview")
                 p  参加する時のセリフ
                 textarea.form-control(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-init="text_valid(f)" ng-change="text_valid(f)")
+                .mark(ng-bind-html="error(f)")
   
-              a.btn.btn-default(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
-              a.btn.btn-default(ng-click="entry(f)") {{f.title}}
-              | {{f.count}}
+              p
+                a.btn.btn-default(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
+                a.btn.btn-default(ng-click="entry(f)") {{f.title}}
+                | {{f.count}}
 
-              select.form-control.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
+                select.form-control.input-small(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p
                 | {{f.caption}}
-              span(class="{{f.error}}" ng-bind-html="f.valid_text")
-              span(diary="f" ng-hide="f.is_preview")
-              .mark(ng-bind-html="error(f)")
+                span(class="{{f.error}}" ng-bind-html="f.valid_text")
+                span(diary="f" ng-hide="f.is_preview")
 
 
 

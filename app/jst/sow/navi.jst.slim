@@ -1,30 +1,28 @@
 #topviewer(ng-cloak)
-  #topframe.contentframe
-    .inframe.toppage.drag
-      .form-inline(template="navi/diary" name="手帳" navi="diary")
+  #topframe.drag
+    .contentframe.form-inline(template="navi/diary" name="手帳" navi="diary")
 
 .sayfilter#sayfilter(adjust="left")
-  h4.sayfilter_heading
+  .sayfilter_heading
     | {{story.name}}
   .insayfilter(navi="link" name="移動")
     .paragraph
-      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_caption_enable  他の章へ
       .sayfilter_content(template="navi/events")
 
   .insayfilter(navi="info" name="名簿")
-    .paragraph(ng-show="potofs")
+    .paragraph(ng-if="potofs")
       .sayfilter_content(template="navi/potofs_small")
 
-  .insayfilter(navi="page_filter" ng-show="page")
+  .insayfilter(navi="page_filter" ng-if="page")
     .paragraph
       table.sayfilter_content
         tr
           td
             select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
+  .sayfilter_heading.bottom
 
-  .insayfilter(adjust="full" navi="page" ng-show="page")
-    .paragraph
-      .sayfilter_content(template="navi/toolbox")
+  .toolbox(adjust="full" navi="page" ng-if="page" template="navi/toolbox")
 
 #buttons
   nav

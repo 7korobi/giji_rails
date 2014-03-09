@@ -1,0 +1,172 @@
+.formpl_gm,
+.img img {
+  margin-bottom: 4px;
+}
+
+.accordion dt,
+.accordion dd,
+.table th,
+.table td,
+.potofs th,
+.potofs td,
+.form_vmake,
+.toolbox,
+.drag_head,
+.paragraph,
+.footnote,
+.config_item,
+.MAKER, .mes_admin,
+.ADMIN, .mes_maker,
+.mesname,
+.action,
+li,
+p
+ {
+  text-align: left;
+}
+
+.drag_head .badge,
+.board .link,
+.commitbutton,
+.token-input,
+.pagenavi,
+.exevmake,
+.chrblank,
+.choice,
+body {
+  text-align: center;
+}
+
+input[type="number"],
+#checklist,
+#buttons,
+.css_changer,
+.config_item,
+.mes_date,
+.rolebox,
+.guide,
+.theme,
+.calc,
+h6,
+h6,
+address,
+address * {
+  text-align: right;
+}
+
+th.mark {
+  display: table-cell;
+}
+
+.table,
+.say .img,
+.board td {
+  vertical-align: top;
+}
+
+.board .choice th,
+.board .choice td,
+.table thead th {
+  vertical-align: bottom;
+}
+
+.btn,
+.calc,
+.rolebox,
+.chrM,
+.chrF,
+.chrblank {
+  white-space:nowrap;
+}
+
+.commitbutton {
+  display: inline;
+}
+
+hr,
+.chrlist,
+.clearboth {
+  clear: both; 
+}
+hr.invisible_hr { display: none; }
+
+.drag,
+.ajax {
+  position:absolute;
+}
+
+.sayfilter_heading {
+  margin:  0;
+  padding: 0;
+}
+
+.MAKER,
+.ADMIN {
+  .mes_date {
+    margin-right:  11px;    
+  }
+}
+
+.inframe {
+  .pagenavi {
+    padding-left: 8px;
+  }
+
+  .INFONOM,
+  .INFOSP,
+  .INFOWOLF,
+  .MAKER.guide,
+  .ADMIN.guide,
+  .info,
+  .infosp,
+  .infowolf,
+  .mes_maker,
+  .mes_admin,
+  .caution,
+  .action_bm,
+  .turnnavi,
+  .row_all,
+  .secret {
+    padding-left: 11px;
+    margin-bottom: 6px;
+  }
+  .log {
+    margin-bottom: 6px;
+  }
+}
+
+.outframe,
+.contentframe {
+  box-sizing: content-box;
+  -o-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+}
+
+.center-msg,
+.large-msg {
+  .outframe {
+    margin: 0 auto;
+    padding: 0px;
+  }
+}
+
+.mini-msg,
+.right-msg,
+.game-msg {
+  .outframe {
+    margin: 0 0 0 auto;
+    padding: 0px;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+body {
+  background-position: center;
+  overflow-x: hidden;
+}
+

@@ -1,0 +1,168 @@
+.night {
+  .drag {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  .outframe {
+    background-color: #000;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-image: url("../images/bg/moon.png");
+  }
+
+  &.large-msg,
+  &.center-msg {
+    .outframe {
+      background-position: right top;
+      border-right: 3px double #403;
+      border-left : 3px double #403;
+    }
+  }
+
+  &.mini-msg,
+  &.game-msg,
+  &.right-msg {
+    .outframe {
+      background-position: right top;
+      border-left: 3px double #403;
+    }    
+  }
+
+  &.w770 {
+    .contentframe {
+      background-image: url("../images/bg/film-wa770.png");
+      background-repeat: repeat-y;
+      background-position: right;
+    }
+  }
+
+  &.w580 {
+    .contentframe {
+      background-image: url("../images/bg/film-wa580.png");
+      background-repeat: repeat-y;
+      background-position: right;
+    }
+  }
+
+  &.w458 {
+    .contentframe {
+      background-image: url("../images/bg/film-wa460.png");
+      background-repeat: repeat-y;
+      background-position: center;
+    }
+  }
+
+  @include border-theme-black(#000, #55a, #224);
+  @include vivid(#100, #55a, #eed);
+  @include main-theme(#ffa, rgba(0,0,0, 0.33), #224);
+
+  .potofs {
+    thead,
+    tbody,
+    tr {
+      border-top: 1px solid #000;
+    }
+  }
+
+  .insayfilter {
+    .paragraph {
+      border-width: 0 ;
+      background: #000;
+    }
+    th, td, li {
+      background-color: rgba(255,255,255,0.1);
+    }
+  }
+
+  .sayfilter_heading {
+    font-weight: bold;
+    background: #444;
+  }
+
+  .sayfilter_content .head,
+  .sayfilter_caption_enable {
+    font-weight: normal;
+    margin: 3px 0 0 0 ;
+    padding: 1px;
+    background: #444;
+  }
+
+  .sayfilter_content_enable    ,
+  .sayfilter_content_disenable ,
+  .sayfilter_button_lump {
+    border-bottom: 1px dotted #863;
+    background: #000;
+  }
+
+  .MAKER.guide,
+  .mes_maker,
+  .ADMIN.guide,
+  .mes_admin,
+  .INFONOM,
+  .INFOSP,
+  .INFOWOLF,
+  .info ,
+  .infosp ,
+  .infowolf {
+    border-width: 3px 0; 
+    border-style: double none;
+  }
+
+  .MAKER.guide,
+  .mes_maker,
+  .ADMIN.guide,
+  .mes_admin {
+    border-color: #720;
+  }
+
+  .INFONOM,
+  .info {
+    border-color: #113;
+    background-color: #001;
+  }
+  .INFOSP,
+  .infosp {
+    border-color: #113;
+    background-color: #010;
+  }
+  .INFOWOLF,
+  .infowolf {
+    border-color: #113;
+    background-color: #100;
+  }
+  
+  .caution {
+    border-color: #ccc;
+    background-color: #111;
+  }
+  .memoleft {
+    border-color: #113;
+    background-color: #000 !important;
+  }
+  .memoright {
+    border-color: #113;
+  }
+
+  .formpl_gm ,
+  .formpl_gm  textarea{
+    border-color: #444;
+    color: #ffa;
+    background-color: #100;
+  }
+
+  .toolbox,
+  body {
+    background-color: #220005 !important;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h2 {
+    background: #224;
+  }
+
+  h3 {
+    background: #113;
+  }  
+}
