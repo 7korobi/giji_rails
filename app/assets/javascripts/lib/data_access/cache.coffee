@@ -75,6 +75,8 @@ CACHE = ($scope)->
         old_base.messages = []
 
       merge_by.news old_base, new_base, 'messages', guard, filter
+      merge_by.copy old_base, new_base, 'last_memo'
+
       order  = (o)-> o.order || o.updated_at
       old_base.messages = _.sortBy old_base.messages, order
 

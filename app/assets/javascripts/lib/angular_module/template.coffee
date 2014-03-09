@@ -1,4 +1,3 @@
-GIJI.jsts  = {}
 GIJI.template = ($compile, $scope, elm, name)->
   template = JST[name]
   compiled = $compile(template)($scope)
@@ -38,6 +37,7 @@ angular.module("giji").directive "diary", ($compile)->
     form_text = $scope.$eval attr.diary
     form_text.ver = new Diary(form_text)
     form_text.ver.versions()
+    form_text.ver.commit() if form_text.text
     GIJI.template $compile, $scope, elm, "form/version"
 
 

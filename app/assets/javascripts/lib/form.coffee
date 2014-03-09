@@ -47,6 +47,7 @@ FORM = ($scope, $sce)->
       f.is_delete = true
       switch f.cmd
         when "wrmemo"
+          f.is_last_memo = false
           f.is_preview = false
         when "write"
           f.is_preview = false
@@ -57,6 +58,7 @@ FORM = ($scope, $sce)->
           f.action = "-99"
         else 
     $scope.submit param, ->
+      set_last_memo(f)
 
   preview = (text)->
     if text?
@@ -90,6 +92,20 @@ FORM = ($scope, $sce)->
       f.is_preview = f.valid
       f.preview = preview f.text.replace(/\n$/g, '\n ')
 
+  set_last_memo = (f)->
+    return unless "wrmemo" == f.cmd
+    unless f.text || f.is_last_memo
+      log = $scope.event?.last_memo?["#{f.mestype}:#{f.csid_cid}"]?.log
+      if log?
+        f.text = $scope.undecolate log
+        f.ver.commit() if f.ver?
+        f.is_last_memo = true
+
+  is_input = (f)->
+    return false unless f.text?
+    return false if calc_length(f.text.replace /\s/g, '') < 4
+    true
+
   $scope.error = (f)->
     list = $scope.errors?[f?.cmd]
     list ||= []
@@ -102,20 +118,21 @@ FORM = ($scope, $sce)->
         switch f.cmd
           when "action"
             f.preview = preview_action(f)
+            return if f.target == "-1" && f.action == "-2"
             f.valid = false if f.target == "-1" && f.action != "-99"
             if size < 1 
               f.valid = false if f.target ==  "-1"
               f.valid = false if f.action == "-99"
             else
-              f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
+              f.valid = false unless is_input(f)
 
           when "wrmemo"
-            f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
+            set_last_memo(f)
+            f.valid = false unless is_input(f)
             f.valid = true  if size < 1
 
           else
-            f.valid = false if calc_length(f.text.replace /\s/g, '') < 4
-
+            f.valid = false unless is_input(f)
 
   $scope.option = (list, key)->
     find = _.find list, (o)-> o.val == key
