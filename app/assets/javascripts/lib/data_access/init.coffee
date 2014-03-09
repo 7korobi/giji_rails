@@ -63,14 +63,7 @@ INIT = ($scope, $filter, $timeout)->
   has_messages or= $scope.event?.messages?
   has_messages or= $scope.messages_raw?
   has_messages or= $scope.stories?
-  if has_messages
-    row = OPTION.page.row
-    row.options.current_type = Number
-    unless $scope.row?
-      Navi.push     $scope, 'row',   row
-    unless $scope.order?
-      Navi.push     $scope, 'order', OPTION.page.order
-    unless $scope.page?
-      FILTER($scope, $filter, $timeout)
+  if has_messages && ! $scope.page?
+    FILTER($scope, $filter, $timeout)
 
 

@@ -1,9 +1,9 @@
 RAILS = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   win.cookies = $cookies
   $scope.mode_cache = 
-    info: 'info_open_player'
-    memo: 'memo_all_open_last_player'
-    talk: 'talk_all_open_player'
+    info: 'info_open_last'
+    memo: 'memo_all_open_last'
+    talk: 'talk_all_open'
   $scope.deploy_mode_common = ->
     $scope.mode_common = if $scope.mode?
       [ {name: '情報', value: $scope.mode_cache.info }

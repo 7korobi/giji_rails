@@ -1,9 +1,9 @@
 CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   win.cookies = $cookies
   $scope.mode_cache = 
-    info: 'info_open_player'
-    memo: 'memo_all_open_last_player'
-    talk: 'talk_all_open_player'
+    info: 'info_open_last'
+    memo: 'memo_all_open_last'
+    talk: 'talk_all_open'
   $scope.deploy_mode_common = ->
     $scope.mode_common = [
       {name: '情報', value: $scope.mode_cache.info }
@@ -18,7 +18,7 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
 
     roles = _.groupBy _.map($scope.config.roles, (o)-> count_set SOW.roles[o]), (o)-> SOW.groups[o.group].name
     gifts = _.groupBy _.map($scope.config.gifts, (o)-> count_set SOW.gifts[o]), (o)-> "恩恵"
-    $scope.config.items = $.extend(roles, gifts);
+    $scope.config.items = _.assign {}, roles, gifts
     $scope.config.items_keys = _.keys $scope.config.items
     $scope.config.items.events = $scope.config.events.map (o)-> SOW.events[o]
 
