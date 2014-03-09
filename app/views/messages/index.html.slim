@@ -7,9 +7,9 @@
 - content_for :navi do
   .insayfilter(navi="link" name="移動")
     .paragraph
-      h4.sayfilter_caption_enable
+      .sayfilter_caption_enable
         p= link_to '他の物語へ', index_parent_path
-      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_caption_enable  他の章へ
       .sayfilter_content(template="navi/events")
 
   .insayfilter(navi="info" name="名簿")
@@ -32,10 +32,6 @@
     | {{title}}
   h3
     | {{event.name}}
-  .pagenavi.form-inline(template="navi/page_navi")
   #messages(template="navi/messages")
-  .pagenavi.form-inline(template="navi/page_navi")
-  h3(ng-show="page") 表示している状態
-  .pagenavi.form-inline(template="navi/switch")
 
 

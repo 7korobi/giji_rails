@@ -1,5 +1,5 @@
 doctype html
-html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS")
+html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" )
   head
     =render partial: 'layouts/old_support'
     =render partial: 'layouts/head'
@@ -63,11 +63,11 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS")
 
       #tab(ng-cloak)
         #topviewer
-          #topframe.contentframe(ng-cloak)
-            .inframe.toppage.drag
+          #topframe.drag(ng-cloak)
+            .contentframe
               = yield :navi_top
         #sayfilter.sayfilter(adjust="left")
-          h4.sayfilter_heading#navi_head
+          .sayfilter_heading#navi_head
             = yield :navi_head
           = yield :navi
           - if flash[:error]

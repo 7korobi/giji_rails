@@ -6,7 +6,7 @@
 - content_for :navi do
   .insayfilter(navi="link" name="移動")
     .paragraph
-      h4.sayfilter_caption_enable
+      .sayfilter_caption_enable
         | 他のことを知りたい
       .sayfilter_content
         li=link_to 'あなたのトップページ', user_path(user.id)
@@ -14,8 +14,4 @@
 - content_for :log do
   - if user.sow_auth_ids && gon.messages_raw
     h2= "#{user.name} さんの情報"
-    .pagenavi.form-inline(template="navi/page_navi")
     #messages(template="navi/messages")
-    .pagenavi.form-inline(template="navi/page_navi")
-    h3(ng-show="page") 表示している状態
-    .pagenavi.form-inline(template="navi/switch")
