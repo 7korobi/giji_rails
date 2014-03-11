@@ -27,7 +27,7 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.ope
               p
                 a.btn.btn-default(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
                 a.btn.btn-default(ng-click="write(f)") {{f.title}}
-                select.form-control.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
+                select.form-control.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets" ng-change="text_valid(f)")
                 select.form-control.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
               p
                 span(class="{{f.error}}" ng-bind-html="f.valid_text")

@@ -25,9 +25,7 @@ FORM = ($scope, $sce)->
       else
         f.lines = 5
 
-      cb(size, lines)
-      f.valid = false if f.max.size < size
-      f.valid = false if f.max.line < lines
+      f.valid = cb(size, lines)
       if f.valid
         f.error = ""
         if 'point' == f.max.unit
@@ -111,28 +109,50 @@ FORM = ($scope, $sce)->
     list ||= []
     list.join("<br>")
 
+  safe_anker = (f)->
+    if f.mestype == "SAY" && ! $scope.event?.is_epilogue
+      if f.text.match ///>>[\=\*\!]\d+///
+        $scope.errors[f.cmd] = ["あぶない！秘密会話へのアンカーがありますよ！"]
+        return false
+    return true
 
   $scope.text_valid = (f, force)->
     if force || true # ! head.browser.simple
       valid f, (size, lines)->
+        return true if f.cmd == "wrmemo" && size < 1
+
+        return false if f.max.size < size
+        return false if f.max.line < lines
+
+        $scope.errors[f.cmd] = []
         switch f.cmd
+          when "write"
+            return false if "#{$scope.potof?.pno}" != f.target && ! safe_anker(f)
+            return is_input(f)
           when "action"
             f.preview = preview_action(f)
-            return if f.target == "-1" && f.action == "-2"
-            f.valid = false if f.target == "-1" && f.action != "-99"
+            switch f.action
+              when "-99"
+                break
+              when "-2"
+                f.target = "-1"
+                f.preview = preview_action(f)
+                return true
+              else
+                return f.target != "-1"
+
             if size < 1 
-              f.valid = false if f.target ==  "-1"
-              f.valid = false if f.action == "-99"
+              return false if f.target ==  "-1"
+              return false if f.action == "-99"
             else
-              f.valid = false unless is_input(f)
+              return false unless safe_anker(f)
+              return is_input(f)
 
           when "wrmemo"
             set_last_memo(f)
-            f.valid = false unless is_input(f)
-            f.valid = true  if size < 1
-
-          else
-            f.valid = false unless is_input(f)
+            return false unless safe_anker(f)
+            return is_input(f)
+        return true
 
   $scope.option = (list, key)->
     find = _.find list, (o)-> o.val == key
