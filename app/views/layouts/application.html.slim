@@ -1,5 +1,5 @@
 doctype html
-html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" )
+html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_class")
   head
     =render partial: 'layouts/old_support'
     =render partial: 'layouts/head'
@@ -27,7 +27,7 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" )
             | 管理
             code  sol・la
             code
-              a(href="mailto:7korobi@gmail.com") ななころび
+              a(href="mailto:7korobi@gmail.com" taborder="-1") ななころび
             br
             code(style="display:inline-block;")
               | 下記の場所以外では、人狼議事内キャラチップ
