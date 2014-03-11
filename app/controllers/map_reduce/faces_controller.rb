@@ -17,10 +17,10 @@ class MapReduce::FacesController < ApplicationController
         url = map_reduce_face_url(o.id)
         count = o.sow_auth_id["all"].to_i rescue 0
 
-        text = <<-_HTML_ 
-<p>#{face[:name]}</p>
-<p class="note">♥#{o.sow_auth_id["max_is"]}</p>
-<p><a class="mark" href="#{url}">登場 #{count}回</a></p>
+        text = <<-_HTML_
+<div>#{face[:name]}</div>
+<div>♥#{o.sow_auth_id["max_is"]}</div>
+<div><a class="mark" href="#{url}">登場 #{count}回</a></div>
 _HTML_
         { text: text,
           img: "#{URL[:file]}/images/portrate/#{o.id}.jpg",
@@ -44,7 +44,7 @@ _HTML_
 
   def show
     @face = MapReduce::Face.find(params[:id])
-    gon.rabl 
+    gon.rabl
   end
 
   private

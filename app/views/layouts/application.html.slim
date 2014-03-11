@@ -1,6 +1,7 @@
 doctype html
-html(lang="ja" ng-controller="RAILS")
+html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_class")
   head
+    =render partial: 'layouts/old_support'
     =render partial: 'layouts/head'
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事" end
@@ -10,22 +11,24 @@ html(lang="ja" ng-controller="RAILS")
       #contentframe.contentframe
         h1 = link_to root_path do
           img(ng-src="{{h1.path}}" ng-cloak)
-        =render partial: 'layouts/titles'
-        .choice
-            p(theme="#{theme}")
-        .inframe.toppage
-          hr.invisible_hr
-          = yield :top
+        .inframe
+          .toppage
+            =render partial: 'layouts/titles'
+            .choice.css_changer(theme="#{theme}")
+            .paginavi(template="theme/style_navi")
+            hr.invisible_hr
+            = yield :top
         .inframe
           hr.invisible_hr
           = yield :log
+
           address
             | 人狼議事キャラセット by りりんら
             br
             | 管理
             code  sol・la
             code
-              a(href="mailto:7korobi@gmail.com") ななころび
+              a(href="mailto:7korobi@gmail.com" taborder="-1") ななころび
             br
             code(style="display:inline-block;")
               | 下記の場所以外では、人狼議事内キャラチップ
@@ -58,11 +61,14 @@ html(lang="ja" ng-controller="RAILS")
               | @7korobi
 
       #footer
+
       #tab(ng-cloak)
-        #topviewer.sayfilter
-          = yield :navi_top
-        #sayfilter.sayfilter
-          h4.sayfilter_heading#navi_head(ng-hide="navi.hide")
+        #topviewer
+          #topframe.drag(ng-cloak)
+            .contentframe
+              = yield :navi_top
+        #sayfilter.sayfilter(adjust="left")
+          .sayfilter_heading#navi_head
             = yield :navi_head
           = yield :navi
           - if flash[:error]
@@ -75,5 +81,5 @@ html(lang="ja" ng-controller="RAILS")
               a.btn(ng-click="navi.move(o.val)"  ng-class="o.class")
                 | {{o.name}}
             div
-              a.btn(ng-click="navi.blank()")
+              a.btn.btn-default(ng-click="navi.blank()")
                 | ✘

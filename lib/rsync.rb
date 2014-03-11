@@ -23,20 +23,34 @@ module Giji
       end.each do |th|
         th.join
       end
+      puts @sh
     end
 
-    def each_villages &block
-      each_with_servers do |folder,_,set|
+    def each_logs target = ['none'], &block
+      each_files target, "/data/vil/????_??log.cgi", /(\d\d\d\d)_(\d\d)log.cgi/, &block
+    end
+
+    def each_memos target = ['none'], &block
+      each_files target, "/data/vil/????_??memo.cgi", /(\d\d\d\d)_(\d\d)memo.cgi/, &block
+    end
+
+    def each_villages target = ['none'], &block
+      each_files target, "/data/vil/*_vil.cgi", /(\d\d\d\d)_vil.cgi/, &block
+    end
+
+    def each_files target = ['none'], glob, regexp, &block
+      each(*target) do |folder,_,set|
         path = set[:files][:ldata] + '/data/vil'
-        fnames = Dir.glob(set[:files][:ldata]+"/data/vil/*_vil.cgi")
+        fnames = Dir.glob(set[:files][:ldata] + glob)
         fnames.each do |fullpath_fname|
           next  if  0 == File.size(fullpath_fname)
-          match = /(\d\d\d\d)_vil.cgi/.match(fullpath_fname)
+          match = regexp.match(fullpath_fname)
           if match
-            vid = match[1].to_i
+            turn  = match[2].to_i
+            vid   = match[1].to_i
             fname = match[0]
 
-            yield(folder, vid, path, fname)
+            yield(folder, vid, turn, path, fname)
           end
         end
       end
@@ -113,13 +127,12 @@ module Giji
         cmd = %Q|put #{lpath} -o #{rpath}|                        if FileTest.file?      lpath
         cmd = %Q|mirror #{option} #{excludes}  #{lpath} #{rpath}| if FileTest.directory? lpath
         line = %Q|lftp -u #{user},#{pass} #{open} -e 'set ftp:ssl-allow off; #{cmd}; exit'|
-        puts line
         @sh << line
 
       when 'ssh'
         puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
 
-        option = '--stats'
+        option = ''
         port  = set[:options][:port] || 22
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|

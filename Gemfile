@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'unicorn'
 gem 'rails', '4.0.1'
 gem 'activesupport', '4.0.1'
+gem 'quiet_assets'
 
 # queue
 gem 'resque'
@@ -28,12 +29,19 @@ gem 'omniauth-openid'
 
 
 # data_base
+# yum install mongo-10gen mongo-10gen-server
+# yum install redis
+# yum install mysql-server
+# yum install mysql-mroonga
+# yum install groonga-tokenizer-mecab
 gem 'mongoid_rails4', :require => 'mongoid'
 #gem 'mongoid', github: 'mongoid/mongoid'
 gem "redis-store"
 gem "redis-rails"
 gem 'sqlite3'
+gem 'pg'
 gem "paperclip"
+gem "composite_primary_keys"
 
 # javascript
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -60,13 +68,12 @@ gem "formtastic"
 
 # view environment
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 gem "slim"
 gem "less-rails"
-gem 'jquery-rails'
-gem 'twitter-bootstrap-rails'
+gem "bootstrap-sass"
 
 # control support
 gem "kaminari"
@@ -84,7 +91,8 @@ group :development do
 
 # To use debugger
   gem 'pry'
-  gem 'pry-doc'
+  gem 'pry-byebug'
+  gem 'pry-stack_explorer'
   gem 'better_errors'
   gem 'binding_of_caller'
 end

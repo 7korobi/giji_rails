@@ -1,0 +1,53 @@
+@import url("theme/cinema.css");
+@import url("size/800baloon.css");
+
+.outframe .drag,
+.outframe_navimode .drag {
+  background-image: url("../images/bg/background580.png");
+  background-position: -1px 0;
+}
+.outframe {
+  background-image: url("../images/bg/background580.png");
+  background-position: center;
+}
+
+.outframe_navimode {
+  background-image: url("../images/bg/background770.png");
+  background-position: center;
+}
+
+.outframe,
+.outframe_navimode {
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  border-right: 3px double #863;
+  border-left : 3px double #863;
+}
+
+.sayfilterleft {
+  border-left : 3px double #863;
+}
+
+/*
+.sayfilter_heading {
+          border-top-right-radius : 2em;
+       -o-border-top-right-radius : 2em;
+     -moz-border-radius-topright  : 2em;
+  -webkit-border-top-right-radius : 2em;
+}
+*/
+
+.contentframe {
+  background: transparent;
+}
+
+.contentframe_navileft {
+  background: transparent;
+}
+
+
+.action_nom,
+.action {
+  padding: 4px 12px 4px 20px;
+  margin-left:  107px;
+}

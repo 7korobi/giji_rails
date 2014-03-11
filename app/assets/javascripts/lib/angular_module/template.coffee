@@ -1,27 +1,16 @@
-GIJI.interpolates = {}
-GIJI.jsts  = {}
 GIJI.template = ($compile, $scope, elm, name)->
   template = JST[name]
   compiled = $compile(template)($scope)
   elm.append compiled
 
-angular.module("giji").directive "template", ["$interpolate","$compile", ($interpolate, $compile)->
-  if JST?
-    for key,val of JST
-      if key.startsWith "message/"
-        GIJI.interpolates[key] = $interpolate(val)
-
-  for idx,val in $("script[type='text/x-tmpl']")
-    html = $(val).html()
-    GIJI.interpolates[val.id] = $interpolate(html)
-
+angular.module("giji").directive "template", ($interpolate, $compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     name = attr.template
     GIJI.template $compile, $scope, elm, name
-]
 
-angular.module("giji").directive "listup", ["$compile", ($compile)->
+
+angular.module("giji").directive "listup", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     elm.addClass('ng-binding').data('$binding', attr.listup);
@@ -30,9 +19,9 @@ angular.module("giji").directive "listup", ["$compile", ($compile)->
       template = "<p>"+value.join("</p><p>")+"</p>" if value?
       compiled = $compile(template)($scope)
       elm.html compiled
-]
 
-angular.module("giji").directive "form", ["$compile", ($compile)->
+
+angular.module("giji").directive "form", ($compile, $http)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     elm.addClass('ng-binding').data('$binding', attr.form);
@@ -40,14 +29,15 @@ angular.module("giji").directive "form", ["$compile", ($compile)->
       template = JST["form/#{value}"]
       compiled = $compile(template)($scope)
       elm.html  compiled
-]
 
-angular.module("giji").directive "diary", ["$compile", ($compile)->
+
+angular.module("giji").directive "diary", ($compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     form_text = $scope.$eval attr.diary
     form_text.ver = new Diary(form_text)
     form_text.ver.versions()
+    form_text.ver.commit() if form_text.text
     GIJI.template $compile, $scope, elm, "form/version"
-]
+
 

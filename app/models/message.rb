@@ -1,37 +1,42 @@
 # -*- coding: utf-8 -*-
 
-class Message < Chat
-  field :_id, default: ->{ [subid, logid].join("-") }
+class Message
+  include Faceable
+  field :_id, default: ->{ [event_id, logid].join("-") }
+  field :logid
+  field :to
+  field :log
+  field :style
+  field :date, type: Time
+
   field :color
   field :style
   field :subid
   field :mestype
-  field :csid
-  field :name
   field :sow_auth_id
-  belongs_to :face,  inverse_of: :messages
+
   belongs_to :potof, inverse_of: :messages
-  embedded_in :event,   inverse_of: :messages
+  belongs_to :story, inverse_of: :chats
+  belongs_to :event, inverse_of: :chats
 
-  scope  :summary, order_by(:date.asc)
+  def self.in_story(story_id) 
+    where(story_id: story_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
+  end
+  def self.in_event(event_id)
+    story_id = event_id.split("-")[0..1].join("-")
+    p story_id
+    where(event_id: event_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
+  end
 
-  def text
-    if  /^INFO/ === mestype
-      self.class.to_fair( log, nil )
-    else
-      self.class.to_fair( log, true )
+  def self.copy_from_file(folders = nil)
+    rsync = Giji::RSync.new
+    rsync.each_logs([]) do |folder, vid, turn, path, fname|
+      next unless (!folders) || folders.member?(folder)
+      GijiMessageScanner.new(path, folder, fname).enqueue :log
     end
-  rescue
-    ""
-  end
-
-  def img
-    "/images/portrate/#{face_id}.jpg" if face_id.present?
-  end
-
-  def slice keys
-    keys.map(&:to_sym).each_with_object({}) do |key, o|
-      o[key] = send(key)
+    rsync.each_memos([]) do |folder, vid, turn, path, fname|
+      next unless (!folders) || folders.member?(folder)
+      GijiMessageScanner.new(path, folder, fname).enqueue :memo
     end
   end
 end

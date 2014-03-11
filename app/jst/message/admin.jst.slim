@@ -1,12 +1,11 @@
-div(ng-class="message.mestype")
-  .guide
-    h3.mesname
-      b(ng-bind-html="message.name")
-    p.text(ng-class="message.style" ng-bind-html="message.text")
-    p.mes_date
-      a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}
-      span &nbsp;
-      span
-        | {{message.time()}}
-      span(ng-bind-html="message.cancel_btn()")
-    hr.invisible_hr
+div.guide(ng-class="message.mestype")
+  h3.mesname
+    b(ng-bind-html="message.name")
+  p.text(ng-class="message.style" ng-bind-html="message.text")
+  p.mes_date
+    a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}
+    span &nbsp;
+    span
+      | {{message.time()}}
+    span(ng-bind-html="message.cancel_btn()")
+  hr.invisible_hr

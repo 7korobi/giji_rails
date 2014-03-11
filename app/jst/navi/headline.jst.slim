@@ -1,10 +1,3 @@
-.choice
-  a(ng-href="{{link.wiki}}")
-    | 人狼物語専用wiki
-  | ｜
-  a(ng-href="{{link.servers}}")
-    | 人狼物語Server一覧
-  |（melonkoさん管理）
 - max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
 - max_crazy   = GAME[:CRAZY  ][:config][:cfg][:MAX_VILLAGES]
 - max_xebec   = GAME[:XEBEC  ][:config][:cfg][:MAX_VILLAGES]
@@ -14,19 +7,17 @@
 - max_morphe  = GAME[:MORPHE ][:config][:cfg][:MAX_VILLAGES]
 - max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
 - max_all    += ( max_cafe + max_morphe )
+
 .choice
   table.board
     tr
       th.no_choice colspan="4" style="text-align:center;"
-        | 総合トップページはこちら
-        strong
-          a(href="#{URL[:rails]}") 人狼議事
-        | 合計#{max_all}村:を上限としています
         .progress_log
           strong
             | 進行中の村　←　
           a(onclick="$('.progress_log').hide();$('.finished_log').show();")
             | 終了した村を見る
+
         .finished_log
           a(onclick="$('.progress_log').show();$('.finished_log').hide();")
             | 進行中の村を見る
@@ -38,21 +29,13 @@
           | 似顔絵
           br
           | 人狼
-          br
-          | 　
     tr.link
       td.no_choice
         | ロビー
-        br
-        | 　
       td.no_choice
         | 夢の形
-        br
-        | 　
       td.no_choice
         | 陰謀
-        br
-        | 　
       td.no_choice
         | ＲＰ　
     tr.progress_log

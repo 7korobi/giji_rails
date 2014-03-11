@@ -14,11 +14,11 @@ class Navi
     @value
 
   choice: ->
-    _.find @select, (o)=> o.val == @value
+    _.assign {}, _.find @select, (o)=> o.val == @value
 
   popstate: ()->
     l = @location_val(@key)
-    c = document.cookie.match(@chk)?[2] if @params.is_cookie?
+    c = win.cookies[@key] if @params.is_cookie?
     @value = @params.current_type l or c or ""
     @value = "" if @select? && _.every @select, (o)=> @value != o.val
     @value or= @params.current_type @params.current
@@ -26,8 +26,9 @@ class Navi
   constructor: ($scope, key, def)->
     @scope = $scope
     @params = def.options
-    @params.current_type or= String
-    @params.class or= 'btn-success'
+    @params.current_type  or= String
+    @params.class_select  or= 'btn-success'
+    @params.class_default or= 'btn-default'
 
     @of = {}
     @key = key
@@ -41,9 +42,6 @@ class Navi
     else
       @select = def.select
 
-    @chk = ///
-      (^|\s)#{key}=([^;]+)
-    ///
     @popstate()
 
     @scope.$watch "#{@key}.value", (value,oldVal)=>
@@ -52,21 +50,8 @@ class Navi
       for func in @watch
         func @value
 
-      list = {}
-      for _, navi of Navi.list
-        options = navi.params
-        if navi.value
-          cmd = "#{navi.key}=#{navi.value}"
-
-          if options.location?
-            list[options.location] or= []
-            list[options.location].push cmd
-
-          if options.is_cookie
-            expire = new Date().advance OPTION.cookie.expire
-            document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
-
-
+      Navi.set_cookie()
+      list = Navi.to_hash()
       if list.search
         val_search = "?" + list.search.join "&"
         if location.search != val_search
@@ -82,12 +67,38 @@ class Navi
       for o in @select
         @of[o.val] = o
         if o.val == @value
-          o.class = @params.class
+          o.class = @params.class_select
           o.show = true
         else
-          o.class = null
+          o.class = @params.class_default
           o.show = false
 
+
+Navi.set_cookie = ()->
+  for _, navi of Navi.list
+    options = navi.params
+    if navi.value
+      cmd = "#{navi.key}=#{navi.value}"
+      if options.is_cookie
+        expire = new Date().advance OPTION.cookie.expire
+        document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
+
+Navi.to_hash = (append)->
+  list = {}
+  scanner = (location, navi)->
+    if navi.value
+      cmd = "#{navi.key}=#{navi.value}"
+
+      if location?
+        list[location] or= []
+        list[location].push cmd
+  scanner(navi.params.location, navi) for        _, navi of Navi.list
+  scanner(location,             navi) for location, navi of append
+  list
+
+Navi.to_url = (append)->
+  hash = Navi.to_hash(append)
+  ""
 
 Navi.popstate = ()->
   for navi in Navi.list

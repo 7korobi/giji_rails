@@ -1,0 +1,13 @@
+language: ruby
+rvm: 
+  - 2.1.0
+
+services:
+  - mogodb
+  - redis
+
+before_script:
+  - mongo giji_test --eval 'db.addUser("rspec","rspec");'
+
+cache: bundler
+script: bundle exec rspec spec

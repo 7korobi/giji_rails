@@ -1,20 +1,50 @@
-.caution.text(listup="cautions")
+.caution
+  .text(listup="cautions")
+  .text
+    ul
+      li(ng-if="story.announce.totalcommit")
+        | {{story.announce.totalcommit}}
+      li(ng-if="story.is_totalcommit")
+        | {{story.timer.nextcommitdt.relative('ja')}}にcommit
 
-div(form="f.jst" ng-repeat="f in form.texts")
+      li
+        | {{story.timer.nextupdatedt.relative('ja')}}に更新
+      li
+        | {{story.timer.nextchargedt.relative('ja')}}に補充
+      li(ng-if="story.is_prologue")
+        | {{story.timer.scraplimitdt.relative('ja')}}に廃村
+      li
+        | あと {{story.timer.extend}}回、更新を延長できる。
 
-div(class="{{form.win}}")
+
+div(form="f.jst" ng-repeat="f in form.texts" ng-show="logined()")
+
+div(class="{{form.win}}" ng-if="logined()")
   .secret
     p.text(listup="form.secrets")
 
-.formpl_gm(ng-hide="form.confirm")
-  p.commitbutton(form="f.jst" ng-repeat="(key, f) in form.commands")
 
-.formpl_gm(ng-show="form.confirm")
+div(ng-hide="form.confirm" ng-show="logined()")
+  .formpl_gm.form-inline(ng-repeat="f in form.command_group.commit")
+    .commitbutton
+      select.form-control(name="commit" ng-change="vote_change(f)" ng-model="f.commit" ng-disabled="f.disabled" ng-options="o.val as o.name for o in f.commits")
+      a.btn.btn-default(ng-disabled="f.disabled" ng-click="commit(f)") {{f.title}}
+    .mark(ng-bind-html="error(f)")
+    div(ng-bind-html="f.caption")
+
+  .formpl_gm(ng-if="form.command_group.target && form.command_targets")
+    p.commitbutton
+      select.form-control(name="target" ng-model="form.command_target" ng-options="o.val as o.name for o in form.command_targets")
+    p.commitbutton
+      a.btn.btn-default(ng-repeat="f in form.command_group.target" ng-disabled="f.disabled" ng-click="confirm(f)") {{f.title}}
+
+  .formpl_gm
+    p.commitbutton
+      a.btn.btn-default(ng-repeat="f in form.command_group.button" ng-disabled="f.disabled" ng-click="confirm(f)") {{f.title}}
+
+.formpl_gm(ng-if="form.confirm")
   h3
     | {{form.confirm}}
-  a.btn(ng-click="confirm_cancel()") ×
-  a.btn(ng-click="confirm_complete()") ◯
-
-.formpl_gm
-  .mark(ng-bind-html="error(f)" ng-repeat="(key, f) in form.commands")
+  a.btn.btn-default(ng-click="confirm_cancel()") ×
+  a.btn.btn-default(ng-click="confirm_complete()") ◯
 

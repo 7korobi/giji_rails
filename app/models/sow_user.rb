@@ -31,5 +31,8 @@ class SowUser < Potof
   field :say,   type: Hash
   field :timer, type: Hash
 
+  index({sow_auth_id: 1, event_id: 1}, {unique: 1})
+  index({sow_auth_id: 1, story_id: 1}, {unique: 1})
+
   default_scope order_by(:pno.asc)
 end

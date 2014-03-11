@@ -221,6 +221,27 @@ _PERL_
       MAX_MESCNT  => 1000, # 一発言の最大文字バイト数
       MAX_MESLINE =>   20, # 一発言の最大行数
     );
+
+    my %saycnt_vulcan = (
+      CAPTION     => 'いっぱい',
+      HELP        => '（24h回復） 1000pt+++300pt/36act',
+      COST_SAY    => 'point', # バイト勘定
+      COST_MEMO   => 'count', # 回数勘定
+      COST_ACT    => 'count', # 回数勘定
+      RECOVERY    =>    1, # 発言復活
+      MAX_SAY     => 1000, # 通常発言pt数
+      MAX_TSAY    => 1000, # 独り言発言pt数
+      MAX_SPSAY   => 1500, # 共鳴発言pt数
+      MAX_WSAY    => 4000, # 囁き発言pt数
+      MAX_GSAY    => 3000, # うめき発言pt数
+      MAX_PSAY    => 3000, # プロローグ発言pt数
+      MAX_ESAY    => 9999, # エピローグ発言pt数
+      MAX_SAY_ACT =>   36, # アクションpt数
+      ADD_SAY     =>  300, # 促しで増える発言pt数
+      MAX_ADDSAY  =>    3, # 促しのpt数
+      MAX_MESCNT  => 1000, # 一発言の最大文字バイト数
+      MAX_MESLINE =>   20, # 一発言の最大行数
+    );
 _PERL_
 
       saycnt_all = <<'_PERL_' + saycnt_game
@@ -346,6 +367,7 @@ _PERL_
         :URL_SW         ,
         :NAME_HOME      ,
         :RULE           ,
+        :TYPE           ,
         :MAX_VILLAGES   ,
         :TIMEOUT_SCRAP  ,
         :TIMEOUT_ENTRY  ,

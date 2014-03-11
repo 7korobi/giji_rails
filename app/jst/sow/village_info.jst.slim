@@ -1,8 +1,3 @@
-p.caution(ng-show="story.is_prologue")
-  | あと {{story.vpl[0] + potofs.mob().length - potofs.length}} 人参加できます。
-
-hr.invisible_hr
-
 .mes_maker.story
   dl.dl-horizontal
     dt 村の名前
@@ -25,11 +20,22 @@ hr.invisible_hr
 .mes_admin.story
   dl
     dt.text(ng-bind-html="story.announce.trs_name")
-    dd.text(ng-bind-html="story.announce.trs_help")
+    dd
+      .text(ng-bind-html="story.announce.trs_help")
 
     dt.text(ng-bind-html="story.announce.game_name")
-    dd.text(ng-bind-html="story.announce.game_help")
+    dd
+      ul.text(ng-bind-html="story.announce.game_help")
 
+    dt.text
+      | オプション設定
+    dd
+      ul.text
+        li
+          | {{story.announce.starttype}}
+        li(ng-repeat="option_help in story.option_helps"){{option_help}}
+
+.mes_admin.story
   dl.dl-horizontal
     dt 登場人物
     dd
@@ -58,8 +64,8 @@ hr.invisible_hr
     dt 人数
     dd
       | {{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）
-    dt(ng-show="story.is_wbbs") 最低人数
-    dd(ng-show="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
+    dt(ng-if="story.is_wbbs") 最低人数
+    dd(ng-if="story.is_wbbs") {{event.player.start}}人 （ダミーキャラを含む）
     dt 投票方法
     dd
       | {{story.type.vote_text.CAPTION}}
@@ -69,20 +75,4 @@ hr.invisible_hr
     dt 廃村期限
     dd
       | {{lax_time(story.timer.scraplimitdt)}}
-
-.mes_admin.story
-  ul
-    li.text
-      | {{story.announce.starttype}}
-    li.text(ng-repeat="option_help in story.option_helps"){{option_help}}
-
-.formpl_gm(template="navi/potofs")
-
-.footnote
-  dl.dl-horizontal
-    dt コミット状況
-    dd
-      | {{story.announce.totalcommit}}
-      br
-      span(ng-show="story.is_totalcommit") {{story.timer.nextcommitdt.relative('ja')}}
 

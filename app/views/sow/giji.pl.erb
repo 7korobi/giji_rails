@@ -52,7 +52,7 @@ sub GetConfig {
 	my @copyrights = (
 		'あっぱれ、うっかりアイコン by 小由流',
 		'人狼議事キャラセット by りりんら',
-		'管理<code> sol・la</code><code><a href="mailto:7korobi@gmail.com">ななころび</a></code>',
+		'管理<code> sol・la</code><code><a tabindex="-1" href="mailto:7korobi@gmail.com">ななころび</a></code>',
 		'<code style="display:inline-block;">下記の場所以外では、人狼議事内キャラチップ<br>の利用を許諾しておりません。ご了承ください。</code>',
 		'<code style="text-align: left; display: inline-block;">議事総合トップ',
 		'人狼議事lobby',
@@ -255,14 +255,16 @@ sub GetConfig {
 
 <%	if @is_angular	%>
 	my @file_js = (
-		'../assets/data.js',
-		'../assets/base.js',
-		'../assets/sow.js',
+		'assets/data.js',
+		'assets/base.js',
+		'assets/sow.js',
+		'assets/boot.js',
 	);
 	my @file_js_vil = (
-		'../assets/data.js',
-		'../assets/base.js',
-		'../assets/sow.js',
+		'assets/data.js',
+		'assets/base.js',
+		'assets/sow.js',
+		'assets/boot.js',
 	);
 <%	else	%>
 	my @file_js = (

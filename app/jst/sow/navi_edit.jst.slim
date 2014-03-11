@@ -1,29 +1,10 @@
-.sayfilter#topviewer
-  .insayfilter(navi="diary" name="手帳")
-    .paragraph(template="navi/diary")
-
-  .insayfilter(navi="calc" name="設定")
-    .paragraph(template="navi/switch")
-      h4.sayfilter_caption_enable  進行設定
-      .sayfilter_content
-        .note
-          | あと {{story.timer.extend}}回、更新を延長できる。
-        .note
-          | {{story.timer.nextupdatedt.relative('ja')}}に更新
-        .note
-          | {{story.timer.nextchargedt.relative('ja')}}に補充
-        .note(ng-show="story.is_totalcommit")
-          | {{story.timer.nextcommitdt.relative('ja')}}にcommit
-        .note(ng-show="story.is_prologue")
-          | {{story.timer.scraplimitdt.relative('ja')}}に廃村
-
-.sayfilter#sayfilter
-  h4.sayfilter_heading#navi_head(ng-hide="navi.hide") 設定
-
+#topviewer(ng-cloak)
+  #topframe.drag
+      .contentframe.form-inline(template="navi/diary" name="手帳" navi="diary")
 
 #buttons
   nav
     div(ng-repeat="o in navi.select")
       a.btn(ng-class="o.class" ng-click="navi.move(o.val)") {{o.name}}
     div
-      a.btn(ng-click="navi.blank()") ✗
+      a.btn.btn-default(ng-click="navi.blank()") ✗

@@ -18,18 +18,17 @@ table(class="say {{option(f.targets, f.target).mestype}}" ng-show="form_show.ope
 
           .form-inline
             .formpl_content
-              p(class="{{f.style}} text" ng-bind-html="preview(f)" ng-show="f.is_preview")
-              textarea(cols="30" rows="5" ng-model="f.text" ng-hide="f.is_preview")
-
-              .mes_date
+              p(class="{{f.style}} text" ng-bind-html="f.preview" ng-show="f.is_preview")
+              textarea.form-control(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-hide="f.is_preview" ng-init="text_valid(f)" ng-change="text_valid(f)")
+              h6
                 | {{option(f.targets, f.target).name}}
-              a.btn(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
-              a.btn(ng-click="write(f, f.valid)") {{f.title}}
-
-              select.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets")
-              select.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
-              p
-                | {{f.caption}}
-              span(class="{{f.error}}" ng-bind-html="text_valid(f)")
-              span(diary="f" ng-hide="f.is_preview")
               .mark(ng-bind-html="error(f)")
+
+              p
+                a.btn.btn-default(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
+                a.btn.btn-default(ng-click="write(f)") {{f.title}}
+                select.form-control.input-medium(ng-model="f.target" ng-options="o.val as o.name for o in f.targets" ng-change="text_valid(f)")
+                select.form-control.input-mini(ng-model="f.style" ng-options="o.val as o.name for o in form.styles")
+              p
+                span(class="{{f.error}}" ng-bind-html="f.valid_text")
+                span(diary="f" ng-hide="f.is_preview")

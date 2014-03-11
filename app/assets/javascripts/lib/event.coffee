@@ -1,11 +1,19 @@
-if navigator.userAgent.toLowerCase().indexOf('android') != -1
-  head.browser?.android = true
-if navigator.userAgent.toLowerCase().indexOf('iphone') != -1
-  head.browser?.iphone = true
-if navigator.userAgent.toLowerCase().indexOf('ipad') != -1
-  head.browser?.iphone = true
-head.useragent = navigator.userAgent
+if head.browser?
+  b = head.browser
+  b.power = "pc"
+  if navigator.userAgent.toLowerCase().indexOf('android') != -1
+    b.android = true
+    b.power = "simple"
 
+  for key in ['crios','silk','mercury','iphone','ipad']
+    if navigator.userAgent.toLowerCase().indexOf(key) != -1
+      b.power = "mobile"
+
+  for key in ['safari','iphone','ipad']
+    if navigator.userAgent.toLowerCase().indexOf(key) != -1
+      b.iphone = true
+  b[b.power] = true
+head.useragent = navigator.userAgent
 
 win =
   top:    0
@@ -42,16 +50,21 @@ win =
 
   history: (title, href, hash)->
 
-  on_scroll: (cb)->
-    $(window).on 'scroll', _.throttle(cb, 500)
-    win.on_resize cb, 5000
+  resize_event: ()->
+    if window.onorientationchange? && ! head.browser.android
+      'orientationchange'
+    else
+      'resize'
+
+  on_scroll: (cb, delay)->
+    delay ||= 500
+    $(window).on 'scroll', _.throttle(cb, delay)
+    $(window).on win.resize_event(), _.throttle(cb, 5000)
+
   on_resize: (cb, delay)->
     delay ||= 100
-    if window.onorientationchange? && ! head.browser.android
-      $(window).on 'orientationchange', _.throttle cb, delay
-    else
-      $(window).on 'resize', _.throttle cb, delay
-
+    $(window).on win.resize_event(), _.throttle(cb, delay)
+    $(window).on 'scroll', _.throttle(cb, 5000)
 
 if history?.pushState?
   popstate = (e)->
@@ -66,7 +79,7 @@ else
     location.hash = hash
 
 
-_.delay ->
+angular.module("giji").run ()->
   win.on_scroll win.refresh
   win.on_resize win.refresh
 
@@ -85,4 +98,3 @@ _.delay ->
     win.gravity = e.originalEvent.accelerationIncludingGravity
     win.rotate  = e.originalEvent.rotationRate
   $(window).on 'devicemotion', _.throttle(scan_motion, 100)
-,500

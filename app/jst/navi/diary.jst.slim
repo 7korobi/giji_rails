@@ -1,10 +1,18 @@
-h4.sayfilter_caption_enable
-  | {{diary.head()}}
-.sayfilter_content
-  .formpl_content
-    textarea.input-block-level(cols="50" rows="6" ng-model="diary.form.text")
-  span
-    | &nbsp;履歴:
-    code(ng-click="diary.back(version)" ng-repeat="version in diary.versions()")
-      | {{version}}
+table.say.SAY
+  tbody
+    tr
+      td.img
+        img(ng-src="{{img_cid(null, 'blank')}}")
+      td.field
+        .msg
+          .form-inline
+            .formpl_content
+              textarea.form-control.input-block-level(cols="30" rows="5" ng-model="diary.form.text")
+              h6
+                | {{diary.head()}}
+              p
+                span
+                  | &nbsp;履歴:
+                  code(ng-click="diary.back(version)" ng-repeat="version in diary.versions()")
+                    | {{version}}
 

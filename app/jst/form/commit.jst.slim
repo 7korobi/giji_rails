@@ -1,6 +1,0 @@
-form.form-inline
-  select.input-medium(name="commit"  ng-model="f.commit" ng-options="o.val as o.name for o in f.commits")
-  a.btn(ng-click="commit(f)") 変更
-  .mark(ng-bind-html="error(f)")
-
-p.formpl_content(ng-bind-html="f.caption")

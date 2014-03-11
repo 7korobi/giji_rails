@@ -1,0 +1,17 @@
+@charset "Shift_JIS";
+@import url("size/480box.css");
+@import url("theme/juna.css");
+
+/* GROBAL --------------------*/
+
+table.say {
+  width: 450px;
+}
+
+.msg p {
+  width: 300px;
+}
+
+.action p {
+  width: 426px;
+}

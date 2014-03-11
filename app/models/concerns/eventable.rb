@@ -6,8 +6,8 @@ module Eventable
     field :_id, default: ->{ [story_id, turn].join("-") }
     field :turn, type: Integer
     field :name
+    field :messages, type: Array
 
-    embeds_many :messages, inverse_of: :event
     has_many :potofs,      inverse_of: :event
     belongs_to :story,     inverse_of: :events
 

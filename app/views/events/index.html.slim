@@ -2,23 +2,20 @@
   | ページをめくる
 
 - content_for :navi do
-  .insayfilter(navi="switch" name="設定")
-    .paragraph(template="navi/switch")
-
   .insayfilter(navi="link" name="移動")
     .paragraph
-      h4.sayfilter_caption_enable  他の場面へ
+      .sayfilter_caption_enable  他の場面へ
       .sayfilter_content(template="navi/page_filter")
 
-      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_caption_enable  他の章へ
       .sayfilter_content(template="navi/events")
 
-      h4.sayfilter_caption_enable
+      .sayfilter_caption_enable
         p= link_to '他の物語へ', index_parent_path
 
   .insayfilter(navi="diary" name="手帳")
     .paragraph
-      h4.sayfilter_caption_enable 投稿欄と共有
+      .sayfilter_caption_enable 投稿欄と共有
       .sayfilter_content(template="navi/diary")
 
   .insayfilter(navi="info" name="名簿")

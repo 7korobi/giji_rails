@@ -1,0 +1,246 @@
+.config_item {
+  max-width: 140px;
+  width:     140px;
+}
+
+.infonologin {
+  padding: 0px 0px 0px 16px;
+}
+
+.MAKER, .ADMIN, .mes_maker, .mes_admin {
+  .action, .guide {
+    margin:  0 0 0 6px;
+  }
+}
+
+.memo {
+  border-width: 0;
+  border-collapse: separate;
+}
+.memoleft,
+.memoright {
+  padding: 1px;
+}
+
+.vindex,
+.table {
+  margin: 3px 0;
+}
+
+.turnnavi  ,
+.pagenavi  ,
+.row_all   { padding: 0 0 0 11px;}
+.mes_maker ,
+.mes_admin ,
+.info      ,
+.infosp    ,
+.infowolf  ,
+.caution   ,
+.action_bm { padding: 4px 11px;}
+
+
+@mixin width($full-width, $left-width, $outer-width) {
+  .drag,
+  .ajax,
+  .memo,
+  .log .badge,
+  .toppage,
+  .outframe,
+  .contentframe {
+    width: $full-width;
+  }
+
+  .memoleft {
+    width: $outer-width;
+  }
+  .memoright {
+    width: $full-width - $outer-width;
+  }
+
+  .say {
+    .field{
+      width: $full-width - $left-width;
+    }
+  }
+
+  .msg p,
+  .action p {
+    width: $full-width - $outer-width;
+  }
+
+  .CAST code {
+    width: 90px;
+  }
+}
+@mixin film($film-top) {
+  .accordion dd,
+  .CAST code,
+  .paragraph, 
+  .say .chrblank,
+  .say img {
+    margin-left: $film-top;
+  }
+
+  .drag_head .badge {
+    width:  84px;
+    margin-left: ( $film-top - 3px ) * 2;
+  }
+}
+
+
+.center-msg {
+  .drag,
+  .outframe,
+  .contentframe {
+    background-position: center;
+  }
+}
+.right-msg, .mini-msg {
+  .drag,
+  .outframe,
+  .contentframe {
+    background-position: right;
+  }
+}
+
+.w458 {
+  @include width(460px, 110px, 128px);
+  @include film(9px);
+  .chrlist {
+    margin: 0 0 0 7px;
+  }
+
+  .CAST {
+    margin-bottom: 4px
+  }
+  .say {
+    .msg{
+      margin: 0 3px 4px 3px;
+      padding: 0px 4px;
+    }
+  }
+
+  &.box {
+    .paragraph {
+      padding: 0 0 0 8px;
+    }
+    .formpl_frame {
+      margin: 0px 0px 12px 0px;
+    }
+    .formpl_content {
+      padding: 4px;
+    }
+    .formpl_action {
+      padding: 4px;
+    }
+  }
+  &.speech {
+    .say .img{
+      padding: 0 0 4px 0;
+    }
+    .action_nom,
+    .action {
+      margin: 0 0 4px 99px;
+      padding: 4px 12px 0px 4px;
+    }    
+  }
+}
+
+
+.w580 {
+  @include width(580px, 119px, 141px);
+  @include film(12px);
+  .chrlist {
+    margin: 0 0 0 17px;
+  }
+
+  .chrlist {
+    margin: 0 0 0 17px;
+  }
+
+  .CAST {
+    margin-bottom: 9px
+  }
+  .say {
+    .msg{
+      margin: 0 4px 6px 6px;
+      padding: 0 4px;
+    }
+  }
+
+  &.box {
+    .paragraph {
+      padding: 0 0 0 8px;
+    }
+    .formpl_frame {
+      margin: 0px 0px 12px 0px;
+    }
+    .formpl_content {
+      padding: 4px;
+    }
+    .formpl_action {
+      padding: 4px;
+    }
+  }
+
+  &.speech {
+    .say .img{
+      margin: 0 4px 6px 12px;
+      padding: 0 4px;
+    }
+    .action_nom,
+    .action {
+      margin: 0 0 6px 107px;
+      padding: 4px 12px 4px 4px;
+    }
+  }
+}
+
+.w770 {
+  @include width(770px, 119px, 141px);
+  @include film(12px);
+  .chrlist {
+    margin: 0 0 0 17px;
+  }
+
+  .chrlist {
+    margin: 0 0 0 17px;
+  }
+
+  .CAST {
+    margin-bottom: 9px
+  }
+  .say {
+    .msg{
+      margin: 0 4px 6px 6px;
+      padding: 0 4px;
+    }
+  }
+
+  &.box {
+    .paragraph {
+      padding: 0 0 0 8px;
+    }
+    .formpl_frame {
+      margin: 0px 0px 12px 0px;
+    }
+    .formpl_content {
+      padding: 4px;
+    }
+    .formpl_action {
+      padding: 4px;
+    }
+  }
+
+  &.speech {
+    .say .img{
+      margin: 0 4px 6px 12px;
+      padding: 0 4px;
+    }
+    .action_nom,
+    .action {
+      margin: 0 0 6px 107px;
+      padding: 4px 12px 4px 4px;
+    }
+  }
+}

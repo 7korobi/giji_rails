@@ -14,7 +14,6 @@ class SowTurn
       %w[log memo].each do |type|
         fname = "%04d_%02d%s.cgi"%[vid, turn, type]
         scanner = GijiLogScanner.new(path, folder, fname)
-        p scanner
         scanner.save
       end
     end

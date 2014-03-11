@@ -2,30 +2,15 @@
 
 cookie:
   expire:
-    hours: 1
-
-css_wday:
-  - cinema800
-  - cinema800
-  - star800
-  - cinema800
-  - cinema800
-  - star800
-  - wa800
+    years: 1
 
 head_img:
-  cinema800: [r, c]
-  cinema480: [r, c]
-  star800:   [r, c]
-  star480:   [r, c]
-  wa800:     [b, w]
-  wa480:     [b, w]
-  night800:  [b, w]
-  night480:  [b, w]
-  sow800:    [r, c]
-  sow480:    [r, c]
-  juna800:   [b, w]
-  juna480:   [b, w]
+  cinema: [r, c]
+  star:   [r, c]
+  wa:     [b, w]
+  night:  [b, w]
+  sow:    [r, c]
+  juna:   [b, w]
 
 jp_wday:
   - 日
@@ -49,7 +34,7 @@ face_titles:
 
 page:
   # pagenate 重ねあわせ量を調整する。
-  pile: 2
+  pile: 1
 
   folder:
     options:
@@ -148,27 +133,17 @@ page:
       location: search
       is_cookie: false
 
-  order:
+  css:
     options:
-      current: asc
-      location: hash
+      current: "cinema_center-msg_std-font"
+      location: 'hash'
       is_cookie: true
-    button:
-      asc:  上から下へ
-      desc: 下から上へ
 
-  row:
+  msg_style:
     options:
-      current: 50
-      location: hash
+      current: "simple_asc_50"
+      location: 'hash'
       is_cookie: true
-    button:
-      10:  10行
-      20:  20行
-      30:  30行
-      50:  50行
-      100: 100行
-      200: 200行
 
   potofs:
     options:
@@ -184,6 +159,46 @@ page:
       role_names: 役割
       select_name: 希望
       text: 補足
+
+selectors:
+  order:
+    asc:  上から下へ
+    desc: 下から上へ
+
+  row:
+    10:  10行
+    20:  20行
+    30:  30行
+    50:  50行
+    100: 100行
+    200: 200行
+
+  power:
+    simple: 携帯用
+    mobile: タブレット
+    pc: ＰＣ用
+
+  font:
+    large-font: 大判
+    novel-font: 明朝
+    std-font:   ゴシック
+    small-font: 小文字
+
+  width:
+    large-msg:  大判
+    center-msg: 中央
+    game-msg:   大判左
+    right-msg:  左半分
+    mini-msg:   携帯用
+
+css:
+  h1:
+    widths:
+      large-msg:  770
+      game-msg:   770
+      center-msg: 580
+      right-msg:  580
+      mini-msg:   458
 
 rating:
   default:
@@ -257,51 +272,6 @@ rating:
   alert:
     caption: "要注意"
     alt: ""
-
-css:
-  h1:
-    widths:
-      480: 458
-      800: 580
-
-  font:
-    options:
-      is_cookie: true
-      location: hash
-      current: normal
-    button:
-      normal: 普通
-      small:  繊細
-
-  width:
-    options:
-      is_cookie: true
-      location: hash
-      current: 800
-    button:
-      480: 480
-      800: 800
-
-  themes:
-    pan:
-      options:
-        is_cookie: true
-        location: hash
-        current: sow
-      button:
-        juna: 審問
-        sow:  物語
-
-    giji:
-      options:
-        is_cookie: true
-        location: hash
-        current: cinema
-      button:
-        cinema: 煉瓦
-        night:  月夜
-        star:   蒼穹
-        wa:     和の国
 
 gon:
   errors: {}

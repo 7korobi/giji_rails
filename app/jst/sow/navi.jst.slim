@@ -1,62 +1,32 @@
-.sayfilter#topviewer
-  .insayfilter(navi="diary" name="手帳")
-    .paragraph(template="navi/diary")
+#topviewer(ng-cloak)
+  #topframe.drag
+    .contentframe.form-inline(template="navi/diary" name="手帳" navi="diary")
 
-  .insayfilter(navi="calc" name="設定")
-    .paragraph(template="navi/switch")
-      h4.sayfilter_caption_enable  進行設定
-      .sayfilter_content
-        .note
-          | あと {{story.timer.extend}}回、更新を延長できる。
-        .note
-          | {{story.timer.nextupdatedt.relative('ja')}}に更新
-        .note
-          | {{story.timer.nextchargedt.relative('ja')}}に補充
-        .note(ng-show="story.is_totalcommit")
-          | {{story.timer.nextcommitdt.relative('ja')}}にcommit
-        .note(ng-show="story.is_prologue")
-          | {{story.timer.scraplimitdt.relative('ja')}}に廃村
-
-.sayfilter#sayfilter
-  h4.sayfilter_heading(navi="head" ng-hide="navi.hide") {{story.name}}
-  .insayfilter#navi_events
+.sayfilter#sayfilter(adjust="left")
+  .sayfilter_heading
+    | {{story.name}}
+  .insayfilter(navi="link" name="移動")
     .paragraph
-      h4.sayfilter_caption_enable  他の章へ
+      .sayfilter_caption_enable  他の章へ
       .sayfilter_content(template="navi/events")
 
   .insayfilter(navi="info" name="名簿")
-    .paragraph(ng-show="potofs")
+    .paragraph(ng-if="potofs")
       .sayfilter_content(template="navi/potofs_small")
 
-  .insayfilter(navi="link" name="移動" child="events")
+  .insayfilter(navi="page_filter" ng-if="page")
     .paragraph
-      h4.sayfilter_caption_enable(ng-show="page")  他の場面へ
-      .sayfilter_content(ng-show="page" template="navi/page_filter")
+      table.sayfilter_content
+        tr
+          td
+            select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
+  .sayfilter_heading.bottom
 
-  .insayfilter(navi="page" ng-show="page")
-    .paragraph
-      .sayfilter_content.form-inline(ng-show="event.is_news")
-        label.inline.radio(ng-show="event.is_progress")
-          a.btn(ng-click="ajax_event(event.turn, null, false)") ページ表示
-        label.inline.radio(ng-show="event.is_progress")
-          a.mark(style="font-size: 2.5ex;" ng-click="pool()") ♻
-        label.inline.radio
-          | &nbsp;
-          a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
-          a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
-
-      .sayfilter_content.form-inline(ng-hide="event.is_news")
-        label.inline.radio(ng-show="event.is_progress")
-          a.btn(ng-click="ajax_event(event.turn, null, true)") 最新の発言
-        label.inline.radio(template="navi/paginate")
-        label.inline.radio
-          | &nbsp;
-          a.mark(style="font-size: 2.5ex;" ng-click="go.search()") ⎋
-          a.mark(style="font-size: 2.5ex;" ng-click="go.form()") ✎
+  .toolbox(adjust="full" navi="page" ng-if="page" template="navi/toolbox")
 
 #buttons
   nav
     div(ng-repeat="o in navi.select")
       a.btn(ng-class="o.class" ng-click="navi.move(o.val)") {{o.name}}
     div
-      a.btn(ng-click="navi.blank()") ✗
+      a.btn.btn-default(ng-click="navi.blank()") ✗

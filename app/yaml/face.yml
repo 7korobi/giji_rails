@@ -500,11 +500,11 @@ Face:
 - order: 80012
   face_id: sf12
   name: "†ルシフェル†"
-  comment: 
+  comment:
 - order: 80013
   face_id: sf13
   name: "トルドヴィン"
-  comment: 
+  comment:
 - order: 80014
   face_id: sf18
   name: "玖休"
@@ -516,11 +516,11 @@ Face:
 - order: 80016
   face_id: sf14
   name: "クリスマス"
-  comment: 
+  comment:
 - order: 80017
   face_id: sf15
   name: "ジェームス"
-  comment: 
+  comment:
 - order: 80018
   face_id: sf16
   name: "ライジ"
@@ -706,7 +706,7 @@ Face:
   comment: "日本の美徳強化月間"
   order: 90045
 
-######################### 
+#########################
 # 2013-04-01 update
 - order: 10005
   face_id: g04
@@ -729,8 +729,6 @@ Face:
   face_id: mad08
   comment: "阿片窟からきました"
   order: 20008
-# ドッツ イボテン ムッシモール ムスカゾン クベンシス
-# リゼル ペヨーテ カーピ シポ オアスカ アミン
 
 - name: サミュエル
   face_id: t06
@@ -765,7 +763,7 @@ Face:
   comment: "フラッシュフォワード"
   order: 30013
 
-######################### 
+#########################
 # 2013-06-14 update
 - name: クシャミ
   face_id: t14
@@ -776,7 +774,7 @@ Face:
   comment: "ベイカー街少年探偵団"
   order: 30015
 
-######################### 
+#########################
 # 2013-06-15 update
 
 - order: 80020
@@ -794,7 +792,7 @@ Face:
   face_id: t16
   comment: "映画監督たちの共用偽名"
 
-######################### 
+#########################
 # 2013-06-20 update
 
 - face_id: w48
@@ -812,7 +810,7 @@ Face:
   comment: "負けるたびに追い博打"
   order: 90050
 
-######################### 
+#########################
 # 2013-11-04 update
 
 - face_id: t17
@@ -825,17 +823,51 @@ Face:
   comment: "まんがはじめて物語（二代目）"
   order: 30018
 
-######################### 
-# xxxx-xx-xx update
+#########################
+# 2013-12-19 update
+
+- face_id: c110
+  name: リー
+  comment: ""
+  order: 92
+
+- face_id: t19
+  name: ハルカ
+  comment: "はるかリフレイン"
+  order: 30019
+
+#########################
+# 2014-02-28 update かぎりなく3月1日めいた瞬間
 
 - face_id: w51
-  name: 萬藤
-  comment: ""
+  name: 鬼丞
+  comment: "リニューアル記念！"
   order: 90051
+
+- face_id: w52
+  name: 櫻子
+  comment: "リニューアル記念！"
+  order: 90052
+
+
+- face_id: c111
+  name: スージー
+  comment: "リニューアル記念！"
+  order: 93
+
+- face_id: c113
+  name: ジェレミー
+  comment: "リニューアル記念！"
+  order: 94
+
+#########################
+# xxxx-xx-xx update
 
 
 # http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
 # http://cjjc.weblio.jp/
+
+# 聖騎士募集
 
 # 覇権政府、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
 # 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
@@ -843,8 +875,10 @@ Face:
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
 # http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
 # http://ja.wikipedia.org/wiki/十五少年漂流記
-# 
-# 歩き巫女 中条流 侘び茶 侘茶湯 板前 
+# http://ichiranya.com/society_culture/087-gang.php
+#
+# ムスリム同胞団
+# 歩き巫女 中条流 侘び茶 侘茶湯 板前
 # 労働者 駅長 車掌 客室乗務員
 # 写真家 〜診断士 洞窟探査 鉱泉分析
 # 三合派 八宅派 紫白九星派 玄空飛星派 玄空大卦派 八字派
@@ -862,3 +896,6 @@ Face:
 # 温泉から
 #  三助 湯もみ 湯治客（刀傷 刺青） 大旦那（サル顔）
 # 落語から
+# 阿片窟から
+#  ドッツ イボテン ムッシモール ムスカゾン クベンシス
+#  リゼル ペヨーテ カーピ シポ オアスカ アミン

@@ -1,9 +1,9 @@
 CACHE = ($scope)->
   $scope.set_turn = (turn)->
-    if $scope.events?[turn]?
-      $scope.event = $scope.events[turn]
-    if $scope.forms?[turn]?
-      $scope.form = $scope.forms[turn]
+    event = _.find $scope.events, (o)-> o.turn == turn
+    form  = _.find $scope.forms,  (o)-> o.turn == turn
+    $scope.event = event if event?
+    $scope.form  = form  if form?
     $scope.face.scan()
 
   $scope.merge_turn = (old_base, new_base)->
@@ -73,8 +73,12 @@ CACHE = ($scope)->
       INIT_MESSAGES new_base
       if new_base.has_all_messages
         old_base.messages = []
-      merge_by.news old_base, new_base, 'messages', guard, filter
 
+      merge_by.news old_base, new_base, 'messages', guard, filter
+      merge_by.copy old_base, new_base, 'last_memo'
+
+      order  = (o)-> o.order || o.updated_at
+      old_base.messages = _.sortBy old_base.messages, order
 
     _potofs: (old_base, new_base)->
       guard = null
@@ -100,6 +104,8 @@ CACHE = ($scope)->
       old_form = old_base.form
 
       return unless new_form?
+
+      INIT_FORM new_base.form
       for key, o of new_form
         old_form[key] = o unless guard(key)
 
@@ -199,7 +205,6 @@ CACHE = ($scope)->
         if old_item?
           olds_head = _.reject olds_head, (o)->
             filter(old_item) == filter(o)
-
         olds_head.push new_item
     olds_head
 

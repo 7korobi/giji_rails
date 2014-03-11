@@ -26,7 +26,7 @@ module SowTurnable
     end
 
     def messages_empty
-      exists(messages:false).not(_id: /^(trpg|lobby-8)/)
+      where(story_id: SowVillage.empty_ids).not(_id: /^(trpg|lobby-8)/)
     end
 
     def breaks_each

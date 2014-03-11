@@ -1,0 +1,54 @@
+@charset "Shift_JIS";
+@import url("theme/star.css");
+@import url("size/800baloon.css");
+
+/* 外枠 ----------*/
+.outframe {
+  border-right: 3px double #1b7;
+  border-left : 3px double #1b7;
+}
+
+/* フィルタを左に配置した時の外枠 ----------*/
+.outframe_navimode {
+  border-right: 3px double #1b7;
+  border-left:  3px double #114;
+}
+
+/* フィルタ（左配置時）----------*/
+.sayfilterleft {
+}
+
+.contentframe {
+  background-image: url("../images/bg/star580.png");
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* フィルタを左に配置した時の内枠 ----------*/
+.drag,
+.contentframe_navileft {
+  background-image: url("../images/bg/star770.png");
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* 外枠 ----------*/
+.outframe ,
+.outframe_navimode {
+  background-image: url("../images/bg/jupiter.png");
+  background-position: center top;
+}
+
+/* IMAGE AND TEXT LAYOUT --------------------*/
+
+/* 発言のキャラ画像 ----------*/
+
+.action_nom,
+.action {
+  padding: 4px 12px 4px 10px;
+  margin-left: 132px;
+  border-width: 0 0 1px 4px;
+  border-style: solid solid ;
+}

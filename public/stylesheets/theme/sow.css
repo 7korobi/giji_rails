@@ -1,0 +1,553 @@
+@import url("/stylesheets/theme/color.whitebox.css");
+@import url("/stylesheets/application.css");
+
+table.SAY {
+  border-collapse: separate;
+}
+
+
+/* 通常発言 ------*/
+.MSAY,
+.SAY,
+.QUEUE,
+.mes_nom {
+  color: #000;  background: #553; } /*木欄色*/
+
+.INFONOM,  .info      {  color: #000;  background: #553;  }
+
+.formpl_common,
+.formpl_common .msg {
+  border-color: #720;
+}
+.formpl_gm ,
+.formpl_gm  textarea{
+  border-color: #660;
+  color: #ffa;
+  background-color: #000;
+}
+
+.mes_que {
+  border: 1px solid #442;
+}
+
+.DELETED, .mes_del,
+.QUE, .mes_que,
+.SAY, .mes_nom,
+.TSAY, .mes_think,
+.VSAY, .mes_mob,
+.WSAY, .mes_wolf,
+.SPSAY, .mes_sympa,
+.BSAY, .XSAY, .mes_bat, .mes_pixi,
+.GSAY, .mes_grave {
+  margin: 0px 8px 16px 8px;
+  padding: 1px;
+}
+
+.INFONOM, .info,
+.INFOSP, .infosp,
+.INFOWOLF, .infowolf,
+.DELETED, .mes_del,
+.QUE, .mes_que,
+.SAY, .mes_nom,
+.TSAY, .mes_think,
+.VSAY, .mes_mob,
+.WSAY, .mes_wolf,
+.SPSAY, .mes_sympa,
+.BSAY, .XSAY, .mes_bat, .mes_pixi,
+.caution {
+  border: 1px solid white;
+}
+
+.GSAY, .mes_grave {
+  border-top: 3px solid #eee;
+  border-left: 3px solid #eee;
+  border-bottom: 3px solid #aaa;
+  border-right: 3px solid #aaa;
+}
+
+.handler,
+body {
+  margin: 0px;
+  padding: 0px;
+  color: #fff;
+  background: #567;
+}
+
+th {
+  padding: 4px;
+  font-weight: normal;
+  text-align: left;
+}
+
+td {
+  padding: 4px;
+}
+
+img {
+  border-style: none;
+}
+
+p {
+  margin: 0px;
+  padding: 0px;
+}
+div, form, td {
+  margin: 0px;
+  padding: 0px;
+}
+
+textarea {
+  font-family: monospace;
+}
+
+textarea, input, select {
+  color: #000;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+h1 {
+  margin: 0px 0px 10px 0px;
+  padding: 0px;
+  text-align: left;
+}
+
+h2 {
+  border: solid #448;
+  border-width: 0 0 1px 8px;
+  background: #000;
+  text-align: left;
+
+  margin: 0px 0px 10px 0px;
+  padding: 2px 8px 2px 8px;
+}
+
+h3.popover-title,
+h3 {
+  border: solid #668;
+  border-width: 0 0 1px 8px;
+  background: #000;
+  text-align: left;
+
+  margin: 0px 0px 10px 0px;
+  padding: 2px 8px 2px 8px;
+}
+
+strong { }
+
+
+
+.board{
+  background-color: #000;
+  border: 1px solid #ffc;
+}
+.choice .board{
+  background-color: #000;
+  border-top: 3px double #ffc;
+}
+.choice .board th{
+  border-bottom: 1px dashed #ffc;
+}
+.choice .board td{
+  border-top:  1px dashed #ffc;
+  border-left: 1px solid  #ffc;
+}
+.choice {
+  background-color: #444;
+  border-bottom: 1px solid #444 !important;
+}
+.no_choice {
+  border-bottom:1px dashed #ffc;
+}
+
+
+.commitbutton {
+  text-align: center;
+}
+
+.saycancelframe {
+  text-align: center;
+}
+
+.saycancelbutton {
+  font-size: smaller;
+}
+
+.return {
+  margin: 0px;
+  padding: 0px 0px 8px 0px;
+  text-align: right;
+}
+
+
+
+.tips{
+  padding: 0px 8px;
+}
+
+.vindex {
+  background-color: #000;
+  border: 1px solid #ffc;
+  border-collapse: collapse;
+}
+
+.vindex td,.vindex th{
+  margin: 0px;
+  padding: 1px;
+  border: 1px solid #ffc;
+  border-left: 1px dashed #ffc;
+  border-right: 1px dashed #ffc;
+
+}
+
+.form_vmake {
+  margin: 0px;
+  padding: 4px 0px;
+
+  color: #000000;
+  background: #cb8;
+  border-top: 3px double #664;
+  border-bottom: 3px double #664;
+}
+
+.exevmake {
+  text-align: center;
+}
+
+.multicolumn_label {
+  display: block;
+  float: left;
+  text-align: right;
+}
+
+.multicolumn_left {
+  display: block;
+  float: left;
+}
+
+.multicolumn_right {
+  display: block;
+  float: left;
+}
+
+.multicolumn_role {
+  width: 100%;
+  color: #000;
+  font-size: smaller;
+}
+
+.multicolumn_clear {
+  clear: left;
+}
+
+
+
+.outframe {
+  color: #fff;
+  background: #000;
+}
+
+
+.previewsafety {
+  color: #000000;
+  background: #a55;
+}
+
+.outframe_navimode {
+  color: #fff;
+  background: #000;
+}
+
+.contentframe {
+  text-align: left;
+}
+
+.contentframe_navileft {
+  text-align: left;
+  float: right;
+}
+
+
+.sayfilter {
+  border: 2px dashed #000;
+  color: #000;
+  background: #556;
+  text-align: center;
+}
+.sayfilterleft {
+  border: none;
+  color: #fff;
+  background: #000;
+  text-align: left;
+  float: left;
+}
+
+.insayfilter {
+  text-align: left;
+  border-width: 0 ;
+  background: #556;
+}
+.insayfilter .paragraph {
+  border-width: 0 ;
+}
+.sayfilter_heading {
+  border: solid #fff;
+  border-width: 1px 0px 1px 0px;
+  color: #fff;
+  background: #458;
+  font-weight: bold;
+  margin: 3px 0 0 0 ;
+}
+
+.sayfilter_button {
+  float: right;
+  display: none;
+}
+
+
+.sayfilter_content .head,
+.sayfilter_caption_enable {
+  border: solid #fff;
+  border-width: 1px 0px 1px 0px;
+  color: #fff;
+  background: #458;
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+  padding: 1px;
+}
+
+.sayfilter_content_enable {
+  width: 100%;
+  color: #fff;
+  background: #008;
+}
+
+.sayfilter_content_disenable {
+  width: 100%;
+  color: #fff;
+  background: #444;
+  border: solid #fff;
+  border-width: 1px 0px 1px 0px;
+  font-weight: normal;
+  margin: 3px 0 0 0 ;
+}
+.sayfilter_button_lump {
+  text-align: center;
+  color: #fff;
+  background: #008;
+  margin: 1px 0 0 0 ;
+}
+
+
+.sayfilter_content_enable    ,
+.sayfilter_content_disenable ,
+.sayfilter_content           ,
+#lumpfilter ,
+#lumpfilter input {
+  margin: 1px 0 0 0 ;
+  font-weight: normal;
+}
+
+.sayfilter_incontent input {
+  display: none;
+}
+
+.login {
+  margin: 0px;
+  text-align: right;
+}
+.turnnavi    ,
+.pagenavi    ,
+.row_all     {
+  color: #999;
+  background-color: #000;
+  font-weight: bold;
+}
+
+
+.viewform {
+  text-align: right;
+}
+
+
+.mes_chrimg {
+  padding: 1px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.say {
+  border-width: 1px; border-style: solid;
+}
+
+.field, .say img {
+  margin:  0;
+  padding: 12px 8px 12px 10px;
+}
+.action {
+  margin:  0px;
+  padding: 4px;
+}
+
+.mes_maker .action *,
+.mes_maker .action,
+.mes_maker .guide *,
+.mes_maker .guide {
+  background: #464;
+  color: #fff;
+}
+.mes_maker {
+  border: 2px dashed #000;
+  color: #fff;
+  background: #464;
+}
+
+.mes_admin .action *,
+.mes_admin .action,
+.mes_admin .guide *,
+.mes_admin .guide {
+  background: #556;
+  color: #fff;
+}
+.mes_admin {
+  border: 2px dashed #000;
+  color: #fff;
+  background: #556;
+}
+
+
+.cautiontext {
+  font-weight: bold;
+  color: #f44;
+}
+
+.action_nom,
+.action {
+  border-width: 1px; border-style: solid;
+  border-color: #663;
+}
+.mes_think .action,
+.action_bm {
+  border-width: 1px; border-style: solid;
+  border-color: #663;
+}
+.mes_think .action .mes_date {
+  display: none;
+}
+
+
+.memo {
+  color: #fff;
+  border: 2px dashed #000;
+
+  margin: 0px 0px 10px 0px;
+  padding: 4px;
+}
+
+.memoleft {
+  border-color: #000;
+}
+.memoright {
+  border-color: #000;
+}
+.mesname {
+  margin: 0px;
+  padding: 1px;
+  font-weight: bold;
+  border-style: none;
+
+  color: #000000;
+  background: transparent;
+}
+
+.msg{
+  border-width: 0px; border-style: none;
+  margin:  2px;
+  padding: 4px;
+}
+
+.formpl_common {
+  border-color: #ff0;
+  color: #000;
+  background: #bb9;
+}
+
+.formpl_commit {
+  color: #000000;
+  background: #e3caa7;
+  border: 1px dashed #554433;
+}
+
+.formpl_chrimg {
+  text-align: center;
+  border: 1px solid #554433
+  vertical-align: middle;
+}
+
+img {
+  border-style: none;
+}
+
+.mes_que   ,
+.mes_del   ,
+.mes_nom   ,
+.mes_mob   ,
+.mes_think ,
+.mes_sympa ,
+.mes_bat   ,
+.mes_pixi  ,
+.mes_wolf  ,
+.mes_grave {
+  margin: 0px 8px 16px 8px;
+  padding: 1px;
+  border: 1px solid #fff;
+}
+
+.mes_que {
+  border: 1px solid #442;
+}
+
+
+.info      ,
+.infosp    ,
+.infowolf  ,
+.caution   {
+  border-width: 1px; border-style: solid;
+}
+
+.caution {
+  border: 1px solid #f44;
+}
+
+.infotext {
+  color: #aaa;
+}
+
+
+.info ,
+.infosp ,
+.infowolf {
+  border-color: #663;
+}
+
+.mes_think .action .mes_date {
+  display: none;
+}
+
+
+/* bug-fix */
+.btn {
+  color: #333 !important;
+}
+.btn-primary,
+.btn-info,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-inverse {
+  color: #fff !important;
+}

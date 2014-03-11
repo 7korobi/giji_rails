@@ -4,7 +4,7 @@ class ArrayNavi extends Navi
 
   popstate: ()->
     l = @location_val(@key)
-    c = document.cookie.match(@chk)?[2] if @params.is_cookie?
+    c = win.cookies[@key] if @params.is_cookie?
     value = []
     for o in  (l or c or "").split(",")
       break if @select? && _.every @select, (s)-> o != s.val
@@ -39,18 +39,18 @@ class ArrayNavi extends Navi
       for o in @select
         @of[o.val] = o
         if _.include @value, o.val
-          o.class = @params.class
+          o.class = @params.class_select
           o.show = true
         else
-          o.class = null
+          o.class = @params.class_default
           o.show = false
 
   choice: ->
-    _.find @select, (o)=> o.val == @value[0]
+    _.assign {}, _.find @select, (o)=> o.val == @value[0]
 
   choices: ->
     _.map @value, (value)=>
-      _.find @select, (o)-> o.val == value
+      _.assign {}, _.find @select, (o)-> o.val == value
 
 
 ArrayNavi.push = ($scope, key, def)->

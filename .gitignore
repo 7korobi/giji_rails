@@ -13,8 +13,18 @@ config/omni_auth.yml
 config/rsync.yml
 config/initializers/secret.rb
 config/initializers/resque.rb
-public/
-public_old/
+public/images/15girls
+public/images/TMMI
+public/images/banner
+public/images/bloody
+public/images/bunmei
+public/images/juna
+public/images/name
+public/images/orange
+public/images/portrate
+public/images/portrate_april
+public/images/portrate_sf++
+public/images/sow
 test/
 vendor/cache
 

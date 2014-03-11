@@ -1,4 +1,6 @@
 HREF_EVAL = ($scope)->
+  href_eval_event = null
+
   navi = (link)->
     $scope.navi.move link
     if $scope.potofs?
@@ -6,20 +8,23 @@ HREF_EVAL = ($scope)->
       $scope.secret_is_open  = true
     $scope.$apply()
 
-  cancel_say = (queid)->
-    $scope.submit
-      cmd:   'cancel'
-      queid: queid
-      turn: $scope.event.turn
-      vid:  $scope.story.vid
+  cancel_say = _.memoize (queid)->
+    _.debounce ->
+      $scope.submit
+        cmd:   'cancel'
+        queid: queid
+        turn: $scope.event.turn
+        vid:  $scope.story.vid
+    , 25000, 
+      leading: true
+      trailing: false
 
-  inner = (dom, cmd, val)->
-    item = $(dom)
+  inner = (cmd, val)->
+    item = $(href_eval_event.target)
     if 0 > item.html().indexOf cmd
       item.html("#{val} ⇠ #{cmd}")
     else
       item.html("#{val}")
-
 
   external = (id, uri, protocol, host, path)->
     item = _.find $scope.anchors, (log)->
@@ -29,6 +34,7 @@ HREF_EVAL = ($scope)->
       item = 
         template:"message/external"
         mestype: "XSAY"
+        turn: -1
         logid: id
         protocol: protocol
         host: host
@@ -37,15 +43,8 @@ HREF_EVAL = ($scope)->
         top: $scope.pageY + 24
         z: Date.now()
       $scope.anchors.push item
-      $scope.$apply()
-      drag = $(".drag.#{item.logid}")
-      drag.fadeIn 'fast', ->
-        drag.find(".badge").attr("href_eval","external('#{id}')")
     else
-      drag = $(".drag.#{id}")
-      drag.fadeOut 'fast', ->
-        $scope.anchors.splice idx, 1
-        $scope.$apply()
+      $scope.anchors.splice idx, 1
 
   popup_apply = (item, turn)->
     idx = $scope.anchors.indexOf item
@@ -54,26 +53,22 @@ HREF_EVAL = ($scope)->
       item.turn = turn
       item.z = Date.now()
       item.top = $scope.pageY + 24
-      $scope.$apply()
-
-      drag = $(".drag.#{item.logid}")
-      drag.fadeIn 'fast', ->
-        drag.find(".drag_head .badge").attr("href_eval","popup(#{item.turn},'#{item.logid}')")
     else
-      drag = $(".drag.#{item.logid}")
-      drag.fadeOut 'fast', ->
-        $scope.anchors.splice idx, 1
-        $scope.$apply()
+      $scope.anchors.splice idx, 1
     idx
 
   popup = (turn, ank)->
     href = location.href.replace location.hash, ""
 
     popup_find = (turn)->
-      event = $scope.events[turn]
-      return null unless event?.messages?
+      if turn < 0
+        list = $scope.anchors
+      else
+        event = $scope.events[turn]
+        return null unless event?.messages?
+        list = event.messages
 
-      item = _.find event.messages, (log)->
+      item = _.find list, (log)->
         log.logid == ank
       if item
         popup_apply item, turn
@@ -100,18 +95,20 @@ HREF_EVAL = ($scope)->
             popup_find turn - 1
 
   href_eval = (e)->
-    $scope.pageY = e.pageY
-    eval $(e.target).attr('href_eval')
-    $scope.$apply()
+    href_eval_event = e 
+    $scope.$apply ->
+      $scope.pageY = e.pageY
+      eval $(e.target).attr('href_eval')
     $(window).scroll()
 
   foreground = (e)->
-    logid = $(e.target).find("[name]").attr('name')
-    item  = _.find $scope.anchors, (o)-> logid = o.logid
-    item.z = Date.now()
-    $scope.$apply()
+    $scope.$apply ->
+      logid = $(e.target).find("[name]").attr('name')
+      item  = _.find $scope.anchors, (o)-> logid = o.logid
+      item?.z = Date.now()
 
   # use in interpolate
   $('#messages').on  'click', '.drag',  foreground
   $('#messages').on  'click', '[href_eval]', href_eval
+  $('#forms').on     'click', '[href_eval]', href_eval
   $('#sayfilter').on 'click', '[href_eval]', href_eval

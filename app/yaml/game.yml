@@ -138,6 +138,8 @@ PERL_UNION:
       - millerhollow
       - ultimate
     cfg: &cfg_union
+      TYPE: CABALA
+      RULE: UNION
       USERID_NPC:    master
       USERID_ADMIN:  admin
       ENABLED_VMAKE:  1
@@ -146,7 +148,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji.load.jp
+      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
 
 PERL_BRAID:
   config: &config_braid
@@ -186,6 +188,8 @@ PERL_BRAID:
       ENABLED_AMBIDEXTER:   [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
       ENABLED_SUICIDE_VOTE: [0, "1:自殺投票"]
     cfg: &cfg_braid
+      TYPE: BRAID
+      RULE: BRAID
       USERID_NPC:    master
       USERID_ADMIN:  admin
       ENABLED_VMAKE:  1
@@ -194,8 +198,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji.load.jp
-      RULE:          BRAID
+      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
 
 # 内部 人狼議事
 #
@@ -238,7 +241,7 @@ PERJURY_OLD:
   server: utage.family.jp
   oldlog:   /perjury/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /perjury/sow.cgi?cmd=rss
-  folder: PERJURY
+  folder: PERJURY_OLD
   info_url: /perjury/sow.cgi?ua=mb&vid=%s&cmd=vinfo
   nation: "人狼議事RP:Bp"
   epi_url:  /perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
@@ -258,6 +261,7 @@ PERJURY_OLD:
     path:
       <<: *GIJI_PATH
     pl:  /www/giji_log/perjury/config.pl
+
 PRETENSE:
   server: utage.family.jp
   oldlog:   /pretense/sow.cgi?cmd=oldlog&rowall=on
@@ -388,7 +392,6 @@ PAN:
       MAX_VILLAGES:    1
       TIMEOUT_SCRAP:  10
       TIMEOUT_ENTRY:   3
-      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -406,6 +409,16 @@ MORPHE:
   vid_code: M
   config:
     <<: *config_game
+    saycnt: 
+      - tiny
+      - weak
+      - juna
+      - vulcan
+      - say5x200
+      - say5x300
+      - saving
+      - euro
+
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -417,7 +430,6 @@ MORPHE:
       BASEDIR_CGIERR: http://morphe.sakura.ne.jp/morphe//
       NAME_HOME:      人狼議事 夢の形
       MAX_VILLAGES:   4
-      BASEDIR_DOC:   http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -452,7 +464,6 @@ SOYBEAN:
       BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/soy-bean//
       NAME_HOME:      人狼議事 鯖の味噌煮
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -481,12 +492,12 @@ CIEL:
       ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
     cfg:
       <<: *cfg_braid
-      RULE:           CIEL
-      URL_SW:         http://ciel.moo.jp/cheat
       BASEDIR_CGIERR: http://ciel.moo.jp//cheat
-      NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
+      URL_SW:         http://ciel.moo.jp/cheat
+      TYPE:           CHEAT
+      RULE:           CIEL
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.check.jp
+      NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
     path:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
@@ -499,7 +510,7 @@ PERJURY:
   livelog:  /sow.cgi?cmd=rss
   folder: PERJURY
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bp"
+  nation: "人狼議事RP:Cp"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: Bp
   config:
@@ -511,15 +522,16 @@ PERJURY:
       - infinity
     cfg:
       <<: *cfg_braid
-      RULE:           PERJURY
-      URL_SW:         http://perjury.rulez.jp
       BASEDIR_CGIERR: http://perjury.rulez.jp//
-      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
+      URL_SW:         http://perjury.rulez.jp
+      TYPE:           CHEAT
+      RULE:           PERJURY
       MAX_VILLAGES:   3
-      BASEDIR_DOC:    http://giji.check.jp
+      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play Cheat -
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
+    is_angular: true
 
 XEBEC:
   server: xebec.x0.to
@@ -538,7 +550,6 @@ XEBEC:
       BASEDIR_CGIERR: http://xebec.x0.to//xebec
       NAME_HOME:      人狼議事 xebec<br>- Role Play braid -
       MAX_VILLAGES:   3
-      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/xebec/config.pl
@@ -565,7 +576,6 @@ CRAZY:
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//crazy
       NAME_HOME:      人狼議事 crazy<br>- Role Play braid -
       MAX_VILLAGES:   2
-      BASEDIR_DOC:    http://giji.check.jp
     path:
       <<: *SIMPLE_PATH
       DIR_LIB:  ./lib
@@ -598,7 +608,6 @@ CABALA:
       BASEDIR_CGIERR: http://cabala.halfmoon.jp//cafe
       NAME_HOME:      人狼議事 Cabala Cafe
       MAX_VILLAGES:   4
-      BASEDIR_DOC:    http://giji.load.jp
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
@@ -628,7 +637,6 @@ ALLSTAR:
       MAX_VILLAGES:   4
       TIMEOUT_ENTRY:  3
       TIMEOUT_SCRAP: 10
-      BASEDIR_DOC:   http://giji.check.jp
       ENABLED_VMAKE:  0
     path:
       <<: *SIMPLE_PATH
@@ -666,7 +674,6 @@ LOBBY:
       URL_SW:         http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby
       NAME_HOME:      人狼議事 ロビー
-      BASEDIR_DOC:    http://giji.load.jp
       ENABLED_VMAKE:    0
       MAX_VILLAGES:    10
       TIMEOUT_SCRAP:  365

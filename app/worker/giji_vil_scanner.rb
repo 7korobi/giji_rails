@@ -5,21 +5,20 @@ class GijiVilScanner < GijiScanner
     rsync = Giji::RSync.new
 
     stop_vid_list = {}
-    rsync.each_villages do |folder, vid, path, fname|
+    rsync.each_villages do |folder, vid, _, path, fname|
       stop_vid_list[folder] ||= SowVillage.where(folder: folder, is_finish: true).pluck("vid")
       next if stop_vid_list[folder].member? vid
       new(path, folder, fname).save
     end
   end
 
-  def enqueue
-#    self.class.perform(@path, @fname, @folder, @vid)
-    Resque.enqueue(self.class, @path, @fname, @folder, @vid)
+  def enqueue(repair = nil)
+    Resque.enqueue(self.class, @path, @fname, @folder, @vid, repair)
   end
 
 
   @queue = :giji_rsyncs
-  def self.perform  path, fname, folder, vid
+  def self.perform  path, fname, folder, vid, repair
     source = SowRecordFile.village( path, fname, folder, vid )
     return unless source
 
@@ -27,18 +26,12 @@ class GijiVilScanner < GijiScanner
     sow.attributes["_type"] = "SowVillage"
 
     turn = nil
-    event_now = sow.events.to_a.max
-    if event_now.present?
-      turn = event_now.turn
-      event_id = event_now._id
-    else
-      event_id = "#{sow._id}-#{turn}"
-    end
+    event_id = "#{sow._id}-#{turn}"
 
-    pno = 0
     source.each do |o|
       case o.class.name
       when 'Struct::SowRecordFileUser'
+        next if repair == :repair
         story = sow
 
         face_name = Face.find(o.cid).name  rescue  '***'
@@ -48,12 +41,11 @@ class GijiVilScanner < GijiScanner
                  face_name
                end
 
-        SowUser.where(story_id: sow._id, sow_auth_id: o.uid).delete_all
         potof = SowUser.find_or_initialize_by(story_id: sow._id, sow_auth_id: o.uid)
         potof.attributes["_type"] = "SowUser"
         potof.update_attributes(
           event_id: event_id,
-          pno: pno,
+          pno:      o.pno,
           face_id:  o.cid,
           csid:     o.csid.split('_')[0],
           jobname:  o.jobname,
@@ -103,9 +95,8 @@ class GijiVilScanner < GijiScanner
         potof.timer = dt
 
         potof.story_id = story.id
-        potof.event_id = event_now.id  if  event_now
+        potof.event_id = event_id
         potof.save
-        pno += 1
       when 'Struct::SowRecordFileVil'
         turn = o.turn.to_i
         sow.update_attributes(
@@ -165,16 +156,7 @@ class GijiVilScanner < GijiScanner
         sow.is_finish   = (o.epilogue.to_i <  turn)
         sow.save
 
-        sow = SowVillage.find_by( folder: folder, vid: vid )
-        event_now = sow.events.to_a.max
-        if event_now.present?
-          turn = event_now.turn
-          event_id = event_now._id
-        else
-          event_id = "#{sow._id}-#{turn}"
-        end
-
-        o.turn.to_i.times do |turn_no|
+        turn.times do |turn_no|
           event = SowTurn.find_or_initialize_by(story_id: sow.id, turn: turn_no)
           event.attributes["_type"] = "SowTurn"
           event.update_attributes(
@@ -199,20 +181,12 @@ class GijiVilScanner < GijiScanner
           end
           event.save
         end
-
-        sow = SowVillage.find_by( folder: folder, vid: vid )
-
-        event_now = sow.events.to_a.max
-        if event_now.present?
-          turn = event_now.turn
-          event_id = event_now._id
-        else
-          event_id = "#{sow._id}-#{turn}"
-        end
+        event_id = "#{sow.id}-#{turn}"
       end
     end
+    return if repair
     sow.events.each do |event|
-      event.update_from_file if event.messages.blank?
+      event.update_from_file if Message.in_event(event.id).count == 0
     end
   end
 end

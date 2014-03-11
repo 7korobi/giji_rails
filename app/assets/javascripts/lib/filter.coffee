@@ -1,6 +1,7 @@
-FILTER = ($scope, $filter)->
+FILTER = ($scope, $filter, $timeout)->
   PageNavi.push $scope, 'page',  OPTION.page.page
   page = $scope.page
+
   filter_filter = $filter 'filter'
 
   if $scope.stories?
@@ -18,9 +19,9 @@ FILTER = ($scope, $filter)->
       { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
       { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
     ]
-    for filter in filters  
+    for filter in filters
       keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
-      navigator = 
+      navigator =
         options: OPTION.page[filter.target].options
         button:
           ALL: "- すべて -"
@@ -51,9 +52,9 @@ FILTER = ($scope, $filter)->
 
   if $scope.event?.messages?
     page.last_updated_at = ()->
-      _ref = $scope.event.messages
-      if _ref?
-        _.last(_ref)?.updated_at
+      last = _.last($scope.event.messages)
+      if last?
+        last.updated_at
     page.filter_by 'event.messages'
     page.filter_to 'messages'
     page.filter 'event.turn'
@@ -77,26 +78,37 @@ FILTER = ($scope, $filter)->
         is_cookie: false
       select: GIJI.modes
 
-    $scope.modes = $.extend {}, $scope.mode.choice()
+    modes_apply = ->
+      $scope.modes = $scope.mode.choice()
 
-    modes_change = (oldVal, newVal)->
-      if "info" == $scope.modes.face
-        $scope.modes.last = false
-        $scope.modes.view = "open"
-        $scope.navi.value_add("link")
-      if "memo" == $scope.modes.face
-        $scope.modes.open = true
-        if "all" != $scope.modes.view
-          $scope.modes.view = "open"
+    modes_change = ->
+      info_at = $scope.info_at
+      if info_at?
+        if "info" == $scope.modes.face && "all" == $scope.modes.view
+          info_at.value = Number(new Date) unless info_at.value
+        else
+          info_at.value = ""
+
+      switch $scope.modes.face
+        when "info"
+          if "all" == $scope.modes.view
+            $scope.modes.last = false
+          else
+            $scope.modes.view = "open"
+            $scope.modes.last = true
+        when "memo"
+          $scope.modes.open = true
+          if "all" != $scope.modes.view
+            $scope.modes.view = "open"
+
       if "open" == $scope.modes.view
         $scope.modes.open = true
 
-      mode = _.compact _.uniq [ 
+      mode = _.compact _.uniq [
         $scope.modes.face
         $scope.modes.view
         'open'   if $scope.modes.open
         'last'   if $scope.modes.last
-        'player' if $scope.modes.player
       ]
       $scope.mode.value = mode.join("_")
       $scope.mode_select = _.filter $scope.mode.select, (o)->
@@ -104,15 +116,16 @@ FILTER = ($scope, $filter)->
 
       $scope.mode_cache[$scope.modes.face] = $scope.mode.value
       $scope.deploy_mode_common()
+    modes_apply()
 
+    $scope.$watch 'mode.value',   modes_apply
     $scope.$watch 'modes.face',   modes_change
     $scope.$watch 'modes.view',   modes_change
     $scope.$watch 'modes.open',   modes_change
     $scope.$watch 'modes.last',   modes_change
-    $scope.$watch 'modes.player', modes_change
+
 
     page.filter 'mode.value', (key, list)->
-      $scope.modes = $.extend {}, $scope.mode.choice()
       is_mob_open = false
       if $scope.story?
         is_mob_open = true if 'alive' == $scope.story.type.mob
@@ -121,35 +134,37 @@ FILTER = ($scope, $filter)->
 
       # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
       mode_filters =
-        info: /^[aAm]|(vilinfo)/
-        memo_all:  /^(.M)/
-        memo_open: /^([qcaAmIMS][MX])/
+        info_open_last: /^([aAm].\d+)|(vilinfo)/
+        info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/
+        info_all: /^(..\d+)|(potofs)|(status)/
+        memo_all:  /^.M\d+/
+        memo_open: /^[qcaAmIMS][MX]\d+/
         talk_all:   /^[^S][^M]\d+/
         talk_think: /^[qcaAmIi][^M]\d+/
         talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
         talk_all_open:   /^.[^M]\d+/
         talk_think_open: /^[qcaAmIiS][^M]\d+/
         talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
-        talk_all_last:   /^[^S][SX]/
-        talk_think_last: /^[qcaAmIi][SX]/
-        talk_clan_last:  /^[qcaAmIi\-WPX][SX]/
-        talk_all_open_last:   /^.[SX]/
-        talk_think_open_last: /^[qcaAmIiS][SX]/
-        talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]/
-        talk_open:      /^[qcaAmIS][^M]/
-        talk_open_last: /^[qcaAmIS][SX]/
+        talk_all_last:   /^[^S][SX]\d+/
+        talk_think_last: /^[qcaAmIi][SX]\d+/
+        talk_clan_last:  /^[qcaAmIi\-WPX][SX]\d+/
+        talk_all_open_last:   /^.[SX]\d+/
+        talk_think_open_last: /^[qcaAmIiS][SX]\d+/
+        talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]\d+/
+        talk_open:      /^[qcaAmIS][^M]\d+/
+        talk_open_last: /^[qcaAmIS][SX]\d+/
 
       if is_mob_open
-        open_filters = 
-          talk_think_open_last: /^[qcaAmIiVS][SX]/
+        open_filters =
+          talk_think_open_last: /^[qcaAmIiVS][SX]\d+/
           talk_think_open: /^[qcaAmIiVS][^M]\d+/
-          memo_open:      /^([qcaAmIMVS][MX])/
-          talk_open:      /^[qcaAmIVS][^M]/
-          talk_open_last: /^[qcaAmIVS][SX]/
+          memo_open:      /^[qcaAmIMVS][MX]\d+/
+          talk_open:      /^[qcaAmIVS][^M]\d+/
+          talk_open_last: /^[qcaAmIVS][SX]\d+/
       else
         open_filters = {}
 
-      add_filters = 
+      add_filters =
         clan:  (o)-> "" != o.to && o.to?
         think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
 
@@ -163,12 +178,18 @@ FILTER = ($scope, $filter)->
 
       if $scope.modes.last
         result = []
-        order  = (o)-> o.order || o.updated_at
         for key, sublist of _.groupBy list, $scope.potof_key
-          result.push _.last _.sortBy sublist, order
-        _.sortBy result, order
+          result.push _.last sublist
+        result
       else
         list
+
+    Navi.push $scope, 'info_at',
+      options:
+        current: 0
+        current_type: Number
+        location: 'hash'
+        is_cookie: false
 
     page.filter 'hide_potofs.value', (hide_faces, list)->
       if _.include hide_faces, 'others'
@@ -181,7 +202,19 @@ FILTER = ($scope, $filter)->
     $scope.search_input = search
     filter_filter list, search
 
-  page.paginate 'row.value', (page_per, list)->
+  page.filter 'info_at.value', (now, list)->
+    $scope.event.unread_count = 0
+    if now && $scope.event?
+      _.filter list, (o)->
+        if now < o.updated_at
+          ++$scope.event.unread_count unless o.logid == "IX99999"
+          return true
+        return o.logid.match(/vilinfo|potofs|status/)
+    else
+      list
+
+  page.paginate 'msg_styles.row', (row, list)->
+    page_per = Number(row)
     if $scope.event?.is_news
       $scope.page.visible = false
       to   = list.length
@@ -199,36 +232,44 @@ FILTER = ($scope, $filter)->
 
     list.slice from, to
 
-  page.filter 'order.value', (key, list)->
-    for log in list
-      log.text = $scope.text_decolate log.log
-
-    $scope.anchors = []
+  page.filter 'msg_styles.order', (key, list)->
+    order =
+      if "desc" == key
+        (o)-> - o.updated_at
+      else
+        (o)-> + o.updated_at
     list.reverse() if "desc" == key
-    list
+    _.sortBy list, order
 
-  do_scrollTo = ()->
-    $('div.popover').remove()
-    target = $(".message_filter.#{$scope.top.id}")
+  scrollTo = (newVal, oldVal, three)->
+    $scope.anchors = []
 
-    if $scope.event?.is_news && target?.offset()?
-    else
-      target = $(".inframe")
-
-    $(window).scrollTop  target.offset().top - 20
-  scrollTo = _.debounce do_scrollTo, 500
+    if $scope.event.is_news
+      for mode, is_show of $scope.form_show
+        for form_text in $scope.form.texts
+          if is_show and mode == form_text.jst
+            return
+    $scope.go.messages()
 
   form_show = ->
-    if $scope.modes?
+    $scope.anchors = []
+    if $scope.modes?.form?
       $scope.form_show = {}
-      for key in $scope.modes.form 
+      for key in $scope.modes.form
         $scope.form_show[key] = true
+
+  _.delay ->
+    if $scope.event?.messages?
+      $scope.$watch "event.turn",    scrollTo
+      $scope.$watch "event.is_news", scrollTo
+      $scope.$watch "mode.value",    scrollTo
+    $scope.$watch "page.value",      scrollTo
+    $scope.$watch "search.value",    scrollTo
+    $scope.$watch "msg_style.value", scrollTo
+    $scope.$apply ->
+      page.start()
+  , 1000
 
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
-  $scope.$watch 'modes.face',    scrollTo
-  $scope.$watch 'order.value',   scrollTo
-  $scope.$watch 'event.turn',    scrollTo
-  $scope.$watch 'page.value',    scrollTo
-  $scope.$watch 'page.value',    $scope.boot

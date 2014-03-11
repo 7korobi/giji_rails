@@ -4,6 +4,7 @@ table.memo(ng-class="message.mestype")
       td.memoleft
         h5(ng-bind-html="message.name")
       td.memoright
-        p.text(ng-class="message.style" ng-bind-html="message.text")
+        p.text(ng-class="message.style" ng-bind-html="message.text" ng-if="message.text")
+        p.text(ng-class="message.style" ng-if="! message.text") メモをはがした
         p.mes_date
           | {{message.time()}}

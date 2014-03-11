@@ -6,8 +6,6 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
-raise("Sprockets monkey patch for v 2.10.1. Check before moving on") unless Sprockets::VERSION == "2.10.1"
-
 module Sprockets
   class Manifest
     def compile(*args)
@@ -44,7 +42,24 @@ end
 
 module Giji
   class Application < Rails::Application
-    config.assets.precompile += %w( dic.js data_pan.js data.js base.js sow.js color_white.css color_black.css color_white_box.css color_black_box.css )
+    # Compress JavaScripts and CSS.
+    config.assets.precompile += %w( 
+      data.js 
+      base.js 
+      boot.js
+      sow.js 
+    )
+
+    %w(
+      spec.js
+      dic.js 
+      data_pan.js 
+
+      color_white.css 
+      color_black.css 
+      color_white_box.css 
+      color_black_box.css
+    )
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
