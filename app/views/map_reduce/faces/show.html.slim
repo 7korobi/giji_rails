@@ -31,11 +31,11 @@
     | gon.face.says[0].date.min = new Date(gon.face.says[0].date.min);
     | gon.face.says[0].date.max = new Date(gon.face.says[0].date.max);
 
-  h3
-    span.mark
-      | {{lax_date(face.says[0].date.min)}} 
+  h6
+    span.code
+      | {{lax_date(face.says[0].date.min)}}
     | &nbsp;〜&nbsp;
-    span.mark
+    span.code
       | {{lax_date(face.says[0].date.max)}}
 
   table.say.SAY
@@ -54,20 +54,19 @@
               span.mark
                 | {{face.role.all}}
               | の役職になりました
-              div(ng-repeat="win in face.win.keys")
+              .cell-list(ng-repeat="win in face.win.keys")
                 h4.mesname
                   | {{win}} x{{face.win.value[win]}}回
                 .mark(style="display:inline-block;" ng-repeat="role in face.role_of_wins[win]")
-                  span(style="display:inline-block; width:3.75em; text-align:center;")
+                  span(style="display:inline-block; width:3.75em; text-align:center; white-space: nowrap;")
                     | {{name.config(role[0])}}
-                  span(style="display:inline-block; width:2.50em; text-align:right;")
+                  span(style="display:inline-block; width:2.50em; text-align:right; white-space: nowrap;")
                     | x{{role[1]}}
 
   h2 みんなのコメント
   div(ng-repeat="(phase, votes) in face.comment_by_phase")
     h3
-      span.mark
-        | {{phase}}
+      | {{phase}}
     .XSAY
       .action(ng-repeat="vote in votes")
         p.text
@@ -123,8 +122,7 @@
         .mark(style="text-align:right")
           | {{(say.count / say.vil).metric(0,0)}} 回
 
-  .MAKER
-    .guide
+  .MAKER.guide
       h3.mesname
         b
           | {{face.name}}
@@ -136,17 +134,16 @@
         dl
           div.accordion
             dt
-              span.mark ✘ 
-          div.accordion(ng-repeat="folder in face.folder.keys" style="display:inline-block; width:8.5em; vertical-align:top; text-align:right;")
+              span.mark ✘
+          .accordion(ng-repeat="folder in face.folder.keys" style="display:inline-block; width:8.5em; vertical-align:top; text-align:right; white-space: nowrap;")
             dt
               div(style="text-align:right; margin-right:1em")
                 | {{folder}} x{{face.folder.value[folder]}}回
             dd
-              a.mark(style="display:inline-block; width:7em; text-align:right;" ng-repeat="story_id in face.story_id_of_folders[folder]" href="/{{story_id[0]}}/file")
+              a.mark(style="display:block; width:7em; text-align:right;" ng-repeat="story_id in face.story_id_of_folders[folder]" href="/{{story_id[0]}}/file")
                 | {{story_id[0]}}
 
-  .ADMIN
-    .guide
+  .ADMIN.guide
       h3.mesname
         b
           | {{face.name}}
