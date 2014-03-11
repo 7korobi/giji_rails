@@ -3,6 +3,8 @@ for pl in [true, false]
   for power, powername of OPTION.selectors.power
     for row, rowname of OPTION.selectors.row
       for order, ordername of OPTION.selectors.order
+        continue unless "simple" == power || head.csstransitions
+
         o = 
           group: rowname
           power: power
