@@ -6,12 +6,12 @@
     dd.form-inline(ng-if="css")
       .form-group.mark
         label.checkbox(ng-repeat="key in selector_keys.font")
-          input(type="radio" value="{{key}}" ng-model="styles.font")
+          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.font")
             | {{selectors.font[key]}}
       | &thinsp;
       .form-group.mark
         label.checkbox(ng-repeat="key in selector_keys.width")
-          input(type="radio" value="{{key}}" ng-model="styles.width")
+          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.width")
             | {{selectors.width[key]}}
 
 
@@ -44,21 +44,21 @@
       | &thinsp;
       .form-group.mark(ng-if="show_style_navi")
         label
-          input(type="radio" value="open"  ng-model="modes.view") 公開
+          input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
         label
-          input(type="radio" value="clan"  ng-model="modes.view") 内緒話
+          input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
         label
-          input(type="radio" value="think" ng-model="modes.view") 独り言
+          input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
         label
-          input(type="radio" value="all"   ng-model="modes.view") 全部
+          input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
       | &thinsp;
       .form-group.mark(ng-if="show_style_navi")
         label.checkbox
-          input(type="checkbox" ng-model="modes.last") 最後の言葉
+          input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
         label.checkbox
-          input(type="checkbox" ng-model="modes.open") 公開発言
+          input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
         label.checkbox
-          input(type="checkbox" ng-model="msg_styles.pl") 中身発言
+          input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
 
 
   h6(ng-if="page") ページ、日程の移動 &emsp;&emsp;&emsp;&emsp;

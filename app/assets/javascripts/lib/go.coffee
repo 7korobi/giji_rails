@@ -16,3 +16,4 @@ GO = ($scope)->
     messages:  go_anker ".css_changer"
     form:      go_anker "#forms"
     search:    go_anker """[ng-model="search_input"]""", (o)-> o.focus()
+    self_link: -> document.location.href

@@ -1,13 +1,16 @@
+span(ng-if="show_style_navi")
+  a.mark(ng-href="{{go.self_link()}}" target="_blank") 別に開く
+| &thinsp;
 span
   a.mark(ng-click="styles.width = 'center-msg'") 800
   a.mark(ng-click="styles.width = 'mini-msg'"  ) 480
-| &nbsp;
+| &thinsp;
 span
   a.mark(ng-click="styles.theme = 'cinema'") 煉瓦
   a.mark(ng-click="styles.theme = 'night'" ) 月夜
   a.mark(ng-click="styles.theme = 'star'"  ) 蒼穹
   a.mark(ng-click="styles.theme = 'wa'"    ) 和の国
-| &nbsp;
-a.glyphicon.glyphicon-cog(ng-click="show_style_navi = ! show_style_navi" style="font-size: 36px; margin-bottom: -26px; vertical-align: -26px;")
+| &thinsp;
+a.glyphicon.glyphicon-cog(tabindex="0" ng-click="show_style_navi = ! show_style_navi" style="font-size: 36px; margin-bottom: -26px; vertical-align: -26px;")
 
 
