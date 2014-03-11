@@ -409,6 +409,16 @@ MORPHE:
   vid_code: M
   config:
     <<: *config_game
+    saycnt: 
+      - tiny
+      - weak
+      - juna
+      - vulcan
+      - say5x200
+      - say5x300
+      - saving
+      - euro
+
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
