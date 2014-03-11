@@ -14,7 +14,7 @@ class FixedBox
       win.on_scroll(=> @scroll())
 
   resize: ()->
-    if @box && head.browser.power != "simple"
+    if @box
       width  = win.width  - @box.width()
       height = win.height - @box.height()
 
@@ -22,17 +22,6 @@ class FixedBox
       @left = @dx         if   0 < @dx
       @top = @dy + height if @dy < 0
       @top = @dy          if   0 < @dy
-
-      if 1.5 < win.zoom
-
-        @box.css
-          display: "none"
-      else
-        @box.css
-          display: ""
-    else
-      @box.css
-        display: "none"
 
   scroll: ()->
     win.left = window.pageXOffset
@@ -58,35 +47,14 @@ class FixedBox
       left = @left + win.left
       top  = @top
       @translate(left, top)
-    else
-      @box.css
-        display: "none"
 
   translate: (left, top)->
-    if head.csstransitions
-      transform  = "translate(#{left}px, #{top}px)"
-      if head.browser.webkit
-        @box.css "-webkit-transform",  transform
-
-      if head.browser.mozilla
-        @box.css "-moz-transform",  transform
-
-      if head.browser.ie
-        @box.css "-ms-transform",  transform
-
-      if head.browser.opera
-        @box.css "-o-transform",  transform
-
-      @box.css "transform",  transform
-
-    else
-      @box.animate
-        left: left + "px"
-        top:  top  + "px"
-      ,
-        duration: 'fast'
-        easing: 'swing'
-        queue: false
+    transform  = "translate(#{left}px, #{top}px)"
+    @box.css "-webkit-transform",  transform  if head.browser.webkit
+    @box.css "-moz-transform",   transform  if head.browser.mozilla
+    @box.css "-ms-transform",  transform  if head.browser.ie
+    @box.css "-o-transform", transform  if head.browser.opera
+    @box.css "transform",  transform
 
 FixedBox.push = ($, dx, dy, key)->
   FixedBox.list[key] or= new FixedBox dx, dy, $(key)
