@@ -12,8 +12,6 @@ class UsersController < ApplicationController
   before_filter :self_require, only:%w[edit update byebye_list]
 
   def index
-    gon.news = NOTE[:news]
-
     gon.messages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
       active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
       prologue_story_ids = active_story_ids - SowTurn.all.in(story_id: active_story_ids).pluck(:story_id)
@@ -40,7 +38,7 @@ class UsersController < ApplicationController
 
   def show
     favolite = MapReduce::Face.where("value.sow_auth_id.max_is" => user.id).order_by("value.sow_auth_id.max" => -1).first
-    if favolite 
+    if favolite
       @favolite_face_id = favolite.id
     else
       @favolite_face_id = "undef"
