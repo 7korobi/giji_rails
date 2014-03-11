@@ -1,8 +1,8 @@
 TITLE = ($scope)->
   title_change = ()->
     if $scope.story?
-      if $scope.top?.focus
-        $scope.title = "(#{$scope.top.news_size}) #{$scope.subtitle} #{$scope.story.name}"
+      if $scope.event?.unread_count
+        $scope.title = "(#{$scope.event.unread_count}) #{$scope.subtitle} #{$scope.story.name}"
       else
         $scope.title = "#{$scope.subtitle} #{$scope.story.name}"
     else
@@ -23,8 +23,7 @@ TITLE = ($scope)->
     title_change()
 
   titles_change()
-  $scope.$watch 'top.news_size',  title_change
-  $scope.$watch 'top.focus',     title_change
-  $scope.$watch 'modes.face',  titles_change
+  $scope.$watch 'event.unread_count', title_change
+  $scope.$watch 'modes.face', titles_change
   $scope.$watch 'event.turn', titles_change
 

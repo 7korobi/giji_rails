@@ -19,9 +19,9 @@ FILTER = ($scope, $filter, $timeout)->
       { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
       { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
     ]
-    for filter in filters  
+    for filter in filters
       keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
-      navigator = 
+      navigator =
         options: OPTION.page[filter.target].options
         button:
           ALL: "- すべて -"
@@ -82,21 +82,29 @@ FILTER = ($scope, $filter, $timeout)->
       $scope.modes = $scope.mode.choice()
 
     modes_change = ->
-      if "info" == $scope.modes.face
-        if "all" == $scope.modes.view
-          $scope.modes.last = false
+      info_at = $scope.info_at
+      if info_at?
+        if "info" == $scope.modes.face && "all" == $scope.modes.view
+          info_at.value = Number(new Date) unless info_at.value
         else
-          $scope.modes.view = "open"
-          $scope.modes.last = true
-      if "memo" == $scope.modes.face
-        $scope.modes.open = true
-        if "all" != $scope.modes.view
-          $scope.modes.view = "open"
+          info_at.value = ""
+
+      switch $scope.modes.face
+        when "info"
+          if "all" == $scope.modes.view
+            $scope.modes.last = false
+          else
+            $scope.modes.view = "open"
+            $scope.modes.last = true
+        when "memo"
+          $scope.modes.open = true
+          if "all" != $scope.modes.view
+            $scope.modes.view = "open"
 
       if "open" == $scope.modes.view
         $scope.modes.open = true
 
-      mode = _.compact _.uniq [ 
+      mode = _.compact _.uniq [
         $scope.modes.face
         $scope.modes.view
         'open'   if $scope.modes.open
@@ -126,37 +134,37 @@ FILTER = ($scope, $filter, $timeout)->
 
       # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
       mode_filters =
-        info_open_last: /^[aAm]|(vilinfo)/
-        info_all_open: /^[aAm]|(vilinfo)|(potofs)|(status)/
-        info_all: /^[aAm]|(potofs)|(status)/
-        memo_all:  /^(.M)/
-        memo_open: /^([qcaAmIMS][MX])/
+        info_open_last: /^([aAm].\d+)|(vilinfo)/
+        info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/
+        info_all: /^(..\d+)|(potofs)|(status)/
+        memo_all:  /^.M\d+/
+        memo_open: /^[qcaAmIMS][MX]\d+/
         talk_all:   /^[^S][^M]\d+/
         talk_think: /^[qcaAmIi][^M]\d+/
         talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
         talk_all_open:   /^.[^M]\d+/
         talk_think_open: /^[qcaAmIiS][^M]\d+/
         talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
-        talk_all_last:   /^[^S][SX]/
-        talk_think_last: /^[qcaAmIi][SX]/
-        talk_clan_last:  /^[qcaAmIi\-WPX][SX]/
-        talk_all_open_last:   /^.[SX]/
-        talk_think_open_last: /^[qcaAmIiS][SX]/
-        talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]/
-        talk_open:      /^[qcaAmIS][^M]/
-        talk_open_last: /^[qcaAmIS][SX]/
+        talk_all_last:   /^[^S][SX]\d+/
+        talk_think_last: /^[qcaAmIi][SX]\d+/
+        talk_clan_last:  /^[qcaAmIi\-WPX][SX]\d+/
+        talk_all_open_last:   /^.[SX]\d+/
+        talk_think_open_last: /^[qcaAmIiS][SX]\d+/
+        talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]\d+/
+        talk_open:      /^[qcaAmIS][^M]\d+/
+        talk_open_last: /^[qcaAmIS][SX]\d+/
 
       if is_mob_open
-        open_filters = 
-          talk_think_open_last: /^[qcaAmIiVS][SX]/
+        open_filters =
+          talk_think_open_last: /^[qcaAmIiVS][SX]\d+/
           talk_think_open: /^[qcaAmIiVS][^M]\d+/
-          memo_open:      /^([qcaAmIMVS][MX])/
-          talk_open:      /^[qcaAmIVS][^M]/
-          talk_open_last: /^[qcaAmIVS][SX]/
+          memo_open:      /^[qcaAmIMVS][MX]\d+/
+          talk_open:      /^[qcaAmIVS][^M]\d+/
+          talk_open_last: /^[qcaAmIVS][SX]\d+/
       else
         open_filters = {}
 
-      add_filters = 
+      add_filters =
         clan:  (o)-> "" != o.to && o.to?
         think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
 
@@ -176,6 +184,13 @@ FILTER = ($scope, $filter, $timeout)->
       else
         list
 
+    Navi.push $scope, 'info_at',
+      options:
+        current: 0
+        current_type: Number
+        location: 'hash'
+        is_cookie: false
+
     page.filter 'hide_potofs.value', (hide_faces, list)->
       if _.include hide_faces, 'others'
         hide_faces = hide_faces.concat $scope.face.others
@@ -186,6 +201,17 @@ FILTER = ($scope, $filter, $timeout)->
   page.filter 'search.value', (search, list)->
     $scope.search_input = search
     filter_filter list, search
+
+  page.filter 'info_at.value', (now, list)->
+    $scope.event.unread_count = 0
+    if now && $scope.event?
+      _.filter list, (o)->
+        if now < o.updated_at
+          ++$scope.event.unread_count unless o.logid == "IX99999"
+          return true
+        return o.logid.match(/vilinfo|potofs|status/)
+    else
+      list
 
   page.paginate 'msg_styles.row', (row, list)->
     page_per = Number(row)
@@ -207,7 +233,7 @@ FILTER = ($scope, $filter, $timeout)->
     list.slice from, to
 
   page.filter 'msg_styles.order', (key, list)->
-    order = 
+    order =
       if "desc" == key
         (o)-> - o.updated_at
       else
@@ -215,23 +241,23 @@ FILTER = ($scope, $filter, $timeout)->
     list.reverse() if "desc" == key
     _.sortBy list, order
 
-  scrollTo = (newVal, oldVal, three)->    
+  scrollTo = (newVal, oldVal, three)->
     $scope.anchors = []
 
     if $scope.event.is_news
       for mode, is_show of $scope.form_show
         for form_text in $scope.form.texts
           if is_show and mode == form_text.jst
-            return 
+            return
     $scope.go.messages()
 
   form_show = ->
     $scope.anchors = []
     if $scope.modes?.form?
       $scope.form_show = {}
-      for key in $scope.modes.form 
+      for key in $scope.modes.form
         $scope.form_show[key] = true
-  
+
   _.delay ->
     if $scope.event?.messages?
       $scope.$watch "event.turn",    scrollTo
