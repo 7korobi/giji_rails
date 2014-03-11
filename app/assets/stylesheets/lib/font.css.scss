@@ -5,7 +5,9 @@
     font-size: $size-base * 0.7;
   }
 
+  .text,
   .mesname,
+  textarea,
   body {
     font-family: $family;
     font-size: $size-base;
