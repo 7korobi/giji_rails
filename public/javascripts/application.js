@@ -621,7 +621,7 @@ FixedBox = (function() {
 
   FixedBox.prototype.resize = function() {
     var height, width;
-    if (this.box && head.browser.power !== "simple") {
+    if (this.box) {
       width = win.width - this.box.width();
       height = win.height - this.box.height();
       if (this.dx < 0) {
@@ -634,21 +634,8 @@ FixedBox = (function() {
         this.top = this.dy + height;
       }
       if (0 < this.dy) {
-        this.top = this.dy;
+        return this.top = this.dy;
       }
-      if (1.5 < win.zoom) {
-        return this.box.css({
-          display: "none"
-        });
-      } else {
-        return this.box.css({
-          display: ""
-        });
-      }
-    } else {
-      return this.box.css({
-        display: "none"
-      });
     }
   };
 
@@ -684,40 +671,25 @@ FixedBox = (function() {
       left = this.left + win.left;
       top = this.top;
       return this.translate(left, top);
-    } else {
-      return this.box.css({
-        display: "none"
-      });
     }
   };
 
   FixedBox.prototype.translate = function(left, top) {
     var transform;
-    if (head.csstransitions) {
-      transform = "translate(" + left + "px, " + top + "px)";
-      if (head.browser.webkit) {
-        this.box.css("-webkit-transform", transform);
-      }
-      if (head.browser.mozilla) {
-        this.box.css("-moz-transform", transform);
-      }
-      if (head.browser.ie) {
-        this.box.css("-ms-transform", transform);
-      }
-      if (head.browser.opera) {
-        this.box.css("-o-transform", transform);
-      }
-      return this.box.css("transform", transform);
-    } else {
-      return this.box.animate({
-        left: left + "px",
-        top: top + "px"
-      }, {
-        duration: 'fast',
-        easing: 'swing',
-        queue: false
-      });
+    transform = "translate(" + left + "px, " + top + "px)";
+    if (head.browser.webkit) {
+      this.box.css("-webkit-transform", transform);
     }
+    if (head.browser.mozilla) {
+      this.box.css("-moz-transform", transform);
+    }
+    if (head.browser.ie) {
+      this.box.css("-ms-transform", transform);
+    }
+    if (head.browser.opera) {
+      this.box.css("-o-transform", transform);
+    }
+    return this.box.css("transform", transform);
   };
 
   return FixedBox;
@@ -1861,20 +1833,31 @@ FILTER = function($scope, $filter, $timeout) {
       return $scope.modes = $scope.mode.choice();
     };
     modes_change = function() {
-      var mode;
-      if ("info" === $scope.modes.face) {
-        if ("all" === $scope.modes.view) {
-          $scope.modes.last = false;
+      var info_at, mode;
+      info_at = $scope.info_at;
+      if (info_at != null) {
+        if ("info" === $scope.modes.face && "all" === $scope.modes.view) {
+          if (!info_at.value) {
+            info_at.value = Number(new Date);
+          }
         } else {
-          $scope.modes.view = "open";
-          $scope.modes.last = true;
+          info_at.value = "";
         }
       }
-      if ("memo" === $scope.modes.face) {
-        $scope.modes.open = true;
-        if ("all" !== $scope.modes.view) {
-          $scope.modes.view = "open";
-        }
+      switch ($scope.modes.face) {
+        case "info":
+          if ("all" === $scope.modes.view) {
+            $scope.modes.last = false;
+          } else {
+            $scope.modes.view = "open";
+            $scope.modes.last = true;
+          }
+          break;
+        case "memo":
+          $scope.modes.open = true;
+          if ("all" !== $scope.modes.view) {
+            $scope.modes.view = "open";
+          }
       }
       if ("open" === $scope.modes.view) {
         $scope.modes.open = true;
@@ -1908,33 +1891,33 @@ FILTER = function($scope, $filter, $timeout) {
         }
       }
       mode_filters = {
-        info_open_last: /^[aAm]|(vilinfo)/,
-        info_all_open: /^[aAm]|(vilinfo)|(potofs)|(status)/,
-        info_all: /^[aAm]|(potofs)|(status)/,
-        memo_all: /^(.M)/,
-        memo_open: /^([qcaAmIMS][MX])/,
+        info_open_last: /^([aAm].\d+)|(vilinfo)/,
+        info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/,
+        info_all: /^(..\d+)|(potofs)|(status)/,
+        memo_all: /^.M\d+/,
+        memo_open: /^[qcaAmIMS][MX]\d+/,
         talk_all: /^[^S][^M]\d+/,
         talk_think: /^[qcaAmIi][^M]\d+/,
         talk_clan: /^[qcaAmIi\-WPX][^M]\d+/,
         talk_all_open: /^.[^M]\d+/,
         talk_think_open: /^[qcaAmIiS][^M]\d+/,
         talk_clan_open: /^[qcaAmIi\-WPXS][^M]\d+/,
-        talk_all_last: /^[^S][SX]/,
-        talk_think_last: /^[qcaAmIi][SX]/,
-        talk_clan_last: /^[qcaAmIi\-WPX][SX]/,
-        talk_all_open_last: /^.[SX]/,
-        talk_think_open_last: /^[qcaAmIiS][SX]/,
-        talk_clan_open_last: /^[qcaAmIi\-WPXS][SX]/,
-        talk_open: /^[qcaAmIS][^M]/,
-        talk_open_last: /^[qcaAmIS][SX]/
+        talk_all_last: /^[^S][SX]\d+/,
+        talk_think_last: /^[qcaAmIi][SX]\d+/,
+        talk_clan_last: /^[qcaAmIi\-WPX][SX]\d+/,
+        talk_all_open_last: /^.[SX]\d+/,
+        talk_think_open_last: /^[qcaAmIiS][SX]\d+/,
+        talk_clan_open_last: /^[qcaAmIi\-WPXS][SX]\d+/,
+        talk_open: /^[qcaAmIS][^M]\d+/,
+        talk_open_last: /^[qcaAmIS][SX]\d+/
       };
       if (is_mob_open) {
         open_filters = {
-          talk_think_open_last: /^[qcaAmIiVS][SX]/,
+          talk_think_open_last: /^[qcaAmIiVS][SX]\d+/,
           talk_think_open: /^[qcaAmIiVS][^M]\d+/,
-          memo_open: /^([qcaAmIMVS][MX])/,
-          talk_open: /^[qcaAmIVS][^M]/,
-          talk_open_last: /^[qcaAmIVS][SX]/
+          memo_open: /^[qcaAmIMVS][MX]\d+/,
+          talk_open: /^[qcaAmIVS][^M]\d+/,
+          talk_open_last: /^[qcaAmIVS][SX]\d+/
         };
       } else {
         open_filters = {};
@@ -1968,6 +1951,14 @@ FILTER = function($scope, $filter, $timeout) {
         return list;
       }
     });
+    Navi.push($scope, 'info_at', {
+      options: {
+        current: 0,
+        current_type: Number,
+        location: 'hash',
+        is_cookie: false
+      }
+    });
     page.filter('hide_potofs.value', function(hide_faces, list) {
       var faces;
       if (_.include(hide_faces, 'others')) {
@@ -1984,6 +1975,22 @@ FILTER = function($scope, $filter, $timeout) {
   page.filter('search.value', function(search, list) {
     $scope.search_input = search;
     return filter_filter(list, search);
+  });
+  page.filter('info_at.value', function(now, list) {
+    $scope.event.unread_count = 0;
+    if (now && ($scope.event != null)) {
+      return _.filter(list, function(o) {
+        if (now < o.updated_at) {
+          if (o.logid !== "IX99999") {
+            ++$scope.event.unread_count;
+          }
+          return true;
+        }
+        return o.logid.match(/vilinfo|potofs|status/);
+      });
+    } else {
+      return list;
+    }
   });
   page.paginate('msg_styles.row', function(row, list) {
     var from, page_no, page_per, to, _ref1;
@@ -2075,7 +2082,7 @@ FILTER = function($scope, $filter, $timeout) {
 var FORM;
 
 FORM = function($scope, $sce) {
-  var calc_length, calc_point, is_input, preview, preview_action, set_last_memo, submit, valid, write;
+  var calc_length, calc_point, is_input, preview, preview_action, safe_anker, set_last_memo, submit, valid, write;
   $scope.stories_is_small = true;
   calc_length = function(text) {
     var ascii, other;
@@ -2107,13 +2114,7 @@ FORM = function($scope, $sce) {
       } else {
         f.lines = 5;
       }
-      cb(size, lines);
-      if (f.max.size < size) {
-        f.valid = false;
-      }
-      if (f.max.line < lines) {
-        f.valid = false;
-      }
+      f.valid = cb(size, lines);
       if (f.valid) {
         f.error = "";
         if ('point' === f.max.unit) {
@@ -2219,45 +2220,70 @@ FORM = function($scope, $sce) {
     list || (list = []);
     return list.join("<br>");
   };
+  safe_anker = function(f) {
+    var _ref;
+    if (f.mestype === "SAY" && !((_ref = $scope.event) != null ? _ref.is_epilogue : void 0)) {
+      if (f.text.match(/>>[\=\*\!]\d+/)) {
+        $scope.errors[f.cmd] = ["あぶない！秘密会話へのアンカーがありますよ！"];
+        return false;
+      }
+    }
+    return true;
+  };
   $scope.text_valid = function(f, force) {
     if (force || true) {
       return valid(f, function(size, lines) {
+        var _ref;
+        if (f.cmd === "wrmemo" && size < 1) {
+          return true;
+        }
+        if (f.max.size < size) {
+          return false;
+        }
+        if (f.max.line < lines) {
+          return false;
+        }
+        $scope.errors[f.cmd] = [];
         switch (f.cmd) {
+          case "write":
+            if (("" + ((_ref = $scope.potof) != null ? _ref.pno : void 0)) !== f.target && !safe_anker(f)) {
+              return false;
+            }
+            return is_input(f);
           case "action":
             f.preview = preview_action(f);
-            if (f.target === "-1" && f.action === "-2") {
-              return;
-            }
-            if (f.target === "-1" && f.action !== "-99") {
-              f.valid = false;
+            switch (f.action) {
+              case "-99":
+                break;
+              case "-2":
+                f.target = "-1";
+                f.preview = preview_action(f);
+                return true;
+              default:
+                return f.target !== "-1";
             }
             if (size < 1) {
               if (f.target === "-1") {
-                f.valid = false;
+                return false;
               }
               if (f.action === "-99") {
-                return f.valid = false;
+                return false;
               }
             } else {
-              if (!is_input(f)) {
-                return f.valid = false;
+              if (!safe_anker(f)) {
+                return false;
               }
+              return is_input(f);
             }
             break;
           case "wrmemo":
             set_last_memo(f);
-            if (!is_input(f)) {
-              f.valid = false;
+            if (!safe_anker(f)) {
+              return false;
             }
-            if (size < 1) {
-              return f.valid = true;
-            }
-            break;
-          default:
-            if (!is_input(f)) {
-              return f.valid = false;
-            }
+            return is_input(f);
         }
+        return true;
       });
     }
   };
@@ -2431,7 +2457,10 @@ GO = function($scope) {
     form: go_anker("#forms"),
     search: go_anker("[ng-model=\"search_input\"]", function(o) {
       return o.focus();
-    })
+    }),
+    self_link: function() {
+      return document.location.href;
+    }
   };
 };
 var HREF_EVAL;
@@ -3100,27 +3129,6 @@ POOL = function($scope, $filter, $timeout) {
     leading: true,
     trailing: false
   });
-  $scope.top = {
-    focus: false,
-    news_size: 0,
-    id: "IX99999",
-    count: function() {
-      var news_size, o, top_idx, _i, _len, _ref;
-      if ($scope.event != null) {
-        top_idx = -1;
-        _ref = $scope.event.messages;
-        for (top_idx = _i = 0, _len = _ref.length; _i < _len; top_idx = ++_i) {
-          o = _ref[top_idx];
-          if ($scope.top.id === o.logid) {
-            break;
-          }
-        }
-        news_size = $scope.event.messages.length - 1 - top_idx;
-        $scope.top.focus = 0 < top_idx && 0 < news_size;
-        return $scope.top.news_size = news_size;
-      }
-    }
-  };
   adjust = function() {
     $(window).resize();
     return $(window).scroll();
@@ -3323,8 +3331,8 @@ TITLE = function($scope) {
   title_change = function() {
     var _ref;
     if ($scope.story != null) {
-      if ((_ref = $scope.top) != null ? _ref.focus : void 0) {
-        return $scope.title = "(" + $scope.top.news_size + ") " + $scope.subtitle + " " + $scope.story.name;
+      if ((_ref = $scope.event) != null ? _ref.unread_count : void 0) {
+        return $scope.title = "(" + $scope.event.unread_count + ") " + $scope.subtitle + " " + $scope.story.name;
       } else {
         return $scope.title = "" + $scope.subtitle + " " + $scope.story.name;
       }
@@ -3349,8 +3357,7 @@ TITLE = function($scope) {
     return title_change();
   };
   titles_change();
-  $scope.$watch('top.news_size', title_change);
-  $scope.$watch('top.focus', title_change);
+  $scope.$watch('event.unread_count', title_change);
   $scope.$watch('modes.face', titles_change);
   return $scope.$watch('event.turn', titles_change);
 };
@@ -3415,6 +3422,9 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       _ref3 = OPTION.selectors.order;
       for (order in _ref3) {
         ordername = _ref3[order];
+        if (!("simple" === power || head.csstransitions)) {
+          continue;
+        }
         o = {
           group: rowname,
           power: power,
