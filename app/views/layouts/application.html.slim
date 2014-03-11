@@ -11,12 +11,13 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_cl
       #contentframe.contentframe
         h1 = link_to root_path do
           img(ng-src="{{h1.path}}" ng-cloak)
-        =render partial: 'layouts/titles'
-        .choice
-            p(theme="#{theme}")
-        .inframe.toppage
-          hr.invisible_hr
-          = yield :top
+        .inframe
+          .toppage
+            =render partial: 'layouts/titles'
+            .choice.css_changer(theme="#{theme}")
+            .paginavi(template="theme/style_navi")
+            hr.invisible_hr
+            = yield :top
         .inframe
           hr.invisible_hr
           = yield :log
