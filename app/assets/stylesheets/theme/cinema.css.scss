@@ -1,10 +1,42 @@
 .cinema {
   .drag,
   .outframe {
+    background-image: url("../images/bg/renga.png");
     background-repeat: repeat;
     background-position: right;
-    background-image: url("../images/bg/renga.png");
+    background-attachment: fixed;
   }
+
+  .contentframe {
+    background-repeat: repeat-y;
+    background-position: right;
+    background-attachment: local;
+  }
+
+  &.w770 {
+    #sayfilter{ padding-right: 4px; }
+    .contentframe {
+      background-image: url("../images/bg/film770.png");
+    }
+  }
+
+  &.w580 {
+    #sayfilter{ padding-right: 4px; }
+    .contentframe {
+      background-image: url("../images/bg/film580.png");
+    }
+  }
+
+  &.w458 {
+    #sayfilter{ padding-right: 6px; }
+    .contentframe {
+      background-image: url("../images/bg/film460.png");
+    }
+  }
+
+  @include border-theme-white(#444, #765);
+  @include vivid(#100, #664, #ccf);
+  @include main-theme(#000, #cb8, #664);
 
   &.large-msg,
   &.center-msg {
@@ -19,39 +51,8 @@
   &.right-msg {
     .outframe {
       border-left : 3px double #863;
-    }    
-  }
-
-  &.w770 {
-    #sayfilter{ padding-right: 4px; }
-    .contentframe {
-      background-image: url("../images/bg/film770.png");
-      background-repeat: repeat-y;
-      background-position: right;
     }
   }
-
-  &.w580 {
-    #sayfilter{ padding-right: 4px; }
-    .contentframe {
-      background-image: url("../images/bg/film580.png");
-      background-repeat: repeat-y;
-      background-position: right;
-    }
-  }
-
-  &.w458 {
-    #sayfilter{ padding-right: 6px; }
-    .contentframe {
-      background-image: url("../images/bg/film460.png");
-      background-repeat: repeat-y;
-      background-position: center;
-    }
-  }
-
-  @include border-theme-white(#444, #765);
-  @include vivid(#100, #664, #ccf);
-  @include main-theme(#000, #cb8, #664);
 
   .insayfilter {
     .paragraph {
@@ -141,12 +142,12 @@
   .info ,
   .infosp ,
   .infowolf {
-    border-width: 2px 0; 
+    border-width: 2px 0;
     border-style: dashed none;
     border-color: #863;
   }
   .caution {
-    border-width: 2px 0; 
+    border-width: 2px 0;
     border-style: dashed none;
     border-color: #ccc;
   }
@@ -200,5 +201,5 @@
 
   h3 {
     background: #224;
-  }  
+  }
 }

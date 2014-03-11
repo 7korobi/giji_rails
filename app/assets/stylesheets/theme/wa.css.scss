@@ -4,7 +4,39 @@
     background-image: url("../images/bg/karakusa.png");
     background-repeat: repeat;
     background-position: center;
+    background-attachment: fixed;
   }
+
+  .contentframe {
+    background-repeat: repeat-y;
+    background-position: right;
+    background-attachment: local;
+  }
+
+  &.w770 {
+    #sayfilter{ padding-right: 1px; }
+    .contentframe {
+      background-image: url("../images/bg/film-wa770.png");
+    }
+  }
+
+  &.w580 {
+    #sayfilter{ padding-right: 1px; }
+    .contentframe {
+      background-image: url("../images/bg/film-wa580.png");
+    }
+  }
+
+  &.w458 {
+    #sayfilter{ padding-right: 3px; }
+    .contentframe {
+      background-image: url("../images/bg/film-wa460.png");
+    }
+  }
+
+  @include border-theme-white(#444, #765);
+  @include vivid(#002, #720, #ccf);
+  @include main-theme(#000, #cb8, #720);
 
   &.large-msg,
   &.center-msg {
@@ -16,38 +48,8 @@
   }
 
   #sayfilter .paragraph {
-    margin: 0 6px; 
+    margin: 0 6px;
   }
-  &.w770 {
-    #sayfilter{ padding-right: 1px; }
-    .contentframe {
-      background-image: url("../images/bg/film-wa770.png");
-      background-repeat: repeat-y;
-      background-position: right;
-    }
-  }
-
-  &.w580 {
-    #sayfilter{ padding-right: 1px; }
-    .contentframe {
-      background-image: url("../images/bg/film-wa580.png");
-      background-repeat: repeat-y;
-      background-position: right;
-    }
-  }
-
-  &.w458 {
-    #sayfilter{ padding-right: 3px; }
-    .contentframe {
-      background-image: url("../images/bg/film-wa460.png");
-      background-repeat: repeat-y;
-      background-position: center;
-    }
-  }
-
-  @include border-theme-white(#444, #765);
-  @include vivid(#002, #720, #ccf);
-  @include main-theme(#000, #cb8, #720);
 
   .insayfilter {
     .paragraph {
@@ -118,7 +120,7 @@
   .info ,
   .infosp ,
   .infowolf {
-    border-width: 3px 0; 
+    border-width: 3px 0;
     border-style: double none;
   }
 
@@ -204,5 +206,5 @@
 
   h3 {
     background: #224;
-  }  
+  }
 }

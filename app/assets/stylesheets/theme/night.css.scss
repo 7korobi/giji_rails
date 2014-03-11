@@ -4,10 +4,38 @@
   }
   .outframe {
     background-color: #000;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
     background-image: url("../images/bg/moon.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
+
+  .contentframe {
+    background-repeat: repeat-y;
+    background-position: right;
+    background-attachment: local;
+  }
+
+  &.w770 {
+    .contentframe {
+      background-image: url("../images/bg/film-wa770.png");
+    }
+  }
+
+  &.w580 {
+    .contentframe {
+      background-image: url("../images/bg/film-wa580.png");
+    }
+  }
+
+  &.w458 {
+    .contentframe {
+      background-image: url("../images/bg/film-wa460.png");
+    }
+  }
+
+  @include border-theme-black(#000, #55a, #224);
+  @include vivid(#100, #55a, #eed);
+  @include main-theme(#ffa, rgba(0,0,0, 0.33), #224);
 
   &.large-msg,
   &.center-msg {
@@ -24,36 +52,8 @@
     .outframe {
       background-position: right top;
       border-left: 3px double #403;
-    }    
-  }
-
-  &.w770 {
-    .contentframe {
-      background-image: url("../images/bg/film-wa770.png");
-      background-repeat: repeat-y;
-      background-position: right;
     }
   }
-
-  &.w580 {
-    .contentframe {
-      background-image: url("../images/bg/film-wa580.png");
-      background-repeat: repeat-y;
-      background-position: right;
-    }
-  }
-
-  &.w458 {
-    .contentframe {
-      background-image: url("../images/bg/film-wa460.png");
-      background-repeat: repeat-y;
-      background-position: center;
-    }
-  }
-
-  @include border-theme-black(#000, #55a, #224);
-  @include vivid(#100, #55a, #eed);
-  @include main-theme(#ffa, rgba(0,0,0, 0.33), #224);
 
   .potofs {
     thead,
@@ -103,7 +103,7 @@
   .info ,
   .infosp ,
   .infowolf {
-    border-width: 3px 0; 
+    border-width: 3px 0;
     border-style: double none;
   }
 
@@ -129,7 +129,7 @@
     border-color: #113;
     background-color: #100;
   }
-  
+
   .caution {
     border-color: #ccc;
     background-color: #111;
@@ -164,5 +164,5 @@
 
   h3 {
     background: #113;
-  }  
+  }
 }
