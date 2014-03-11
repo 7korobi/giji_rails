@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # pretense-32
+# crazy-53  SS00092, SA00035, SS00093
+# perjury-83 (corrupt _id)
 
 
 require 'timeout'
@@ -46,7 +48,7 @@ class GijiMessageScanner < GijiScanner
         t.logid = logid
         t.sow_auth_id = o.uid
         t.date = o.date
-        t.log = o.log 
+        t.log = o.log
         t.subid = subid
         t.face_id = o.cid
         t.csid = o.csid
