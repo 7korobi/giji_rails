@@ -174,8 +174,8 @@ selectors:
     200: 200行
 
   power:
-    simple: シンプル
-    mobile: 携帯用
+    simple: 携帯用
+    mobile: タブレット
     pc: ＰＣ用
 
   font:
