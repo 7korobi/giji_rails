@@ -39,7 +39,7 @@ gem 'mongoid_rails4', :require => 'mongoid'
 gem "redis-store"
 gem "redis-rails"
 gem 'sqlite3'
-gem "mysql2"
+gem 'pg'
 gem "paperclip"
 gem "composite_primary_keys"
 

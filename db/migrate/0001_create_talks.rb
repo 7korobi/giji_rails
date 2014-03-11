@@ -3,7 +3,7 @@ class CreateTalks < ActiveRecord::Migration
 rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 cd /etc/yum.repos.d/
 wget http://wing-net.ddo.jp/wing/6/EL6.wing.repo
-vi /etc/yum.repos.d/EL6.wing.repo 
+vi /etc/yum.repos.d/EL6.wing.repo
   # enabled = 1
 yum clean all
 yum update
@@ -35,12 +35,6 @@ CREATE FUNCTION mroonga_command RETURNS STRING SONAME 'ha_mroonga.so';
 
 show variables like 'mroonga_%';
 
-=end
-
-  def change
-    return
-    # options: %q|ENGINE=mroonga DEFAULT CHARSET=utf8 COMMENT='engine "InnoDB"'|
-    %w[ talks
         talk_pans
         talk_offparties
         talk_lobbies
@@ -58,6 +52,16 @@ show variables like 'mroonga_%';
         talk_morphes
         talk_soybeans
         talk_tests
+      execute <<-SQL
+        ALTER TABLE #{talks}
+          CHANGE logid logid varchar(255) BINARY NOT NULL
+      SQL
+    # options: %q|ENGINE=mroonga DEFAULT CHARSET=utf8 COMMENT='engine "InnoDB"'|
+
+=end
+
+  def change
+    %w[ talks
     ].each do |talks|
       create_table talks do |t|
         t.string :story_id, null: false
@@ -78,10 +82,6 @@ show variables like 'mroonga_%';
         t.string :face_id
         t.string :sow_auth_id
       end
-      execute <<-SQL
-        ALTER TABLE #{talks}
-          CHANGE logid logid varchar(255) BINARY NOT NULL
-      SQL
 
       add_index talks, [:story_id]
       add_index talks, [:event_id]

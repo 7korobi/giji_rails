@@ -13,7 +13,7 @@ class GijiTalkScanner < GijiScanner
     source = SowRecordFile.send(type, path, fname, folder, vid, turn )
     return unless source
 
-    talk_t = Talk.const_get(folder + "%03d"%[vid]) rescue Talk.const_get(folder)
+    talk_t = Talk # Talk.const_get(folder + "%03d"%[vid]) rescue Talk.const_get(folder)
 
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
@@ -46,7 +46,7 @@ class GijiTalkScanner < GijiScanner
         t.logid = logid
         t.sow_auth_id = o.uid
         t.date = o.date
-        t.log = o.log 
+        t.log = o.log
         t.subid = subid
         t.face_id = o.cid
         t.csid = o.csid
