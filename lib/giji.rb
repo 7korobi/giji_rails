@@ -1,6 +1,7 @@
 require 'yajl/json_gem'
 
-require 'const'
+require 'yaml'
+require 'active_support/all'
 require 'ostruct'
 require 'current'
 require 'rsync'

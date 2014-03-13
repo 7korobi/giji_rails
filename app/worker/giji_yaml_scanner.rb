@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
-=begin
-  pretense-32
-  crazy-53  SS00092, SA00035, SS00093
-  perjury-83 (corrupt _id)
-=end
 
 require 'timeout'
 
-class GijiMessageScanner < GijiScanner
+class GijiYamlScanner < GijiScanner
   def enqueue  type
     Resque.enqueue(self.class, @path, @fname, type, @folder, @vid, @turn)
   end
@@ -19,10 +14,12 @@ class GijiMessageScanner < GijiScanner
 
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
+    yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
 
-    stored_ids = Message.in_event(event_id).pluck("logid")
-    chk_doubles = []
     requests = Hash.new
+    messages = YAML.load_file(yaml_path) rescue []
+    stored_ids = messages.map(&:logid)
+    chk_doubles = []
 
     source.each do |o|
       logid, subid  = case fname
@@ -73,13 +70,23 @@ class GijiMessageScanner < GijiScanner
         message.mestype = "BSAY"
       end
       begin
-        timeout(60) { message.with(collection:"msg-#{story_id}").save }
-      rescue Moped::Errors::OperationFailure => e
-        GijiErrorReport.enqueue e.inspect, o, message.attributes
-        sleep 10
+        message.instance_eval{ @attributes_before_type_cast = {} }
+        messages.push message
       end
       key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true
+    end
+
+    File.open(yaml_path, "w:utf-8") do |f|
+      f.write messages.to_yaml
+    end
+
+    requests.keys.each do |key| request_key, sow_auth_id = key
+      account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
+      account.save
+      request = Request.where( request_key ).first || Request.new( request_key )
+      request.sow_auth_ids |= [account.id]
+      request.save
     end
   end
 end

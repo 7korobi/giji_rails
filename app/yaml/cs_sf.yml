@@ -1,56 +1,81 @@
----
-chr_set_id: sf
-maker: 重ね合せ猫のユニタリ変換
-admin: 黒体放射のエヴェレット解釈
-chr_npcs:
-- caption: 明後日への道標
-  csid: SF
-  face_id: sf04
-  say_0: 'とたたたたんっ。<br><br><b>めざましい速さで木の洞に駆け込むと、じっと潜んだ暗闇に瞳がふたつ。<br>いちど大好きな閉所に収まると、そうかんたんに出てはこないのだ。</b> '
-  say_1: 'ちゅー！<br><br>　ちゅー！<br><br><b>がりがり、がりがり。ケージの縁をひっかくと、うろうろ、うろうろ右へ左へ駆け回る。木の洞に目もくれず、夜中じゅう走り続けるのだった……</b> '
-- caption: 明後日への道標（ナユタ）
-  csid: SF_sf10
-  face_id: sf10
-  say_0: "f*ck！またチオチモリンと二酸化炭素分圧だし！<br>エアコンがコンタミるしスタグるしf*ck'nオーロラの季節だし、ガルタイトもサクラダイトもf*ck'n高っけーし…<br><br><b>同日 整備日誌<br>　定期点検。ただちに健康に影響はないが、擦過痕…</b>"
-  say_1: "よーf*ck'nおまえら。<br>マジ聞け。エヴァってでかい１０円キズ見つけた。誰だし？<br>マジ怒んねーから手ぇ挙げ<br><br><b>ぷつん</b><br><br>っと。瞬停った…。f*ck。<br>ちょっと外の様子見てくる。俺のプリン残しといてくれよ。<br>"
-chr_jobs:
-- face_id: sf01
-  job: 通信士
-- face_id: sf02
-  job: 哲学者
-- face_id: sf03
-  job: 道案内
-- face_id: sf04
-  job: お散歩隊長
-- face_id: sf05
-  job: 新製品
-- face_id: sf06
-  job: 士官
-- face_id: sf07
-  job: 遊泳員
-- face_id: sf08
-  job: 服飾商
-- face_id: sf09
-  job: 研修生
-- face_id: sf10
-  job: 保安技師
-- face_id: sf11
-  job: 艇長
-- face_id: sf12
-  job: 廃神
-- face_id: sf13
-  job: 消防隊長
-- face_id: sf14
-  job: 対面販売
-- face_id: sf15
-  job: 忍者隊
-- face_id: sf16
-  job: 保険調査
-- face_id: sf17
-  job: 幽閉児
-- face_id: sf18
-  job: 感性子
-- face_id: sf19
-  job: 理性子
-- face_id: sf20
-  job: 測量士
+--- !ruby/object:ChrSet
+attributes: !ruby/hash:Moped::BSON::Document
+  _id: sf
+  chr_set_id: sf
+  admin: "黒体放射のエヴェレット解釈"
+  maker: "重ね合せ猫のユニタリ変換"
+  chr_npcs:
+  - caption: "明後日への道標"
+    csid: SF
+    face_id: sf04
+    say_0: "とたたたたんっ。<br><br><b>めざましい速さで木の洞に駆け込むと、じっと潜んだ暗闇に瞳がふたつ。<br>いちど大好きな閉所に収まると、そうかんたんに出てはこないのだ。</b> "
+    say_1: "ちゅー！<br><br>　ちゅー！<br><br><b>がりがり、がりがり。ケージの縁をひっかくと、うろうろ、うろうろ右へ左へ駆け回る。木の洞に目もくれず、夜中じゅう走り続けるのだった……</b> "
+    _id: sf04
+  - caption: "明後日への道標（ナユタ）"
+    csid: SF_sf10
+    face_id: sf10
+    say_0: f*ck！またチオチモリンと二酸化炭素分圧だし！<br>エアコンがコンタミるしスタグるしf*ck'nオーロラの季節だし、ガルタイトもサクラダイトもf*ck'n高っけーし…<br><br><b>同日
+      整備日誌<br>　定期点検。ただちに健康に影響はないが、擦過痕…</b>
+    say_1: "よーf*ck'nおまえら。<br>マジ聞け。エヴァってでかい１０円キズ見つけた。誰だし？<br>マジ怒んねーから手ぇ挙げ<br><br><b>ぷつん</b><br><br>っと。瞬停った…。f*ck。<br>ちょっと外の様子見てくる。俺のプリン残しといてくれよ。<br>"
+    _id: sf10
+  chr_jobs:
+  - face_id: sf01
+    job: "通信士"
+    _id: sf01
+  - face_id: sf02
+    job: "哲学者"
+    _id: sf02
+  - face_id: sf03
+    job: "道案内"
+    _id: sf03
+  - face_id: sf04
+    job: "お散歩隊長"
+    _id: sf04
+  - face_id: sf05
+    job: "新製品"
+    _id: sf05
+  - face_id: sf06
+    job: "士官"
+    _id: sf06
+  - face_id: sf07
+    job: "遊泳員"
+    _id: sf07
+  - face_id: sf08
+    job: "服飾商"
+    _id: sf08
+  - face_id: sf09
+    job: "研修生"
+    _id: sf09
+  - face_id: sf10
+    job: "保安技師"
+    _id: sf10
+  - face_id: sf11
+    job: "艇長"
+    _id: sf11
+  - face_id: sf12
+    job: "廃神"
+    _id: sf12
+  - face_id: sf13
+    job: "消防隊長"
+    _id: sf13
+  - face_id: sf14
+    job: "対面販売"
+    _id: sf14
+  - face_id: sf15
+    job: "忍者隊"
+    _id: sf15
+  - face_id: sf16
+    job: "保険調査"
+    _id: sf16
+  - face_id: sf17
+    job: "幽閉児"
+    _id: sf17
+  - face_id: sf18
+    job: "感性子"
+    _id: sf18
+  - face_id: sf19
+    job: "理性子"
+    _id: sf19
+  - face_id: sf20
+    job: "測量士"
+    _id: sf20

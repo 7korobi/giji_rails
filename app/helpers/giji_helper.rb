@@ -22,16 +22,4 @@ module GijiHelper
       raise RuntimeError
     end
   end
-
-  SUBID_RENDERS = GIJI[:message][:mestype]
-  def gon_templates
-    options = %w[logid color style img name to time].each_with_object({}) do |item, hash|
-      hash[item.to_sym] = "${#{item}}"
-    end.merge(text:"{{html text}}")
-
-    gon.templates = {}
-    %w[action admin info say aim cast].map do |view|
-      gon.templates[view] = capture{ yield(view, options) }
-    end
-  end
 end

@@ -1,7 +1,9 @@
 require 'yaml'
 require 'active_support/all'
 
-Dir.glob('**/*.yml').each do |path|
+Face
+ChrSet
+Dir.glob('**/*.yml').uniq.each do |path|
   file, name = /(\w+).yml/.match(path).to_a
   const = name.upcase.to_sym
 
@@ -9,8 +11,13 @@ Dir.glob('**/*.yml').each do |path|
     raise SyntaxError.new("duplicate yaml : #{path}")
   end
 
-  set = YAML.load_file(path).with_indifferent_access
-  env = set[Rails.env] rescue nil
-  Kernel.const_set( const, env ? env : set )
+  set = YAML.load_file(path)
+  case set
+  when Hash
+    env = set[Rails.env].with_indifferent_access rescue set
+  else
+    env = set
+  end
+  Kernel.const_set( const, env )
 end
 

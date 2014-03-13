@@ -1,280 +1,405 @@
----
-chr_set_id: ririnra
-maker: 天のお告げ
-admin: 闇の呟き
-chr_npcs:
-- caption: 人狼議事（キャサリン）
-  csid: ririnra_c05
-  face_id: c05
-  say_0: たいへん、たいへん、たいへん！
-  say_1: 大変、人狼が出たよ！　いつもは嘘だけど、今度は本当の本当に本当！
-- caption: 人狼議事（ベネット）
-  csid: ririnra_c08
-  face_id: c08
-  say_0: 壁の向こうだ、やつの足音が聞こえる。いよいよ隣室に迫る。<br>明日は、もう……
-  say_1: 足音が部屋の前で止まった。そして、ドアノブがゆっくりと回る音が聞こえる。振り向いてはいけない、振り向けば<br><br><b>日記はそこで途切れ、発見されるまで打ち捨てられていた。</b>
-- caption: 人狼議事（タバサ）
-  csid: ririnra_c19
-  face_id: c19
-  say_0: ねぇ、遊んでかない？今夜はあなたが狼よ……
-  say_1: 人狼なんているわけないじゃん？みんな大げさなのさ。
-- caption: 人狼議事（ソフィア）
-  csid: ririnra_c67
-  face_id: c67
-  say_0: こんばんわ、こんな遅くにたいへんですね。<br><br>………<br>行っちゃった。へんなの。
-  say_1: まさかあの時、あのひとが……？<br>人殺しと一緒にいるなんて……！へや…、部屋に戻らせてもらいます！
-- caption: 人狼議事（ヨアヒム）
-  csid: ririnra_c68
-  face_id: c68
-  say_0: ふひ、ふひひ！人狼になど……くれてやるものかヨ！
-  say_1: 人殺しと一緒にいるなんてごめんだヨ！へ…へっ、部屋に戻らせてもらうヨ！
-- caption: 人狼議事（ヴェスパタイン）
-  csid: ririnra_c72
-  face_id: c72
-  say_0: 嗚呼、聞こえる。やつの足音が聞こえる……。
-  say_1: 逃げろ。逃げろ！おまえらだけでも逃げろ。
-- caption: 人狼議事（ヨーランダ）
-  csid: ririnra_c51
-  face_id: c51
-  say_0: 夜風に乗って、遠くから声がとどきます。昨夜は幽かに。今夜は響き。きっと明日は……
-  say_1: ……あの、わたし。この騒ぎが落ち着いたら此処を出たいんです。<br>幼馴染から手紙が来たの。お金を貯めたから、遠くで一緒に暮らそうって。
-- caption: 人狼議事（グロリア）
-  csid: ririnra_c20
-  face_id: c20
-  say_0: 紳士ならびに淑女の皆様、わたくしの館へようこそ。<br>世間の噂など唯の噂話、此処でひととき御寛ぎなさいな。
-  say_1: ちょっと！そこの貴方、何をしているの！<br>聞いたでしょう人狼がいるのよ、はやく見つけて処刑なさい！
-- caption: 人狼議事（オスカー）
-  csid: ririnra_c32
-  face_id: c32
-  say_0: …そっちじゃないよ、こっちだよ。<br>ここ、秘密基地なんだ。雨もへいきだし暖かいよ。
-  say_1: ねえ。見て見て。パン持ってきたんだ。<br>みんなにはナイショだよ？
-- csid: ririnra
-  caption: 人狼議事
-  say_0: 嗚呼、聞こえ る。やつの足音が聞こえる……。
-  say_1: 逃げろ。逃げろ！おまえらだけでも逃げろ。
-  face_id: c99
-chr_jobs:
-- face_id: c01
-  job: 花売り
-- face_id: c02
-  job: 村長
-- face_id: c03
-  job: 見習い医師
-- face_id: c04
-  job: 女中
-- face_id: c05
-  job: 病人
-- face_id: c06
-  job: 紐
-- face_id: c07
-  job: 雑貨屋
-- face_id: c08
-  job: 本屋
-- face_id: c09
-  job: 刺客
-- face_id: c10
-  job: 小娘
-- face_id: c11
-  job: 小僧
-- face_id: c12
-  job: 御者
-- face_id: c13
-  job: ベテラン医師
-- face_id: c14
-  job: 聖歌隊員
-- face_id: c15
-  job: 郵便屋
-- face_id: c16
-  job: 食いしん坊
-- face_id: c17
-  job: 詩人
-- face_id: c18
-  job: ベテラン看護婦
-- face_id: c19
-  job: 水商売
-- face_id: c20
-  job: 良家の娘
-- face_id: c21
-  job: 肉屋
-- face_id: c22
-  job: 百姓
-- face_id: c23
-  job: 伝道師
-- face_id: c24
-  job: 長老
-- face_id: c25
-  job: 良家の息子
-- face_id: c26
-  job: 楽器職人
-- face_id: c27
-  job: 牧人
-- face_id: c28
-  job: 読書家
-- face_id: c29
-  job: 記者
-- face_id: c30
-  job: 鳥使い
-- face_id: c31
-  job: 童話作家
-- face_id: c32
-  job: 双生児
-- face_id: c33
-  job: 双生児
-- face_id: c34
-  job: 靴磨き
-- face_id: c35
-  job: 親方
-- face_id: c36
-  job: 飾り職
-- face_id: c37
-  job: 奏者
-- face_id: c38
-  job: 歌い手
-- face_id: c39
-  job: 仕立て屋
-- face_id: c40
-  job: 執事
-- face_id: c41
-  job: さすらい人
-- face_id: c42
-  job: 掃除夫
-- face_id: c43
-  job: 森番
-- face_id: c44
-  job: 小悪党
-- face_id: c45
-  job: 博徒
-- face_id: c46
-  job: 助手
-- face_id: c47
-  job: 流浪者
-- face_id: c48
-  job: 宝石収集家
-- face_id: c49
-  job: 石工
-- face_id: c50
-  job: 会計士
-- face_id: c51
-  job: 墓守
-- face_id: c52
-  job: 墓堀
-- face_id: c53
-  job: 大地主
-- face_id: c54
-  job: 理髪師
-- face_id: c55
-  job: 寡婦
-- face_id: c56
-  job: 酒屋
-- face_id: c57
-  job: 修道女
-- face_id: c58
-  job: 司祭
-- face_id: c59
-  job: 修道士
-- face_id: c60
-  job: 良家の末娘
-- face_id: c61
-  job: 釣り師
-- face_id: c62
-  job: 風来坊
-- face_id: c63
-  job: 漂白工
-- face_id: c64
-  job: 墓荒らし
-- face_id: c65
-  job: 始末屋
-- face_id: c66
-  job: 紅茶屋
-- face_id: c67
-  job: 店番
-- face_id: c68
-  job: 賭場の主
-- face_id: c69
-  job: 美術家
-- face_id: c70
-  job: 子守り
-- face_id: c71
-  job: 道案内
-- face_id: c72
-  job: ランタン職人
-- face_id: c73
-  job: 水商売
-- face_id: c74
-  job: 踊り手
-- face_id: c75
-  job: 奏者
-- face_id: c76
-  job: 留守番
-- face_id: c77
-  job: 馬飼い
-- face_id: c78
-  job: 道化師
-- face_id: c79
-  job: 長老の孫
-- face_id: c80
-  job: 若者
-- face_id: c81
-  job: 薬屋
-- face_id: c82
-  job: 執事見習い
-- face_id: c83
-  job: 受付
-- face_id: c84
-  job: 妻
-- face_id: c85
-  job: お使い
-- face_id: c86
-  job: 放蕩者
-- face_id: c87
-  job: 病人
-- face_id: c88
-  job: 料理人
-- face_id: c99
-  job: 厭世家
-- job: 新妻
-  face_id: c89
-- job: 粉ひき
-  face_id: c90
-- job: 洗濯婦
-  face_id: c91
-- job: 洗濯婦
-  face_id: c92
-- job: 洗濯婦
-  face_id: c93
-- face_id: c94
-  job: 女主人
-- face_id: c95
-  job: 新聞配達
-- face_id: c96
-  job: 学者
-- job: 捜査官
-  face_id: c97
-- job: 探偵
-  face_id: c98
-- job: 徒弟
-  face_id: c100
-- job: 手伝い
-  face_id: c101
-- face_id: c102
-  job: 指揮者
-- face_id: c103
-  job: 厭世家
-- face_id: c104
-  job: 負傷兵
-- face_id: c105
-  job: 教え子
-- face_id: c106
-  job: 魚屋
-- face_id: c107
-  job: 成金
-- face_id: c108
-  job: 採集人
-- face_id: c109
-  job: 村娘
-- face_id: c110
-  job: ろくでなし
-- face_id: c111
-  job: 愛人
-- face_id: c113
-  job: 紐
+--- !ruby/object:ChrSet
+attributes: !ruby/hash:Moped::BSON::Document
+  _id: ririnra
+  chr_set_id: ririnra
+  admin: "闇の呟き"
+  maker: "天のお告げ"
+  chr_npcs:
+  - caption: "人狼議事（キャサリン）"
+    csid: ririnra_c05
+    face_id: c05
+    say_0: "たいへん、たいへん、たいへん！"
+    say_1: "大変、人狼が出たよ！　いつもは嘘だけど、今度は本当の本当に本当！"
+    _id: c05
+  - caption: "人狼議事（ベネット）"
+    csid: ririnra_c08
+    face_id: c08
+    say_0: "壁の向こうだ、やつの足音が聞こえる。いよいよ隣室に迫る。<br>明日は、もう……"
+    say_1: "足音が部屋の前で止まった。そして、ドアノブがゆっくりと回る音が聞こえる。振り向いてはいけない、振り向けば<br><br><b>日記はそこで途切れ、発見されるまで打ち捨てられていた。</b>"
+    _id: c08
+  - caption: "人狼議事（タバサ）"
+    csid: ririnra_c19
+    face_id: c19
+    say_0: "ねぇ、遊んでかない？今夜はあなたが狼よ……"
+    say_1: "人狼なんているわけないじゃん？みんな大げさなのさ。"
+    _id: c19
+  - caption: "人狼議事（ソフィア）"
+    csid: ririnra_c67
+    face_id: c67
+    say_0: "こんばんわ、こんな遅くにたいへんですね。<br><br>………<br>行っちゃった。へんなの。"
+    say_1: "まさかあの時、あのひとが……？<br>人殺しと一緒にいるなんて……！へや…、部屋に戻らせてもらいます！"
+    _id: c67
+  - caption: "人狼議事（ヨアヒム）"
+    csid: ririnra_c68
+    face_id: c68
+    say_0: "ふひ、ふひひ！人狼になど……くれてやるものかヨ！"
+    say_1: "人殺しと一緒にいるなんてごめんだヨ！へ…へっ、部屋に戻らせてもらうヨ！"
+    _id: c68
+  - caption: "人狼議事（ヴェスパタイン）"
+    csid: ririnra_c72
+    face_id: c72
+    say_0: "嗚呼、聞こえる。やつの足音が聞こえる……。"
+    say_1: "逃げろ。逃げろ！おまえらだけでも逃げろ。"
+    _id: c72
+  - caption: "人狼議事（ヨーランダ）"
+    csid: ririnra_c51
+    face_id: c51
+    say_0: "夜風に乗って、遠くから声がとどきます。昨夜は幽かに。今夜は響き。きっと明日は……"
+    say_1: "……あの、わたし。この騒ぎが落ち着いたら此処を出たいんです。<br>幼馴染から手紙が来たの。お金を貯めたから、遠くで一緒に暮らそうって。"
+    _id: c51
+  - _id: c20
+    caption: "人狼議事（グロリア）"
+    csid: ririnra_c20
+    face_id: c20
+    say_0: "紳士ならびに淑女の皆様、わたくしの館へようこそ。<br>世間の噂など唯の噂話、此処でひととき御寛ぎなさいな。"
+    say_1: "ちょっと！そこの貴方、何をしているの！<br>聞いたでしょう人狼がいるのよ、はやく見つけて処刑なさい！"
+  - caption: "人狼議事（オスカー）"
+    csid: ririnra_c32
+    face_id: c32
+    say_0: "…そっちじゃないよ、こっちだよ。<br>ここ、秘密基地なんだ。雨もへいきだし暖かいよ。"
+    say_1: "ねえ。見て見て。パン持ってきたんだ。<br>みんなにはナイショだよ？"
+    _id: c32
+  - csid: ririnra
+    caption: "人狼議事"
+    say_0: "嗚呼、聞こえ る。やつの足音が聞こえる……。"
+    say_1: "逃げろ。逃げろ！おまえらだけでも逃げろ。"
+    face_id: c99
+    _id: c99
+  chr_jobs:
+  - face_id: c01
+    job: "花売り"
+    _id: c01
+  - face_id: c02
+    job: "村長"
+    _id: c02
+  - face_id: c03
+    job: "見習い医師"
+    _id: c03
+  - face_id: c04
+    job: "女中"
+    _id: c04
+  - face_id: c05
+    job: "病人"
+    _id: c05
+  - face_id: c06
+    job: "紐"
+    _id: c06
+  - face_id: c07
+    job: "雑貨屋"
+    _id: c07
+  - face_id: c08
+    job: "本屋"
+    _id: c08
+  - face_id: c09
+    job: "刺客"
+    _id: c09
+  - face_id: c10
+    job: "小娘"
+    _id: c10
+  - face_id: c11
+    job: "小僧"
+    _id: c11
+  - face_id: c12
+    job: "御者"
+    _id: c12
+  - face_id: c13
+    job: "ベテラン医師"
+    _id: c13
+  - face_id: c14
+    job: "聖歌隊員"
+    _id: c14
+  - face_id: c15
+    job: "郵便屋"
+    _id: c15
+  - face_id: c16
+    job: "食いしん坊"
+    _id: c16
+  - face_id: c17
+    job: "詩人"
+    _id: c17
+  - face_id: c18
+    job: "ベテラン看護婦"
+    _id: c18
+  - face_id: c19
+    job: "水商売"
+    _id: c19
+  - face_id: c20
+    job: "良家の娘"
+    _id: c20
+  - face_id: c21
+    job: "肉屋"
+    _id: c21
+  - face_id: c22
+    job: "百姓"
+    _id: c22
+  - face_id: c23
+    job: "伝道師"
+    _id: c23
+  - face_id: c24
+    job: "長老"
+    _id: c24
+  - face_id: c25
+    job: "良家の息子"
+    _id: c25
+  - face_id: c26
+    job: "楽器職人"
+    _id: c26
+  - face_id: c27
+    job: "牧人"
+    _id: c27
+  - face_id: c28
+    job: "読書家"
+    _id: c28
+  - face_id: c29
+    job: "記者"
+    _id: c29
+  - face_id: c30
+    job: "鳥使い"
+    _id: c30
+  - face_id: c31
+    job: "童話作家"
+    _id: c31
+  - face_id: c32
+    job: "双生児"
+    _id: c32
+  - face_id: c33
+    job: "双生児"
+    _id: c33
+  - face_id: c34
+    job: "靴磨き"
+    _id: c34
+  - face_id: c35
+    job: "親方"
+    _id: c35
+  - face_id: c36
+    job: "飾り職"
+    _id: c36
+  - face_id: c37
+    job: "奏者"
+    _id: c37
+  - face_id: c38
+    job: "歌い手"
+    _id: c38
+  - face_id: c39
+    job: "仕立て屋"
+    _id: c39
+  - face_id: c40
+    job: "執事"
+    _id: c40
+  - face_id: c41
+    job: "さすらい人"
+    _id: c41
+  - face_id: c42
+    job: "掃除夫"
+    _id: c42
+  - face_id: c43
+    job: "森番"
+    _id: c43
+  - face_id: c44
+    job: "小悪党"
+    _id: c44
+  - face_id: c45
+    job: "博徒"
+    _id: c45
+  - face_id: c46
+    job: "助手"
+    _id: c46
+  - face_id: c47
+    job: "流浪者"
+    _id: c47
+  - face_id: c48
+    job: "宝石収集家"
+    _id: c48
+  - face_id: c49
+    job: "石工"
+    _id: c49
+  - face_id: c50
+    job: "会計士"
+    _id: c50
+  - face_id: c51
+    job: "墓守"
+    _id: c51
+  - face_id: c52
+    job: "墓堀"
+    _id: c52
+  - face_id: c53
+    job: "大地主"
+    _id: c53
+  - face_id: c54
+    job: "理髪師"
+    _id: c54
+  - face_id: c55
+    job: "寡婦"
+    _id: c55
+  - face_id: c56
+    job: "酒屋"
+    _id: c56
+  - face_id: c57
+    job: "修道女"
+    _id: c57
+  - face_id: c58
+    job: "司祭"
+    _id: c58
+  - face_id: c59
+    job: "修道士"
+    _id: c59
+  - face_id: c60
+    job: "良家の末娘"
+    _id: c60
+  - face_id: c61
+    job: "釣り師"
+    _id: c61
+  - face_id: c62
+    job: "風来坊"
+    _id: c62
+  - face_id: c63
+    job: "漂白工"
+    _id: c63
+  - face_id: c64
+    job: "墓荒らし"
+    _id: c64
+  - face_id: c65
+    job: "始末屋"
+    _id: c65
+  - face_id: c66
+    job: "紅茶屋"
+    _id: c66
+  - face_id: c67
+    job: "店番"
+    _id: c67
+  - face_id: c68
+    job: "賭場の主"
+    _id: c68
+  - face_id: c69
+    job: "美術家"
+    _id: c69
+  - face_id: c70
+    job: "子守り"
+    _id: c70
+  - face_id: c71
+    job: "道案内"
+    _id: c71
+  - face_id: c72
+    job: "ランタン職人"
+    _id: c72
+  - face_id: c73
+    job: "水商売"
+    _id: c73
+  - face_id: c74
+    job: "踊り手"
+    _id: c74
+  - face_id: c75
+    job: "奏者"
+    _id: c75
+  - face_id: c76
+    job: "留守番"
+    _id: c76
+  - face_id: c77
+    job: "馬飼い"
+    _id: c77
+  - face_id: c78
+    job: "道化師"
+    _id: c78
+  - face_id: c79
+    job: "長老の孫"
+    _id: c79
+  - face_id: c80
+    job: "若者"
+    _id: c80
+  - face_id: c81
+    job: "薬屋"
+    _id: c81
+  - face_id: c82
+    job: "執事見習い"
+    _id: c82
+  - face_id: c83
+    job: "受付"
+    _id: c83
+  - face_id: c84
+    job: "妻"
+    _id: c84
+  - face_id: c85
+    job: "お使い"
+    _id: c85
+  - face_id: c86
+    job: "放蕩者"
+    _id: c86
+  - face_id: c87
+    job: "病人"
+    _id: c87
+  - face_id: c88
+    job: "料理人"
+    _id: c88
+  - face_id: c99
+    job: "厭世家"
+    _id: c99
+  - job: "新妻"
+    face_id: c89
+    _id: c89
+  - job: "粉ひき"
+    face_id: c90
+    _id: c90
+  - job: "洗濯婦"
+    face_id: c91
+    _id: c91
+  - job: "洗濯婦"
+    face_id: c92
+    _id: c92
+  - job: "洗濯婦"
+    face_id: c93
+    _id: c93
+  - face_id: c94
+    job: "女主人"
+    _id: c94
+  - face_id: c95
+    job: "新聞配達"
+    _id: c95
+  - face_id: c96
+    job: "学者"
+    _id: c96
+  - job: "捜査官"
+    face_id: c97
+    _id: c97
+  - job: "探偵"
+    face_id: c98
+    _id: c98
+  - job: "徒弟"
+    face_id: c100
+    _id: c100
+  - job: "手伝い"
+    face_id: c101
+    _id: c101
+  - face_id: c102
+    job: "指揮者"
+    _id: c102
+  - face_id: c103
+    job: "厭世家"
+    _id: c103
+  - face_id: c104
+    job: "負傷兵"
+    _id: c104
+  - face_id: c105
+    job: "教え子"
+    _id: c105
+  - face_id: c106
+    job: "魚屋"
+    _id: c106
+  - face_id: c107
+    job: "成金"
+    _id: c107
+  - face_id: c108
+    job: "採集人"
+    _id: c108
+  - face_id: c109
+    job: "村娘"
+    _id: c109
+  - face_id: c110
+    job: "ろくでなし"
+    _id: c110
+  - face_id: c111
+    job: "愛人"
+    _id: c111
+  - face_id: c113
+    job: "紐"
+    _id: c113
+

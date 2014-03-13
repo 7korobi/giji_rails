@@ -1,4 +1,28 @@
 # -*- coding: utf-8 -*-
+=begin
+  insert into talks select nextval('talks_id_seq1') as id,* from talks_origin;
+
+giji=# select * from pg_indexes where tablename = 'talks';
+ schemaname | tablename |             indexname             | tablespace |                                           indexdef
+
+------------+-----------+-----------------------------------+------------+-------------------------------------------------------------------------------------------
+---
+ public     | talks     | talks_pkey                        |            | CREATE UNIQUE INDEX talks_pkey ON talks USING btree (id)
+ public     | talks     | index_talks_on_story_id           |            | CREATE INDEX index_talks_on_story_id ON talks USING btree (story_id)
+ public     | talks     | index_talks_on_event_id           |            | CREATE INDEX index_talks_on_event_id ON talks USING btree (event_id)
+ public     | talks     | index_talks_on_date               |            | CREATE INDEX index_talks_on_date ON talks USING btree (date)
+ public     | talks     | index_talks_on_logid_and_event_id |            | CREATE UNIQUE INDEX index_talks_on_logid_and_event_id ON talks USING btree (logid, event_id)
+
+
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-79-1') LIMIT 1;
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-99-1') LIMIT 1;
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-82-4') LIMIT 1;
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-87-8') LIMIT 1;
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-69-8') LIMIT 1;
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-66-8') LIMIT 1;
+SELECT * FROM "talks" WHERE ("talks"."logid" = 'TS00159' AND "talks"."event_id" = 'perjury-60-1') LIMIT 1;
+=end
+
 
 require 'timeout'
 
@@ -74,12 +98,10 @@ class GijiTalkScanner < GijiScanner
         timeout(60) { message.save }
       rescue ActiveRecord::RecordNotUnique => e
         GijiErrorReport.enqueue e.inspect, o, message.attributes
-      rescue Mysql2::Error => e
+      rescue PG::ConnectionBad, Timeout::Error, ActiveRecord::StatementInvalid => e
         GijiErrorReport.enqueue e.inspect, o, message.attributes
         sleep 10
-      rescue Timeout::Error, ActiveRecord::StatementInvalid => e
-        GijiErrorReport.enqueue e.inspect, o, message.attributes
-        sleep 10
+        raise e
       end
       key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true

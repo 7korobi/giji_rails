@@ -1,53 +1,77 @@
----
-chr_set_id: time
-maker: 次元X式コンピューター 
-admin: 第四の壁の深奥
-chr_npcs:
-- caption: エクスパンション・セット「帰還者議事」
-  csid: time
-  face_id: c10
-  say_0: "M4ライフルを持ってさえいれば…、なーんて、思っててもしょうがないね。鍵かけとこう。"
-  say_1: "やっぱさ、銃を持った善人がいないとさ。<br><br>ちょっと出かけてくる！プリン食べちゃダメだよ！"
-chr_jobs:
-- face_id: c10
-  job: 小銃協会
-- face_id: t01
-  job: 友愛組合
-- face_id: t02
-  job: 幸運の科学
-- face_id: t03
-  job: FSM団
-- face_id: t04
-  job: 截拳道
-- face_id: t05
-  job: 開放的市民
-- face_id: c09
-  job: 暗殺教団
-- face_id: t06
-  job: 死ね死ね団
-- face_id: t07
-  job: 勧善懲悪委
-- face_id: t08
-  job: 覆面嫉妬団
-- face_id: t09
-  job: 匿名軍団
-- face_id: t10
-  job: 営利政府
-- face_id: t11
-  job: 鷹の爪団
-- face_id: t12
-  job: 地下鉄道
-- face_id: t13
-  job: MNU機関
-- face_id: t14
-  job: 猫の集会
-- face_id: t15
-  job: 少年探偵団
-- face_id: t16
-  job: 安全保障局
-- face_id: t17
-  job: 薔薇∴十字
-- face_id: t18
-  job: 白銀∴秘星
-- face_id: t19
-  job: 聖戦士募集
+--- !ruby/object:ChrSet
+attributes: !ruby/hash:Moped::BSON::Document
+  _id: time
+  chr_set_id: time
+  admin: "第四の壁の深奥"
+  maker: "次元X式コンピューター"
+  chr_npcs:
+  - caption: "エクスパンション・セット「帰還者議事」"
+    csid: time
+    face_id: c10
+    say_0: M4ライフルを持ってさえいれば…、なーんて、思っててもしょうがないね。鍵かけとこう。
+    say_1: "やっぱさ、銃を持った善人がいないとさ。<br><br>ちょっと出かけてくる！プリン食べちゃダメだよ！"
+    _id: c10
+  chr_jobs:
+  - face_id: c10
+    job: "小銃協会"
+    _id: c10
+  - face_id: t01
+    job: "友愛組合"
+    _id: t01
+  - face_id: t02
+    job: "幸運の科学"
+    _id: t02
+  - face_id: t03
+    job: FSM団
+    _id: t03
+  - face_id: t04
+    job: "截拳道"
+    _id: t04
+  - face_id: t05
+    job: "開放的市民"
+    _id: t05
+  - face_id: c09
+    job: "暗殺教団"
+    _id: c09
+  - face_id: t06
+    job: "死ね死ね団"
+    _id: t06
+  - face_id: t07
+    job: "勧善懲悪委"
+    _id: t07
+  - face_id: t08
+    job: "覆面嫉妬団"
+    _id: t08
+  - face_id: t09
+    job: "匿名軍団"
+    _id: t09
+  - face_id: t10
+    job: "営利政府"
+    _id: t10
+  - face_id: t11
+    job: "鷹の爪団"
+    _id: t11
+  - face_id: t12
+    job: "地下鉄道"
+    _id: t12
+  - face_id: t13
+    job: MNU機関
+    _id: t13
+  - face_id: t14
+    job: "猫の集会"
+    _id: t14
+  - face_id: t15
+    job: "少年探偵団"
+    _id: t15
+  - face_id: t16
+    job: "安全保障局"
+    _id: t16
+  - face_id: t17
+    job: "薔薇∴十字"
+    _id: t17
+  - face_id: t18
+    job: "白銀∴秘星"
+    _id: t18
+  - face_id: t19
+    job: "聖戦士募集"
+    _id: t19
