@@ -14,7 +14,7 @@ Dir.glob('**/*.yml').uniq.each do |path|
   set = YAML.load_file(path)
   case set
   when Hash
-    env = set[Rails.env].with_indifferent_access rescue set
+    env = (set[Rails.env] || set).with_indifferent_access
   else
     env = set
   end
