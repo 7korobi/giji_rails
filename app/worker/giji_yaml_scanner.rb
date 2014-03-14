@@ -14,10 +14,9 @@ class GijiYamlScanner < GijiScanner
 
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
-    yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
 
     requests = Hash.new
-    messages = YAML.load_file(yaml_path) rescue []
+    messages = Message.by_event_id(event_id)
     stored_ids = messages.map(&:logid)
     chk_doubles = []
 
@@ -81,6 +80,7 @@ class GijiYamlScanner < GijiScanner
       f.write messages.to_yaml
     end
 
+=begin
     requests.keys.each do |key| request_key, sow_auth_id = key
       account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
       account.save
@@ -88,5 +88,6 @@ class GijiYamlScanner < GijiScanner
       request.sow_auth_ids |= [account.id]
       request.save
     end
+=end
   end
 end

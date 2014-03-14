@@ -1,16 +1,16 @@
 class MessagesController < BasePastLogController
-  expose(:events_summary){ story.events.summary.cache }  
+  expose(:events_summary){ story.events.summary.cache }
   expose(:events) do
-    messages = Message.in_story(story.id).group_by(&:event_id)
     story.events.order_by(turn:1).cache.map do |e|
-      e.messages = messages[e.id]
+      e.messages = Message.by_event_id(e.id)
       vil_info e
       e
     end
   end
-  expose(:event) do 
-    e = story.events.where(turn: params[:turn]).cache.first 
-    e.messages = Message.in_event(e.id).to_a
+  expose(:event) do
+    Message
+    e = story.events.where(turn: params[:turn]).cache.first
+    e.messages = Message.by_event_id(e.id)
     vil_info e
     e
   end

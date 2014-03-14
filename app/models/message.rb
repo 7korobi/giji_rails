@@ -19,6 +19,11 @@ class Message
   belongs_to :story, inverse_of: :chats
   belongs_to :event, inverse_of: :chats
 
+  def self.by_event_id(event_id)
+    yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
+    YAML.load_file(yaml_path) rescue []
+  end
+
   def self.in_story(story_id)
     where(story_id: story_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
   end
