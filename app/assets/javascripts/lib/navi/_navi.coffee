@@ -51,16 +51,12 @@ class Navi
         func @value
 
       Navi.set_cookie()
-      list = Navi.to_hash()
-      if list.search
-        val_search = "?" + list.search.join "&"
-        if location.search != val_search
-          location.search = val_search
-
-      if list.hash
-        val_hash   = "#" + list.hash.join   "&"  if list.hash
-        if location.hash != val_hash
-          win.history null, null, val_hash
+      list = Navi.to_url()
+      if list.search && list.search != location.search
+        location.search = list.search
+      if list.hash && list.hash != location.hash
+        location.hash = list.hash
+        win.history null, null, list.hash
 
   _move: ()->
     if @select?
@@ -84,21 +80,39 @@ Navi.set_cookie = ()->
         document.cookie = "#{cmd}; expires=#{expire.toGMTString()}; path=/"
 
 Navi.to_hash = (append)->
-  list = {}
-  scanner = (location, navi)->
-    if navi.value
-      cmd = "#{navi.key}=#{navi.value}"
+  hash = {}
+  scanner = (location, key, value)->
+    if value
+      cmd = "#{key}=#{value}"
+      hash[key] = [location, cmd]
 
-      if location?
-        list[location] or= []
-        list[location].push cmd
-  scanner(navi.params.location, navi) for        _, navi of Navi.list
-  scanner(location,             navi) for location, navi of append
-  list
+  for _, navi of Navi.list
+    scanner(navi.params.location, navi.key, navi.value)
+  for location, navi of append
+    for key, value of navi
+      scanner(location, key, value)
+  hash
 
 Navi.to_url = (append)->
-  hash = Navi.to_hash(append)
-  ""
+  list = {}
+  for key, obj of Navi.to_hash(append)
+    [location, cmd] = obj
+    if location?
+      list[location] or= []
+      list[location].push cmd
+
+  list.search =
+    if list.search
+      "?" + list.search.join("&")
+    else
+      ""
+
+  list.hash =
+    if list.hash
+      "#" + list.hash.join("&")
+    else
+      ""
+  list
 
 Navi.popstate = ()->
   for navi in Navi.list
