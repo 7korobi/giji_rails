@@ -13,7 +13,7 @@ DECOLATE = ($scope, $sce)->
   anchor = (log)->
     return log unless log
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """<a href_eval="popup(#{turn},'#{a}')" class="mark">&gt;&gt;#{id}</a>"""
+      """<a href_eval="popup(#{turn},'#{a}')" data="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</a>"""
 
   anchor_preview = (log)->
     log
@@ -74,7 +74,7 @@ DECOLATE = ($scope, $sce)->
       null
 
   $scope.undecolate = (log)->
-    if log 
+    if log
       unanchor unrandom log
     else
       null

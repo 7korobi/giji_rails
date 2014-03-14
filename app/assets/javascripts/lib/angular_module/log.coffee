@@ -3,10 +3,30 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
   link: ($scope, elm, attr, ctrl)->
     log = $scope.message = $scope.$eval attr.log
     log.is_show = true
-    if ! log.template? && log.logid? && log.mestype? && log.subid?
-      log.sub1id = log.logid[0]
-      log.sub2id = log.logid[1]
 
+    log.attention = ->
+      base = location.href.replace(location.hash,"")
+      url = Navi.to_url
+        hash:
+          search: log.key
+          hide_potofs: ""
+          mode: "talk_all_open"
+          page: 1
+
+      wo = window.open()
+      wo.opener = null
+      wo.location.href = "#{base}#{url.hash}"
+
+    log.cancel_btn = ->
+      if @logid? && "q" == @logid[0] && ((new Date() - @updated_at) < 25 * 1000)
+        $sce.trustAsHtml """なら削除できます。<a href_eval='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
+      else
+        ""
+
+    log.time = -> $scope.lax_time @updated_at
+
+
+    if ! log.template? && log.logid? && log.mestype? && log.subid?
       template = null
       for style in GIJI.message.template
         for target, table of style
@@ -15,13 +35,6 @@ angular.module("giji").directive "log", ["$compile", "$sce", ($compile, $sce)->
 
     if ! log.img? && log.face_id? && log.csid?
       log.img  or= $scope.img_cid(log.csid, log.face_id)
-
-    log.cancel_btn = ->
-      if @logid? && "q" == @logid[0] && ((new Date() - @updated_at) < 25 * 1000)
-        $sce.trustAsHtml """なら削除できます。<a href_eval='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
-      else
-        ""
-    log.time = -> $scope.lax_time @updated_at
 
     if ! log.anchor? && log.logid? && match_data = log.logid.match(/(\D)\D+(\d+)/)
       [_, mark, num] = match_data

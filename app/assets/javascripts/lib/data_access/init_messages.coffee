@@ -7,8 +7,11 @@ INIT_MESSAGES = (new_base)->
     for message in new_base.messages
       message.turn = new_base.turn
 
+      if message.logid?
+        message.key = "#{message.logid},#{message.turn}"
+
       if message.date?
-        message.updated_at = message.date 
+        message.updated_at = message.date
         delete message.date
       message.updated_at = Date.create message.updated_at
 

@@ -1,4 +1,4 @@
-table.say(ng-class="message.mestype")
+table.say(ng-class="[message.mestype, message._id]")
   tbody
     tr
       td.img
@@ -11,6 +11,8 @@ table.say(ng-class="message.mestype")
             b(ng-bind-html="message.to")
           p.text(ng-class="message.style" ng-bind-html="message.text")
           p.mes_date
+            a.mark(ng-click="message.attention()") 注目
+            | &nbsp;
             a.mark(ng-click="diary.add.anchor(message)") {{message.anchor}}
             span &nbsp;
             span

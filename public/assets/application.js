@@ -301,9 +301,32 @@ angular.module("giji").directive("log", [
         var anchor_ok, log, mark, match_data, num, style, table, target, template, _, _i, _len, _ref, _ref1;
         log = $scope.message = $scope.$eval(attr.log);
         log.is_show = true;
+        log.attention = function() {
+          var base, url, wo;
+          base = location.href.replace(location.hash, "");
+          url = Navi.to_url({
+            hash: {
+              search: log.key,
+              hide_potofs: "",
+              mode: "talk_all_open",
+              page: 1
+            }
+          });
+          wo = window.open();
+          wo.opener = null;
+          return wo.location.href = "" + base + url.hash;
+        };
+        log.cancel_btn = function() {
+          if ((this.logid != null) && "q" === this.logid[0] && ((new Date() - this.updated_at) < 25 * 1000)) {
+            return $sce.trustAsHtml("なら削除できます。<a href_eval='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a>");
+          } else {
+            return "";
+          }
+        };
+        log.time = function() {
+          return $scope.lax_time(this.updated_at);
+        };
         if ((log.template == null) && (log.logid != null) && (log.mestype != null) && (log.subid != null)) {
-          log.sub1id = log.logid[0];
-          log.sub2id = log.logid[1];
           template = null;
           _ref = GIJI.message.template;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -318,16 +341,6 @@ angular.module("giji").directive("log", [
         if ((log.img == null) && (log.face_id != null) && (log.csid != null)) {
           log.img || (log.img = $scope.img_cid(log.csid, log.face_id));
         }
-        log.cancel_btn = function() {
-          if ((this.logid != null) && "q" === this.logid[0] && ((new Date() - this.updated_at) < 25 * 1000)) {
-            return $sce.trustAsHtml("なら削除できます。<a href_eval='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a>");
-          } else {
-            return "";
-          }
-        };
-        log.time = function() {
-          return $scope.lax_time(this.updated_at);
-        };
         if ((log.anchor == null) && (log.logid != null) && (match_data = log.logid.match(/(\D)\D+(\d+)/))) {
           _ = match_data[0], mark = match_data[1], num = match_data[2];
           anchor_ok = false;
@@ -1164,6 +1177,9 @@ INIT_MESSAGES = function(new_base) {
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       message = _ref[_i];
       message.turn = new_base.turn;
+      if (message.logid != null) {
+        message.key = "" + message.logid + "," + message.turn;
+      }
       if (message.date != null) {
         message.updated_at = message.date;
         delete message.date;
@@ -1455,7 +1471,7 @@ DECOLATE = function($scope, $sce) {
       return log;
     }
     return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
-      return "<a href_eval=\"popup(" + turn + ",'" + a + "')\" class=\"mark\">&gt;&gt;" + id + "</a>";
+      return "<a href_eval=\"popup(" + turn + ",'" + a + "')\" data=\"" + a + "," + turn + "," + id + "\" class=\"mark\">&gt;&gt;" + id + "</a>";
     });
   };
   anchor_preview = function(log) {
@@ -2688,7 +2704,7 @@ Navi = (function() {
     this.popstate();
     this.scope.$watch("" + this.key + ".value", (function(_this) {
       return function(value, oldVal) {
-        var func, list, val_hash, val_search, _i, _len, _ref1;
+        var func, list, _i, _len, _ref1;
         _this._move();
         _ref1 = _this.watch;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
@@ -2696,20 +2712,13 @@ Navi = (function() {
           func(_this.value);
         }
         Navi.set_cookie();
-        list = Navi.to_hash();
-        if (list.search) {
-          val_search = "?" + list.search.join("&");
-          if (location.search !== val_search) {
-            location.search = val_search;
-          }
+        list = Navi.to_url();
+        if (list.search && list.search !== location.search) {
+          location.search = list.search;
         }
-        if (list.hash) {
-          if (list.hash) {
-            val_hash = "#" + list.hash.join("&");
-          }
-          if (location.hash !== val_hash) {
-            return win.history(null, null, val_hash);
-          }
+        if (list.hash && list.hash !== location.hash) {
+          location.hash = list.hash;
+          return win.history(null, null, list.hash);
         }
       };
     })(this));
@@ -2762,34 +2771,45 @@ Navi.set_cookie = function() {
 };
 
 Navi.to_hash = function(append) {
-  var list, location, navi, scanner, _, _ref;
-  list = {};
-  scanner = function(location, navi) {
+  var hash, key, location, navi, scanner, value, _, _ref;
+  hash = {};
+  scanner = function(location, key, value) {
     var cmd;
-    if (navi.value) {
-      cmd = "" + navi.key + "=" + navi.value;
-      if (location != null) {
-        list[location] || (list[location] = []);
-        return list[location].push(cmd);
-      }
+    if (value) {
+      cmd = "" + key + "=" + value;
+      return hash[key] = [location, cmd];
     }
   };
   _ref = Navi.list;
   for (_ in _ref) {
     navi = _ref[_];
-    scanner(navi.params.location, navi);
+    scanner(navi.params.location, navi.key, navi.value);
   }
   for (location in append) {
     navi = append[location];
-    scanner(location, navi);
+    for (key in navi) {
+      value = navi[key];
+      scanner(location, key, value);
+    }
   }
-  return list;
+  return hash;
 };
 
 Navi.to_url = function(append) {
-  var hash;
-  hash = Navi.to_hash(append);
-  return "";
+  var cmd, key, list, location, obj, _ref;
+  list = {};
+  _ref = Navi.to_hash(append);
+  for (key in _ref) {
+    obj = _ref[key];
+    location = obj[0], cmd = obj[1];
+    if (location != null) {
+      list[location] || (list[location] = []);
+      list[location].push(cmd);
+    }
+  }
+  list.search = list.search ? "?" + list.search.join("&") : "";
+  list.hash = list.hash ? "#" + list.hash.join("&") : "";
+  return list;
 };
 
 Navi.popstate = function() {

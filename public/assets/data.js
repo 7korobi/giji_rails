@@ -31,13 +31,13 @@ this.JST["form/vote1"] = "<div class=\"form-inline radio\"><a class=\"btn btn-de
 this.JST["form/vote2"] = "<div class=\"form-inline radio\"><a class=\"btn btn-default\" ng-click=\"vote(ff, f)\">{{ff.title}}</a><select class=\"form-control input-medium\" name=\"target1\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target1\" ng-options=\"o.val as o.name for o in ff.targets\"></select>と<select class=\"form-control input-medium\" name=\"target2\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target2\" ng-options=\"o.val as o.name for o in ff.targets\"></select></div>";
 
 
-this.JST["message/action"] = "<div ng-class=\"message.mestype\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><b ng-bind-html=\"message.name\"></b><span>は、</span><span ng-bind-html=\"message.text\"></span></p><p class=\"mes_date\"><span>&nbsp;</span><span>{{message.time()}}</span></p><hr class=\"invisible_hr\" /></div></div>";
+this.JST["message/action"] = "<div ng-class=\"[message.mestype, message._id]\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><b ng-bind-html=\"message.name\"></b><span>は、</span><span ng-bind-html=\"message.text\"></span></p><p class=\"mes_date\"><span>&nbsp;</span><span>{{message.time()}}</span></p><hr class=\"invisible_hr\" /></div></div>";
 
 
-this.JST["message/admin"] = "<div class=\"guide\" ng-class=\"message.mestype\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p><hr class=\"invisible_hr\" /></div>";
+this.JST["message/admin"] = "<div class=\"guide\" ng-class=\"[message.mestype, message._id]\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p><hr class=\"invisible_hr\" /></div>";
 
 
-this.JST["message/aim"] = "<table class=\"say\" ng-class=\"message.mestype\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b>&nbsp;→&nbsp;<b ng-bind-html=\"message.to\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
+this.JST["message/aim"] = "<table class=\"say\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b>&nbsp;→&nbsp;<b ng-bind-html=\"message.to\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
 
 
 this.JST["message/cast"] = "<div class=\"formpl_gm\" template=\"navi/potofs\"></div>";
@@ -49,13 +49,13 @@ this.JST["message/caution"] = "<p class=\"text caution\" ng-bind-html=\"message.
 this.JST["message/external"] = "<div ng-class=\"message.mestype\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><a href=\"{{message.uri}}\" target=\"_blank\"><span class=\"mark\">{{message.protocol}}</span>://<span class=\"mark\">{{message.host}}</span><span class=\"note\">{{message.path}}</span></a></p><hr class=\"invisible_hr\" /></div></div>";
 
 
-this.JST["message/info"] = "<p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.mestype\"></p><hr class=\"invisible_hr\" />";
+this.JST["message/info"] = "<p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"[message.mestype, message._id]\"></p><hr class=\"invisible_hr\" />";
 
 
-this.JST["message/memo"] = "<table class=\"memo\" ng-class=\"message.mestype\"><tbody><tr><td class=\"memoleft\"><h5 ng-bind-html=\"message.name\"></h5></td><td class=\"memoright\"><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\" ng-if=\"message.text\"></p><p class=\"text\" ng-class=\"message.style\" ng-if=\"! message.text\">メモをはがした</p><p class=\"mes_date\">{{message.time()}}</p></td></tr></tbody></table>";
+this.JST["message/memo"] = "<table class=\"memo\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"memoleft\"><h5 ng-bind-html=\"message.name\"></h5></td><td class=\"memoright\"><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\" ng-if=\"message.text\"></p><p class=\"text\" ng-class=\"message.style\" ng-if=\"! message.text\">メモをはがした</p><p class=\"mes_date\">{{message.time()}}</p></td></tr></tbody></table>";
 
 
-this.JST["message/say"] = "<table class=\"say\" ng-class=\"message.mestype\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\">{{message.mesicon}}&nbsp;<b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
+this.JST["message/say"] = "<table class=\"say\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\">{{message.mesicon}}&nbsp;<b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
 
 
 this.JST["navi/chr_list"] = "<hr style=\"border-color:black;\" /><div class=\"chrbox\" ng-repeat=\"chr in chrs\"><img ng-src=\"{{chr.img}}\" /><div class=\"chrblank\" ng-bind-html=\"chr.text\"></div></div><hr style=\"border-color:black;\" />";
@@ -3574,7 +3574,7 @@ this.SOW = {
 
 
 this.URL = {
-  "file": "http://7korobi.gehirn.ne.jp",
+  "file": "http://localhost",
   "rails": "http://giji.check.jp"
 } ;
 
