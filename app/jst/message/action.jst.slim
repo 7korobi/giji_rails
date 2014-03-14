@@ -1,4 +1,4 @@
-div(ng-class="message.mestype")
+div(ng-class="[message.mestype, message._id]")
   .action
     p.text(ng-class="message.style")
       b(ng-bind-html="message.name")
