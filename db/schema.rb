@@ -13,7 +13,26 @@
 
 ActiveRecord::Schema.define(version: 1) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  create_table "talks", force: true do |t|
+    t.string   "story_id",    null: false
+    t.string   "event_id",    null: false
+    t.string   "logid",       null: false
+    t.string   "mestype",     null: false
+    t.datetime "date",        null: false
+    t.string   "subid"
+    t.string   "to"
+    t.string   "color"
+    t.string   "style"
+    t.text     "log"
+    t.string   "name"
+    t.string   "csid"
+    t.string   "face_id"
+    t.string   "sow_auth_id"
+  end
+
+  add_index "talks", ["date"], name: "index_talks_on_date"
+  add_index "talks", ["event_id"], name: "index_talks_on_event_id"
+  add_index "talks", ["logid", "event_id"], name: "index_talks_on_logid_and_event_id", unique: true
+  add_index "talks", ["story_id"], name: "index_talks_on_story_id"
 
 end
