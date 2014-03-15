@@ -178,7 +178,8 @@ FILTER = ($scope, $filter, $timeout)->
 
       if $scope.modes.last
         result = []
-        for key, sublist of _.groupBy list, $scope.potof_key
+        groups = _.groupBy list, (o)-> "#{o.mestype}-#{$scope.potof_key(o)}"
+        for key, sublist of groups
           result.push _.last sublist
         result
       else
