@@ -1452,7 +1452,7 @@ INIT_STORY = function($scope, story) {
 var DECOLATE;
 
 DECOLATE = function($scope, $sce) {
-  var anchor, anchor_preview, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unrandom, uri_to_link;
+  var anchor, anchor_preview, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unbr, unrandom, uri_to_link;
   player = function(log) {
     if (!log) {
       return log;
@@ -1534,6 +1534,11 @@ DECOLATE = function($scope, $sce) {
       return "" + s1 + nbsps;
     });
   };
+  unbr = function(log) {
+    return log.replace(/<br>/gm, function(br) {
+      return "\n";
+    });
+  };
   $scope.preview_decolate = function(log) {
     if (log) {
       return $sce.trustAsHtml(space(player(anchor_preview(link(random_preview(log))))));
@@ -1550,7 +1555,7 @@ DECOLATE = function($scope, $sce) {
   };
   return $scope.undecolate = function(log) {
     if (log) {
-      return unanchor(unrandom(log));
+      return unanchor(unrandom(unbr(log)));
     } else {
       return null;
     }
@@ -1894,7 +1899,7 @@ FILTER = function($scope, $filter, $timeout) {
     $scope.$watch('modes.open', modes_change);
     $scope.$watch('modes.last', modes_change);
     page.filter('mode.value', function(key, list) {
-      var add_filter, add_filters, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist, _ref1;
+      var add_filter, add_filters, groups, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist;
       is_mob_open = false;
       if ($scope.story != null) {
         if ('alive' === $scope.story.type.mob) {
@@ -1958,9 +1963,11 @@ FILTER = function($scope, $filter, $timeout) {
       });
       if ($scope.modes.last) {
         result = [];
-        _ref1 = _.groupBy(list, $scope.potof_key);
-        for (key in _ref1) {
-          sublist = _ref1[key];
+        groups = _.groupBy(list, function(o) {
+          return "" + o.mestype + "-" + ($scope.potof_key(o));
+        });
+        for (key in groups) {
+          sublist = groups[key];
           result.push(_.last(sublist));
         }
         return result;
@@ -2120,6 +2127,7 @@ FORM = function($scope, $sce) {
   };
   valid = function(f, cb) {
     var lines, mark, point, size, text;
+    set_last_memo(f);
     f.valid = true;
     if (f.max) {
       text = f.text.replace(/\n$/g, '\n ');
@@ -2131,7 +2139,9 @@ FORM = function($scope, $sce) {
       } else {
         f.lines = 5;
       }
-      f.valid = cb(size, lines);
+      if (cb) {
+        f.valid = cb(size, lines);
+      }
       if (f.valid) {
         f.error = "";
         if ('point' === f.max.unit) {
@@ -2214,11 +2224,12 @@ FORM = function($scope, $sce) {
     if (!(f.text || f.is_last_memo)) {
       log = (_ref = $scope.event) != null ? (_ref1 = _ref.last_memo) != null ? (_ref2 = _ref1["" + f.mestype + ":" + f.csid_cid]) != null ? _ref2.log : void 0 : void 0 : void 0;
       if (log != null) {
-        f.text = $scope.undecolate(log);
+        f.text = $scope.undecolate(log) || "";
         if (f.ver != null) {
           f.ver.commit();
         }
-        return f.is_last_memo = true;
+        f.is_last_memo = true;
+        return valid(f);
       }
     }
   };
@@ -2251,9 +2262,6 @@ FORM = function($scope, $sce) {
     if (force || true) {
       return valid(f, function(size, lines) {
         var _ref;
-        if (f.cmd === "wrmemo" && size < 1) {
-          return true;
-        }
         if (f.max.size < size) {
           return false;
         }
@@ -2294,7 +2302,9 @@ FORM = function($scope, $sce) {
             }
             break;
           case "wrmemo":
-            set_last_memo(f);
+            if (size < 1) {
+              return true;
+            }
             if (!safe_anker(f)) {
               return false;
             }
