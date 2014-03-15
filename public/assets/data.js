@@ -2067,28 +2067,28 @@ this.OPTION = {
   "head_img": {
     "770": {
       "cinema": [
-        "moon.png",
-        "morning.png"
+        "morning.png",
+        "moon.png"
       ],
       "wa": [
-        "lupino.png",
-        "morning.png"
+        "morning.png",
+        "lupino.png"
       ],
       "night": [
-        "moon.png",
-        "morning.png"
+        "morning.png",
+        "moon.png"
       ],
       "star": [
-        "lupino.png",
-        "morning.png"
+        "morning.png",
+        "lupino.png"
       ],
       "juna": [
-        "lupino.png",
-        "morning.png"
+        "morning.png",
+        "lupino.png"
       ],
       "sow": [
-        "lupino.png",
-        "morning.png"
+        "morning.png",
+        "lupino.png"
       ]
     },
     "580": {

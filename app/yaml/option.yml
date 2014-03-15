@@ -7,23 +7,23 @@ cookie:
 head_img:
   770:
     cinema:
-      - moon.png
       - morning.png
+      - moon.png
     wa:
-      - lupino.png
       - morning.png
+      - lupino.png
     night:
+      - morning.png
       - moon.png
-      - morning.png
     star:
-      - lupino.png
       - morning.png
+      - lupino.png
     juna:
-      - lupino.png
       - morning.png
+      - lupino.png
     sow:
-      - lupino.png
       - morning.png
+      - lupino.png
   580:
     cinema:
       - b.jpg
