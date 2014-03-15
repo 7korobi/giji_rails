@@ -41,9 +41,10 @@ angular.module("giji").directive "theme", ($compile)->
       $scope.css.value = css.join("_")
 
       date = new Date
+      hour = 1000 * 60 * 60
       size = OPTION.css.h1.widths[width]
       $scope.h1 =
-        type:  OPTION.head_img[size][theme][ (date / 60*60*12).ceil() % 2]
+         type:  OPTION.head_img[size][theme][ ((date - 3*hour) / (12*hour)).ceil() % 2]
         width: size
       $scope.h1.path = "#{URL.file}/images/banner/title#{size}#{$scope.h1.type}"
     css_apply()
