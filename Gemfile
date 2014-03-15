@@ -64,6 +64,7 @@ gem "decent_exposure"
 
 # input support
 gem "formtastic"
+gem "formtastic-bootstrap"
 
 # view environment
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
