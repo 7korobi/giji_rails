@@ -16,9 +16,9 @@ angular.module("giji").directive "theme", ($compile)->
     html_class = ->
       return unless $scope.styles?
       return unless $scope.msg_styles?
-      $scope.adjust()      
+      $scope.adjust()
       $scope.html_class = [
-        $scope.styles.item 
+        $scope.styles.item
         $scope.styles.color
         $scope.styles.theme
         $scope.styles.width
@@ -33,7 +33,7 @@ angular.module("giji").directive "theme", ($compile)->
       html_class()
 
     css_change = ->
-      css = _.compact _.uniq [ 
+      css = _.compact _.uniq [
         theme = $scope.styles.theme
         width = $scope.styles.width
         font  = $scope.styles.font
@@ -41,10 +41,11 @@ angular.module("giji").directive "theme", ($compile)->
       $scope.css.value = css.join("_")
 
       date = new Date
+      size = OPTION.css.h1.widths[width]
       $scope.h1 =
-        type:  OPTION.head_img[theme][ (date / 60*60*12).ceil() % 2]
-        width: OPTION.css.h1.widths[width]
-      $scope.h1.path = "#{URL.file}/images/banner/title#{$scope.h1.width}#{$scope.h1.type}.jpg"
+        type:  OPTION.head_img[size][theme][ (date / 60*60*12).ceil() % 2]
+        width: size
+      $scope.h1.path = "#{URL.file}/images/banner/title#{size}#{$scope.h1.type}"
     css_apply()
 
 
@@ -58,7 +59,7 @@ angular.module("giji").directive "theme", ($compile)->
 
     msg_change = ->
       msg = _.compact _.uniq [
-        head.browser.power = $scope.msg_styles.power        
+        head.browser.power = $scope.msg_styles.power
         $scope.msg_styles.order
         $scope.msg_styles.row
         "no-player" unless $scope.msg_styles.pl
