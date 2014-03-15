@@ -121,15 +121,18 @@ angular.module("giji").directive("theme", function($compile) {
         return html_class();
       };
       css_change = function() {
-        var css, date, font, size, theme, width;
+        var css, date, font, hour, size, theme, width;
         css = _.compact(_.uniq([theme = $scope.styles.theme, width = $scope.styles.width, font = $scope.styles.font]));
         $scope.css.value = css.join("_");
         date = new Date;
+        hour = 1000 * 60 * 60;
         size = OPTION.css.h1.widths[width];
         $scope.h1 = {
-          type: OPTION.head_img[size][theme][(date / 60 * 60 * 12).ceil() % 2],
-          width: size
+          type: OPTION.head_img[size][theme][((date - 3 * hour) / (12 * hour)).ceil() % 2]
         };
+        ({
+          width: size
+        });
         return $scope.h1.path = "" + URL.file + "/images/banner/title" + size + $scope.h1.type;
       };
       css_apply();
