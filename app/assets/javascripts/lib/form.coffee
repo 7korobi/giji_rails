@@ -14,18 +14,20 @@ FORM = ($scope, $sce)->
     point.floor()
 
   valid = (f, cb)->
+    set_last_memo(f)
     f.valid = true
+
     if f.max
       text = f.text.replace(/\n$/g, '\n ')
       lines = text.split("\n").length
       size  = calc_length(text)
-      point = calc_point(size, lines) 
+      point = calc_point(size, lines)
       if lines > 5
         f.lines = lines
       else
         f.lines = 5
 
-      f.valid = cb(size, lines)
+      f.valid = cb(size, lines) if cb
       if f.valid
         f.error = ""
         if 'point' == f.max.unit
@@ -38,7 +40,7 @@ FORM = ($scope, $sce)->
       f.valid_text = $sce.trustAsHtml "#{mark} #{size}<sub>/#{f.max.size}字</sub>  #{lines}<sub>/#{f.max.line}行</sub>"
     else
       f.valid_text = ""
-  
+
   submit = (f, param)->
     if f
       $scope.errors?[f.cmd] = null
@@ -54,7 +56,7 @@ FORM = ($scope, $sce)->
           f.text = ""
           f.target = "-1"
           f.action = "-99"
-        else 
+        else
     $scope.submit param, ->
       set_last_memo(f)
 
@@ -95,9 +97,10 @@ FORM = ($scope, $sce)->
     unless f.text || f.is_last_memo
       log = $scope.event?.last_memo?["#{f.mestype}:#{f.csid_cid}"]?.log
       if log?
-        f.text = $scope.undecolate log
+        f.text = $scope.undecolate(log) || ""
         f.ver.commit() if f.ver?
         f.is_last_memo = true
+        valid(f)
 
   is_input = (f)->
     return false unless f.text?
@@ -119,8 +122,6 @@ FORM = ($scope, $sce)->
   $scope.text_valid = (f, force)->
     if force || true # ! head.browser.simple
       valid f, (size, lines)->
-        return true if f.cmd == "wrmemo" && size < 1
-
         return false if f.max.size < size
         return false if f.max.line < lines
 
@@ -141,7 +142,7 @@ FORM = ($scope, $sce)->
               else
                 return f.target != "-1"
 
-            if size < 1 
+            if size < 1
               return false if f.target ==  "-1"
               return false if f.action == "-99"
             else
@@ -149,7 +150,7 @@ FORM = ($scope, $sce)->
               return is_input(f)
 
           when "wrmemo"
-            set_last_memo(f)
+            return true if size < 1 # メモを剥がしたコマンド
             return false unless safe_anker(f)
             return is_input(f)
         return true
