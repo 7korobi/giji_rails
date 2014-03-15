@@ -6,7 +6,7 @@ class Face
   field :name
   field :comment
   field :order,   type: Integer
-  
+
   default_scope order_by(:order.asc)
 
   validates_length_of :face_id,   in: 1.. 5
@@ -15,7 +15,7 @@ class Face
   validates_length_of :order,     in: 1.. 5
 
   def self.group_by_type
-    Face.all.group_by{|o| o.face_id[/[a-z]+/] }
+    FACE.group_by{|o| o.face_id[/[a-z]+/] }
   end
 
   def self.titles
