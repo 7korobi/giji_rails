@@ -63,16 +63,17 @@
                   span(style="display:inline-block; width:2.50em; text-align:right; white-space: nowrap;")
                     | x{{role[1]}}
 
-  h2 みんなのコメント
-  div(ng-repeat="(phase, votes) in face.comment_by_phase")
-    h3
-      | {{phase}}
-    .XSAY
-      .action(ng-repeat="vote in votes")
-        p.text
-          | {{vote.comment}}
-        p.mes_date
-          | {{vote.user_id}}
+  -if admin?
+    h2 みんなのコメント
+    div(ng-repeat="(phase, votes) in face.comment_by_phase")
+      h3
+        | {{phase}}
+      .XSAY
+        .action(ng-repeat="vote in votes")
+          p.text
+            | {{vote.comment}}
+          p.mes_date
+            | {{vote.user_id}}
 
   table.say.info
     tr.caution

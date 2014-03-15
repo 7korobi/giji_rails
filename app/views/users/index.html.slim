@@ -1,14 +1,39 @@
 =render 'login'
 
-- content_for :navi_head do
-  | Listing users
-
 
 - content_for :top do
-  h2 ログインの仕方
+  h2 ログイン
   .paragraph
-    | 左のどれかのボタンをクリックして、ログインしよう！
-    | 左にボタンが見えないひとは、右下の「接続」ボタンを押してみよう。
+    -if login?
+      = "#{current.auth.provider} アカウントを使っています。"
+      span.mark = link_to '  click to logout', destroy_user_session_path
+    -if user?
+      ul
+        li
+          = link_to current.user.name, user_path(current.user.id)
+          | さんのページ
+
+  -unless user?
+    h2 ログインするIDを選ぼう
+    .choice
+      table.vindex
+        tr
+          td
+            = link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
+            br
+            | Twitter
+          td
+            = link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
+            br
+            | Facebook
+          td
+            ul
+              li
+                label.label= link_to 'mixi',   '/users/auth/mixi'
+              li
+                label.label= link_to 'google', '/users/auth/google'
+              li
+                label.label= link_to 'yahoo',  '/users/auth/yahoo'
 
   h2 ようこそ！
   .paragraph
