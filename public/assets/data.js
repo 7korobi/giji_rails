@@ -2065,30 +2065,84 @@ this.OPTION = {
     }
   },
   "head_img": {
-    "cinema": [
-      "r",
-      "c"
-    ],
-    "star": [
-      "r",
-      "c"
-    ],
-    "wa": [
-      "b",
-      "w"
-    ],
-    "night": [
-      "b",
-      "w"
-    ],
-    "sow": [
-      "r",
-      "c"
-    ],
-    "juna": [
-      "b",
-      "w"
-    ]
+    "770": {
+      "cinema": [
+        "lupino.png",
+        "lupino.png"
+      ],
+      "wa": [
+        "lupino.png",
+        "lupino.png"
+      ],
+      "night": [
+        "lupino.png",
+        "lupino.png"
+      ],
+      "star": [
+        "lupino.png",
+        "lupino.png"
+      ],
+      "juna": [
+        "lupino.png",
+        "lupino.png"
+      ],
+      "sow": [
+        "lupino.png",
+        "lupino.png"
+      ]
+    },
+    "580": {
+      "cinema": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "wa": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "night": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "star": [
+        "r.jpg",
+        "c.jpg"
+      ],
+      "juna": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "sow": [
+        "r.jpg",
+        "c.jpg"
+      ]
+    },
+    "458": {
+      "cinema": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "wa": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "night": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "star": [
+        "r.jpg",
+        "c.jpg"
+      ],
+      "juna": [
+        "b.jpg",
+        "w.jpg"
+      ],
+      "sow": [
+        "r.jpg",
+        "c.jpg"
+      ]
+    }
   },
   "jp_wday": [
     "日",
@@ -3574,7 +3628,7 @@ this.SOW = {
 
 
 this.URL = {
-  "file": "http://localhost",
+  "file": "http://7korobi.gehirn.ne.jp",
   "rails": "http://giji.check.jp"
 } ;
 
