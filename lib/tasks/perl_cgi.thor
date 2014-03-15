@@ -59,8 +59,9 @@ class PerlCgi < Thor
     require 'fileutils'
     require 'yaml'
     require 'erubis'
-    require '/www/giji_rails/lib/const'
-    require '/www/giji_rails/lib/rsync'
+    require './config/environment'
+#    require '/www/giji_rails/lib/const'
+#    require '/www/giji_rails/lib/rsync'
 
 
     rsync = Giji::RSync.new
