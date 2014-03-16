@@ -70,10 +70,6 @@ angular.module("giji").directive "theme", ($compile)->
       $scope.msg_style.value = msg.join("_")
     msg_apply()
 
-    _.delay ->
-      $scope.msg_styles.power = head.browser.power
-    , 2000
-
     $scope.$watch 'css.value', css_apply
     $scope.$watch 'styles.theme', css_change
     $scope.$watch 'styles.width', css_change

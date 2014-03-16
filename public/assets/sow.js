@@ -151,9 +151,6 @@ angular.module("giji").directive("theme", function($compile) {
         return $scope.msg_style.value = msg.join("_");
       };
       msg_apply();
-      _.delay(function() {
-        return $scope.msg_styles.power = head.browser.power;
-      }, 2000);
       $scope.$watch('css.value', css_apply);
       $scope.$watch('styles.theme', css_change);
       $scope.$watch('styles.width', css_change);
@@ -1709,7 +1706,7 @@ angular.module("giji").run(function() {
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_apply, modes_change, navigator, page, scrollTo, _i, _j, _len, _len1, _ref;
+  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_apply, modes_change, navigator, page, scrollTo, scrollToDo, _i, _j, _len, _len1, _ref;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -2057,7 +2054,7 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return _.sortBy(list, order);
   });
-  scrollTo = function(newVal, oldVal, three) {
+  scrollToDo = function(newVal, oldVal, three) {
     var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
     $scope.anchors = [];
     if ($scope.event != null) {
@@ -2077,6 +2074,7 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return $scope.go.messages();
   };
+  scrollTo = _.throttle(scrollToDo, 1000);
   form_show = function() {
     var _k, _len2, _ref1, _ref2, _results;
     $scope.anchors = [];
@@ -2104,7 +2102,7 @@ FILTER = function($scope, $filter, $timeout) {
     return $scope.$apply(function() {
       return page.start();
     });
-  }, 1000);
+  }, 100);
   $scope.$watch('mode.value', form_show);
   $scope.$watch('event.is_news', form_show);
   return $scope.$watch('event.is_news', $scope.deploy_mode_common);

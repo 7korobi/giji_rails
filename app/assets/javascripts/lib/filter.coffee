@@ -242,7 +242,7 @@ FILTER = ($scope, $filter, $timeout)->
     list.reverse() if "desc" == key
     _.sortBy list, order
 
-  scrollTo = (newVal, oldVal, three)->
+  scrollToDo = (newVal, oldVal, three)->
     $scope.anchors = []
 
     if $scope.event?
@@ -252,6 +252,8 @@ FILTER = ($scope, $filter, $timeout)->
             if is_show and mode == form_text.jst
               return
     $scope.go.messages()
+
+  scrollTo = _.throttle scrollToDo, 100
 
   form_show = ->
     $scope.anchors = []
@@ -270,7 +272,7 @@ FILTER = ($scope, $filter, $timeout)->
     $scope.$watch "msg_style.value", scrollTo
     $scope.$apply ->
       page.start()
-  , 1000
+  , 100
 
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show
