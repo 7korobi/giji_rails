@@ -195,6 +195,10 @@
     text-decoration: none;
   }
 
+  h1 a img {
+    @include box-shadow(rgba(208, 208, 255, 0.3) 0 2px 2px);
+  }
+
   h2 {
     background: #662;
   }

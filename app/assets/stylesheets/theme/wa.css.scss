@@ -5,6 +5,8 @@
     background-repeat: repeat;
     background-position: center;
     background-attachment: fixed;
+
+    @include box-shadow(rgba(208, 208, 255, 0.5) 0 0 9px inset);
   }
 
   .contentframe {
@@ -184,11 +186,17 @@
   }
 
   .say img {
-    border-bottom: 3px solid rgba( 0, 0, 0, 0.5);
-    border-top:    2px solid rgba( 0, 0, 0, 0.5);
+    border-top:    2px solid rgba( 112, 32, 0, 0.5);
+    border-bottom: 3px solid rgba( 112, 32, 0, 0.5);
   }
 
-  .toolbox,
+  .toolbox {
+            border-radius : 0.5em;
+         -o-border-radius : 0.5em;
+       -moz-border-radius : 0.5em;
+    -webkit-border-radius : 0.5em;
+    background-color: #ddb;
+  }
   body {
     color: #ccf;
     background-image: url("../images/bg/nagatanienn.png");
@@ -198,6 +206,10 @@
 
   a {
     text-decoration: none;
+  }
+
+  h1 a img {
+    @include box-shadow(rgba(208, 208, 255, 0.3) 0 2px 2px);
   }
 
   h2 {

@@ -41,8 +41,8 @@
   &.center-msg {
     .outframe {
       background-position: right top;
-      border-right: 3px double #403;
-      border-left : 3px double #403;
+      border-right: 1px solid #403;
+      border-left : 1px solid #403;
     }
   }
 
@@ -51,7 +51,7 @@
   &.right-msg {
     .outframe {
       background-position: right top;
-      border-left: 3px double #403;
+      border-left: 1px solid #403;
     }
   }
 
@@ -156,6 +156,10 @@
 
   a {
     text-decoration: none;
+  }
+
+  h1 a img {
+    @include box-shadow(#806 0 2px 2px);
   }
 
   h2 {
