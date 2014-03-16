@@ -64,14 +64,14 @@
   h6(ng-if="page") ページ、日程の移動 &emsp;&emsp;&emsp;&emsp;
   dl.dl-horizontal(ng-if="page")
     dt
-      select.form-control.input-block-level(ng-model="event" ng-change="set_turn(event.turn)" ng-options="e as e.name for e in events")
+      select.form-control.input-block-level(ng-model="event" ng-change="set_turn(event.turn)" ng-options="e as e.name for e in events" ng-if="event")
     dd.form-inline
-      .form-group
+      .form-group(ng-if="page")
         label(ng-if="! event.is_news")
           select.form-control.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
       | &thinsp;
-      .form-group
-        label(ng-if="event.is_progress")
+      .form-group(ng-if="event.is_progress")
+        label
           a.btn.btn-default(ng-if="  event.is_news" ng-click="ajax_event(event.turn, null, false)") ページ表示
           a.btn.btn-default(ng-if="! event.is_news" ng-click="ajax_event(event.turn, null, true)") 最新の発言
       | &thinsp;
@@ -79,6 +79,6 @@
         label
           input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
       | &thinsp;
-      .form-group
-        label(ng-if="event.is_progress")
+      .form-group(ng-if="event.is_progress")
+        label
           a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")

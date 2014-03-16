@@ -23,9 +23,9 @@
           td
             select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
 
-  .insayfilter(adjust="full" navi="page" ng-show="page")
-    .paragraph
-      .sayfilter_content(template="navi/toolbox")
+- content_for :tool do
+  .toolbox(adjust="full" navi="page" ng-show="page")
+    .sayfilter_content(template="navi/toolbox")
 
 - content_for :log do
   h2

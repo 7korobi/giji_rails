@@ -5,6 +5,7 @@ development:
     http://localhost:3000
 production:
   file:
+#    http://localhost
     http://7korobi.gehirn.ne.jp
   rails:
     http://giji.check.jp

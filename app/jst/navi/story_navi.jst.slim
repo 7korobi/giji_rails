@@ -1,8 +1,5 @@
 .form-inline.radio
   label
-    select.form-control.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
-
-  label
     select.form-control.input-small( ng-model="folder.value"  ng-options="o.val as o.name for o in folder.select")
 
   label(ng-if="game_rule")

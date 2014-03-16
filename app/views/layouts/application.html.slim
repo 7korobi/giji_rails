@@ -76,6 +76,7 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_cl
               .paragraph.sayfilter_content
                 = ERROR[flash[:error]]
           .sayfilter_heading.bottom
+          = yield :tool
         #buttons
           nav
             div(ng-repeat="o in navi.select")
