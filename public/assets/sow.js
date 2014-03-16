@@ -128,7 +128,7 @@ angular.module("giji").directive("theme", function($compile) {
         hour = 1000 * 60 * 60;
         size = OPTION.css.h1.widths[width];
         $scope.h1 = {
-          type: OPTION.head_img[size][theme][((date - 3 * hour) / (12 * hour)).ceil() % 2]
+          type: OPTION.head_img[size][theme][((date - 3 * hour) / (12 * hour)).floor() % 2]
         };
         ({
           width: size
@@ -2059,15 +2059,17 @@ FILTER = function($scope, $filter, $timeout) {
   scrollTo = function(newVal, oldVal, three) {
     var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
     $scope.anchors = [];
-    if ($scope.event.is_news) {
-      _ref1 = $scope.form_show;
-      for (mode in _ref1) {
-        is_show = _ref1[mode];
-        _ref2 = $scope.form.texts;
-        for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-          form_text = _ref2[_k];
-          if (is_show && mode === form_text.jst) {
-            return;
+    if ($scope.event != null) {
+      if ($scope.event.is_news) {
+        _ref1 = $scope.form_show;
+        for (mode in _ref1) {
+          is_show = _ref1[mode];
+          _ref2 = $scope.form.texts;
+          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+            form_text = _ref2[_k];
+            if (is_show && mode === form_text.jst) {
+              return;
+            }
           }
         }
       }
