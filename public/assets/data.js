@@ -2285,7 +2285,6 @@ this.OPTION = {
     },
     "msg_style": {
       "options": {
-        "current": "simple_asc_50",
         "location": "hash",
         "is_cookie": true
       }

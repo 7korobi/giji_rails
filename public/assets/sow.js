@@ -136,6 +136,7 @@ angular.module("giji").directive("theme", function($compile) {
         return $scope.h1.path = "" + URL.file + "/images/banner/title" + size + $scope.h1.type;
       };
       css_apply();
+      OPTION.page.msg_style.options.current = "" + head.browser.power + "_asc_50";
       Navi.push($scope, 'msg_style', {
         options: OPTION.page.msg_style.options,
         select: GIJI.msg_styles
