@@ -245,11 +245,12 @@ FILTER = ($scope, $filter, $timeout)->
   scrollTo = (newVal, oldVal, three)->
     $scope.anchors = []
 
-    if $scope.event.is_news
-      for mode, is_show of $scope.form_show
-        for form_text in $scope.form.texts
-          if is_show and mode == form_text.jst
-            return
+    if $scope.event?
+      if $scope.event.is_news
+        for mode, is_show of $scope.form_show
+          for form_text in $scope.form.texts
+            if is_show and mode == form_text.jst
+              return
     $scope.go.messages()
 
   form_show = ->
