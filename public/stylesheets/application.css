@@ -1,3 +1,15 @@
+.footnote,
+.toppage .paragraph,
+.accordion dt,
+.accordion dd {
+  background-color: rgba(0,0,0,0.5);
+}
+
+.board {
+  margin: 0 0 0 5%;
+  width: 90%;
+}
+
 hr.invisible_hr {
 	display: none;
 }
@@ -93,12 +105,12 @@ address * {
 .mes_admin,
 .ADMIN .action,
 .ADMIN.guide {
-  color: #c99; 
+  color: #c99;
 }
 .ADMIN .action .text b,
 .ADMIN h3,
 .ADMIN h3 b {
-  color: #666 !important; 
+  color: #666 !important;
 }
 
 .mes_maker,
