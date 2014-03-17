@@ -109,8 +109,10 @@ hr.invisible_hr { display: none; }
 }
 
 .inframe {
+  .pagenavi dl,
   .pagenavi {
-    padding-left: 8px;
+    padding: 0;
+    margin:  0;
   }
 
   .INFONOM,
