@@ -1,8 +1,4 @@
 POOL = ($scope, $filter, $timeout)->
-  message_timer =  60 * 1000
-  message_first =  25 * 1000
-  ajax_timer = 5 * 60 * 1000
-
   apply = ->
 #    $scope.$apply()
 
@@ -12,20 +8,20 @@ POOL = ($scope, $filter, $timeout)->
       $scope.do_sort_potofs()
       $scope.set_turn($scope.event.turn)
 
-    $timeout apply, message_first
+    $timeout apply, DELAY.msg_delete
 
   refresh = ->
-    $timeout refresh, message_timer
+    $timeout refresh, DELAY.msg_minute
 
   pool_start = ->
-    $timeout apply,   message_first
-    $timeout refresh, message_timer
+    $timeout apply,   DELAY.msg_delete
+    $timeout refresh, DELAY.msg_minute
 
   pool_button = ()->
     $scope.get_news $scope.event, =>
       $scope.init()
   $scope.pool_nolimit = pool_button
-  $scope.pool_hand = _.debounce pool_button, message_first,
+  $scope.pool_hand = _.debounce pool_button, DELAY.msg_delete,
     leading: true
     trailing: false
 
@@ -35,9 +31,8 @@ POOL = ($scope, $filter, $timeout)->
 
   $scope.adjust = ->
     adjust()
-    _.delay adjust,   80
-    _.delay adjust,  400
-    _.delay adjust, 2000
+    _.delay adjust, DELAY.presto
+    _.delay adjust, DELAY.andante
 
   # onload event
   $scope.init()

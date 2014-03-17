@@ -1,6 +1,6 @@
 RAILS = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   win.cookies = $cookies
-  $scope.mode_cache = 
+  $scope.mode_cache =
     info: 'info_open_last'
     memo: 'memo_all_open_last'
     talk: 'talk_all_open'
@@ -13,7 +13,7 @@ RAILS = ($scope, $filter, $sce, $cookies, $http, $timeout)->
     else
       []
 
-      
+
   get = (href, cb)->
     $scope.get href, cb
 
@@ -33,7 +33,7 @@ RAILS = ($scope, $filter, $sce, $cookies, $http, $timeout)->
     $scope.post $scope.form.uri, param, ->
       $scope.init()
       cb() if cb
-  $scope.submit = _.throttle submit, 5000
+  $scope.submit = _.throttle submit, DELAY.lento
 
 
   MODULE   $scope, $filter, $sce, $http, $timeout

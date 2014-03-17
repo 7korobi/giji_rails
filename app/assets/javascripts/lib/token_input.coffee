@@ -28,4 +28,4 @@ TOKEN_INPUT = ($scope)->
     target = $('#eventcard')
     if target.length > 0 && $scope.story.card.event?
       tokenInputInit('#eventcard', SOW.events, $scope.story.card.event)
-  _.delay doIt, 1000
+  _.delay doIt, DELAY.andante

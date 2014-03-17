@@ -1,0 +1,20 @@
+largo:      10000
+grave:      25000
+msg_delete: 25000
+msg_minute: 60000
+option:
+  pc:
+    presto:    50
+    animato:  200
+    andante:  800
+    lento:   2000
+  mobile:
+    presto:   100
+    animato:  400
+    andante: 1600
+    lento:   4000
+  simple:
+    presto:   200
+    animato: 1000
+    andante: 2000
+    lento:   5000

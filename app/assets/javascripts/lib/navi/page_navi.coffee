@@ -10,17 +10,26 @@ class PageNavi extends Navi
     @filters = []
     @pagers  = []
 
-    @filter_action = =>
-      if @by_key?
-        @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
-      @pager_action()
+    do_filter_action = =>
+      $scope.$apply =>
+        if @by_key?
+          @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
+        @pager_action()
+    @filter_action = _.debounce do_filter_action, DELAY.presto,
+      leading: false
+      trailing: true
 
-    @pager_action = =>
-      if @list_by_filter?
-        list = @do_filters @list_by_filter, @pagers
-        if @to_key? && list
-          eval "_this.scope.#{@to_key} = list"
-      @_move()
+
+    do_pager_action = =>
+      $scope.$apply =>
+        if @list_by_filter?
+          list = @do_filters @list_by_filter, @pagers
+          if @to_key? && list
+            eval "_this.scope.#{@to_key} = list"
+        @_move()
+    @pager_action = _.debounce do_pager_action, DELAY.presto,
+      leading: false
+      trailing: true
 
   start: ->
     for [key, _] in @filters
@@ -28,7 +37,6 @@ class PageNavi extends Navi
     for [key, _] in @pagers
       @scope.$watch key, @pager_action
     @filter_action()
-
 
   do_filters: (list, filters)->
     for [target_key, filter] in filters

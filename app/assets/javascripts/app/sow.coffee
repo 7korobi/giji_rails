@@ -1,6 +1,6 @@
 CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   win.cookies = $cookies
-  $scope.mode_cache = 
+  $scope.mode_cache =
     info: 'info_open_last'
     memo: 'memo_all_open_last'
     talk: 'talk_all_open'
@@ -56,7 +56,7 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
     protocol $scope.form.uri, param, ->
       $scope.init()
       cb() if cb
-  $scope.submit = _.throttle submit, 5000
+  $scope.submit = _.throttle submit, DELAY.lento
 
   $scope.logined = ->
     win.cookies.uid && win.cookies.pwd

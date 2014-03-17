@@ -1,20 +1,3 @@
-if head.browser?
-  b = head.browser
-  b.power = "pc"
-  if navigator.userAgent.toLowerCase().indexOf('android') != -1
-    b.android = true
-    b.power = "simple"
-
-  for key in ['crios','silk','mercury','iphone','ipad']
-    if navigator.userAgent.toLowerCase().indexOf(key) != -1
-      b.power = "mobile"
-
-  for key in ['safari','iphone','ipad']
-    if navigator.userAgent.toLowerCase().indexOf(key) != -1
-      b.iphone = true
-  b[b.power] = true
-head.useragent = navigator.userAgent
-
 win =
   top:    0
   left:   0
@@ -57,19 +40,19 @@ win =
       'resize'
 
   on_scroll: (cb, delay)->
-    delay ||= 500
+    delay ||= DELAY.animato
     $(window).on 'scroll', _.throttle(cb, delay)
-    $(window).on win.resize_event(), _.throttle(cb, 5000)
+    $(window).on win.resize_event(), _.throttle(cb, DELAY.lento)
 
   on_resize: (cb, delay)->
-    delay ||= 100
+    delay ||= DELAY.presto
     $(window).on win.resize_event(), _.throttle(cb, delay)
-    $(window).on 'scroll', _.throttle(cb, 5000)
+    $(window).on 'scroll', _.throttle(cb, DELAY.lento)
 
 if history?.pushState?
   popstate = (e)->
     Navi.popstate()
-  $(window).on 'popstate', _.throttle(popstate, 100)
+  $(window).on 'popstate', _.throttle(popstate, DELAY.presto)
 
   win.history = (title, href, hash)->
     href || href = location.href.replace /#.*/, ""
@@ -85,16 +68,16 @@ angular.module("giji").run ()->
 
   dummy = ()->
   if ontouchstart?
-    $(window).on 'touchstart', _.throttle(dummy, 100)
-    $(window).on 'touchmove', _.throttle(dummy, 100)
-    $(window).on 'touchend', _.throttle(dummy, 100)
+    $(window).on 'touchstart', _.throttle(dummy, DELAY.presto)
+    $(window).on 'touchmove', _.throttle(dummy, DELAY.presto)
+    $(window).on 'touchend', _.throttle(dummy, DELAY.presto)
   else
-    $(window).on 'mousedown', _.throttle(dummy, 100)
-    $(window).on 'mouseup', _.throttle(dummy, 100)
-    $(window).on 'mousemove', _.throttle(dummy, 100)
+    $(window).on 'mousedown', _.throttle(dummy, DELAY.presto)
+    $(window).on 'mouseup', _.throttle(dummy, DELAY.presto)
+    $(window).on 'mousemove', _.throttle(dummy, DELAY.presto)
 
   scan_motion = (e)->
     win.accel   = e.originalEvent.acceleration
     win.gravity = e.originalEvent.accelerationIncludingGravity
     win.rotate  = e.originalEvent.rotationRate
-  $(window).on 'devicemotion', _.throttle(scan_motion, 100)
+  $(window).on 'devicemotion', _.throttle(scan_motion, DELAY.presto)

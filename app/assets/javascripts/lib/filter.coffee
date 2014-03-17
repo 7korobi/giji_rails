@@ -65,66 +65,6 @@ FILTER = ($scope, $filter, $timeout)->
 
     mode_params = _.groupBy GIJI.modes, 'val'
 
-    Navi.push $scope, 'search',
-      options:
-        current: ""
-        location: 'hash'
-        is_cookie: false
-
-    Navi.push $scope, 'mode',
-      options:
-        current: $scope.mode_cache.talk
-        location: 'hash'
-        is_cookie: false
-      select: GIJI.modes
-
-    modes_apply = ->
-      $scope.modes = $scope.mode.choice()
-
-    modes_change = ->
-      info_at = $scope.info_at
-      if info_at?
-        if "info" == $scope.modes.face && "all" == $scope.modes.view
-          info_at.value = Number(new Date) unless info_at.value
-        else
-          info_at.value = ""
-
-      switch $scope.modes.face
-        when "info"
-          if "all" == $scope.modes.view
-            $scope.modes.last = false
-          else
-            $scope.modes.view = "open"
-            $scope.modes.last = true
-        when "memo"
-          $scope.modes.open = true
-          if "all" != $scope.modes.view
-            $scope.modes.view = "open"
-
-      if "open" == $scope.modes.view
-        $scope.modes.open = true
-
-      mode = _.compact _.uniq [
-        $scope.modes.face
-        $scope.modes.view
-        'open'   if $scope.modes.open
-        'last'   if $scope.modes.last
-      ]
-      $scope.mode.value = mode.join("_")
-      $scope.mode_select = _.filter $scope.mode.select, (o)->
-        o.face == $scope.modes.face
-
-      $scope.mode_cache[$scope.modes.face] = $scope.mode.value
-      $scope.deploy_mode_common()
-    modes_apply()
-
-    $scope.$watch 'mode.value',   modes_apply
-    $scope.$watch 'modes.face',   modes_change
-    $scope.$watch 'modes.view',   modes_change
-    $scope.$watch 'modes.open',   modes_change
-    $scope.$watch 'modes.last',   modes_change
-
-
     page.filter 'mode.value', (key, list)->
       is_mob_open = false
       if $scope.story?
@@ -239,7 +179,6 @@ FILTER = ($scope, $filter, $timeout)->
         (o)-> - o.updated_at
       else
         (o)-> + o.updated_at
-    list.reverse() if "desc" == key
     _.sortBy list, order
 
   scrollToDo = (newVal, oldVal, three)->
@@ -253,7 +192,9 @@ FILTER = ($scope, $filter, $timeout)->
               return
     $scope.go.messages()
 
-  scrollTo = _.throttle scrollToDo, 100
+  scrollTo = _.debounce scrollToDo, DELAY.presto,
+    leading: false
+    trailing: true
 
   form_show = ->
     $scope.anchors = []
@@ -262,18 +203,16 @@ FILTER = ($scope, $filter, $timeout)->
       for key in $scope.modes.form
         $scope.form_show[key] = true
 
-  _.delay ->
-    if $scope.event?.messages?
-      $scope.$watch "event.turn",    scrollTo
-      $scope.$watch "event.is_news", scrollTo
-      $scope.$watch "mode.value",    scrollTo
-    $scope.$watch "page.value",      scrollTo
-    $scope.$watch "search.value",    scrollTo
-    $scope.$watch "msg_style.value", scrollTo
-    $scope.$apply ->
-      page.start()
-  , 100
+  if $scope.event?.messages?
+    $scope.$watch "event.turn",    scrollTo
+    $scope.$watch "event.is_news", scrollTo
+    $scope.$watch "mode.value",    scrollTo
+  $scope.$watch "page.value",      scrollTo
+  $scope.$watch "search.value",    scrollTo
+  $scope.$watch "msg_style.value", scrollTo
 
   $scope.$watch 'mode.value',    form_show
   $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
+
+  page.start()
