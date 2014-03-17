@@ -16,10 +16,10 @@ Dir.glob(head + "**/*.jst.*") do |path|
 <%
 end
 
-all_faces = Face.all.group_by(&:face_id)
+all_faces = FACE.group_by(&:face_id)
 faces = []
 
-ChrSet.find(['changed','ririnra','sf','wa']).each do |set|
+[CS_CHANGED, CS_RIRINRA, CS_SF, CS_WA].each do |set|
   npc = set.chr_npcs.sort_by(&:csid).first
   set.chr_jobs.each do |job|
     next unless all_faces[job.face_id]
