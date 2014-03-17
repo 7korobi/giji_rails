@@ -517,13 +517,6 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
-    "face_id": "c26",
-    "name": "モニカ",
-    "order": 9
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
     "face_id": "c27",
     "name": "リンダ",
     "order": 65
@@ -580,30 +573,9 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
-    "face_id": "c35",
-    "name": "ダン",
-    "order": 4
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c36",
-    "name": "ミッシェル",
-    "order": 8
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
     "face_id": "c37",
     "name": "セシル",
     "order": 34
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c38",
-    "name": "コリーン",
-    "order": 2
   },
   {
     "caption": "人狼議事",
@@ -678,20 +650,6 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
-    "face_id": "c49",
-    "name": "ボリス",
-    "order": 1
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c50",
-    "name": "ディーン",
-    "order": 7
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
     "face_id": "c51",
     "name": "ヨーランダ",
     "order": 53
@@ -702,13 +660,6 @@ this.FACES = [
     "face_id": "c52",
     "name": "ギリアン",
     "order": 52
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c53",
-    "name": "ゼルダ",
-    "order": 5
   },
   {
     "caption": "人狼議事",
@@ -853,13 +804,6 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
-    "face_id": "c74",
-    "name": "フランシスカ",
-    "order": 6
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
     "face_id": "c75",
     "name": "ビリー",
     "order": 35
@@ -870,13 +814,6 @@ this.FACES = [
     "face_id": "c76",
     "name": "ジョージ",
     "order": 210
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c77",
-    "name": "キャロライナ",
-    "order": 3
   },
   {
     "caption": "人狼議事",
@@ -3629,6 +3566,35 @@ this.SOW = {
 this.URL = {
   "file": "http://7korobi.gehirn.ne.jp",
   "rails": "http://giji.check.jp"
+} ;
+
+
+
+this.DELAY = {
+  "largo": 10000,
+  "grave": 25000,
+  "msg_delete": 25000,
+  "msg_minute": 60000,
+  "option": {
+    "pc": {
+      "presto": 50,
+      "animato": 200,
+      "andante": 800,
+      "lento": 2000
+    },
+    "mobile": {
+      "presto": 100,
+      "animato": 400,
+      "andante": 1600,
+      "lento": 4000
+    },
+    "simple": {
+      "presto": 200,
+      "animato": 1000,
+      "andante": 2000,
+      "lento": 5000
+    }
+  }
 } ;
 
 

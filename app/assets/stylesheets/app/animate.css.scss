@@ -46,7 +46,7 @@ $fixedbox-transform: all 100ms ease;
   transition-duration: $duration;
 }
 
-.mobile, 
+.mobile,
 .pc {
   .message_filter.drag {
     &.ng-enter,
@@ -73,13 +73,13 @@ $fixedbox-transform: all 100ms ease;
 
 .pc {
   .show-setup,
-  .hide-setup.hide-start { 
-    opacity:0; 
+  .hide-setup.hide-start {
+    opacity:0;
   }
 
   .hide-setup,
   .show-setup.show-start {
-    opacity:1; 
+    opacity:1;
   }
 
   .show-setup,
@@ -99,7 +99,6 @@ $fixedbox-transform: all 100ms ease;
       @include transition(80ms, ease-in, opacity);
     }
     &.ng-enter {
-      @include transition-delay(100ms);
     }
     &.ng-move,
     &.fade-hide,
@@ -112,7 +111,7 @@ $fixedbox-transform: all 100ms ease;
       @include transform($message-enter-transform);
       opacity: 0;
     }
-    &.ng-enter-active, 
+    &.ng-enter-active,
     &.ng-leave {
       @include transform($goal-transform);
       opacity: 1;
@@ -123,7 +122,7 @@ $fixedbox-transform: all 100ms ease;
     }
 
     &.ng-move {
-    } 
+    }
     &.ng-move-active {
     }
   }

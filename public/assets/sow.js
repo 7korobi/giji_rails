@@ -94,7 +94,7 @@ angular.module("giji").directive("theme", function($compile) {
     restrict: "A",
     templateUrl: "theme/css",
     link: function($scope, elm, attr, ctrl) {
-      var css_apply, css_change, html_class, key, msg_apply, msg_change, val, _ref;
+      var css_apply, css_change, html_class, key, modes_apply, modes_change, msg_apply, msg_change, redesign_in_time, val, _ref, _ref1;
       $scope.selectors = OPTION.selectors;
       $scope.selector_keys = {};
       _ref = OPTION.selectors;
@@ -102,6 +102,20 @@ angular.module("giji").directive("theme", function($compile) {
         val = _ref[key];
         $scope.selector_keys[key] = Object.keys(val);
       }
+      redesign_in_time = function() {
+        var date, day_or_night, hour, size;
+        date = Number(new Date);
+        hour = 1000 * 60 * 60;
+        size = OPTION.css.h1.widths[$scope.styles.width];
+        day_or_night = ((date + 3 * hour) / (12 * hour)) % 2;
+        $scope.h1 = {
+          type: OPTION.head_img[size][$scope.styles.theme][day_or_night.floor()]
+        };
+        ({
+          width: size
+        });
+        return $scope.h1.path = "" + URL.file + "/images/banner/title" + size + $scope.h1.type;
+      };
       Navi.push($scope, 'css', {
         options: OPTION.page.css.options,
         select: GIJI.styles[attr.theme]
@@ -121,19 +135,10 @@ angular.module("giji").directive("theme", function($compile) {
         return html_class();
       };
       css_change = function() {
-        var css, date, font, hour, size, theme, width;
-        css = _.compact(_.uniq([theme = $scope.styles.theme, width = $scope.styles.width, font = $scope.styles.font]));
+        var css;
+        css = _.compact(_.uniq([$scope.styles.theme, $scope.styles.width, $scope.styles.font]));
         $scope.css.value = css.join("_");
-        date = new Date;
-        hour = 1000 * 60 * 60;
-        size = OPTION.css.h1.widths[width];
-        $scope.h1 = {
-          type: OPTION.head_img[size][theme][((date - 3 * hour) / (12 * hour)).floor() % 2]
-        };
-        ({
-          width: size
-        });
-        return $scope.h1.path = "" + URL.file + "/images/banner/title" + size + $scope.h1.type;
+        return redesign_in_time();
       };
       css_apply();
       OPTION.page.msg_style.options.current = "" + head.browser.power + "_asc_50";
@@ -151,6 +156,74 @@ angular.module("giji").directive("theme", function($compile) {
         return $scope.msg_style.value = msg.join("_");
       };
       msg_apply();
+      if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
+        Navi.push($scope, 'search', {
+          options: {
+            current: "",
+            location: 'hash',
+            is_cookie: false
+          }
+        });
+        Navi.push($scope, 'mode', {
+          options: {
+            current: $scope.mode_cache.talk,
+            location: 'hash',
+            is_cookie: false
+          },
+          select: GIJI.modes
+        });
+        modes_apply = function() {
+          console.log(["modes_apply"]);
+          return $scope.modes = $scope.mode.choice();
+        };
+        modes_change = function() {
+          var info_at, mode;
+          console.log(["modes_change"]);
+          info_at = $scope.info_at;
+          if (info_at != null) {
+            if ("info" === $scope.modes.face && "all" === $scope.modes.view) {
+              if (!info_at.value) {
+                info_at.value = Number(new Date);
+              }
+            } else {
+              info_at.value = "";
+            }
+          }
+          switch ($scope.modes.face) {
+            case "info":
+              if ("all" === $scope.modes.view) {
+                $scope.modes.last = false;
+              } else {
+                $scope.modes.view = "open";
+                $scope.modes.last = true;
+              }
+              break;
+            case "memo":
+              $scope.modes.open = true;
+              if ("all" !== $scope.modes.view) {
+                $scope.modes.view = "open";
+              }
+          }
+          if ("open" === $scope.modes.view) {
+            $scope.modes.open = true;
+          }
+          mode = _.compact(_.uniq([$scope.modes.face, $scope.modes.view, $scope.modes.open ? 'open' : void 0, $scope.modes.last ? 'last' : void 0]));
+          $scope.mode.value = mode.join("_");
+          $scope.mode_select = _.filter($scope.mode.select, function(o) {
+            return o.face === $scope.modes.face;
+          });
+          $scope.mode_cache[$scope.modes.face] = $scope.mode.value;
+          return $scope.deploy_mode_common();
+        };
+        modes_apply();
+      }
+      if ($scope.modes != null) {
+        $scope.$watch('mode.value', modes_apply);
+        $scope.$watch('modes.open', modes_change);
+        $scope.$watch('modes.face', modes_change);
+        $scope.$watch('modes.view', modes_change);
+        $scope.$watch('modes.last', modes_change);
+      }
       $scope.$watch('css.value', css_apply);
       $scope.$watch('styles.theme', css_change);
       $scope.$watch('styles.width', css_change);
@@ -1584,33 +1657,7 @@ DIARY = function($scope) {
     }
   };
 };
-var b, key, popstate, win, _i, _j, _len, _len1, _ref, _ref1;
-
-if (head.browser != null) {
-  b = head.browser;
-  b.power = "pc";
-  if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
-    b.android = true;
-    b.power = "simple";
-  }
-  _ref = ['crios', 'silk', 'mercury', 'iphone', 'ipad'];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    key = _ref[_i];
-    if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
-      b.power = "mobile";
-    }
-  }
-  _ref1 = ['safari', 'iphone', 'ipad'];
-  for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-    key = _ref1[_j];
-    if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
-      b.iphone = true;
-    }
-  }
-  b[b.power] = true;
-}
-
-head.useragent = navigator.userAgent;
+var popstate, win;
 
 win = {
   top: 0,
@@ -1656,14 +1703,14 @@ win = {
     }
   },
   on_scroll: function(cb, delay) {
-    delay || (delay = 500);
+    delay || (delay = DELAY.animato);
     $(window).on('scroll', _.throttle(cb, delay));
-    return $(window).on(win.resize_event(), _.throttle(cb, 5000));
+    return $(window).on(win.resize_event(), _.throttle(cb, DELAY.lento));
   },
   on_resize: function(cb, delay) {
-    delay || (delay = 100);
+    delay || (delay = DELAY.presto);
     $(window).on(win.resize_event(), _.throttle(cb, delay));
-    return $(window).on('scroll', _.throttle(cb, 5000));
+    return $(window).on('scroll', _.throttle(cb, DELAY.lento));
   }
 };
 
@@ -1671,7 +1718,7 @@ if ((typeof history !== "undefined" && history !== null ? history.pushState : vo
   popstate = function(e) {
     return Navi.popstate();
   };
-  $(window).on('popstate', _.throttle(popstate, 100));
+  $(window).on('popstate', _.throttle(popstate, DELAY.presto));
   win.history = function(title, href, hash) {
     href || (href = location.href.replace(/#.*/, ""));
     return history.replaceState(null, title, href + hash);
@@ -1688,25 +1735,25 @@ angular.module("giji").run(function() {
   win.on_resize(win.refresh);
   dummy = function() {};
   if (typeof ontouchstart !== "undefined" && ontouchstart !== null) {
-    $(window).on('touchstart', _.throttle(dummy, 100));
-    $(window).on('touchmove', _.throttle(dummy, 100));
-    $(window).on('touchend', _.throttle(dummy, 100));
+    $(window).on('touchstart', _.throttle(dummy, DELAY.presto));
+    $(window).on('touchmove', _.throttle(dummy, DELAY.presto));
+    $(window).on('touchend', _.throttle(dummy, DELAY.presto));
   } else {
-    $(window).on('mousedown', _.throttle(dummy, 100));
-    $(window).on('mouseup', _.throttle(dummy, 100));
-    $(window).on('mousemove', _.throttle(dummy, 100));
+    $(window).on('mousedown', _.throttle(dummy, DELAY.presto));
+    $(window).on('mouseup', _.throttle(dummy, DELAY.presto));
+    $(window).on('mousemove', _.throttle(dummy, DELAY.presto));
   }
   scan_motion = function(e) {
     win.accel = e.originalEvent.acceleration;
     win.gravity = e.originalEvent.accelerationIncludingGravity;
     return win.rotate = e.originalEvent.rotationRate;
   };
-  return $(window).on('devicemotion', _.throttle(scan_motion, 100));
+  return $(window).on('devicemotion', _.throttle(scan_motion, DELAY.presto));
 });
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var filter, filter_filter, filters, form_show, key, keys, mode_params, modes_apply, modes_change, navigator, page, scrollTo, scrollToDo, _i, _j, _len, _len1, _ref;
+  var filter, filter_filter, filters, form_show, key, keys, mode_params, navigator, page, scrollTo, scrollToDo, _i, _j, _len, _len1, _ref, _ref1;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -1837,68 +1884,6 @@ FILTER = function($scope, $filter, $timeout) {
     page.filter('page.last_updated_at()');
     $scope.deploy_mode_common();
     mode_params = _.groupBy(GIJI.modes, 'val');
-    Navi.push($scope, 'search', {
-      options: {
-        current: "",
-        location: 'hash',
-        is_cookie: false
-      }
-    });
-    Navi.push($scope, 'mode', {
-      options: {
-        current: $scope.mode_cache.talk,
-        location: 'hash',
-        is_cookie: false
-      },
-      select: GIJI.modes
-    });
-    modes_apply = function() {
-      return $scope.modes = $scope.mode.choice();
-    };
-    modes_change = function() {
-      var info_at, mode;
-      info_at = $scope.info_at;
-      if (info_at != null) {
-        if ("info" === $scope.modes.face && "all" === $scope.modes.view) {
-          if (!info_at.value) {
-            info_at.value = Number(new Date);
-          }
-        } else {
-          info_at.value = "";
-        }
-      }
-      switch ($scope.modes.face) {
-        case "info":
-          if ("all" === $scope.modes.view) {
-            $scope.modes.last = false;
-          } else {
-            $scope.modes.view = "open";
-            $scope.modes.last = true;
-          }
-          break;
-        case "memo":
-          $scope.modes.open = true;
-          if ("all" !== $scope.modes.view) {
-            $scope.modes.view = "open";
-          }
-      }
-      if ("open" === $scope.modes.view) {
-        $scope.modes.open = true;
-      }
-      mode = _.compact(_.uniq([$scope.modes.face, $scope.modes.view, $scope.modes.open ? 'open' : void 0, $scope.modes.last ? 'last' : void 0]));
-      $scope.mode.value = mode.join("_");
-      $scope.mode_select = _.filter($scope.mode.select, function(o) {
-        return o.face === $scope.modes.face;
-      });
-      $scope.mode_cache[$scope.modes.face] = $scope.mode.value;
-      return $scope.deploy_mode_common();
-    };
-    modes_apply();
-    $scope.$watch('mode.value', modes_apply);
-    $scope.$watch('modes.face', modes_change);
-    $scope.$watch('modes.view', modes_change);
-    $scope.$watch('modes.open', modes_change);
-    $scope.$watch('modes.last', modes_change);
     page.filter('mode.value', function(key, list) {
       var add_filter, add_filters, groups, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist;
       is_mob_open = false;
@@ -2049,9 +2034,6 @@ FILTER = function($scope, $filter, $timeout) {
     } : function(o) {
       return +o.updated_at;
     };
-    if ("desc" === key) {
-      list.reverse();
-    }
     return _.sortBy(list, order);
   });
   scrollToDo = function(newVal, oldVal, three) {
@@ -2074,7 +2056,10 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return $scope.go.messages();
   };
-  scrollTo = _.throttle(scrollToDo, 1000);
+  scrollTo = _.debounce(scrollToDo, DELAY.presto, {
+    leading: false,
+    trailing: true
+  });
   form_show = function() {
     var _k, _len2, _ref1, _ref2, _results;
     $scope.anchors = [];
@@ -2089,23 +2074,18 @@ FILTER = function($scope, $filter, $timeout) {
       return _results;
     }
   };
-  _.delay(function() {
-    var _ref1;
-    if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
-      $scope.$watch("event.turn", scrollTo);
-      $scope.$watch("event.is_news", scrollTo);
-      $scope.$watch("mode.value", scrollTo);
-    }
-    $scope.$watch("page.value", scrollTo);
-    $scope.$watch("search.value", scrollTo);
-    $scope.$watch("msg_style.value", scrollTo);
-    return $scope.$apply(function() {
-      return page.start();
-    });
-  }, 100);
+  if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
+    $scope.$watch("event.turn", scrollTo);
+    $scope.$watch("event.is_news", scrollTo);
+    $scope.$watch("mode.value", scrollTo);
+  }
+  $scope.$watch("page.value", scrollTo);
+  $scope.$watch("search.value", scrollTo);
+  $scope.$watch("msg_style.value", scrollTo);
   $scope.$watch('mode.value', form_show);
   $scope.$watch('event.is_news', form_show);
-  return $scope.$watch('event.is_news', $scope.deploy_mode_common);
+  $scope.$watch('event.is_news', $scope.deploy_mode_common);
+  return page.start();
 };
 var FORM;
 
@@ -2960,7 +2940,7 @@ PageNavi = (function(_super) {
   __extends(PageNavi, _super);
 
   function PageNavi($scope, key, def) {
-    var _base;
+    var do_filter_action, do_pager_action, _base;
     def.options.current_type = Number;
     (_base = def.options).per || (_base.per = 1);
     PageNavi.__super__.constructor.apply(this, arguments);
@@ -2969,26 +2949,38 @@ PageNavi = (function(_super) {
     };
     this.filters = [];
     this.pagers = [];
-    this.filter_action = (function(_this) {
+    do_filter_action = (function(_this) {
       return function() {
-        if (_this.by_key != null) {
-          _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
-        }
-        return _this.pager_action();
-      };
-    })(this);
-    this.pager_action = (function(_this) {
-      return function() {
-        var list;
-        if (_this.list_by_filter != null) {
-          list = _this.do_filters(_this.list_by_filter, _this.pagers);
-          if ((_this.to_key != null) && list) {
-            eval("_this.scope." + _this.to_key + " = list");
+        return $scope.$apply(function() {
+          if (_this.by_key != null) {
+            _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
           }
-        }
-        return _this._move();
+          return _this.pager_action();
+        });
       };
     })(this);
+    this.filter_action = _.debounce(do_filter_action, DELAY.presto, {
+      leading: false,
+      trailing: true
+    });
+    do_pager_action = (function(_this) {
+      return function() {
+        return $scope.$apply(function() {
+          var list;
+          if (_this.list_by_filter != null) {
+            list = _this.do_filters(_this.list_by_filter, _this.pagers);
+            if ((_this.to_key != null) && list) {
+              eval("_this.scope." + _this.to_key + " = list");
+            }
+          }
+          return _this._move();
+        });
+      };
+    })(this);
+    this.pager_action = _.debounce(do_pager_action, DELAY.presto, {
+      leading: false,
+      trailing: true
+    });
   }
 
   PageNavi.prototype.start = function() {
@@ -3132,10 +3124,7 @@ PageNavi.push = function($scope, key, def) {
 var POOL;
 
 POOL = function($scope, $filter, $timeout) {
-  var adjust, ajax_timer, apply, message_first, message_timer, pool_button, pool_start, refresh;
-  message_timer = 60 * 1000;
-  message_first = 25 * 1000;
-  ajax_timer = 5 * 60 * 1000;
+  var adjust, apply, pool_button, pool_start, refresh;
   apply = function() {};
   $scope.init = function() {
     INIT($scope, $filter, $timeout);
@@ -3143,14 +3132,14 @@ POOL = function($scope, $filter, $timeout) {
       $scope.do_sort_potofs();
       $scope.set_turn($scope.event.turn);
     }
-    return $timeout(apply, message_first);
+    return $timeout(apply, DELAY.msg_delete);
   };
   refresh = function() {
-    return $timeout(refresh, message_timer);
+    return $timeout(refresh, DELAY.msg_minute);
   };
   pool_start = function() {
-    $timeout(apply, message_first);
-    return $timeout(refresh, message_timer);
+    $timeout(apply, DELAY.msg_delete);
+    return $timeout(refresh, DELAY.msg_minute);
   };
   pool_button = function() {
     return $scope.get_news($scope.event, (function(_this) {
@@ -3160,7 +3149,7 @@ POOL = function($scope, $filter, $timeout) {
     })(this));
   };
   $scope.pool_nolimit = pool_button;
-  $scope.pool_hand = _.debounce(pool_button, message_first, {
+  $scope.pool_hand = _.debounce(pool_button, DELAY.msg_delete, {
     leading: true,
     trailing: false
   });
@@ -3170,9 +3159,8 @@ POOL = function($scope, $filter, $timeout) {
   };
   $scope.adjust = function() {
     adjust();
-    _.delay(adjust, 80);
-    _.delay(adjust, 400);
-    return _.delay(adjust, 2000);
+    _.delay(adjust, DELAY.presto);
+    return _.delay(adjust, DELAY.andante);
   };
   $scope.init();
   return pool_start();
@@ -3439,7 +3427,7 @@ TOKEN_INPUT = function($scope) {
       return tokenInputInit('#eventcard', SOW.events, $scope.story.card.event);
     }
   };
-  return _.delay(doIt, 1000);
+  return _.delay(doIt, DELAY.andante);
 };
 var MODULE, font, fontname, game, k, msg, o, order, ordername, pixels, pl, plname, power, powername, row, rowname, set_key, style, styles, v, width, widthname, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
 
@@ -3728,7 +3716,7 @@ CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
       }
     });
   };
-  $scope.submit = _.throttle(submit, 5000);
+  $scope.submit = _.throttle(submit, DELAY.lento);
   $scope.logined = function() {
     return win.cookies.uid && win.cookies.pwd;
   };
