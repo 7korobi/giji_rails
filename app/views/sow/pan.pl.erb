@@ -298,15 +298,20 @@ sub GetConfig {
 	);
 
 <%	if @is_angular	%>
+	my @file_css = (
+		'assets-<%= @is_angular %>/application.css',
+	);
 	my @file_js = (
-		'../assets/data.js',
-		'../assets/base.js',
-		'../assets/sow.js',
+		'assets-<%= @is_angular %>/data.js',
+		'assets-<%= @is_angular %>/base.js',
+		'assets-<%= @is_angular %>/sow.js',
+		'assets-<%= @is_angular %>/boot.js',
 	);
 	my @file_js_vil = (
-		'../assets/data.js',
-		'../assets/base.js',
-		'../assets/sow.js',
+		'assets-<%= @is_angular %>/data.js',
+		'assets-<%= @is_angular %>/base.js',
+		'assets-<%= @is_angular %>/sow.js',
+		'assets-<%= @is_angular %>/boot.js',
 	);
 <%	else	%>
 	my @file_js = (
@@ -475,6 +480,7 @@ sub GetConfig {
 		FILE_MEMOINDEX => "memoidx.cgi",
 		FILE_SCORE     => "score.cgi",
 
+		FILE_CSS       => \@file_css,
 		FILE_JS        => \@file_js,
 		FILE_JS_VIL    => \@file_js_vil,
 		FILE_FAVICON   => "favicon.ico",
