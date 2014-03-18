@@ -181,7 +181,7 @@ FILTER = ($scope, $filter, $timeout)->
         (o)-> + o.updated_at
     _.sortBy list, order
 
-  scrollToDo = (newVal, oldVal, three)->
+  scrollTo = (newVal, oldVal, three)->
     $scope.anchors = []
 
     if $scope.event?
@@ -192,17 +192,6 @@ FILTER = ($scope, $filter, $timeout)->
               return
     $scope.go.messages()
 
-  scrollTo = _.debounce scrollToDo, DELAY.presto,
-    leading: false
-    trailing: true
-
-  form_show = ->
-    $scope.anchors = []
-    if $scope.modes?.form?
-      $scope.form_show = {}
-      for key in $scope.modes.form
-        $scope.form_show[key] = true
-
   if $scope.event?.messages?
     $scope.$watch "event.turn",    scrollTo
     $scope.$watch "event.is_news", scrollTo
@@ -211,8 +200,6 @@ FILTER = ($scope, $filter, $timeout)->
   $scope.$watch "search.value",    scrollTo
   $scope.$watch "msg_style.value", scrollTo
 
-  $scope.$watch 'mode.value',    form_show
-  $scope.$watch 'event.is_news', form_show
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
 
   page.start()

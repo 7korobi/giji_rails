@@ -173,12 +173,22 @@ angular.module("giji").directive("theme", function($compile) {
           select: GIJI.modes
         });
         modes_apply = function() {
-          console.log(["modes_apply"]);
-          return $scope.modes = $scope.mode.choice();
+          var _i, _len, _ref2, _ref3, _results;
+          $scope.modes = $scope.mode.choice();
+          $scope.anchors = [];
+          if (((_ref2 = $scope.modes) != null ? _ref2.form : void 0) != null) {
+            $scope.form_show = {};
+            _ref3 = $scope.modes.form;
+            _results = [];
+            for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+              key = _ref3[_i];
+              _results.push($scope.form_show[key] = true);
+            }
+            return _results;
+          }
         };
         modes_change = function() {
           var info_at, mode;
-          console.log(["modes_change"]);
           info_at = $scope.info_at;
           if (info_at != null) {
             if ("info" === $scope.modes.face && "all" === $scope.modes.view) {
@@ -1753,7 +1763,7 @@ angular.module("giji").run(function() {
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var filter, filter_filter, filters, form_show, key, keys, mode_params, navigator, page, scrollTo, scrollToDo, _i, _j, _len, _len1, _ref, _ref1;
+  var filter, filter_filter, filters, key, keys, mode_params, navigator, page, scrollTo, _i, _j, _len, _len1, _ref, _ref1;
   PageNavi.push($scope, 'page', OPTION.page.page);
   page = $scope.page;
   filter_filter = $filter('filter');
@@ -2036,7 +2046,7 @@ FILTER = function($scope, $filter, $timeout) {
     };
     return _.sortBy(list, order);
   });
-  scrollToDo = function(newVal, oldVal, three) {
+  scrollTo = function(newVal, oldVal, three) {
     var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
     $scope.anchors = [];
     if ($scope.event != null) {
@@ -2056,24 +2066,6 @@ FILTER = function($scope, $filter, $timeout) {
     }
     return $scope.go.messages();
   };
-  scrollTo = _.debounce(scrollToDo, DELAY.presto, {
-    leading: false,
-    trailing: true
-  });
-  form_show = function() {
-    var _k, _len2, _ref1, _ref2, _results;
-    $scope.anchors = [];
-    if (((_ref1 = $scope.modes) != null ? _ref1.form : void 0) != null) {
-      $scope.form_show = {};
-      _ref2 = $scope.modes.form;
-      _results = [];
-      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-        key = _ref2[_k];
-        _results.push($scope.form_show[key] = true);
-      }
-      return _results;
-    }
-  };
   if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
     $scope.$watch("event.turn", scrollTo);
     $scope.$watch("event.is_news", scrollTo);
@@ -2082,8 +2074,6 @@ FILTER = function($scope, $filter, $timeout) {
   $scope.$watch("page.value", scrollTo);
   $scope.$watch("search.value", scrollTo);
   $scope.$watch("msg_style.value", scrollTo);
-  $scope.$watch('mode.value', form_show);
-  $scope.$watch('event.is_news', form_show);
   $scope.$watch('event.is_news', $scope.deploy_mode_common);
   return page.start();
 };
@@ -2449,7 +2439,7 @@ var GO;
 GO = function($scope) {
   var go_anker;
   go_anker = function(anker, cb) {
-    return _.throttle(function() {
+    return _.debounce(function() {
       var offset, target, targetY;
       target = $($(anker)[0]);
       offset = win.height / 10;
@@ -2461,7 +2451,10 @@ GO = function($scope) {
           return typeof cb === "function" ? cb(target) : void 0;
         });
       }
-    }, 300);
+    }, DELAY.animato, {
+      leading: false,
+      trailing: true
+    });
   };
   return $scope.go = {
     messages: go_anker(".css_changer"),

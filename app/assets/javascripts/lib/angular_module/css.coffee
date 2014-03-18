@@ -88,11 +88,15 @@ angular.module("giji").directive "theme", ($compile)->
         select: GIJI.modes
 
       modes_apply = ->
-        console.log ["modes_apply"]
         $scope.modes = $scope.mode.choice()
+        $scope.anchors = []
+
+        if $scope.modes.form?
+          $scope.form_show = {}
+          for key in $scope.modes.form
+            $scope.form_show[key] = true
 
       modes_change = ->
-        console.log ["modes_change"]
         info_at = $scope.info_at
         if info_at?
           if "info" == $scope.modes.face && "all" == $scope.modes.view
@@ -128,6 +132,7 @@ angular.module("giji").directive "theme", ($compile)->
         $scope.mode_cache[$scope.modes.face] = $scope.mode.value
         $scope.deploy_mode_common()
       modes_apply()
+
 
     if $scope.modes?
       $scope.$watch 'mode.value',   modes_apply
