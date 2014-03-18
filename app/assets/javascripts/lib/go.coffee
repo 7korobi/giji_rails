@@ -1,6 +1,6 @@
 GO = ($scope)->
   go_anker = (anker, cb)->
-    _.throttle ->
+    _.debounce ->
       target = $($(anker)[0])
       offset = win.height / 10
 
@@ -10,7 +10,9 @@ GO = ($scope)->
           scrollTop: targetY
         , 200, "linear", ->
           cb?(target)
-    , 300
+    , DELAY.animato,
+      leading: false
+      trailing: true
 
   $scope.go =
     messages:  go_anker ".css_changer"
