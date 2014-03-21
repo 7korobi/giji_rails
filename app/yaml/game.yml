@@ -396,7 +396,7 @@ PAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/pan/config.pl
-    is_angular: true
+    is_angular: cleanup
 
 MORPHE:
   server: morphe.sakura.ne.jp
@@ -409,7 +409,7 @@ MORPHE:
   vid_code: M
   config:
     <<: *config_game
-    saycnt: 
+    saycnt:
       - tiny
       - weak
       - juna
@@ -468,7 +468,7 @@ SOYBEAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/soy-bean/config.pl
-    is_angular: true
+    is_angular: angular
 
 CIEL:
   server: ciel.moo.jp
@@ -502,7 +502,7 @@ CIEL:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/ciel/config.pl
-    is_angular: true
+    is_angular: angular
 
 PERJURY:
   server: perjury.rulez.jp
@@ -531,7 +531,7 @@ PERJURY:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
-    is_angular: true
+    is_angular: angular
 
 XEBEC:
   server: xebec.x0.to
@@ -611,7 +611,7 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-    is_angular: true
+    is_angular: angular
 
 ALLSTAR:
   server: jinro.jksy.org
@@ -686,7 +686,7 @@ LOBBY:
       DIR_VIL:  ./data/vil
       DIR_USER: ../data/user
     pl:  /www/giji_log/lobby/config.pl
-    is_angular: true
+    is_angular: cleanup
 
 OFFPARTY:
   server: party.ps.land.to

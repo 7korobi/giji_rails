@@ -7,8 +7,9 @@ class Config < Thor
     require 'fileutils'
     require 'yaml'
     require 'erubis'
-    require './lib/const'
-    require './lib/rsync'
+    require './config/environment'
+#    require '/www/giji_rails/lib/const'
+#    require '/www/giji_rails/lib/rsync'
 
     ConfigCreate.new.activate{|files| true }
   end
@@ -19,8 +20,9 @@ class Config < Thor
     require 'fileutils'
     require 'yaml'
     require 'erubis'
-    require './lib/const'
-    require './lib/rsync'
+    require './config/environment'
+#    require '/www/giji_rails/lib/const'
+#    require '/www/giji_rails/lib/rsync'
 
     ConfigCreate.new.activate do |files|
       files && ! files['skip'] && files['lapp'] && files['lapp'][/testbed$/]
@@ -431,6 +433,8 @@ _PERL_
 
         result[folder] = to_s
 
+        `mkdir -p #{rhtml_config_out}`
+        `rmdir    #{rhtml_config_out}`
         File.open(rhtml_config_out ,'w:sjis:utf-8'){|f| f.write( result[folder] ) }
         FileUtils.chmod( 0666, rhtml_config_out )
       end

@@ -3,7 +3,20 @@ angular.module("giji", ['ngTouch','ngCookies','ngAnimate'])
   $locationProvider.html5Mode true
   $sceProvider.enabled false
 
-.run ($templateCache, $compile)->
+.run ($templateCache, $compile, $interpolate)->
+
+  GIJI.compile = (name)->
+    template = JST[name]
+    $compile(template)
+
+  GIJI.interpolate = (name)->
+    template = JST[name]
+    $interpolate(template)
+
+  GIJI.template = ($scope, elm, name)->
+    compiled = GIJI.compile(name)($scope)
+    elm.append compiled
+
   for templateUrl, text of JST
     $templateCache.put templateUrl, text
   return
