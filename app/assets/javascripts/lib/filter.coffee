@@ -118,7 +118,7 @@ FILTER = ($scope, $filter, $timeout)->
 
       if $scope.modes.last
         result = []
-        groups = _.groupBy list, (o)-> "#{o.mestype}-#{$scope.potof_key(o)}"
+        groups = _.groupBy list, (o)-> "#{o.mestype}-#{Potof.key(o)}"
         for key, sublist of groups
           result.push _.last sublist
         result
@@ -137,7 +137,7 @@ FILTER = ($scope, $filter, $timeout)->
         hide_faces = hide_faces.concat $scope.face.others
       faces = _.difference $scope.face.all, hide_faces
       _.filter list, (o)->
-        _.some faces, (face)-> face == $scope.potof_key(o)
+        _.some faces, (face)-> face == Potof.key(o)
 
   page.filter 'search.value', (search, list)->
     $scope.search_input = search
