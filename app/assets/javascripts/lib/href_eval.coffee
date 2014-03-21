@@ -15,7 +15,7 @@ HREF_EVAL = ($scope)->
         queid: queid
         turn: $scope.event.turn
         vid:  $scope.story.vid
-    , 25000, 
+    , 25000,
       leading: true
       trailing: false
 
@@ -31,7 +31,7 @@ HREF_EVAL = ($scope)->
       log.logid == id
     idx = $scope.anchors.indexOf item
     if idx < 0
-      item = 
+      item =
         template:"message/external"
         mestype: "XSAY"
         turn: -1
@@ -84,7 +84,7 @@ HREF_EVAL = ($scope)->
         $scope.get_all event, ->
           if  turn == gon.event.turn
             is_news = $scope.event.is_news
-            $scope.merge $scope, gon, "events"  
+            $scope.merge $scope, gon, "events"
             $scope.event.is_news = is_news
           seek()
 
@@ -95,7 +95,7 @@ HREF_EVAL = ($scope)->
             popup_find turn - 1
 
   href_eval = (e)->
-    href_eval_event = e 
+    href_eval_event = e
     $scope.$apply ->
       $scope.pageY = e.pageY
       eval $(e.target).attr('href_eval')
