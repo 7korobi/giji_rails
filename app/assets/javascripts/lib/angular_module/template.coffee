@@ -1,13 +1,8 @@
-GIJI.template = ($compile, $scope, elm, name)->
-  template = JST[name]
-  compiled = $compile(template)($scope)
-  elm.append compiled
-
 angular.module("giji").directive "template", ($interpolate, $compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     name = attr.template
-    GIJI.template $compile, $scope, elm, name
+    GIJI.template $scope, elm, name
 
 
 angular.module("giji").directive "listup", ($compile)->
@@ -26,8 +21,7 @@ angular.module("giji").directive "form", ($compile, $http)->
   link: ($scope, elm, attr, ctrl)->
     elm.addClass('ng-binding').data('$binding', attr.form);
     $scope.$watch attr.form, (value)->
-      template = JST["form/#{value}"]
-      compiled = $compile(template)($scope)
+      compiled = GIJI.compile("form/#{value}")($scope)
       elm.html  compiled
 
 
@@ -38,6 +32,6 @@ angular.module("giji").directive "diary", ($compile)->
     form_text.ver = new Diary(form_text)
     form_text.ver.versions()
     form_text.ver.commit() if form_text.text
-    GIJI.template $compile, $scope, elm, "form/version"
+    GIJI.template $scope, elm, "form/version"
 
 
