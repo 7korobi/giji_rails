@@ -238,7 +238,290 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
     }
   };
 });
-angular.module("giji").directive("log", function($compile, $sce) {
+var filters_common, filters_if_event;
+
+filters_common = function($scope) {
+  var has_messages, page, _ref;
+  has_messages = false;
+  has_messages || (has_messages = ((_ref = $scope.event) != null ? _ref.messages : void 0) != null);
+  has_messages || (has_messages = $scope.messages_raw != null);
+  has_messages || (has_messages = $scope.stories != null);
+  if (has_messages) {
+    PageNavi.push($scope, 'page', OPTION.page.page);
+    return page = $scope.page;
+  }
+};
+
+filters_if_event = function($scope, $filter) {};
+
+angular.module("giji").directive("stories", function($parse, $compile) {
+  var initialize;
+  initialize = function($scope) {
+    var filter, filters, key, keys, navigator, _i, _j, _len, _len1;
+    filters_common($scope);
+    page.filter_by('stories');
+    page.filter_to('stories_find');
+    filters = [
+      {
+        target: "rating",
+        key: (function(o) {
+          return o.rating;
+        }),
+        text: (function(key) {
+          var _ref;
+          return (_ref = OPTION.rating[key]) != null ? _ref.caption : void 0;
+        })
+      }, {
+        target: "roletable",
+        key: (function(o) {
+          return o.type.roletable;
+        }),
+        text: (function(key) {
+          return SOW.roletable[key];
+        })
+      }, {
+        target: "game_rule",
+        key: (function(o) {
+          return o.type.game;
+        }),
+        text: (function(key) {
+          var _ref;
+          return (_ref = SOW.game_rule[key]) != null ? _ref.CAPTION : void 0;
+        })
+      }, {
+        target: "potof_size",
+        key: (function(o) {
+          return String(_.last(o.vpl));
+        }),
+        text: (function(key) {
+          return key + "人";
+        })
+      }, {
+        target: "card_event",
+        key: (function(o) {
+          return o.card.event_names || "(なし)";
+        }),
+        text: String
+      }, {
+        target: "card_win",
+        key: (function(o) {
+          return o.card.win_names || "(なし)";
+        }),
+        text: String
+      }, {
+        target: "card_role",
+        key: (function(o) {
+          return o.card.role_names || "(なし)";
+        }),
+        text: String
+      }, {
+        target: "upd_time",
+        key: (function(o) {
+          return o.upd.time_text;
+        }),
+        text: String
+      }, {
+        target: "upd_interval",
+        key: (function(o) {
+          return o.upd.interval_text;
+        }),
+        text: String
+      }
+    ];
+    for (_i = 0, _len = filters.length; _i < _len; _i++) {
+      filter = filters[_i];
+      keys = _.chain($scope.stories).map(filter.key).uniq().sort().value();
+      navigator = {
+        options: OPTION.page[filter.target].options,
+        button: {
+          ALL: "- すべて -"
+        }
+      };
+      if (keys.length > 1) {
+        for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
+          key = keys[_j];
+          navigator.button[key] = filter.text(key);
+        }
+      }
+      Navi.push($scope, filter.target, navigator);
+      page.filter("" + filter.target + ".value", function(key, list) {
+        if ('ALL' === $scope[filter.target].value) {
+          return list;
+        } else {
+          return _.filter(list, function(o) {
+            return filter.key(o) === $scope[filter.target].value;
+          });
+        }
+      });
+    }
+    Navi.push($scope, 'folder', OPTION.page.folder);
+    return page.filter('folder.value', function(key, list) {
+      if ('ALL' === $scope.folder.value) {
+        return list;
+      } else {
+        return _.filter(list, function(o) {
+          return o.folder === $scope.folder.value;
+        });
+      }
+    });
+  };
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      initialize($scope);
+      initialize = function() {};
+      return $scope.$watchCollection(attr.stories, function(oldVal, stories) {
+        var angular_elm, log, template, _i, _j, _len, _len1, _ref, _results;
+        elm.html("");
+        if (!stories) {
+          return;
+        }
+        for (_i = 0, _len = logs.length; _i < _len; _i++) {
+          log = logs[_i];
+          template = HOGAN["hogan/" + log.template];
+          if (!template) {
+            console.log("can't show log!");
+            console.log(log);
+            continue;
+          }
+          data.message = log;
+          elm.append(template.render(data));
+        }
+        _ref = elm.find("[template]");
+        _results = [];
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          angular_elm = _ref[_j];
+          _results.push($compile(angular_elm)($scope));
+        }
+        return _results;
+      });
+    }
+  };
+});
+
+angular.module("giji").directive("logs", function($parse, $compile) {
+  var initialize;
+  initialize = function($scope) {
+    var modes_apply, modes_change;
+    Navi.push($scope, 'search', {
+      options: {
+        current: "",
+        location: 'hash',
+        is_cookie: false
+      }
+    });
+    Navi.push($scope, 'mode', {
+      options: {
+        current: $scope.mode_cache.talk,
+        location: 'hash',
+        is_cookie: false
+      },
+      select: GIJI.modes
+    });
+    modes_apply = function() {
+      var key, _i, _len, _ref, _results;
+      $scope.modes = $scope.mode.choice();
+      $scope.anchors = [];
+      if ($scope.modes.form != null) {
+        $scope.form_show = {};
+        _ref = $scope.modes.form;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          key = _ref[_i];
+          _results.push($scope.form_show[key] = true);
+        }
+        return _results;
+      }
+    };
+    modes_change = function() {
+      var info_at, mode;
+      info_at = $scope.info_at;
+      if (info_at != null) {
+        if ("info" === $scope.modes.face && "all" === $scope.modes.view) {
+          if (!info_at.value) {
+            info_at.value = Number(new Date);
+          }
+        } else {
+          info_at.value = "";
+        }
+      }
+      switch ($scope.modes.face) {
+        case "info":
+          if ("all" === $scope.modes.view) {
+            $scope.modes.last = false;
+          } else {
+            $scope.modes.view = "open";
+            $scope.modes.last = true;
+          }
+          break;
+        case "memo":
+          $scope.modes.open = true;
+          if ("all" !== $scope.modes.view) {
+            $scope.modes.view = "open";
+          }
+      }
+      if ("open" === $scope.modes.view) {
+        $scope.modes.open = true;
+      }
+      mode = _.compact(_.uniq([$scope.modes.face, $scope.modes.view, $scope.modes.open ? 'open' : void 0, $scope.modes.last ? 'last' : void 0]));
+      $scope.mode.value = mode.join("_");
+      $scope.mode_select = _.filter($scope.mode.select, function(o) {
+        return o.face === $scope.modes.face;
+      });
+      $scope.mode_cache[$scope.modes.face] = $scope.mode.value;
+      return $scope.deploy_mode_common();
+    };
+    modes_apply();
+    if ($scope.modes != null) {
+      $scope.$watch('mode.value', modes_apply);
+      $scope.$watch('modes.open', modes_change);
+      $scope.$watch('modes.face', modes_change);
+      $scope.$watch('modes.view', modes_change);
+      return $scope.$watch('modes.last', modes_change);
+    }
+  };
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      initialize($scope);
+      initialize = function() {};
+      return $scope.$watchCollection(attr.logs, function(oldVal, logs) {
+        var angular_elm, data, log, now, template, _i, _j, _len, _len1, _ref, _results;
+        elm.html("");
+        if (!logs) {
+          return;
+        }
+        now = new Date;
+        data = {
+          story: $scope.story,
+          event: $scope.event
+        };
+        for (_i = 0, _len = logs.length; _i < _len; _i++) {
+          log = logs[_i];
+          log.__proto__ = Message.prototype;
+          log.init_view($scope, now);
+          template = HOGAN["hogan/" + log.template];
+          if (!template) {
+            console.log("can't show log!");
+            console.log(log);
+            continue;
+          }
+          data.message = log;
+          elm.append(template.render(data));
+        }
+        _ref = elm.find("[template]");
+        _results = [];
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          angular_elm = _ref[_j];
+          _results.push($compile(angular_elm)($scope));
+        }
+        return _results;
+      });
+    }
+  };
+});
+
+angular.module("giji").directive("log", function($parse, $compile, $sce) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
@@ -260,6 +543,36 @@ angular.module("giji").directive("drag", function() {
           "z-index": log.z,
           "top": log.top
         });
+      });
+    }
+  };
+});
+angular.module("giji").directive("potofs", function($parse, $compile) {
+  return {
+    restrict: "A",
+    link: function($scope, elm, attr, ctrl) {
+      return $scope.$watchCollection(attr.potofs, function(oldVal, potofs) {
+        var angular_elm, data, potof, _i, _j, _len, _len1, _ref, _results;
+        elm.html("");
+        if (!logs) {
+          return;
+        }
+        data = {
+          story: $scope.story,
+          event: $scope.event
+        };
+        for (_i = 0, _len = potofs.length; _i < _len; _i++) {
+          potof = potofs[_i];
+          data.potof = potof;
+          elm.append(HOGAN["hogan/potof/cell-" + attr.cell].render(data));
+        }
+        _ref = elm.find("[ng-if]");
+        _results = [];
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          angular_elm = _ref[_j];
+          _results.push($compile(angular_elm)($scope));
+        }
+        return _results;
       });
     }
   };
@@ -329,7 +642,7 @@ angular.module("giji").directive("theme", function($compile) {
     link: function($scope, elm, attr, ctrl) {
       var construct;
       construct = _.once(function() {
-        var css_apply, css_change, html_class, key, modes_apply, modes_change, msg_apply, msg_change, redesign_in_time, val, _ref, _ref1;
+        var css_apply, css_change, html_class, key, msg_apply, msg_change, redesign_in_time, val, _ref;
         $scope.selectors = OPTION.selectors;
         $scope.selector_keys = {};
         _ref = OPTION.selectors;
@@ -391,84 +704,6 @@ angular.module("giji").directive("theme", function($compile) {
           return $scope.msg_style.value = msg.join("_");
         };
         msg_apply();
-        if (((_ref1 = $scope.event) != null ? _ref1.messages : void 0) != null) {
-          Navi.push($scope, 'search', {
-            options: {
-              current: "",
-              location: 'hash',
-              is_cookie: false
-            }
-          });
-          Navi.push($scope, 'mode', {
-            options: {
-              current: $scope.mode_cache.talk,
-              location: 'hash',
-              is_cookie: false
-            },
-            select: GIJI.modes
-          });
-          modes_apply = function() {
-            var _i, _len, _ref2, _results;
-            $scope.modes = $scope.mode.choice();
-            $scope.anchors = [];
-            if ($scope.modes.form != null) {
-              $scope.form_show = {};
-              _ref2 = $scope.modes.form;
-              _results = [];
-              for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-                key = _ref2[_i];
-                _results.push($scope.form_show[key] = true);
-              }
-              return _results;
-            }
-          };
-          modes_change = function() {
-            var info_at, mode;
-            info_at = $scope.info_at;
-            if (info_at != null) {
-              if ("info" === $scope.modes.face && "all" === $scope.modes.view) {
-                if (!info_at.value) {
-                  info_at.value = Number(new Date);
-                }
-              } else {
-                info_at.value = "";
-              }
-            }
-            switch ($scope.modes.face) {
-              case "info":
-                if ("all" === $scope.modes.view) {
-                  $scope.modes.last = false;
-                } else {
-                  $scope.modes.view = "open";
-                  $scope.modes.last = true;
-                }
-                break;
-              case "memo":
-                $scope.modes.open = true;
-                if ("all" !== $scope.modes.view) {
-                  $scope.modes.view = "open";
-                }
-            }
-            if ("open" === $scope.modes.view) {
-              $scope.modes.open = true;
-            }
-            mode = _.compact(_.uniq([$scope.modes.face, $scope.modes.view, $scope.modes.open ? 'open' : void 0, $scope.modes.last ? 'last' : void 0]));
-            $scope.mode.value = mode.join("_");
-            $scope.mode_select = _.filter($scope.mode.select, function(o) {
-              return o.face === $scope.modes.face;
-            });
-            $scope.mode_cache[$scope.modes.face] = $scope.mode.value;
-            return $scope.deploy_mode_common();
-          };
-          modes_apply();
-        }
-        if ($scope.modes != null) {
-          $scope.$watch('mode.value', modes_apply);
-          $scope.$watch('modes.open', modes_change);
-          $scope.$watch('modes.face', modes_change);
-          $scope.$watch('modes.view', modes_change);
-          $scope.$watch('modes.last', modes_change);
-        }
         $scope.$watch('css.value', css_apply);
         $scope.$watch('styles.theme', css_change);
         $scope.$watch('styles.width', css_change);
@@ -483,58 +718,71 @@ angular.module("giji").directive("theme", function($compile) {
     }
   };
 });
-var CARD;
+angular.module("giji").directive("title", function() {
+  return {
+    restrict: "E",
+    link: function($scope, elm, attr, ctrl) {
+      var fix_title, subtitle, title;
+      subtitle = function() {
+        var event_name, mode_face, _ref, _ref1;
+        mode_face = (_ref = $scope.modes) != null ? _ref.face : void 0;
+        event_name = (_ref1 = $scope.event) != null ? _ref1.name : void 0;
+        if ("info" === mode_face) {
+          return "情報";
+        } else {
+          return event_name || "";
+        }
+      };
+      title = function() {
+        var name, _ref, _ref1;
+        name = ((_ref = $scope.story) != null ? _ref.name : void 0) || "人狼議事";
+        if ((_ref1 = $scope.event) != null ? _ref1.unread_count : void 0) {
+          return "(" + $scope.event.unread_count + ") " + name;
+        } else {
+          return "" + (subtitle()) + " " + name;
+        }
+      };
+      fix_title = function() {
+        return elm.text(title($scope));
+      };
+      $scope.$watch('modes.face', fix_title);
+      $scope.$watch("story.name", fix_title);
+      $scope.$watch('event.turn', fix_title);
+      return $scope.$watch('event.unread_count', fix_title);
+    }
+  };
+});
+var Config;
 
-CARD = function($scope) {
-  $scope.name = {
-    folder: function(o) {
-      return o;
-    },
-    config: function(o) {
-      var _ref, _ref1, _ref2;
-      return ((_ref = SOW.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = SOW.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = SOW.events[o]) != null ? _ref2.name : void 0) || o || "";
-    },
-    group: function(o) {
-      var _ref;
-      return ((_ref = SOW.groups[o]) != null ? _ref.name : void 0) || "その他";
-    },
-    win: function(o) {
-      var _ref;
-      return ((_ref = SOW.wins[o]) != null ? _ref.name : void 0) || o || "";
-    }
-  };
-  $scope.countup_config = function(list) {
-    return $scope.countup($scope.name.config, list);
-  };
-  $scope.countup_win = function(list) {
-    return $scope.countup($scope.name.win, list);
-  };
-  $scope.countup = function(filter, list) {
-    var counts, group, key, val;
-    counts = [];
-    group = _.groupBy(list);
-    for (key in group) {
-      val = group[key];
-      counts.push([key, val.length]);
-    }
-    return _.sortBy(counts, function(_arg) {
-      var key, size;
-      key = _arg[0], size = _arg[1];
-      return size;
-    }).map(function(_arg) {
-      var key, size;
-      key = _arg[0], size = _arg[1];
-      if (1 < size) {
-        return "" + (filter(key)) + "x" + size;
-      } else {
-        return "" + (filter(key));
-      }
+Config = (function() {
+  function Config() {}
+
+  Config.prototype.init = function() {
+    var count_set, gifts, roles;
+    count_set = function(item) {
+      item.count = this.counts[item.key];
+      return item;
+    };
+    roles = _.groupBy(_.map(this.roles, function(o) {
+      return count_set(SOW.roles[o]);
+    }), function(o) {
+      return SOW.groups[o.group].name;
+    });
+    gifts = _.groupBy(_.map(this.gifts, function(o) {
+      return count_set(SOW.gifts[o]);
+    }), function(o) {
+      return "恩恵";
+    });
+    this.items = _.assign({}, roles, gifts);
+    this.items_keys = _.keys(this.items);
+    return this.items.events = this.events.map(function(o) {
+      return SOW.events[o];
     });
   };
-  return $scope.remove_card = function(at, idx) {
-    return $scope.story.card[at].splice(idx, 1);
-  };
-};
+
+  return Config;
+
+})();
 var Diary, DiaryHistory;
 
 DiaryHistory = (function() {
@@ -645,6 +893,14 @@ Diary.base.commit = function(diary) {
   Diary.history.push(item);
   return Diary.base.version = Diary.history.length + 1;
 };
+var Event;
+
+Event = (function() {
+  function Event() {}
+
+  return Event;
+
+})();
 var FixedBox;
 
 FixedBox = (function() {
@@ -777,6 +1033,57 @@ Form = (function() {
   return Form;
 
 })();
+var Lib;
+
+Lib = {
+  name: {
+    folder: function(o) {
+      return o;
+    },
+    config: function(o) {
+      var _ref, _ref1, _ref2;
+      return ((_ref = SOW.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = SOW.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = SOW.events[o]) != null ? _ref2.name : void 0) || o || "";
+    },
+    group: function(o) {
+      var _ref;
+      return ((_ref = SOW.groups[o]) != null ? _ref.name : void 0) || "その他";
+    },
+    win: function(o) {
+      var _ref;
+      return ((_ref = SOW.wins[o]) != null ? _ref.name : void 0) || o || "";
+    }
+  },
+  countup: {
+    common: function(filter, list) {
+      var counts, group, key, val;
+      counts = [];
+      group = _.groupBy(list);
+      for (key in group) {
+        val = group[key];
+        counts.push([key, val.length]);
+      }
+      return _.sortBy(counts, function(_arg) {
+        var key, size;
+        key = _arg[0], size = _arg[1];
+        return size;
+      }).map(function(_arg) {
+        var key, size;
+        key = _arg[0], size = _arg[1];
+        if (1 < size) {
+          return "" + (filter(key)) + "x" + size;
+        } else {
+          return "" + (filter(key));
+        }
+      });
+    },
+    config: function(list) {
+      return this.common(Lib.name.config, list);
+    },
+    win: function(list) {
+      return this.common(Lib.name.win, list);
+    }
+  }
+};
 var Message;
 
 Message = (function() {
@@ -798,25 +1105,45 @@ Message = (function() {
     return wo.location.href = "" + base + url.hash;
   };
 
-  Message.prototype.cancel_btn = function() {
-    if ((this.logid != null) && "q" === this.logid[0] && ((new Date() - this.updated_at) < 25 * 1000)) {
-      return "なら削除できます。<a href_eval='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a>";
-    } else {
-      return "";
+  Message.prototype.add_diary = function() {
+    return $scope.diary.add.anchor(this);
+  };
+
+  Message.prototype.init_data = function(new_base) {
+    var key;
+    this.turn = new_base.turn;
+    if (this.logid != null) {
+      this.key = "" + this.logid + "," + this.turn;
+    }
+    if (this.date != null) {
+      this.updated_at = this.date;
+      delete this.date;
+    }
+    this.updated_at = Date.create(this.updated_at);
+    switch (this.subid) {
+      case "B":
+        return this.mestype = "TSAY";
+      case "M":
+        key = "" + this.mestype + ":" + this.csid + "/" + this.face_id;
+        if ((!new_base.last_memo[key]) || new_base.last_memo[key].updated_at < this.updated_at) {
+          return new_base.last_memo[key] = {
+            log: this.log,
+            updated_at: this.updated_at
+          };
+        }
     }
   };
 
-  Message.prototype.init_view = function($scope) {
+  Message.prototype.init_view = function($scope, now) {
     var anchor_ok, mark, match_data, num, style, table, target, template, _, _i, _len, _ref, _ref1;
-    this.add_diary = function() {
-      return $scope.diary.add.anchor(this);
-    };
-    this.time = function() {
-      return $scope.lax_time(this.updated_at);
-    };
+    if (this.updated_at) {
+      this.cancel_btn = (this.logid != null) && "q" === this.logid[0] && ((now - this.updated_at) < 25 * 1000) ? "なら削除できます。<a href_eval='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a>" : "";
+      this.timestamp = this.updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja');
+      this.time = $scope.lax_time(this.updated_at);
+    }
     if ((this.template == null) && (this.logid != null) && (this.mestype != null) && (this.subid != null)) {
       template = null;
-      _ref = GIJI.message.template;
+      _ref = MESSAGE.template;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         style = _ref[_i];
         for (target in style) {
@@ -1008,12 +1335,12 @@ Potof = (function() {
 
   Potof.prototype.init_role = function() {
     if (this.role != null) {
-      this.role_names = this.role.map(this.scope.name.config);
+      this.role_names = this.role.map(Lib.name.config);
     } else {
       this.role_names = [];
     }
     if (this.select != null) {
-      return this.select_name = this.scope.name.config(this.select);
+      return this.select_name = Lib.name.config(this.select);
     }
   };
 
@@ -1087,6 +1414,84 @@ Potof.key = function(o) {
   face_id = o.face_id || '*';
   return "" + csid + "-" + face_id;
 };
+var Story, StorySummary,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+StorySummary = (function() {
+  function StorySummary() {}
+
+  StorySummary.prototype.init = function($scope) {
+    var event_config, role_config, role_wins, win_config, _base, _ref;
+    this.rating_url = "" + URL.file + "/images/icon/cd_" + this.rating + ".png";
+    event_config = _.filter(this.card.config, function(o) {
+      return SOW.events[o];
+    });
+    role_config = _.filter(this.card.config, function(o) {
+      return !SOW.events[o] && !SOW.specials[o];
+    });
+    role_wins = _.map(role_config, function(o) {
+      var _ref, _ref1;
+      return ((_ref = SOW.gifts[o]) != null ? _ref.win : void 0) || ((_ref1 = SOW.roles[o]) != null ? _ref1.win : void 0) || null;
+    });
+    win_config = _.filter(role_wins, function(o) {
+      return o;
+    });
+    this.card.discard_names = Lib.countup.config(this.card.discard).join('、');
+    this.card.config_names = Lib.countup.config(this.card.config).join('、');
+    this.card.role_names = Lib.countup.config(role_config).join('、');
+    this.card.win_names = Lib.countup.win(win_config).join('、');
+    if (0 < event_config.length) {
+      this.card.event_names = Lib.countup.config(event_config).join('、');
+    } else {
+      this.card.event_names = Lib.countup.config(this.card.event).join('、');
+    }
+    if (this.upd != null) {
+      this.upd.time_text = "" + (this.upd.hour.pad(2)) + "時" + (this.upd.minute.pad(2)) + "分";
+      this.upd.interval_text = "" + (this.upd.interval * 24) + "時間";
+    }
+    if (this.announce != null) {
+      this.announce.rating = OPTION.rating[this.rating].caption;
+    }
+    if (this.type != null) {
+      (_base = this.type).game || (_base.game = 'TABULA');
+      this.type.roletable_text = SOW.roletable[this.type.roletable];
+      this.type.game_rule = SOW.game_rule[this.type.game];
+      this.type.vote_text = SOW.vote[this.type.vote];
+      this.type.mob_text = SOW.mob[this.type.mob];
+      this.type.saycnt = SOW.saycnt[this.type.say];
+      if (1 === ((_ref = this.type.saycnt) != null ? _ref.RECOVERY : void 0)) {
+        this.type.recovery = ' （発言の補充はありません。）';
+        if (1 < this.upd.interval) {
+          this.type.recovery = ' （発言の補充があります。）';
+        }
+      }
+      return this.is_wbbs = 'wbbs' === this.type.start;
+    }
+  };
+
+  return StorySummary;
+
+})();
+
+Story = (function(_super) {
+  __extends(Story, _super);
+
+  function Story() {
+    return Story.__super__.constructor.apply(this, arguments);
+  }
+
+  Story.prototype.init = function($scope) {
+    Story.__super__.init.apply(this, arguments);
+    this.option_helps = _.map(this.options, function(o) {
+      return SOW.options[o].help;
+    });
+    return this.comment = $scope.text_decolate(this.comment);
+  };
+
+  return Story;
+
+})(StorySummary);
 var CACHE;
 
 CACHE = function($scope) {
@@ -1131,21 +1536,11 @@ CACHE = function($scope) {
     return func(old_base, new_base, target);
   };
   merge = {
-    news: (function(_this) {
-      return function(old_base, new_base, target) {
-        var o, _i, _len, _ref;
-        _ref = new_base.news;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          o = _ref[_i];
-          o.is_news = Date.create('3days ago') < Date.create(o.date);
-        }
-        return merge_by.copy(old_base, new_base, target);
-      };
-    })(this),
     config: (function(_this) {
       return function(old_base, new_base, target) {
         merge_by.copy(old_base, new_base, target);
-        return $scope.deploy_config();
+        $scope.config.__proto__ = Config.prototype;
+        return $scope.config.init();
       };
     })(this),
     face: (function(_this) {
@@ -1433,7 +1828,7 @@ INIT_POTOFS = function($scope, gon) {
 };
 
 INIT = function($scope, $filter, $timeout) {
-  var has_messages, key, live_potofs, news, potof, potofs_hash, story, _i, _j, _len, _len1, _ref, _ref1, _ref2;
+  var key, live_potofs, news, potof, potofs_hash, story, _i, _j, _len, _len1, _ref, _ref1;
   if (typeof gon === "undefined" || gon === null) {
     return;
   }
@@ -1442,11 +1837,13 @@ INIT = function($scope, $filter, $timeout) {
     _ref = gon.stories;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       story = _ref[_i];
-      INIT_STORY($scope, story);
+      story.__proto__ = StorySummary.prototype;
+      story.init($scope);
     }
   }
   if (gon.story != null) {
-    INIT_STORY($scope, gon.story);
+    gon.story.__proto__ = Story.prototype;
+    gon.story.init($scope);
   }
   for (key in gon) {
     news = gon[key];
@@ -1492,14 +1889,7 @@ INIT = function($scope, $filter, $timeout) {
     if ($scope.page == null) {
       PageNavi.push($scope, 'page', OPTION.page.page_search);
     }
-    $scope.page.length = gon.pages.length;
-  }
-  has_messages = false;
-  has_messages || (has_messages = ((_ref2 = $scope.event) != null ? _ref2.messages : void 0) != null);
-  has_messages || (has_messages = $scope.messages_raw != null);
-  has_messages || (has_messages = $scope.stories != null);
-  if (has_messages && ($scope.page == null)) {
-    return FILTER($scope, $filter, $timeout);
+    return $scope.page.length = gon.pages.length;
   }
 };
 var INIT_FACE;
@@ -1526,7 +1916,7 @@ INIT_FACE = function(new_base) {
 var INIT_MESSAGES;
 
 INIT_MESSAGES = function(new_base) {
-  var key, message, _i, _len, _ref, _results;
+  var message, _i, _len, _ref, _results;
   if ((new_base != null ? new_base.messages : void 0) == null) {
     return;
   }
@@ -1536,86 +1926,11 @@ INIT_MESSAGES = function(new_base) {
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       message = _ref[_i];
-      message.turn = new_base.turn;
-      if (message.logid != null) {
-        message.key = "" + message.logid + "," + message.turn;
-      }
-      if (message.date != null) {
-        message.updated_at = message.date;
-        delete message.date;
-      }
-      message.updated_at = Date.create(message.updated_at);
-      if ("M" === message.subid) {
-        key = "" + message.mestype + ":" + message.csid + "/" + message.face_id;
-        if ((!new_base.last_memo[key]) || new_base.last_memo[key].updated_at < message.updated_at) {
-          _results.push(new_base.last_memo[key] = {
-            log: message.log,
-            updated_at: message.updated_at
-          });
-        } else {
-          _results.push(void 0);
-        }
-      } else {
-        _results.push(void 0);
-      }
+      message.__proto__ = Message.prototype;
+      _results.push(message.init_data(new_base));
     }
     return _results;
   }
-};
-var INIT_STORY;
-
-INIT_STORY = function($scope, story) {
-  var event_config, role_config, role_wins, win_config, _base, _ref;
-  event_config = _.filter(story.card.config, function(o) {
-    return SOW.events[o];
-  });
-  role_config = _.filter(story.card.config, function(o) {
-    return !SOW.events[o] && !SOW.specials[o];
-  });
-  role_wins = _.map(role_config, function(o) {
-    var _ref, _ref1;
-    return ((_ref = SOW.gifts[o]) != null ? _ref.win : void 0) || ((_ref1 = SOW.roles[o]) != null ? _ref1.win : void 0) || null;
-  });
-  win_config = _.filter(role_wins, function(o) {
-    return o;
-  });
-  story.card.discard_names = $scope.countup_config(story.card.discard).join('、');
-  story.card.config_names = $scope.countup_config(story.card.config).join('、');
-  story.card.role_names = $scope.countup_config(role_config).join('、');
-  story.card.win_names = $scope.countup_win(win_config).join('、');
-  if (0 < event_config.length) {
-    story.card.event_names = $scope.countup_config(event_config).join('、');
-  } else {
-    story.card.event_names = $scope.countup_config(story.card.event).join('、');
-  }
-  story.option_helps = _.map(story.options, function(o) {
-    return SOW.options[o].help;
-  });
-  story.comment = $scope.text_decolate(story.comment);
-  story.rating_url = "" + URL.file + "/images/icon/cd_" + story.rating + ".png";
-  if (story.announce != null) {
-    story.announce.rating = OPTION.rating[story.rating].caption;
-  }
-  if (story.upd != null) {
-    story.upd.time_text = "" + (story.upd.hour.pad(2)) + "時" + (story.upd.minute.pad(2)) + "分";
-    story.upd.interval_text = "" + (story.upd.interval * 24) + "時間";
-  }
-  if (story.type != null) {
-    (_base = story.type).game || (_base.game = 'TABULA');
-    story.type.roletable_text = SOW.roletable[story.type.roletable];
-    story.type.game_rule = SOW.game_rule[story.type.game];
-    story.type.vote_text = SOW.vote[story.type.vote];
-    story.type.mob_text = SOW.mob[story.type.mob];
-    story.type.saycnt = SOW.saycnt[story.type.say];
-    if (1 === ((_ref = story.type.saycnt) != null ? _ref.RECOVERY : void 0)) {
-      story.type.recovery = ' （発言の補充はありません。）';
-      if (1 < story.upd.interval) {
-        story.type.recovery = ' （発言の補充があります。）';
-      }
-    }
-    story.is_wbbs = 'wbbs' === story.type.start;
-  }
-  return story;
 };
 var DECOLATE;
 
@@ -1754,117 +2069,8 @@ DIARY = function($scope) {
 var FILTER;
 
 FILTER = function($scope, $filter, $timeout) {
-  var filter, filter_filter, filters, key, keys, mode_params, navigator, page, scrollTo, _i, _j, _len, _len1, _ref, _ref1;
-  PageNavi.push($scope, 'page', OPTION.page.page);
-  page = $scope.page;
+  var filter_filter, mode_params, scrollTo, _ref, _ref1;
   filter_filter = $filter('filter');
-  if ($scope.stories != null) {
-    page.filter_by('stories');
-    page.filter_to('stories_find');
-    filters = [
-      {
-        target: "rating",
-        key: (function(o) {
-          return o.rating;
-        }),
-        text: (function(key) {
-          var _ref;
-          return (_ref = OPTION.rating[key]) != null ? _ref.caption : void 0;
-        })
-      }, {
-        target: "roletable",
-        key: (function(o) {
-          return o.type.roletable;
-        }),
-        text: (function(key) {
-          return SOW.roletable[key];
-        })
-      }, {
-        target: "game_rule",
-        key: (function(o) {
-          return o.type.game;
-        }),
-        text: (function(key) {
-          var _ref;
-          return (_ref = SOW.game_rule[key]) != null ? _ref.CAPTION : void 0;
-        })
-      }, {
-        target: "potof_size",
-        key: (function(o) {
-          return String(_.last(o.vpl));
-        }),
-        text: (function(key) {
-          return key + "人";
-        })
-      }, {
-        target: "card_event",
-        key: (function(o) {
-          return o.card.event_names || "(なし)";
-        }),
-        text: String
-      }, {
-        target: "card_win",
-        key: (function(o) {
-          return o.card.win_names || "(なし)";
-        }),
-        text: String
-      }, {
-        target: "card_role",
-        key: (function(o) {
-          return o.card.role_names || "(なし)";
-        }),
-        text: String
-      }, {
-        target: "upd_time",
-        key: (function(o) {
-          return o.upd.time_text;
-        }),
-        text: String
-      }, {
-        target: "upd_interval",
-        key: (function(o) {
-          return o.upd.interval_text;
-        }),
-        text: String
-      }
-    ];
-    for (_i = 0, _len = filters.length; _i < _len; _i++) {
-      filter = filters[_i];
-      keys = _.chain($scope.stories).map(filter.key).uniq().sort().value();
-      navigator = {
-        options: OPTION.page[filter.target].options,
-        button: {
-          ALL: "- すべて -"
-        }
-      };
-      if (keys.length > 1) {
-        for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
-          key = keys[_j];
-          navigator.button[key] = filter.text(key);
-        }
-      }
-      Navi.push($scope, filter.target, navigator);
-      page.filter("" + filter.target + ".value", function(key, list) {
-        if ('ALL' === $scope[filter.target].value) {
-          return list;
-        } else {
-          return _.filter(list, function(o) {
-            return filter.key(o) === $scope[filter.target].value;
-          });
-        }
-      });
-    }
-    Navi.push($scope, 'folder', OPTION.page.folder);
-    page.filter('folder.value', function(key, list) {
-      if ('ALL' === $scope.folder.value) {
-        return list;
-      } else {
-        return _.filter(list, function(o) {
-          return o.folder === $scope.folder.value;
-        });
-      }
-    });
-  }
   if ($scope.messages_raw != null) {
     page.filter_by('messages_raw');
     page.filter_to('messages');
@@ -2038,7 +2244,7 @@ FILTER = function($scope, $filter, $timeout) {
     return _.sortBy(list, order);
   });
   scrollTo = function(newVal, oldVal, three) {
-    var form_text, is_show, mode, _k, _len2, _ref1, _ref2;
+    var form_text, is_show, mode, _i, _len, _ref1, _ref2;
     $scope.anchors = [];
     if ($scope.event != null) {
       if ($scope.event.is_news) {
@@ -2046,8 +2252,8 @@ FILTER = function($scope, $filter, $timeout) {
         for (mode in _ref1) {
           is_show = _ref1[mode];
           _ref2 = $scope.form.texts;
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            form_text = _ref2[_k];
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            form_text = _ref2[_i];
             if (is_show && mode === form_text.jst) {
               return;
             }
@@ -3331,43 +3537,6 @@ TIMER = function($scope) {
     }
   };
 };
-var TITLE;
-
-TITLE = function($scope) {
-  var subtitle_change, title_change, titles_change;
-  title_change = function() {
-    var _ref;
-    if ($scope.story != null) {
-      if ((_ref = $scope.event) != null ? _ref.unread_count : void 0) {
-        return $scope.title = "(" + $scope.event.unread_count + ") " + $scope.subtitle + " " + $scope.story.name;
-      } else {
-        return $scope.title = "" + $scope.subtitle + " " + $scope.story.name;
-      }
-    } else {
-      return $scope.title = "人狼議事";
-    }
-  };
-  subtitle_change = function() {
-    var event_name, mode_face, _ref, _ref1;
-    mode_face = (_ref = $scope.modes) != null ? _ref.face : void 0;
-    event_name = (_ref1 = $scope.event) != null ? _ref1.name : void 0;
-    if ("info" === mode_face) {
-      return $scope.subtitle = "情報";
-    } else if (event_name) {
-      return $scope.subtitle = event_name;
-    } else {
-      return $scope.subtitle = "";
-    }
-  };
-  titles_change = function() {
-    subtitle_change();
-    return title_change();
-  };
-  titles_change();
-  $scope.$watch('event.unread_count', title_change);
-  $scope.$watch('modes.face', titles_change);
-  return $scope.$watch('event.turn', titles_change);
-};
 var TOGGLE;
 
 TOGGLE = function($scope) {
@@ -3621,9 +3790,6 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
-  $scope.$watch('title', function(value, oldVal) {
-    return $('title').text(value);
-  });
   $scope.img_csid_cid = function(csid_cid) {
     var cid, csid, _ref8;
     if (csid_cid != null) {
@@ -3670,24 +3836,22 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
       return location.href = href + location.hash;
     }
   };
-  $scope.$watch("event.turn", function(turn, oldVal) {
-    if ((turn != null) && ($scope.event != null) && turn !== oldVal) {
-      return $scope.ajax_event(turn, null, !!$scope.event.is_news);
-    }
-  });
   TOKEN_INPUT($scope);
   HREF_EVAL($scope);
   DECOLATE($scope, $sce);
   TIMER($scope);
-  CARD($scope);
   CACHE($scope);
   POTOFS($scope);
   AJAX($scope, $http);
   DIARY($scope);
-  TITLE($scope);
   GO($scope);
   TOGGLE($scope);
-  return POOL($scope, $filter, $timeout);
+  POOL($scope, $filter, $timeout);
+  return $scope.$watch("event.turn", function(turn, oldVal) {
+    if ((turn != null) && ($scope.event != null) && turn !== oldVal) {
+      return $scope.ajax_event(turn, null, !!$scope.event.is_news);
+    }
+  });
 };
 var CGI;
 
@@ -3712,28 +3876,6 @@ CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
         value: $scope.mode_cache.talk
       }
     ];
-  };
-  $scope.deploy_config = function() {
-    var count_set, gifts, roles;
-    count_set = function(item) {
-      item.count = $scope.config.counts[item.key];
-      return item;
-    };
-    roles = _.groupBy(_.map($scope.config.roles, function(o) {
-      return count_set(SOW.roles[o]);
-    }), function(o) {
-      return SOW.groups[o.group].name;
-    });
-    gifts = _.groupBy(_.map($scope.config.gifts, function(o) {
-      return count_set(SOW.gifts[o]);
-    }), function(o) {
-      return "恩恵";
-    });
-    $scope.config.items = _.assign({}, roles, gifts);
-    $scope.config.items_keys = _.keys($scope.config.items);
-    return $scope.config.items.events = $scope.config.events.map(function(o) {
-      return SOW.events[o];
-    });
   };
   get = function(href, cb) {
     return $scope.get(href + "&ua=javascript", cb);
