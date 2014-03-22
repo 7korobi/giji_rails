@@ -1,5 +1,5 @@
-HREF_EVAL = ($scope)->
-  href_eval_event = null
+HOGAN_EVENT = ($scope)->
+  hogan_click_event = null
 
   navi = (link)->
     $scope.navi.move link
@@ -20,7 +20,7 @@ HREF_EVAL = ($scope)->
       trailing: false
 
   inner = (cmd, val)->
-    item = $(href_eval_event.target)
+    item = $(hogan_click_event.target)
     if 0 > item.html().indexOf cmd
       item.html("#{val} ⇠ #{cmd}")
     else
@@ -94,11 +94,11 @@ HREF_EVAL = ($scope)->
           popup_ajax turn - 1, ->
             popup_find turn - 1
 
-  href_eval = (e)->
-    href_eval_event = e
+  hogan_click = (e)->
+    hogan_click_event = e
     $scope.$apply ->
       $scope.pageY = e.pageY
-      eval $(e.target).attr('href_eval')
+      eval $(e.target).attr('hogan-click')
     $(window).scroll()
 
   foreground = (e)->
@@ -108,7 +108,5 @@ HREF_EVAL = ($scope)->
       item?.z = Date.now()
 
   # use in interpolate
-  $('#messages').on  'click', '.drag',  foreground
-  $('#messages').on  'click', '[href_eval]', href_eval
-  $('#forms').on     'click', '[href_eval]', href_eval
-  $('#sayfilter').on 'click', '[href_eval]', href_eval
+  $('body').on  'click', '.drag',  foreground
+  $('body').on  'click', '[hogan-click]', hogan_click

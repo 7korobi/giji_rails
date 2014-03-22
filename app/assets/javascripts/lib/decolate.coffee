@@ -13,7 +13,7 @@ DECOLATE = ($scope, $sce)->
   anchor = (log)->
     return log unless log
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """<a href_eval="popup(#{turn},'#{a}')" data="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</a>"""
+      """<a hogan-click="popup(#{turn},'#{a}')" data="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</a>"""
 
   anchor_preview = (log)->
     log
@@ -26,11 +26,11 @@ DECOLATE = ($scope, $sce)->
   random = (log)->
     return log unless log
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<a class="mark" href_eval="inner('#{cmd}','#{val}')">#{val}</a>"""
+      """<a class="mark" hogan-click="inner('#{cmd}','#{val}')">#{val}</a>"""
 
   random_preview = (log)->
     log.replace /\[\[([^\[]+)\]\]/g, (key, val)->
-      """<a class="mark" href_eval="inner('#{val}','？')">#{val}</a>"""
+      """<a class="mark" hogan-click="inner('#{val}','？')">#{val}</a>"""
 
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
@@ -43,7 +43,7 @@ DECOLATE = ($scope, $sce)->
   uri_to_link = _.memoize (uri)->
     id_num++
     [uri, protocol, host, path] = uri.match link_regexp
-    """<span class="badge" href_eval="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
+    """<span class="badge" hogan-click="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
 
   link = (log)->
     return log unless log

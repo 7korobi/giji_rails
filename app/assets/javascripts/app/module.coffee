@@ -109,8 +109,8 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
     else
       location.href = href + location.hash
 
-  TOKEN_INPUT  $scope
-  HREF_EVAL    $scope
+  TOKEN_INPUT $scope
+  HOGAN_EVENT $scope
   DECOLATE $scope, $sce
   TIMER   $scope
   CACHE   $scope
