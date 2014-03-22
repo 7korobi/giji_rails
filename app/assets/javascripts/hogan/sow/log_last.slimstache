@@ -1,8 +1,1 @@
-.caution.text(style="padding-left: 0;")
-  table
-    td(style="height: 6ex;")
-      a.mark.glyphicon.glyphicon-refresh(style="font-size: 4ex;" href_eval="pool_hand()")
-    td(style="padding-left: 11px;")
-      | ⇚ {{ message.timestamp }} より先を見る。
-      br
-hr.invisible_hr
+.message_filter(template="sow/log_last")

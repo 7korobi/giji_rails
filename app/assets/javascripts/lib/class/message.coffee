@@ -40,7 +40,7 @@ class Message
     if @updated_at
       @cancel_btn =
         if @logid? && "q" == @logid[0] && ((now - @updated_at) < 25 * 1000)
-          """なら削除できます。<a href_eval='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
+          """なら削除できます。<a hogan-click='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
         else
           ""
       @timestamp = @updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja')
