@@ -48,7 +48,7 @@ h6 {
   line-height: 1em;
 
   border-bottom: 1px solid #e5e5e5;
-  background-color: rgba(255,255,255,0.25);  
+  background-color: rgba(255,255,255,0.25);
 }
 
 /* メモ ----------*/
@@ -123,12 +123,12 @@ h6 {
 .mes_admin,
 .ADMIN .action,
 .ADMIN.guide {
-  color: #c99; 
+  color: #c99;
 }
 .ADMIN .action .text b,
 .ADMIN h3,
 .ADMIN h3 b {
-  color: #666 !important; 
+  color: #666 !important;
 }
 
 .mes_maker,
@@ -155,7 +155,7 @@ h6 {
   }
 
   .message_filter a {
-    color: #fff;
+    color: #fff !important;
   }
 
   .mesname,
@@ -216,7 +216,7 @@ h6 {
   }
 
   .message_filter a {
-    color: #004;
+    color: #004 !important;
   }
 
 
