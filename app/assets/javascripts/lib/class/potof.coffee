@@ -82,12 +82,12 @@ class Potof
 
   init_role: ->
     if @role?
-      @role_names = @role.map @scope.name.config
+      @role_names = @role.map Lib.name.config
     else
       @role_names = []
 
     if @select?
-      @select_name = @scope.name.config @select
+      @select_name = Lib.name.config @select
 
   init_text: ->
     @text = []
