@@ -1,0 +1,23 @@
+table.say(class="{{message.mestype}} {{message._id}}")
+  tbody
+    tr
+      td.img
+        img(src="{{message.img}}")
+      td.field
+        .msg
+          h3.mesname
+            | {{message.mesicon}}&nbsp;
+            b
+              | {{{message.name}}}
+          p.text(class="{{message.style}}")
+            | {{{message.text}}}
+          p.mes_date
+            a.mark(href-eval="attention('{{message.key}}')") 注目
+            | &nbsp;
+            a.mark(href-eval="add_diary('{{message.anchor}}', {{message.turn}}, '{{message.name}}')")
+              | {{message.anchor}}
+            span &nbsp;
+            span
+              | {{message.time}}
+            span
+              | {{{message.cancel_btn}}}

@@ -3,7 +3,7 @@
     div.badge(ng-class="page.of.prev.class" ng-click="page.move(page.of.prev.val)" ng-if="page")  前のページ
     hr.invisible_hr
 
-.message_filter(ng-repeat="message in messages" log="message")
+.message_filter(logs="messages")
 .message_filter
   .log
     div.badge(ng-class="page.of.next.class" ng-click="page.move(page.of.next.val)" ng-if="page")  次のページ

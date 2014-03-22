@@ -1,0 +1,11 @@
+table.memo(class="{{message.mestype}} {{message._id}}")
+  tbody
+    tr
+      td.memoleft
+        h5
+          | {{{message.name}}}
+      td.memoright
+        p.text(class="message.style")
+          | {{{message.text}}}
+        p.mes_date
+          | {{message.time}}
