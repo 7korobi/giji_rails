@@ -1,9 +1,13 @@
 development:
+  application:
+    http://localhost:3000/assets-cleanup
   file:
     http://localhost:3000
   rails:
     http://localhost:3000
 production:
+  application:
+    http://7korobi.gehirn.ne.jp/assets-cleanup
   file:
 #    http://localhost
     http://7korobi.gehirn.ne.jp
