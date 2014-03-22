@@ -37,9 +37,52 @@ class StorySummary
         @type.recovery = ' （発言の補充があります。）' if 1 < @upd.interval
       @is_wbbs = 'wbbs' == @type.start
 
+  navi: ($scope)->
+    page = $scope.page
+    page.filter_by 'stories'
+    page.filter_to 'stories_find'
+
+    filters = [
+      { target: "rating",       key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
+      { target: "roletable",    key: ((o)-> o.type.roletable), text: ((key)-> SOW.roletable[key]) }
+      { target: "game_rule",    key: ((o)-> o.type.game), text: ((key)-> SOW.game_rule[key]?.CAPTION) }
+      { target: "potof_size",   key: ((o)-> String _.last o.vpl), text: ((key)-> key + "人") }
+      { target: "card_event",   key: ((o)-> o.card.event_names || "(なし)"), text: String }
+      { target: "card_win",     key: ((o)-> o.card.win_names || "(なし)"), text: String }
+      { target: "card_role",    key: ((o)-> o.card.role_names || "(なし)"), text: String }
+      { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
+      { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
+      { target: "folder",       key: ((o)-> o.folder), text: String }
+    ]
+    for filter in filters
+      keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
+      base = OPTION.page[filter.target]
+      navigator =
+        options: base.options || base
+        button:
+          ALL: "- すべて -"
+      if keys.length > 1
+        for key in keys
+          navigator.button[key] = filter.text(key)
+
+      Navi.push $scope, filter.target, navigator
+      page.filter "#{filter.target}.value", (key, list)->
+        if 'ALL' == $scope[filter.target].value
+          list
+        else
+          _.filter list, (o)->
+            filter.key(o) == $scope[filter.target].value
+
+
 
 class Story extends StorySummary
   init: ($scope)->
     super
     @option_helps = _.map @options, (o)-> SOW.options[o].help
     @comment = $scope.text_decolate @comment
+
+  is_mob_open: ->
+    return true if 'alive' == @type.mob
+    return true if @turn == 0
+    return true if @is_epilogue
+    return false
