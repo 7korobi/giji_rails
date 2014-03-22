@@ -67,9 +67,6 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
   $scope.win  = win;
   $scope.link = GIJI.link
 
-  $scope.$watch 'title', (value, oldVal)->
-    $('title').text(value);
-
   # face_id support
   $scope.img_csid_cid = (csid_cid)->
     if csid_cid?
@@ -112,23 +109,20 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
     else
       location.href = href + location.hash
 
-  $scope.$watch "event.turn", (turn, oldVal)->
-    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
-
-
   TOKEN_INPUT  $scope
   HREF_EVAL    $scope
   DECOLATE $scope, $sce
   TIMER   $scope
-  CARD    $scope
   CACHE   $scope
   POTOFS  $scope
   AJAX    $scope, $http
-
   DIARY   $scope
-  TITLE   $scope
   GO      $scope
   TOGGLE  $scope
 
   # INIT FILTER POOL sequence
   POOL    $scope, $filter, $timeout
+
+  $scope.$watch "event.turn", (turn, oldVal)->
+    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
+
