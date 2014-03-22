@@ -25,11 +25,12 @@ INIT = ($scope, $filter, $timeout)->
 
   if gon.stories?
     for story in gon.stories
-      INIT_STORY $scope, story
+      story.__proto__ = StorySummary.prototype
+      story.init($scope)
 
   if gon.story?
-    INIT_STORY $scope, gon.story
-
+    gon.story.__proto__ = Story.prototype
+    gon.story.init($scope)
 
   for key, news of gon
     $scope.merge $scope, gon, key
@@ -68,11 +69,5 @@ INIT = ($scope, $filter, $timeout)->
 
     $scope.page.length = gon.pages.length
 
-  has_messages = false
-  has_messages or= $scope.event?.messages?
-  has_messages or= $scope.messages_raw?
-  has_messages or= $scope.stories?
-  if has_messages && ! $scope.page?
-    FILTER($scope, $filter, $timeout)
 
 
