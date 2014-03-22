@@ -200,14 +200,23 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
     initialize $scope, $filter, attr.logs, attr.from
     initialize = ->
 
-    $scope.$watchCollection attr.logs, (oldVal, logs)->
-      elm.html("")
-      return unless logs
+    oldDOM = elm[0]
+    if oldDOM.insertAdjacentHTML
+      addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
+      closeHtml = (dom)->
+    else
+      html_cache = ""
+      addHtml = (dom, html)-> html_cache += html
+      closeHtml = (dom)-> dom.replaceHTML = html_cache
 
+    $scope.$watchCollection attr.logs, (oldVal, logs)->
+      logs ||= []
       now = new Date
       data =
         story: $scope.story
         event: $scope.event
+
+      newDOM = oldDOM.cloneNode(false)
       for log in logs
         log.__proto__ = Message.prototype
         log.init_view($scope, now)
@@ -218,8 +227,12 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
           console.log log
           continue
         data.message = log
-        elm.append template.render data
-      for angular_elm in elm.find("[template]")
+        addHtml newDOM, template.render data
+      closeHtml newDOM
+
+      oldDOM.parentNode.replaceChild newDOM, oldDOM
+      oldDOM = newDOM
+      for angular_elm in $(newDOM).find("[template]")
         $compile(angular_elm)($scope)
 
 
