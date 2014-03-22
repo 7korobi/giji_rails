@@ -1,6 +1,6 @@
 //"日本語";
 <%
-%w[error giji option sow url delay].each do |name|
+%w[error giji option sow url delay message].each do |name|
   const = name.upcase.to_sym
   if Kernel.constants.member?(const)
 %>

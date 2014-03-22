@@ -1,0 +1,31 @@
+order:
+  MAKER: 1
+  ADMIN: 1
+  INFOSP:   2
+  INFONOM:  2
+  INFOWOLF: 2
+  CAST: 2
+  CAUTION: 9
+
+template:
+  - mestype:
+      CAST: cast
+      INFOSP: info
+      INFONOM: info
+      INFOWOLF: info
+      CAUTION: caution
+
+  - subid:
+      A: action
+
+  - mestype:
+      DELETEDADMIN: admin
+      MAKER: admin
+      ADMIN: admin
+      AIM: aim
+      ANONYMOUS: info
+
+  - subid:
+      M: memo
+      S: say
+      B: action

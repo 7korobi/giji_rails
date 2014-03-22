@@ -12,22 +12,43 @@ class Message
     wo.opener = null
     wo.location.href = "#{base}#{url.hash}"
 
-  cancel_btn: ->
-    if @logid? && "q" == @logid[0] && ((new Date() - @updated_at) < 25 * 1000)
-      """なら削除できます。<a href_eval='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
-    else
-      ""
+  add_diary: ->
+    $scope.diary.add.anchor @
 
-  init_view: ($scope)->
-    @add_diary = ->
-      $scope.diary.add.anchor @
+  init_data: (new_base)->
+    @turn = new_base.turn
 
-    @time = ->
-      $scope.lax_time @updated_at
+    if @logid?
+      @key = "#{@logid},#{@turn}"
+
+    if @date?
+      @updated_at = @date
+      delete @date
+    @updated_at = Date.create @updated_at
+
+    switch @subid
+      when "B"
+        @mestype = "TSAY"
+      when "M"
+        key = "#{@mestype}:#{@csid}/#{@face_id}"
+        if (! new_base.last_memo[key]) || new_base.last_memo[key].updated_at < @updated_at
+          new_base.last_memo[key] =
+            log:        @log
+            updated_at: @updated_at
+
+  init_view: ($scope, now)->
+    if @updated_at
+      @cancel_btn =
+        if @logid? && "q" == @logid[0] && ((now - @updated_at) < 25 * 1000)
+          """なら削除できます。<a href_eval='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
+        else
+          ""
+      @timestamp = @updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja')
+      @time = $scope.lax_time @updated_at
 
     if ! @template? && @logid? && @mestype? && @subid?
       template = null
-      for style in GIJI.message.template
+      for style in MESSAGE.template
         for target, table of style
           template or= table[@[target]]
       @template or= "message/#{template}"
