@@ -494,19 +494,33 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
+      var addHtml, closeHtml, html_cache, oldDOM;
       initialize($scope, $filter, attr.logs, attr.from);
       initialize = function() {};
+      oldDOM = elm[0];
+      if (oldDOM.insertAdjacentHTML) {
+        addHtml = function(dom, html) {
+          return dom.insertAdjacentHTML('beforeEnd', html);
+        };
+        closeHtml = function(dom) {};
+      } else {
+        html_cache = "";
+        addHtml = function(dom, html) {
+          return html_cache += html;
+        };
+        closeHtml = function(dom) {
+          return dom.replaceHTML = html_cache;
+        };
+      }
       return $scope.$watchCollection(attr.logs, function(oldVal, logs) {
-        var angular_elm, data, log, now, template, _i, _j, _len, _len1, _ref, _results;
-        elm.html("");
-        if (!logs) {
-          return;
-        }
+        var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref, _results;
+        logs || (logs = []);
         now = new Date;
         data = {
           story: $scope.story,
           event: $scope.event
         };
+        newDOM = oldDOM.cloneNode(false);
         for (_i = 0, _len = logs.length; _i < _len; _i++) {
           log = logs[_i];
           log.__proto__ = Message.prototype;
@@ -518,9 +532,12 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
             continue;
           }
           data.message = log;
-          elm.append(template.render(data));
+          addHtml(newDOM, template.render(data));
         }
-        _ref = elm.find("[template]");
+        closeHtml(newDOM);
+        oldDOM.parentNode.replaceChild(newDOM, oldDOM);
+        oldDOM = newDOM;
+        _ref = $(newDOM).find("[template]");
         _results = [];
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
           angular_elm = _ref[_j];
