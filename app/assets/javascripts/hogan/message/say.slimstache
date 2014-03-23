@@ -17,7 +17,5 @@ table.say(class="{{message.mestype}} {{message._id}}")
             a.mark(hogan-click="add_diary('{{message.anchor}}', {{message.turn}}, '{{message.name}}')")
               | {{message.anchor}}
             span &nbsp;
-            span
-              | {{message.time}}
-            span
-              | {{{message.cancel_btn}}}
+            | {{{message.time}}}
+            | {{{message.cancel_btn}}}

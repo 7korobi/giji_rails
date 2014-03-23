@@ -12,9 +12,6 @@ class Message
     wo.opener = null
     wo.location.href = "#{base}#{url.hash}"
 
-  add_diary: ->
-    $scope.diary.add.anchor @
-
   init_data: (new_base)->
     @turn = new_base.turn
 
@@ -24,7 +21,7 @@ class Message
     if @date?
       @updated_at = @date
       delete @date
-    @updated_at = Date.create @updated_at
+    @updated_at = new Date @updated_at
 
     switch @subid
       when "B"
@@ -38,13 +35,7 @@ class Message
 
   init_view: ($scope, now)->
     if @updated_at
-      @cancel_btn =
-        if @logid? && "q" == @logid[0] && ((now - @updated_at) < 25 * 1000)
-          """なら削除できます。<a hogan-click='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a>"""
-        else
-          ""
-      @timestamp = @updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja')
-      @time = $scope.lax_time @updated_at
+      @timestamp = $scope.timestamp @updated_at
 
     if ! @template? && @logid? && @mestype? && @subid?
       template = null
@@ -69,3 +60,14 @@ class Message
     if ! @text?
       @text = $scope.text_decolate @log
       delete @log
+
+  init_timer: ($scope, now)->
+    return unless @updated_at
+    @is_timer_refresh = false
+    @cancel_btn =
+      if @logid? && "q" == @logid[0] && ((now - @updated_at) < DELAY.msg_delete)
+        @is_timer_refresh = true
+        """<span cancel_btn>なら削除できます。<a hogan-click='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a></span>"""
+      else
+        ""
+    @time = $scope.set_time @

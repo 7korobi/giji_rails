@@ -9,8 +9,5 @@ div.guide(class="{{message.mestype}} {{message._id}}")
     | &nbsp;
     a.mark(hogan-click="add_diary('{{message.anchor}}', {{message.turn}}, '{{message.name}}')") {{message.anchor}}
     span &nbsp;
-    span
-      | {{message.time}}
-    span
-      | {{{message.cancel_btn}}}
-  hr.invisible_hr
+    | {{{message.time}}}
+    | {{{message.cancel_btn}}}

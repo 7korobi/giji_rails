@@ -8,6 +8,4 @@ div(class="{{message.mestype}} {{message._id}}")
         | {{{message.text}}}
     p.mes_date
       span &nbsp;
-      span
-        | {{message.time}}
-    hr.invisible_hr
+      | {{{message.time}}}

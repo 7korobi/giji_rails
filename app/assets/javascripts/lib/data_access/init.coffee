@@ -16,7 +16,7 @@ INIT_POTOFS = ($scope, gon)->
       potof.init_role()
       potof.init_text()
       potof.init_said()
-      potof.init_timer()
+      potof.init_timer($scope)
 
 INIT = ($scope, $filter, $timeout)->
   return unless gon?

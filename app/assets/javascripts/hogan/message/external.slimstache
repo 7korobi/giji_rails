@@ -9,4 +9,3 @@ div(class="{{message.mestype}}")
           | {{message.host}}
         span.note
           | {{message.path}}
-    hr.invisible_hr

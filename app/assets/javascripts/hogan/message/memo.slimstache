@@ -8,4 +8,4 @@ table.memo(class="{{message.mestype}} {{message._id}}")
         p.text(class="message.style")
           | {{{message.text}}}
         p.mes_date
-          | {{message.time}}
+          | {{{message.time}}}

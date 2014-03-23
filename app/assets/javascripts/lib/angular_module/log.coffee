@@ -200,7 +200,9 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
     initialize $scope, $filter, attr.logs, attr.from
     initialize = ->
 
+    logs = []
     oldDOM = elm[0]
+
     if oldDOM.insertAdjacentHTML
       addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
       closeHtml = (dom)->
@@ -209,8 +211,8 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
       addHtml = (dom, html)-> html_cache += html
       closeHtml = (dom)-> dom.replaceHTML = html_cache
 
-    $scope.$watchCollection attr.logs, (oldVal, logs)->
-      logs ||= []
+    $scope.$watchCollection attr.logs, (oldVal, newVal)->
+      logs = newVal || []
       now = new Date
       data =
         story: $scope.story
@@ -219,6 +221,7 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
       newDOM = oldDOM.cloneNode(false)
       for log in logs
         log.__proto__ = Message.prototype
+        log.init_timer($scope, now)
         log.init_view($scope, now)
 
         template = HOGAN["hogan/" + log.template]
@@ -232,8 +235,21 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
 
       oldDOM.parentNode.replaceChild newDOM, oldDOM
       oldDOM = newDOM
-      for angular_elm in $(newDOM).find("[template]")
+
+      elm = $(oldDOM)
+      for angular_elm in elm.find("[template]")
         $compile(angular_elm)($scope)
+
+    timer = ()->
+      for log in logs
+        now = new Date
+        log.init_timer($scope, now)
+        if log.is_timer_refresh
+          log_elm = $("." + log._id)
+          log_elm.find("[cancel_btn]").html log.cancel_btn
+          log_elm.find("[time]"      ).html log.time
+      _.delay timer, 3000
+    _.delay timer, 3000
 
 
 angular.module("giji").directive "log", ($parse, $compile, $sce)->

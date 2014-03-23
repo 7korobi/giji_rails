@@ -15,7 +15,7 @@ HOGAN_EVENT = ($scope)->
         queid: queid
         turn: $scope.event.turn
         vid:  $scope.story.vid
-    , 25000,
+    , DELAY.lento,
       leading: true
       trailing: false
 
@@ -45,6 +45,12 @@ HOGAN_EVENT = ($scope)->
       $scope.anchors.push item
     else
       $scope.anchors.splice idx, 1
+
+  add_diary = (anchor, turn, name)->
+    $scope.diary.add.anchor anchor, turn, name
+
+  pool_hand = ->
+    $scope.pool_hand()
 
   popup_apply = (item, turn)->
     idx = $scope.anchors.indexOf item
