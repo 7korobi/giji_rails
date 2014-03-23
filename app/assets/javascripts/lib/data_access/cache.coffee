@@ -22,15 +22,11 @@ CACHE = ($scope)->
     func = merge[target] || merge_by.copy
     func old_base, new_base, target
 
-  merge = 
-    news: (old_base, new_base, target)=>
-      for o in new_base.news
-        o.is_news = Date.create('3days ago') < Date.create(o.date)
-      merge_by.copy old_base, new_base, target
-      
+  merge =
     config: (old_base, new_base, target)=>
       merge_by.copy old_base, new_base, target
-      $scope.deploy_config()
+      $scope.config.__proto__ = Config.prototype
+      $scope.config.init()
 
     face: (old_base, new_base, target)=>
       INIT_FACE new_base.face
@@ -150,7 +146,7 @@ CACHE = ($scope)->
       old_base[target] = concat_merge(olds, news, guard, filter)
 
 
-  cache = 
+  cache =
     load: (old_base, new_base, target, child)=>
       guard = -> false
       filter = (o)-> o.turn
@@ -164,7 +160,7 @@ CACHE = ($scope)->
       if field? && new_base?.events?
         for event in new_base.events
           if event.turn?
-            field[event.turn] ||= 
+            field[event.turn] ||=
               turn: event.turn
 
   find_or_create = (new_base, old_base, field_name)->
