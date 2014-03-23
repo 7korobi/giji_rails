@@ -18,11 +18,10 @@ TIMER = ($scope)->
 
   lax_time = {}
   $scope.set_time = (log)->
-    log.is_timer_refresh = true
-    log.time = lax_time[log.updated_at] || """<span time>#{$scope.lax_time(log.updated_at)}</span>"""
+    log.time = lax_time[Number log.updated_at] || """<span time>#{$scope.lax_time(log.updated_at)}</span>"""
 
   $scope.lax_time = (date)->
-    return lax_time[date] if lax_time[date]?
+    return lax_time[Number date] if lax_time[Number date]?
 
     if date?
       second = (new Date() - date)/1000
@@ -34,11 +33,14 @@ TIMER = ($scope)->
         hour   = Math.floor - minute / 60
       limit = 3 * 60 * 60
       if - limit < second < limit
-        return "#{hour}時間後" if -limit < second < -1800
-        return "#{minute}分後" if  -1800 < second <   -25
-        return "25秒以内"      if    -25 < second <    25
-        return "#{minute}分前" if     25 < second <  1800
-        return "#{hour}時間前" if   1800 < second < limit
+        live = (str, timeout)->
+          $scope.timer.add_next date, timeout
+          str
+        return live "#{hour}時間後", 3600000 if -limit < second < -1800
+        return live "#{minute}分後",   60000 if  -1800 < second <   -25
+        return live "25秒以内",        25000 if    -25 < second <    25
+        return live "#{minute}分前",   60000 if     25 < second <  1800
+        return live "#{hour}時間前", 3600000 if   1800 < second < limit
       else
         now = new Date(date)
         now.addMinutes(15)
@@ -57,9 +59,9 @@ TIMER = ($scope)->
         mi = "0" + mi if mi < 10
 
         time = "#{yyyy}-#{mm}-#{dd} (#{dow}) #{tt}#{hh % 12}時#{postfix}"
-        lax_time[date] = time if second < 0
+        lax_time[Number date] = time if second < 0
         time
     else
-      lax_time[date] = "....-..-..(？？？) --..時頃"
+      lax_time[Number date] = "....-..-..(？？？) --..時頃"
 
 

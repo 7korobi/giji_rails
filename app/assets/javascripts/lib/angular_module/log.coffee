@@ -194,6 +194,11 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
         last.updated_at
 
     $scope.page.start()
+    $scope.timer ||= new Timer (log, now)->
+      log.init_timer $scope, now
+      log_elm = $("." + log._id)
+      log_elm.find("[cancel_btn]").html log.cancel_btn
+      log_elm.find("[time]"      ).html log.time
 
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
@@ -240,24 +245,14 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
       for angular_elm in elm.find("[template]")
         $compile(angular_elm)($scope)
 
-    timer = ()->
-      for log in logs
-        now = new Date
-        log.init_timer($scope, now)
-        if log.is_timer_refresh
-          log_elm = $("." + log._id)
-          log_elm.find("[cancel_btn]").html log.cancel_btn
-          log_elm.find("[time]"      ).html log.time
-      _.delay timer, 3000
-    _.delay timer, 3000
-
+      $scope.timer.start()
 
 angular.module("giji").directive "log", ($parse, $compile, $sce)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     log = $scope.$eval attr.log
     log.__proto__ = Message.prototype
-    log.init_view($scope)
+    log.init_view $scope
 
     GIJI.template $scope, elm, log.template
 

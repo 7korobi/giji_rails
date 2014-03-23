@@ -63,10 +63,12 @@ class Message
 
   init_timer: ($scope, now)->
     return unless @updated_at
-    @is_timer_refresh = false
+    return unless "M" == @subid || "S" == @subid
+
+    $scope.timer.cache @
     @cancel_btn =
       if @logid? && "q" == @logid[0] && ((now - @updated_at) < DELAY.msg_delete)
-        @is_timer_refresh = true
+        $scope.timer.add_next @updated_at, DELAY.msg_delete
         """<span cancel_btn>なら削除できます。<a hogan-click='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a></span>"""
       else
         ""
