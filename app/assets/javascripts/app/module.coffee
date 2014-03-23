@@ -82,11 +82,8 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
 
   set_turn = (turn)->
     $scope.set_turn(turn)
-    $scope.event.is_news =
-      if $scope.event.has_all_messages
-        false
-      else
-        is_news
+    if $scope.event.has_all_messages
+      $scope.event.is_news = false
     $scope.page.value = 1
     $scope.mode.value = $scope.mode_cache.talk
     href = $scope.event_url $scope.event
@@ -105,6 +102,7 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
         getter event, =>
           $scope.init()
           set_turn(turn)
+          $scope.event.is_news = is_news
 
     else
       location.href = href + location.hash
