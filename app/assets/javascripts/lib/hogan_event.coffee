@@ -46,6 +46,19 @@ HOGAN_EVENT = ($scope)->
     else
       $scope.anchors.splice idx, 1
 
+  attention = (key)->
+    base = location.href.replace(location.hash,"")
+    url = Navi.to_url
+      hash:
+        search: key
+        hide_potofs: ""
+        mode: "talk_all_open"
+        page: 1
+
+    wo = window.open()
+    wo.opener = null
+    wo.location.href = "#{base}#{url.hash}"
+
   add_diary = (anchor, turn, name)->
     $scope.diary.add.anchor anchor, turn, name
 

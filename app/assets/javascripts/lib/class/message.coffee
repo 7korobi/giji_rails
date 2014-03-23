@@ -1,17 +1,4 @@
 class Message
-  attention: ->
-    base = location.href.replace(location.hash,"")
-    url = Navi.to_url
-      hash:
-        search: @key
-        hide_potofs: ""
-        mode: "talk_all_open"
-        page: 1
-
-    wo = window.open()
-    wo.opener = null
-    wo.location.href = "#{base}#{url.hash}"
-
   init_data: (new_base)->
     @turn = new_base.turn
 
