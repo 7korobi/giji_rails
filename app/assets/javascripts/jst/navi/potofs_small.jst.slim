@@ -22,12 +22,12 @@ table.potofs
       th(style="width:1ex")
         a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only(potofs_groups[key])")
 
-    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof.key].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
         span.name
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
-        span.nowrap.note(ng-bind-html="potof.summary()")
+        span.nowrap.note(ng-bind-html="potof.summary(potofs_order.value)")
       td(style="width:1ex")
         a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only([potof])")
 

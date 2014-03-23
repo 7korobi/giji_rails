@@ -43,7 +43,7 @@ table.potofs
       th(style="width: 1ex")
         a.glyphicon.glyphicon-pushpin(ng-click="potof_only(potofs_groups[key])")
 
-    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof_key(potof)].class")
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof.key].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
         .name
           | {{potof.longname || potof.name}}
