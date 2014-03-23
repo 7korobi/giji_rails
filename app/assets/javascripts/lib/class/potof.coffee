@@ -2,8 +2,8 @@ class Potof
   is_mob: -> "mob" == @live
   is_live: -> @deathday < 0
 
-  summary: ->
-    switch @scope.potofs_order.value
+  summary: (order)->
+    switch order
       when 'said_num'
         """<span class="glyphicon glyphicon-pencil"></span>#{@said}"""
       when 'stat_at', 'stat_type'
@@ -114,12 +114,12 @@ class Potof
       @said_num += @point.saidpoint
       @said     += " #{@point.saidpoint}pt"
 
-  init_timer: ->
+  init_timer: ($scope)->
     if @timer?
-      @timer.entrieddt    = Date.create @timer.entrieddt
-      @timer.limitentrydt = Date.create @timer.limitentrydt
-      @timer.entried     = -> @scope.lax_time @entrieddt
-      @timer.entry_limit = -> @scope.lax_time @limitentrydt
+      @timer.entrieddt    = new Date @timer.entrieddt
+      @timer.limitentrydt = new Date @timer.limitentrydt
+      @timer.entried     = -> $scope.lax_time @entrieddt
+      @timer.entry_limit = -> $scope.lax_time @limitentrydt
 
 Potof.key = (o)->
   csid = (o.csid || '*').split('_')[0]
