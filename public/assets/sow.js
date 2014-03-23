@@ -489,12 +489,19 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         return last.updated_at;
       }
     };
-    return $scope.page.start();
+    $scope.page.start();
+    return $scope.timer || ($scope.timer = new Timer(function(log, now) {
+      var log_elm;
+      log.init_timer($scope, now);
+      log_elm = $("." + log._id);
+      log_elm.find("[cancel_btn]").html(log.cancel_btn);
+      return log_elm.find("[time]").html(log.time);
+    }));
   };
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var addHtml, closeHtml, html_cache, logs, oldDOM, timer;
+      var addHtml, closeHtml, html_cache, logs, oldDOM;
       initialize($scope, $filter, attr.logs, attr.from);
       initialize = function() {};
       logs = [];
@@ -513,8 +520,8 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
           return dom.replaceHTML = html_cache;
         };
       }
-      $scope.$watchCollection(attr.logs, function(oldVal, newVal) {
-        var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref, _results;
+      return $scope.$watchCollection(attr.logs, function(oldVal, newVal) {
+        var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref;
         logs = newVal || [];
         now = new Date;
         data = {
@@ -541,28 +548,12 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         oldDOM = newDOM;
         elm = $(oldDOM);
         _ref = elm.find("[template]");
-        _results = [];
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
           angular_elm = _ref[_j];
-          _results.push($compile(angular_elm)($scope));
+          $compile(angular_elm)($scope);
         }
-        return _results;
+        return $scope.timer.start();
       });
-      timer = function() {
-        var log, log_elm, now, _i, _len;
-        for (_i = 0, _len = logs.length; _i < _len; _i++) {
-          log = logs[_i];
-          now = new Date;
-          log.init_timer($scope, now);
-          if (log.is_timer_refresh) {
-            log_elm = $("." + log._id);
-            log_elm.find("[cancel_btn]").html(log.cancel_btn);
-            log_elm.find("[time]").html(log.time);
-          }
-        }
-        return _.delay(timer, 3000);
-      };
-      return _.delay(timer, 3000);
     }
   };
 });
@@ -1141,22 +1132,6 @@ var Message;
 Message = (function() {
   function Message() {}
 
-  Message.prototype.attention = function() {
-    var base, url, wo;
-    base = location.href.replace(location.hash, "");
-    url = Navi.to_url({
-      hash: {
-        search: this.key,
-        hide_potofs: "",
-        mode: "talk_all_open",
-        page: 1
-      }
-    });
-    wo = window.open();
-    wo.opener = null;
-    return wo.location.href = "" + base + url.hash;
-  };
-
   Message.prototype.init_data = function(new_base) {
     var key;
     this.turn = new_base.turn;
@@ -1223,8 +1198,11 @@ Message = (function() {
     if (!this.updated_at) {
       return;
     }
-    this.is_timer_refresh = false;
-    this.cancel_btn = (this.logid != null) && "q" === this.logid[0] && ((now - this.updated_at) < DELAY.msg_delete) ? (this.is_timer_refresh = true, "<span cancel_btn>なら削除できます。<a hogan-click='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a></span>") : "";
+    if (!("M" === this.subid || "S" === this.subid)) {
+      return;
+    }
+    $scope.timer.cache(this);
+    this.cancel_btn = (this.logid != null) && "q" === this.logid[0] && ((now - this.updated_at) < DELAY.msg_delete) ? ($scope.timer.add_next(this.updated_at, DELAY.msg_delete), "<span cancel_btn>なら削除できます。<a hogan-click='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a></span>") : "";
     return this.time = $scope.set_time(this);
   };
 
@@ -1321,6 +1299,10 @@ Potof = (function() {
 
   Potof.prototype.is_live = function() {
     return this.deathday < 0;
+  };
+
+  Potof.prototype.key = function() {
+    return Potof.key(this);
   };
 
   Potof.prototype.summary = function(order) {
@@ -1748,6 +1730,61 @@ Story = (function(_super) {
   return Story;
 
 })(StorySummary);
+var Timer;
+
+Timer = (function() {
+  function Timer(cb) {
+    this.cb = cb;
+    this.data = {};
+    this.timeouts = {};
+    this.delay_min = 99999999;
+  }
+
+  Timer.prototype.timer = function() {
+    var do_timer;
+    do_timer = (function(_this) {
+      return function() {
+        var date, dates, item, now, _i, _len;
+        now = new Date;
+        if (_this.cb) {
+          dates = Object.keys(_this.timeouts);
+          _this.timeouts = {};
+          _this.delay_min = 99999999;
+          for (_i = 0, _len = dates.length; _i < _len; _i++) {
+            date = dates[_i];
+            item = _this.data[date];
+            if (item) {
+              _this.cb(item, now);
+            }
+          }
+        }
+        return _this.timer_id = setTimeout(do_timer, _this.delay_min);
+      };
+    })(this);
+    return this.timer_id = setTimeout(do_timer, this.delay_min);
+  };
+
+  Timer.prototype.start = function() {
+    if (this.timer_id) {
+      clearTimeout(this.timer_id);
+    }
+    return this.timer();
+  };
+
+  Timer.prototype.cache = function(item) {
+    return this.data[Number(item.updated_at)] = item;
+  };
+
+  Timer.prototype.add_next = function(date, timeout) {
+    if (timeout < this.delay_min) {
+      this.delay_min = timeout;
+    }
+    return this.timeouts[Number(date)] = true;
+  };
+
+  return Timer;
+
+})();
 var CACHE;
 
 CACHE = function($scope) {
@@ -2713,7 +2750,7 @@ GO = function($scope) {
 var HOGAN_EVENT;
 
 HOGAN_EVENT = function($scope) {
-  var add_diary, cancel_say, external, foreground, hogan_click, hogan_click_event, inner, navi, pool_hand, popup, popup_apply;
+  var add_diary, attention, cancel_say, external, foreground, hogan_click, hogan_click_event, inner, navi, pool_hand, popup, popup_apply;
   hogan_click_event = null;
   navi = function(link) {
     $scope.navi.move(link);
@@ -2768,6 +2805,21 @@ HOGAN_EVENT = function($scope) {
     } else {
       return $scope.anchors.splice(idx, 1);
     }
+  };
+  attention = function(key) {
+    var base, url, wo;
+    base = location.href.replace(location.hash, "");
+    url = Navi.to_url({
+      hash: {
+        search: key,
+        hide_potofs: "",
+        mode: "talk_all_open",
+        page: 1
+      }
+    });
+    wo = window.open();
+    wo.opener = null;
+    return wo.location.href = "" + base + url.hash;
   };
   add_diary = function(anchor, turn, name) {
     return $scope.diary.add.anchor(anchor, turn, name);
@@ -3550,7 +3602,6 @@ TIMER = function($scope) {
   $scope.timestamp = function(date) {
     var dd, dow, hh, mi, mm, now, postfix, tt, yyyy;
     now = new Date(date);
-    now.addMinutes(15);
     yyyy = now.getFullYear();
     mm = now.getMonth() + 1;
     dd = now.getDate();
@@ -3575,13 +3626,12 @@ TIMER = function($scope) {
   };
   lax_time = {};
   $scope.set_time = function(log) {
-    log.is_timer_refresh = true;
-    return log.time = lax_time[log.updated_at] || ("<span time>" + ($scope.lax_time(log.updated_at)) + "</span>");
+    return log.time = lax_time[Number(log.updated_at)] || ("<span time>" + ($scope.lax_time(log.updated_at)) + "</span>");
   };
   return $scope.lax_time = function(date) {
-    var dd, dow, hh, hour, limit, mi, minute, mm, now, postfix, second, time, tt, yyyy;
-    if (lax_time[date] != null) {
-      return lax_time[date];
+    var dd, dow, hh, hour, limit, live, mi, minute, mm, now, postfix, second, time, tt, yyyy;
+    if (lax_time[Number(date)] != null) {
+      return lax_time[Number(date)];
     }
     if (date != null) {
       second = (new Date() - date) / 1000;
@@ -3595,20 +3645,24 @@ TIMER = function($scope) {
       }
       limit = 3 * 60 * 60;
       if ((-limit < second && second < limit)) {
+        live = function(str, timeout) {
+          $scope.timer.add_next(date, timeout);
+          return str;
+        };
         if ((-limit < second && second < -1800)) {
-          return "" + hour + "時間後";
+          return live("" + hour + "時間後", 3600000);
         }
         if ((-1800 < second && second < -25)) {
-          return "" + minute + "分後";
+          return live("" + minute + "分後", 60000);
         }
         if ((-25 < second && second < 25)) {
-          return "25秒以内";
+          return live("25秒以内", 25000);
         }
         if ((25 < second && second < 1800)) {
-          return "" + minute + "分前";
+          return live("" + minute + "分前", 60000);
         }
         if ((1800 < second && second < limit)) {
-          return "" + hour + "時間前";
+          return live("" + hour + "時間前", 3600000);
         }
       } else {
         now = new Date(date);
@@ -3635,12 +3689,12 @@ TIMER = function($scope) {
         }
         time = "" + yyyy + "-" + mm + "-" + dd + " (" + dow + ") " + tt + (hh % 12) + "時" + postfix;
         if (second < 0) {
-          lax_time[date] = time;
+          lax_time[Number(date)] = time;
         }
         return time;
       }
     } else {
-      return lax_time[date] = "....-..-..(？？？) --..時頃";
+      return lax_time[Number(date)] = "....-..-..(？？？) --..時頃";
     }
   };
 };
@@ -3914,7 +3968,9 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
   set_turn = function(turn) {
     var href;
     $scope.set_turn(turn);
-    $scope.event.is_news = $scope.event.has_all_messages ? false : is_news;
+    if ($scope.event.has_all_messages) {
+      $scope.event.is_news = false;
+    }
     $scope.page.value = 1;
     $scope.mode.value = $scope.mode_cache.talk;
     href = $scope.event_url($scope.event);
@@ -3935,7 +3991,8 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
         return getter(event, (function(_this) {
           return function() {
             $scope.init();
-            return set_turn(turn);
+            set_turn(turn);
+            return $scope.event.is_news = is_news;
           };
         })(this));
       }
