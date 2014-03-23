@@ -494,9 +494,10 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var addHtml, closeHtml, html_cache, oldDOM;
+      var addHtml, closeHtml, html_cache, logs, oldDOM, timer;
       initialize($scope, $filter, attr.logs, attr.from);
       initialize = function() {};
+      logs = [];
       oldDOM = elm[0];
       if (oldDOM.insertAdjacentHTML) {
         addHtml = function(dom, html) {
@@ -512,9 +513,9 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
           return dom.replaceHTML = html_cache;
         };
       }
-      return $scope.$watchCollection(attr.logs, function(oldVal, logs) {
+      $scope.$watchCollection(attr.logs, function(oldVal, newVal) {
         var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref, _results;
-        logs || (logs = []);
+        logs = newVal || [];
         now = new Date;
         data = {
           story: $scope.story,
@@ -524,6 +525,7 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         for (_i = 0, _len = logs.length; _i < _len; _i++) {
           log = logs[_i];
           log.__proto__ = Message.prototype;
+          log.init_timer($scope, now);
           log.init_view($scope, now);
           template = HOGAN["hogan/" + log.template];
           if (!template) {
@@ -537,7 +539,8 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         closeHtml(newDOM);
         oldDOM.parentNode.replaceChild(newDOM, oldDOM);
         oldDOM = newDOM;
-        _ref = $(newDOM).find("[template]");
+        elm = $(oldDOM);
+        _ref = elm.find("[template]");
         _results = [];
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
           angular_elm = _ref[_j];
@@ -545,6 +548,21 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         }
         return _results;
       });
+      timer = function() {
+        var log, log_elm, now, _i, _len;
+        for (_i = 0, _len = logs.length; _i < _len; _i++) {
+          log = logs[_i];
+          now = new Date;
+          log.init_timer($scope, now);
+          if (log.is_timer_refresh) {
+            log_elm = $("." + log._id);
+            log_elm.find("[cancel_btn]").html(log.cancel_btn);
+            log_elm.find("[time]").html(log.time);
+          }
+        }
+        return _.delay(timer, 3000);
+      };
+      return _.delay(timer, 3000);
     }
   };
 });
@@ -791,10 +809,12 @@ Config = (function() {
 
   Config.prototype.init = function() {
     var count_set, gifts, roles;
-    count_set = function(item) {
-      item.count = this.counts[item.key];
-      return item;
-    };
+    count_set = (function(_this) {
+      return function(item) {
+        item.count = _this.counts[item.key];
+        return item;
+      };
+    })(this);
     roles = _.groupBy(_.map(this.roles, function(o) {
       return count_set(SOW.roles[o]);
     }), function(o) {
@@ -1137,10 +1157,6 @@ Message = (function() {
     return wo.location.href = "" + base + url.hash;
   };
 
-  Message.prototype.add_diary = function() {
-    return $scope.diary.add.anchor(this);
-  };
-
   Message.prototype.init_data = function(new_base) {
     var key;
     this.turn = new_base.turn;
@@ -1151,7 +1167,7 @@ Message = (function() {
       this.updated_at = this.date;
       delete this.date;
     }
-    this.updated_at = Date.create(this.updated_at);
+    this.updated_at = new Date(this.updated_at);
     switch (this.subid) {
       case "B":
         return this.mestype = "TSAY";
@@ -1169,9 +1185,7 @@ Message = (function() {
   Message.prototype.init_view = function($scope, now) {
     var anchor_ok, mark, match_data, num, style, table, target, template, _, _i, _len, _ref, _ref1;
     if (this.updated_at) {
-      this.cancel_btn = (this.logid != null) && "q" === this.logid[0] && ((now - this.updated_at) < 25 * 1000) ? "なら削除できます。<a hogan-click='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a>" : "";
-      this.timestamp = this.updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja');
-      this.time = $scope.lax_time(this.updated_at);
+      this.timestamp = $scope.timestamp(this.updated_at);
     }
     if ((this.template == null) && (this.logid != null) && (this.mestype != null) && (this.subid != null)) {
       template = null;
@@ -1203,6 +1217,15 @@ Message = (function() {
       this.text = $scope.text_decolate(this.log);
       return delete this.log;
     }
+  };
+
+  Message.prototype.init_timer = function($scope, now) {
+    if (!this.updated_at) {
+      return;
+    }
+    this.is_timer_refresh = false;
+    this.cancel_btn = (this.logid != null) && "q" === this.logid[0] && ((now - this.updated_at) < DELAY.msg_delete) ? (this.is_timer_refresh = true, "<span cancel_btn>なら削除できます。<a hogan-click='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a></span>") : "";
+    return this.time = $scope.set_time(this);
   };
 
   return Message;
@@ -1300,8 +1323,8 @@ Potof = (function() {
     return this.deathday < 0;
   };
 
-  Potof.prototype.summary = function() {
-    switch (this.scope.potofs_order.value) {
+  Potof.prototype.summary = function(order) {
+    switch (order) {
       case 'said_num':
         return "<span class=\"glyphicon glyphicon-pencil\"></span>" + this.said;
       case 'stat_at':
@@ -1502,15 +1525,15 @@ Potof = (function() {
     }
   };
 
-  Potof.prototype.init_timer = function() {
+  Potof.prototype.init_timer = function($scope) {
     if (this.timer != null) {
-      this.timer.entrieddt = Date.create(this.timer.entrieddt);
-      this.timer.limitentrydt = Date.create(this.timer.limitentrydt);
+      this.timer.entrieddt = new Date(this.timer.entrieddt);
+      this.timer.limitentrydt = new Date(this.timer.limitentrydt);
       this.timer.entried = function() {
-        return this.scope.lax_time(this.entrieddt);
+        return $scope.lax_time(this.entrieddt);
       };
       return this.timer.entry_limit = function() {
-        return this.scope.lax_time(this.limitentrydt);
+        return $scope.lax_time(this.limitentrydt);
       };
     }
   };
@@ -2054,7 +2077,7 @@ INIT_POTOFS = function($scope, gon) {
       potof.init_role();
       potof.init_text();
       potof.init_said();
-      _results.push(potof.init_timer());
+      _results.push(potof.init_timer($scope));
     }
     return _results;
   }
@@ -2288,14 +2311,12 @@ DIARY = function($scope) {
     return Diary.base.form.text = "";
   };
   return $scope.diary.add = {
-    anchor: function(message) {
-      var turn;
-      if ("" === message.anchor) {
+    anchor: function(anchor, turn, name) {
+      if ("" === anchor) {
         return;
       }
       $scope.navi.value_add('diary');
-      turn = message.turn;
-      return $scope.diary.form.text = ($scope.diary.form.text.trim() + "\n" + ("(>>" + turn + ":" + message.anchor + " " + message.name + ")")).trim();
+      return $scope.diary.form.text = ($scope.diary.form.text.trim() + "\n" + ("(>>" + turn + ":" + anchor + " " + name + ")")).trim();
     }
   };
 };
@@ -2692,7 +2713,7 @@ GO = function($scope) {
 var HOGAN_EVENT;
 
 HOGAN_EVENT = function($scope) {
-  var cancel_say, external, foreground, hogan_click, hogan_click_event, inner, navi, popup, popup_apply;
+  var add_diary, cancel_say, external, foreground, hogan_click, hogan_click_event, inner, navi, pool_hand, popup, popup_apply;
   hogan_click_event = null;
   navi = function(link) {
     $scope.navi.move(link);
@@ -2710,7 +2731,7 @@ HOGAN_EVENT = function($scope) {
         turn: $scope.event.turn,
         vid: $scope.story.vid
       });
-    }, 25000, {
+    }, DELAY.lento, {
       leading: true,
       trailing: false
     });
@@ -2747,6 +2768,12 @@ HOGAN_EVENT = function($scope) {
     } else {
       return $scope.anchors.splice(idx, 1);
     }
+  };
+  add_diary = function(anchor, turn, name) {
+    return $scope.diary.add.anchor(anchor, turn, name);
+  };
+  pool_hand = function() {
+    return $scope.pool_hand();
   };
   popup_apply = function(item, turn) {
     var idx;
@@ -3520,37 +3547,94 @@ var TIMER;
 
 TIMER = function($scope) {
   var lax_time;
-  $scope.lax_date = function(date) {
-    var postfix;
-    postfix = ["頃", "半頃"][(date.getMinutes() / 30).floor()];
-    return date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix);
+  $scope.timestamp = function(date) {
+    var dd, dow, hh, mi, mm, now, postfix, tt, yyyy;
+    now = new Date(date);
+    now.addMinutes(15);
+    yyyy = now.getFullYear();
+    mm = now.getMonth() + 1;
+    dd = now.getDate();
+    dow = ["日", "月", "火", "水", "木", "金", "土"][now.getDay()];
+    hh = now.getHours();
+    tt = ["午前", "午後"][Math.floor(hh / 12)];
+    mi = now.getMinutes();
+    postfix = ["頃", "半頃"][(mi / 30).floor()];
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (hh < 10) {
+      hh = "0" + hh;
+    }
+    if (mi < 10) {
+      mi = "0" + mi;
+    }
+    return "(" + dow + ") " + tt + (hh % 12) + "時" + mi + "分";
   };
   lax_time = {};
+  $scope.set_time = function(log) {
+    log.is_timer_refresh = true;
+    return log.time = lax_time[log.updated_at] || ("<span time>" + ($scope.lax_time(log.updated_at)) + "</span>");
+  };
   return $scope.lax_time = function(date) {
-    var limit, now, postfix, time, timespan;
+    var dd, dow, hh, hour, limit, mi, minute, mm, now, postfix, second, time, tt, yyyy;
     if (lax_time[date] != null) {
       return lax_time[date];
     }
     if (date != null) {
-      timespan = (new Date() - date) / 1000;
+      second = (new Date() - date) / 1000;
+      if (0 < second) {
+        minute = Math.ceil(second / 60);
+        hour = Math.ceil(minute / 60);
+      }
+      if (second < 0) {
+        minute = Math.floor - second / 60;
+        hour = Math.floor - minute / 60;
+      }
       limit = 3 * 60 * 60;
-      if ((-limit < timespan && timespan < limit)) {
-        if ((-60 < timespan && timespan < -25)) {
-          return "1分後";
+      if ((-limit < second && second < limit)) {
+        if ((-limit < second && second < -1800)) {
+          return "" + hour + "時間後";
         }
-        if ((-25 < timespan && timespan < 25)) {
+        if ((-1800 < second && second < -25)) {
+          return "" + minute + "分後";
+        }
+        if ((-25 < second && second < 25)) {
           return "25秒以内";
         }
-        if ((25 < timespan && timespan < 60)) {
-          return "1分前";
+        if ((25 < second && second < 1800)) {
+          return "" + minute + "分前";
         }
-        return date.relative('ja');
+        if ((1800 < second && second < limit)) {
+          return "" + hour + "時間前";
+        }
       } else {
-        now = Date.create(date);
+        now = new Date(date);
         now.addMinutes(15);
-        postfix = ["頃", "半頃"][(now.getMinutes() / 30).floor()];
-        time = now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja');
-        if (timespan < 0) {
+        yyyy = now.getFullYear();
+        mm = now.getMonth() + 1;
+        dd = now.getDate();
+        dow = ["日", "月", "火", "水", "木", "金", "土"][now.getDay()];
+        hh = now.getHours();
+        tt = ["午前", "午後"][Math.floor(hh / 12)];
+        mi = now.getMinutes();
+        postfix = ["頃", "半頃"][(mi / 30).floor()];
+        if (mm < 10) {
+          mm = "0" + mm;
+        }
+        if (dd < 10) {
+          dd = "0" + dd;
+        }
+        if (hh < 10) {
+          hh = "0" + hh;
+        }
+        if (mi < 10) {
+          mi = "0" + mi;
+        }
+        time = "" + yyyy + "-" + mm + "-" + dd + " (" + dow + ") " + tt + (hh % 12) + "時" + postfix;
+        if (second < 0) {
           lax_time[date] = time;
         }
         return time;
