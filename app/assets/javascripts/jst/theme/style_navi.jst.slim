@@ -18,7 +18,6 @@
   h6(ng-if="show_style_navi && page") ログの表示方法 &emsp;&emsp;&emsp;&emsp;
   dl.dl-horizontal(ng-if="show_style_navi && msg_style")
     dt
-      select.form-control.input-block-level(ng-model="msg_style.value" ng-options="o.val as o.name group by o.group for o in msg_style.select")
     dd.form-inline
       .form-group
         label
