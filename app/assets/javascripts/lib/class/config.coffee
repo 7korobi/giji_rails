@@ -1,6 +1,6 @@
 class Config
   init: ->
-    count_set = (item)->
+    count_set = (item)=>
       item.count = @counts[item.key]
       item
 
