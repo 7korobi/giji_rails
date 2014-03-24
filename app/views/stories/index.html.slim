@@ -25,30 +25,7 @@
             i.glyphicon.glyphicon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
         th(scope="col" ng-hide="stories_is_small") ルール
-    tbody
-      tr(ng-repeat="story in stories_find")
-        td
-          a(ng-href="{{story.file}}")
-            code.glyphicon.glyphicon-folder-open
-          span.small
-            | {{story._id}}
-          a(ng-href="{{story.link}}") {{story.name}}
-          img(ng-src="/images/icon/cd_{{story.rating}}.png")
-          span.note(ng-hide="stories_is_small")
-            br
-            | 　　更新 : {{story.upd.time_text}} {{story.upd.interval_text}}
-            br
-            | {{story.card.role_names}}
-            br
-            | {{story.card.event_names}}
-
-        td.small(ng-hide="stories_is_small")
-          | {{story.vpl.last()}}人
-        td.small(ng-hide="stories_is_small")
-          span.note(ng-hide="story._type != 'SowVillage'")
-            | {{story.type.saycnt.CAPTION}}
-            br
-          | {{story.type.game_rule.CAPTION}}
+    tbody(stories="stories_find" from="stories")
     thead
       tr
         th(scope="col")

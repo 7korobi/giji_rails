@@ -19,7 +19,7 @@ class StorySummary
       @card.event_names   = Lib.countup.config(@card.event).join '、'
 
     if @upd?
-      @upd.time_text = "#{@upd.hour.pad(2)}時#{@upd.minute.pad(2)}分"
+      @upd.time_text = Timer.hhmm(@upd.hour, @upd.minute)
       @upd.interval_text = "#{@upd.interval * 24}時間"
 
     if @announce?
@@ -37,10 +37,8 @@ class StorySummary
         @type.recovery = ' （発言の補充があります。）' if 1 < @upd.interval
       @is_wbbs = 'wbbs' == @type.start
 
-  navi: ($scope)->
+StorySummary.navi = ($scope)->
     page = $scope.page
-    page.filter_by 'stories'
-    page.filter_to 'stories_find'
 
     filters = [
       { target: "rating",       key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
@@ -52,13 +50,16 @@ class StorySummary
       { target: "card_role",    key: ((o)-> o.card.role_names || "(なし)"), text: String }
       { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
       { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
-      { target: "folder",       key: ((o)-> o.folder), text: String }
+      { target: "folder",       key: ((o)-> o.folder), text: ((key)-> OPTION.page.folder.button[key]) }
     ]
-    for filter in filters
-      keys = _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
+    set_filter = (filter)->
       base = OPTION.page[filter.target]
+
+      keys = base.button && Object.keys(base.button)
+      keys ||= _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
+
       navigator =
-        options: base.options || base
+        options: base.options
         button:
           ALL: "- すべて -"
       if keys.length > 1
@@ -72,8 +73,7 @@ class StorySummary
         else
           _.filter list, (o)->
             filter.key(o) == $scope[filter.target].value
-
-
+    set_filter(filter) for filter in filters
 
 class Story extends StorySummary
   init: ($scope)->

@@ -1,4 +1,4 @@
-angular.module("giji").directive "theme", ($compile)->
+angular.module("giji").directive "theme", ($compile, $cookies)->
   initialize = ($scope, elm, attr)->
     $scope.selectors = OPTION.selectors
     $scope.selector_keys = {}
@@ -69,6 +69,9 @@ angular.module("giji").directive "theme", ($compile)->
       ]
       $scope.msg_style.value = msg.join("_")
     msg_apply()
+
+    $scope.$watch 'msg_styles.row', ->
+      $cookies.row = $scope.msg_styles.row
 
     $scope.$watch 'css.value', css_apply
     $scope.$watch 'styles.theme', css_change

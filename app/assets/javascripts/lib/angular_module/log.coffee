@@ -16,17 +16,6 @@ filters_common_last = ($scope, $filter)->
   page = $scope.page
   filter_filter = $filter 'filter'
 
-  page.filter 'info_at.value', (now, list)->
-    $scope.event.unread_count = 0
-    if now && $scope.event?
-      _.filter list, (o)->
-        if now < o.updated_at
-          ++$scope.event.unread_count unless o.logid == "IX99999"
-          return true
-        return o.logid.match(/vilinfo|potofs|status/)
-    else
-      list
-
   page.filter 'search.value', (search, list)->
     $scope.search_input = search
     filter_filter list, search
@@ -49,14 +38,6 @@ filters_common_last = ($scope, $filter)->
       from = (page_no - 1) * page_per
 
     list.slice from, to
-
-  page.filter 'msg_styles.order', (key, list)->
-    order =
-      if "desc" == key
-        (o)-> - o.updated_at
-      else
-        (o)-> + o.updated_at
-    _.sortBy list, order
 
   $scope.$watch "page.value",      scrollTo
   $scope.$watch "search.value",    scrollTo
@@ -146,35 +127,75 @@ filters_if_event = ($scope, target, from)->
     _.filter list, (o)->
       _.some faces, (face)-> face == Potof.key(o)
 
+  page.filter 'info_at.value', (now, list)->
+    $scope.event.unread_count = 0
+    if now && $scope.event?
+      _.filter list, (o)->
+        if now < o.updated_at
+          ++$scope.event.unread_count unless o.logid == "IX99999"
+          return true
+        return o.logid.match(/vilinfo|potofs|status/)
+    else
+      list
+
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
   $scope.$watch "event.turn",    scrollTo
   $scope.$watch "event.is_news", scrollTo
   $scope.$watch "mode.value",    scrollTo
 
 
-angular.module("giji").directive "stories", ($parse, $compile)->
-  initialize = ($scope)->
+angular.module("giji").directive "stories", ($parse, $compile, $filter)->
+  initialize = ($scope, $filter, target, from)->
     filters_common $scope
+    $scope.page.filter_by from
+    $scope.page.filter_to target
     StorySummary.navi $scope
-    filters_if_stories $scope
-
+    filters_common_last $scope, $filter
+    $scope.page.start()
 
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    initialize $scope
+    initialize $scope, $filter, attr.stories, attr.from
     initialize = ->
 
-    $scope.$watchCollection attr.stories, (oldVal, stories)->
-      elm.html("")
-      return unless stories
+    logs = []
+    oldDOM = elm[0]
+
+    if oldDOM.insertAdjacentHTML
+      addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
+      closeHtml = (dom)->
+    else
+      html_cache = ""
+      addHtml = (dom, html)-> html_cache += html
+      closeHtml = (dom)-> dom.replaceHTML = html_cache
+
+    $scope.$watch "stories_is_small", ()-> draw logs
+    $scope.$watchCollection attr.stories, (_, newVal)-> draw newVal
+    draw = (newVal)->
+      logs = newVal || []
+      now = new Date
+      data = {}
+
+      newDOM = oldDOM.cloneNode(false)
       for log in logs
-        template = HOGAN["hogan/" + log.template]
+        log.__proto__ = StorySummary.prototype
+        if $scope.stories_is_small
+          template = HOGAN["hogan/sow/story_summary_small"]
+        else
+          template = HOGAN["hogan/sow/story_summary"]
+
         unless template
           console.log "can't show log!"
           console.log log
           continue
-        data.message = log
-        elm.append template.render data
+        data.story = log
+        addHtml newDOM, template.render data
+      closeHtml newDOM
+
+      oldDOM.parentNode.replaceChild newDOM, oldDOM
+      oldDOM = newDOM
+
+      elm = $(oldDOM)
       for angular_elm in elm.find("[template]")
         $compile(angular_elm)($scope)
 
@@ -186,6 +207,14 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
       Message.navi $scope
       filters_if_event $scope, target, from
     filters_common_last $scope, $filter
+    $scope.page.filter 'msg_styles.order', (key, list)->
+      order =
+        if "desc" == key
+          (o)-> - o.updated_at
+        else
+          (o)-> + o.updated_at
+      _.sortBy list, order
+
 
     from_value = $parse from
     $scope.page.last_updated_at = ()->
