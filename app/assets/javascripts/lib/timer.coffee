@@ -1,20 +1,5 @@
 TIMER = ($scope)->
-  $scope.timestamp = (date)->
-    now = new Date(date)
-    yyyy = now.getFullYear();
-    mm = now.getMonth() + 1;
-    dd = now.getDate();
-    dow = ["日","月","火","水","木","金","土"][now.getDay()]
-    hh = now.getHours();
-    tt = ["午前","午後"][ Math.floor hh / 12 ]
-    mi = now.getMinutes();
-    postfix = ["頃","半頃"][(mi/30).floor()]
-
-    mm = "0" + mm if mm < 10
-    dd = "0" + dd if dd < 10
-    hh = "0" + hh if hh < 10
-    mi = "0" + mi if mi < 10
-    "(#{dow}) #{tt}#{hh % 12}時#{mi}分"
+  $scope.timestamp = Timer.time_stamp
 
   lax_time = {}
   $scope.set_time = (log)->
@@ -42,23 +27,7 @@ TIMER = ($scope)->
         return live "#{minute}分前",   60000 if     25 < second <  1800
         return live "#{hour}時間前", 3600000 if   1800 < second < limit
       else
-        now = new Date(date)
-        now.addMinutes(15)
-        yyyy = now.getFullYear();
-        mm = now.getMonth() + 1;
-        dd = now.getDate();
-        dow = ["日","月","火","水","木","金","土"][now.getDay()]
-        hh = now.getHours();
-        tt = ["午前","午後"][ Math.floor hh / 12 ]
-        mi = now.getMinutes();
-        postfix = ["頃","半頃"][(mi/30).floor()]
-
-        mm = "0" + mm if mm < 10
-        dd = "0" + dd if dd < 10
-        hh = "0" + hh if hh < 10
-        mi = "0" + mi if mi < 10
-
-        time = "#{yyyy}-#{mm}-#{dd} (#{dow}) #{tt}#{hh % 12}時#{postfix}"
+        time = Timer.date_time_stamp(date)
         lax_time[Number date] = time if second < 0
         time
     else
