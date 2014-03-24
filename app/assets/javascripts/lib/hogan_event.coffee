@@ -127,5 +127,5 @@ HOGAN_EVENT = ($scope)->
       item?.z = Date.now()
 
   # use in interpolate
-  $('body').on  'click', '.drag',  foreground
-  $('body').on  'click', '[hogan-click]', hogan_click
+  $('#outframe').on  'click', '.drag',  foreground
+  $('#outframe').on  'click', '[hogan-click]', hogan_click
