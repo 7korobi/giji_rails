@@ -1,5 +1,3 @@
-require 'yaml'
-require 'active_support/all'
 
 Face
 ChrSet
