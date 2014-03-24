@@ -269,22 +269,6 @@ filters_common_last = function($scope, $filter) {
   var filter_filter, page;
   page = $scope.page;
   filter_filter = $filter('filter');
-  page.filter('info_at.value', function(now, list) {
-    $scope.event.unread_count = 0;
-    if (now && ($scope.event != null)) {
-      return _.filter(list, function(o) {
-        if (now < o.updated_at) {
-          if (o.logid !== "IX99999") {
-            ++$scope.event.unread_count;
-          }
-          return true;
-        }
-        return o.logid.match(/vilinfo|potofs|status/);
-      });
-    } else {
-      return list;
-    }
-  });
   page.filter('search.value', function(search, list) {
     $scope.search_input = search;
     return filter_filter(list, search);
@@ -313,15 +297,6 @@ filters_common_last = function($scope, $filter) {
       from = (page_no - 1) * page_per;
     }
     return list.slice(from, to);
-  });
-  page.filter('msg_styles.order', function(key, list) {
-    var order;
-    order = "desc" === key ? function(o) {
-      return -o.updated_at;
-    } : function(o) {
-      return +o.updated_at;
-    };
-    return _.sortBy(list, order);
   });
   $scope.$watch("page.value", scrollTo);
   $scope.$watch("search.value", scrollTo);
@@ -424,41 +399,92 @@ filters_if_event = function($scope, target, from) {
       });
     });
   });
+  page.filter('info_at.value', function(now, list) {
+    $scope.event.unread_count = 0;
+    if (now && ($scope.event != null)) {
+      return _.filter(list, function(o) {
+        if (now < o.updated_at) {
+          if (o.logid !== "IX99999") {
+            ++$scope.event.unread_count;
+          }
+          return true;
+        }
+        return o.logid.match(/vilinfo|potofs|status/);
+      });
+    } else {
+      return list;
+    }
+  });
   $scope.$watch('event.is_news', $scope.deploy_mode_common);
   $scope.$watch("event.turn", scrollTo);
   $scope.$watch("event.is_news", scrollTo);
   return $scope.$watch("mode.value", scrollTo);
 };
 
-angular.module("giji").directive("stories", function($parse, $compile) {
+angular.module("giji").directive("stories", function($parse, $compile, $filter) {
   var initialize;
-  initialize = function($scope) {
+  initialize = function($scope, $filter, target, from) {
     filters_common($scope);
+    $scope.page.filter_by(from);
+    $scope.page.filter_to(target);
     StorySummary.navi($scope);
-    return filters_if_stories($scope);
+    filters_common_last($scope, $filter);
+    return $scope.page.start();
   };
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      initialize($scope);
+      var addHtml, closeHtml, draw, html_cache, logs, oldDOM;
+      initialize($scope, $filter, attr.stories, attr.from);
       initialize = function() {};
-      return $scope.$watchCollection(attr.stories, function(oldVal, stories) {
-        var angular_elm, log, template, _i, _j, _len, _len1, _ref, _results;
-        elm.html("");
-        if (!stories) {
-          return;
-        }
+      logs = [];
+      oldDOM = elm[0];
+      if (oldDOM.insertAdjacentHTML) {
+        addHtml = function(dom, html) {
+          return dom.insertAdjacentHTML('beforeEnd', html);
+        };
+        closeHtml = function(dom) {};
+      } else {
+        html_cache = "";
+        addHtml = function(dom, html) {
+          return html_cache += html;
+        };
+        closeHtml = function(dom) {
+          return dom.replaceHTML = html_cache;
+        };
+      }
+      $scope.$watch("stories_is_small", function() {
+        return draw(logs);
+      });
+      $scope.$watchCollection(attr.stories, function(_, newVal) {
+        return draw(newVal);
+      });
+      return draw = function(newVal) {
+        var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref, _results;
+        logs = newVal || [];
+        now = new Date;
+        data = {};
+        newDOM = oldDOM.cloneNode(false);
         for (_i = 0, _len = logs.length; _i < _len; _i++) {
           log = logs[_i];
-          template = HOGAN["hogan/" + log.template];
+          log.__proto__ = StorySummary.prototype;
+          if ($scope.stories_is_small) {
+            template = HOGAN["hogan/sow/story_summary_small"];
+          } else {
+            template = HOGAN["hogan/sow/story_summary"];
+          }
           if (!template) {
             console.log("can't show log!");
             console.log(log);
             continue;
           }
-          data.message = log;
-          elm.append(template.render(data));
+          data.story = log;
+          addHtml(newDOM, template.render(data));
         }
+        closeHtml(newDOM);
+        oldDOM.parentNode.replaceChild(newDOM, oldDOM);
+        oldDOM = newDOM;
+        elm = $(oldDOM);
         _ref = elm.find("[template]");
         _results = [];
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
@@ -466,7 +492,7 @@ angular.module("giji").directive("stories", function($parse, $compile) {
           _results.push($compile(angular_elm)($scope));
         }
         return _results;
-      });
+      };
     }
   };
 });
@@ -481,6 +507,15 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
       filters_if_event($scope, target, from);
     }
     filters_common_last($scope, $filter);
+    $scope.page.filter('msg_styles.order', function(key, list) {
+      var order;
+      order = "desc" === key ? function(o) {
+        return -o.updated_at;
+      } : function(o) {
+        return +o.updated_at;
+      };
+      return _.sortBy(list, order);
+    });
     from_value = $parse(from);
     $scope.page.last_updated_at = function() {
       var last;
@@ -672,7 +707,7 @@ angular.module("giji").directive("diary", function($compile) {
     }
   };
 });
-angular.module("giji").directive("theme", function($compile) {
+angular.module("giji").directive("theme", function($compile, $cookies) {
   var initialize;
   initialize = function($scope, elm, attr) {
     var css_apply, css_change, html_class, key, msg_apply, msg_change, redesign_in_time, val, _ref;
@@ -740,6 +775,9 @@ angular.module("giji").directive("theme", function($compile) {
       return $scope.msg_style.value = msg.join("_");
     };
     msg_apply();
+    $scope.$watch('msg_styles.row', function() {
+      return $cookies.row = $scope.msg_styles.row;
+    });
     $scope.$watch('css.value', css_apply);
     $scope.$watch('styles.theme', css_change);
     $scope.$watch('styles.width', css_change);
@@ -1563,7 +1601,7 @@ StorySummary = (function() {
       this.card.event_names = Lib.countup.config(this.card.event).join('、');
     }
     if (this.upd != null) {
-      this.upd.time_text = "" + (this.upd.hour.pad(2)) + "時" + (this.upd.minute.pad(2)) + "分";
+      this.upd.time_text = Timer.hhmm(this.upd.hour, this.upd.minute);
       this.upd.interval_text = "" + (this.upd.interval * 24) + "時間";
     }
     if (this.announce != null) {
@@ -1586,118 +1624,123 @@ StorySummary = (function() {
     }
   };
 
-  StorySummary.prototype.navi = function($scope) {
-    var base, filter, filters, key, keys, navigator, page, _i, _j, _len, _len1, _results;
-    page = $scope.page;
-    page.filter_by('stories');
-    page.filter_to('stories_find');
-    filters = [
-      {
-        target: "rating",
-        key: (function(o) {
-          return o.rating;
-        }),
-        text: (function(key) {
-          var _ref;
-          return (_ref = OPTION.rating[key]) != null ? _ref.caption : void 0;
-        })
-      }, {
-        target: "roletable",
-        key: (function(o) {
-          return o.type.roletable;
-        }),
-        text: (function(key) {
-          return SOW.roletable[key];
-        })
-      }, {
-        target: "game_rule",
-        key: (function(o) {
-          return o.type.game;
-        }),
-        text: (function(key) {
-          var _ref;
-          return (_ref = SOW.game_rule[key]) != null ? _ref.CAPTION : void 0;
-        })
-      }, {
-        target: "potof_size",
-        key: (function(o) {
-          return String(_.last(o.vpl));
-        }),
-        text: (function(key) {
-          return key + "人";
-        })
-      }, {
-        target: "card_event",
-        key: (function(o) {
-          return o.card.event_names || "(なし)";
-        }),
-        text: String
-      }, {
-        target: "card_win",
-        key: (function(o) {
-          return o.card.win_names || "(なし)";
-        }),
-        text: String
-      }, {
-        target: "card_role",
-        key: (function(o) {
-          return o.card.role_names || "(なし)";
-        }),
-        text: String
-      }, {
-        target: "upd_time",
-        key: (function(o) {
-          return o.upd.time_text;
-        }),
-        text: String
-      }, {
-        target: "upd_interval",
-        key: (function(o) {
-          return o.upd.interval_text;
-        }),
-        text: String
-      }, {
-        target: "folder",
-        key: (function(o) {
-          return o.folder;
-        }),
-        text: String
-      }
-    ];
-    _results = [];
-    for (_i = 0, _len = filters.length; _i < _len; _i++) {
-      filter = filters[_i];
-      keys = _.chain($scope.stories).map(filter.key).uniq().sort().value();
-      base = OPTION.page[filter.target];
-      navigator = {
-        options: base.options || base,
-        button: {
-          ALL: "- すべて -"
-        }
-      };
-      if (keys.length > 1) {
-        for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
-          key = keys[_j];
-          navigator.button[key] = filter.text(key);
-        }
-      }
-      Navi.push($scope, filter.target, navigator);
-      _results.push(page.filter("" + filter.target + ".value", function(key, list) {
-        if ('ALL' === $scope[filter.target].value) {
-          return list;
-        } else {
-          return _.filter(list, function(o) {
-            return filter.key(o) === $scope[filter.target].value;
-          });
-        }
-      }));
-    }
-    return _results;
-  };
-
   return StorySummary;
 
 })();
+
+StorySummary.navi = function($scope) {
+  var filter, filters, page, set_filter, _i, _len, _results;
+  page = $scope.page;
+  filters = [
+    {
+      target: "rating",
+      key: (function(o) {
+        return o.rating;
+      }),
+      text: (function(key) {
+        var _ref;
+        return (_ref = OPTION.rating[key]) != null ? _ref.caption : void 0;
+      })
+    }, {
+      target: "roletable",
+      key: (function(o) {
+        return o.type.roletable;
+      }),
+      text: (function(key) {
+        return SOW.roletable[key];
+      })
+    }, {
+      target: "game_rule",
+      key: (function(o) {
+        return o.type.game;
+      }),
+      text: (function(key) {
+        var _ref;
+        return (_ref = SOW.game_rule[key]) != null ? _ref.CAPTION : void 0;
+      })
+    }, {
+      target: "potof_size",
+      key: (function(o) {
+        return String(_.last(o.vpl));
+      }),
+      text: (function(key) {
+        return key + "人";
+      })
+    }, {
+      target: "card_event",
+      key: (function(o) {
+        return o.card.event_names || "(なし)";
+      }),
+      text: String
+    }, {
+      target: "card_win",
+      key: (function(o) {
+        return o.card.win_names || "(なし)";
+      }),
+      text: String
+    }, {
+      target: "card_role",
+      key: (function(o) {
+        return o.card.role_names || "(なし)";
+      }),
+      text: String
+    }, {
+      target: "upd_time",
+      key: (function(o) {
+        return o.upd.time_text;
+      }),
+      text: String
+    }, {
+      target: "upd_interval",
+      key: (function(o) {
+        return o.upd.interval_text;
+      }),
+      text: String
+    }, {
+      target: "folder",
+      key: (function(o) {
+        return o.folder;
+      }),
+      text: (function(key) {
+        return OPTION.page.folder.button[key];
+      })
+    }
+  ];
+  set_filter = function(filter) {
+    var base, key, keys, navigator, _i, _len;
+    base = OPTION.page[filter.target];
+    keys = base.button && Object.keys(base.button);
+    keys || (keys = _.chain($scope.stories).map(filter.key).uniq().sort().value());
+    navigator = {
+      options: base.options,
+      button: {
+        ALL: "- すべて -"
+      }
+    };
+    if (keys.length > 1) {
+      for (_i = 0, _len = keys.length; _i < _len; _i++) {
+        key = keys[_i];
+        navigator.button[key] = filter.text(key);
+      }
+    }
+    Navi.push($scope, filter.target, navigator);
+    return page.filter("" + filter.target + ".value", function(key, list) {
+      if ('ALL' === $scope[filter.target].value) {
+        return list;
+      } else {
+        return _.filter(list, function(o) {
+          return filter.key(o) === $scope[filter.target].value;
+        });
+      }
+    });
+  };
+  _results = [];
+  for (_i = 0, _len = filters.length; _i < _len; _i++) {
+    filter = filters[_i];
+    _results.push(set_filter(filter));
+  }
+  return _results;
+};
 
 Story = (function(_super) {
   __extends(Story, _super);
@@ -1785,6 +1828,61 @@ Timer = (function() {
   return Timer;
 
 })();
+
+Timer.hh = function(hh) {
+  var tt;
+  tt = ["午前", "午後"][Math.floor(hh / 12)];
+  if (hh < 10) {
+    hh = "0" + hh;
+  }
+  return "" + tt + (hh % 12) + "時";
+};
+
+Timer.hhmm = function(hh, mi) {
+  if (mi < 10) {
+    mi = "0" + mi;
+  }
+  return "" + (Timer.hh(hh)) + mi + "分";
+};
+
+Timer.dow = function(dow) {
+  return ["日", "月", "火", "水", "木", "金", "土"][dow];
+};
+
+Timer.time_stamp = function(date) {
+  var dd, dow, hh, mi, mm, now;
+  now = new Date(date);
+  hh = now.getHours();
+  mi = now.getMinutes();
+  dow = Timer.dow(now.getDay());
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+  return "(" + dow + ") " + (Timer.hhmm(hh, mi));
+};
+
+Timer.date_time_stamp = function(date) {
+  var dd, dow, hh, mi, mm, now, postfix, yyyy;
+  now = new Date(date);
+  now.addMinutes(15);
+  yyyy = now.getFullYear();
+  mm = now.getMonth() + 1;
+  dd = now.getDate();
+  dow = Timer.dow(now.getDay());
+  hh = now.getHours();
+  mi = now.getMinutes();
+  postfix = ["頃", "半頃"][(mi / 30).floor()];
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+  return "" + yyyy + "-" + mm + "-" + dd + " (" + dow + ") " + (Timer.hh(hh)) + postfix;
+};
 var CACHE;
 
 CACHE = function($scope) {
@@ -2910,8 +3008,8 @@ HOGAN_EVENT = function($scope) {
       return item != null ? item.z = Date.now() : void 0;
     });
   };
-  $('body').on('click', '.drag', foreground);
-  return $('body').on('click', '[hogan-click]', hogan_click);
+  $('#outframe').on('click', '.drag', foreground);
+  return $('#outframe').on('click', '[hogan-click]', hogan_click);
 };
 var Navi;
 
@@ -2955,13 +3053,6 @@ Navi = (function() {
       c = win.cookies[this.key];
     }
     this.value = this.params.current_type(l || c || "");
-    if ((this.select != null) && _.every(this.select, (function(_this) {
-      return function(o) {
-        return _this.value !== o.val;
-      };
-    })(this))) {
-      this.value = "";
-    }
     return this.value || (this.value = this.params.current_type(this.params.current));
   };
 
@@ -3599,37 +3690,13 @@ var TIMER;
 
 TIMER = function($scope) {
   var lax_time;
-  $scope.timestamp = function(date) {
-    var dd, dow, hh, mi, mm, now, postfix, tt, yyyy;
-    now = new Date(date);
-    yyyy = now.getFullYear();
-    mm = now.getMonth() + 1;
-    dd = now.getDate();
-    dow = ["日", "月", "火", "水", "木", "金", "土"][now.getDay()];
-    hh = now.getHours();
-    tt = ["午前", "午後"][Math.floor(hh / 12)];
-    mi = now.getMinutes();
-    postfix = ["頃", "半頃"][(mi / 30).floor()];
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-    if (hh < 10) {
-      hh = "0" + hh;
-    }
-    if (mi < 10) {
-      mi = "0" + mi;
-    }
-    return "(" + dow + ") " + tt + (hh % 12) + "時" + mi + "分";
-  };
+  $scope.timestamp = Timer.time_stamp;
   lax_time = {};
   $scope.set_time = function(log) {
     return log.time = lax_time[Number(log.updated_at)] || ("<span time>" + ($scope.lax_time(log.updated_at)) + "</span>");
   };
   return $scope.lax_time = function(date) {
-    var dd, dow, hh, hour, limit, live, mi, minute, mm, now, postfix, second, time, tt, yyyy;
+    var hour, limit, live, minute, second, time;
     if (lax_time[Number(date)] != null) {
       return lax_time[Number(date)];
     }
@@ -3665,29 +3732,7 @@ TIMER = function($scope) {
           return live("" + hour + "時間前", 3600000);
         }
       } else {
-        now = new Date(date);
-        now.addMinutes(15);
-        yyyy = now.getFullYear();
-        mm = now.getMonth() + 1;
-        dd = now.getDate();
-        dow = ["日", "月", "火", "水", "木", "金", "土"][now.getDay()];
-        hh = now.getHours();
-        tt = ["午前", "午後"][Math.floor(hh / 12)];
-        mi = now.getMinutes();
-        postfix = ["頃", "半頃"][(mi / 30).floor()];
-        if (mm < 10) {
-          mm = "0" + mm;
-        }
-        if (dd < 10) {
-          dd = "0" + dd;
-        }
-        if (hh < 10) {
-          hh = "0" + hh;
-        }
-        if (mi < 10) {
-          mi = "0" + mi;
-        }
-        time = "" + yyyy + "-" + mm + "-" + dd + " (" + dow + ") " + tt + (hh % 12) + "時" + postfix;
+        time = Timer.date_time_stamp(date);
         if (second < 0) {
           lax_time[Number(date)] = time;
         }
