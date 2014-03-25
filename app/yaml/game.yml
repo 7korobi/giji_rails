@@ -396,7 +396,7 @@ PAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/pan/config.pl
-    is_angular: cleanup
+    is_angular: active-event
 
 MORPHE:
   server: morphe.sakura.ne.jp
@@ -686,7 +686,7 @@ LOBBY:
       DIR_VIL:  ./data/vil
       DIR_USER: ../data/user
     pl:  /www/giji_log/lobby/config.pl
-    is_angular: cleanup
+    is_angular: active-event
 
 OFFPARTY:
   server: party.ps.land.to
