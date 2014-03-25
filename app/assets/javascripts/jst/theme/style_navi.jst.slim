@@ -1,0 +1,83 @@
+.pagenavi
+  h6(ng-if="show_style_navi") スタイル：ログの見た目 &emsp;&emsp;&emsp;&emsp;
+  dl.dl-horizontal(ng-if="show_style_navi")
+    dt(ng-if="css")
+      select.form-control.input-block-level(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
+    dd.form-inline(ng-if="css")
+      .form-group.mark
+        label.checkbox(ng-repeat="key in selector_keys.font")
+          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.font")
+            | {{selectors.font[key]}}
+      | &thinsp;
+      .form-group.mark
+        label.checkbox(ng-repeat="key in selector_keys.width")
+          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.width")
+            | {{selectors.width[key]}}
+
+
+  h6(ng-if="show_style_navi && page") ログの表示方法 &emsp;&emsp;&emsp;&emsp;
+  dl.dl-horizontal(ng-if="show_style_navi && msg_style")
+    dt
+    dd.form-inline
+      .form-group
+        label
+          select.form-control.input-mini(ng-model="msg_styles.power"   ng-options="key as selectors.power[key] for key in selector_keys.power" )
+        | &thinsp;
+      .form-group
+        label
+          select.form-control.input-mini(ng-model="msg_styles.order"   ng-options="key as selectors.order[key] for key in selector_keys.order" )
+        | &thinsp;
+      .form-group
+        label
+          select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
+        | &thinsp;
+
+
+  h6(ng-if="mode") フィルタ：表示するログ &emsp;&emsp;&emsp;&emsp;
+  dl.dl-horizontal(ng-if="mode")
+    dt
+      select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select")
+    dd.form-inline
+      .form-group
+        a.mark.click(ng-repeat="a in mode_common" ng-click="mode.value = a.value") {{a.name}}
+      | &thinsp;
+      .form-group.mark(ng-if="show_style_navi")
+        label
+          input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
+        label
+          input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
+        label
+          input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
+        label
+          input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
+      | &thinsp;
+      .form-group.mark(ng-if="show_style_navi")
+        label.checkbox
+          input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
+        label.checkbox
+          input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
+        label.checkbox
+          input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
+
+
+  h6(ng-if="page") ページ、日程の移動 &emsp;&emsp;&emsp;&emsp;
+  dl.dl-horizontal(ng-if="page")
+    dt
+      select.form-control.input-block-level(ng-model="event" ng-change="set_turn(event.turn)" ng-options="e as e.name for e in events" ng-if="event")
+    dd.form-inline
+      .form-group(ng-if="page")
+        label(ng-if="! event.is_news")
+          select.form-control.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")
+      | &thinsp;
+      .form-group(ng-if="event.is_progress")
+        label
+          a.btn.btn-default(ng-if="  event.is_news" ng-click="ajax_event(event.turn, null, false)") ページ表示
+          a.btn.btn-default(ng-if="! event.is_news" ng-click="ajax_event(event.turn, null, true)") 最新の発言
+      | &thinsp;
+      .form-group
+        label
+          input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
+      | &thinsp;
+      .form-group(ng-if="event.is_progress")
+        label
+          a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")

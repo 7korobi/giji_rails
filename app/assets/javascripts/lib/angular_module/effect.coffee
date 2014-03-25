@@ -9,11 +9,12 @@ angular.module("giji").directive "adjust", ($compile, $timeout)->
       height = win.height
 
       msg_width = OPTION.css.h1.widths[$scope.styles.width]
-      switch $scope.styles.width
-        when "center-msg", "large-msg"
-          win.info.width = (width - msg_width)/2
-        else
-          win.info.width = width - msg_width
+      win.info.width =
+        switch $scope.styles.width
+          when "center-msg", "large-msg"
+            (width - msg_width)/2
+          else
+            width - msg_width
 
       buttons = FixedBox.list["#buttons"]
       if buttons?
@@ -69,8 +70,8 @@ angular.module("giji").directive "navi", ($compile, $timeout)->
 
     $timeout ->
       win.on_resize do_resize
-    , 100 
-   
+    , 100
+
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
     attr_id = "navi_#{attr.navi}"

@@ -11,17 +11,6 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
       {name: '議事', value: $scope.mode_cache.talk }
     ]
 
-  $scope.deploy_config = ->
-    count_set = (item)->
-      item.count = $scope.config.counts[item.key]
-      item
-
-    roles = _.groupBy _.map($scope.config.roles, (o)-> count_set SOW.roles[o]), (o)-> SOW.groups[o.group].name
-    gifts = _.groupBy _.map($scope.config.gifts, (o)-> count_set SOW.gifts[o]), (o)-> "恩恵"
-    $scope.config.items = _.assign {}, roles, gifts
-    $scope.config.items_keys = _.keys $scope.config.items
-    $scope.config.items.events = $scope.config.events.map (o)-> SOW.events[o]
-
   get = (href, cb)->
     $scope.get href + "&ua=javascript", cb
 

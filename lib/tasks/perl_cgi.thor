@@ -50,7 +50,7 @@ class PerlCgi < Thor
     files = %w[index.html sow.cgi]
     sync_to_servers(files) do |folder, files|
       next if files['skip']
-      files && files['lapp'] && files['lapp'][/testbed$/]
+      files && files['lapp'] && files['lapp'][/active-event$/]
     end
   end
 

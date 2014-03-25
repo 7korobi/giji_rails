@@ -5,7 +5,18 @@ INIT_FORM = (new_base)->
 INIT_POTOFS = ($scope, gon)->
   if gon.potofs?
     for potof in gon.potofs
-      INIT_POTOF $scope, potof, gon
+      potof.story = gon.story
+      potof.event = gon.event
+      potof.potofs = gon.potofs
+      potof.scope = $scope
+      potof.__proto__ = Potof.prototype
+      potof.init_bonds()
+      potof.init_win()
+      potof.init_stat()
+      potof.init_role()
+      potof.init_text()
+      potof.init_said()
+      potof.init_timer($scope)
 
 INIT = ($scope, $filter, $timeout)->
   return unless gon?
@@ -14,11 +25,12 @@ INIT = ($scope, $filter, $timeout)->
 
   if gon.stories?
     for story in gon.stories
-      INIT_STORY $scope, story
+      story.__proto__ = StorySummary.prototype
+      story.init($scope)
 
   if gon.story?
-    INIT_STORY $scope, gon.story
-
+    gon.story.__proto__ = Story.prototype
+    gon.story.init($scope)
 
   for key, news of gon
     $scope.merge $scope, gon, key
@@ -26,22 +38,20 @@ INIT = ($scope, $filter, $timeout)->
 
 
   if $scope.potofs?
-    live_potofs = _.filter $scope.potofs, (o)->
-      o.deathday < 0
+    live_potofs = _.filter $scope.potofs, (o)-> o.is_live()
 
     $scope.potofs.mob = ->
-      _.filter $scope.potofs, (o)-> "mob" == o.live
+      _.filter $scope.potofs, (o)-> o.is_mob()
     $scope.sum =
-      actaddpt: 
-        _.reduce live_potofs, (sum, o)-> 
+      actaddpt:
+        _.reduce live_potofs, (sum, o)->
           sum + o.point.actaddpt
         , 0
 
-    potofs_hash = 
+    potofs_hash =
       others: "他の人々"
     for potof in $scope.potofs
-      key = $scope.potof_key potof
-      potofs_hash[key] = potof.name
+      potofs_hash[potof.key] = potof.name
 
     unless $scope.hide_potofs?
       ArrayNavi.push $scope, 'hide_potofs',
@@ -59,11 +69,5 @@ INIT = ($scope, $filter, $timeout)->
 
     $scope.page.length = gon.pages.length
 
-  has_messages = false
-  has_messages or= $scope.event?.messages?
-  has_messages or= $scope.messages_raw?
-  has_messages or= $scope.stories?
-  if has_messages && ! $scope.page?
-    FILTER($scope, $filter, $timeout)
 
 

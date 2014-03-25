@@ -5,5 +5,5 @@ require 'resque_scheduler/server'
 
 Resque.redis = 'mongo.family.jp:6379'
 Resque::Scheduler.dynamic = true
-Resque.schedule = SCHEDULE
+Resque.schedule = YAML.load_file './app/yaml/schedule.yml'
 

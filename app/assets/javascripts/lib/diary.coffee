@@ -7,10 +7,9 @@ DIARY = ($scope)->
     Diary.base.form.text = ""
 
   $scope.diary.add =
-    anchor: (message)->
-      return if "" == message.anchor
+    anchor: (anchor, turn, name)->
+      return if "" == anchor
 
       $scope.navi.value_add 'diary'
-      turn = message.turn
-      $scope.diary.form.text = ($scope.diary.form.text.trim() + "\n" + "(>>#{turn}:#{message.anchor} #{message.name})").trim()
+      $scope.diary.form.text = ($scope.diary.form.text.trim() + "\n" + "(>>#{turn}:#{anchor} #{name})").trim()
 

@@ -1,0 +1,23 @@
+tr
+  td
+    a(href="{{story.file}}")
+      code.glyphicon.glyphicon-folder-open
+    span.small
+      | {{story._id}}
+    a(href="{{story.link}}") {{story.name}}
+    img(src="/images/icon/cd_{{story.rating}}.png")
+    span.note(hide="stories_is_small")
+      br
+      | 　　更新 : {{story.upd.time_text}} {{story.upd.interval_text}}
+      br
+      | {{story.card.role_names}}
+      br
+      | {{story.card.event_names}}
+
+  td.small
+    | {{story.vpl.last()}}人
+  td.small
+    span.note
+      | {{story.type.saycnt.CAPTION}}
+      br
+    | {{story.type.game_rule.CAPTION}}

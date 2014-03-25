@@ -1,9 +1,13 @@
 development:
+  application:
+    http://localhost:3000/assets-active-event
   file:
     http://localhost:3000
   rails:
     http://localhost:3000
 production:
+  application:
+    http://7korobi.gehirn.ne.jp/assets-active-event
   file:
 #    http://localhost
     http://7korobi.gehirn.ne.jp

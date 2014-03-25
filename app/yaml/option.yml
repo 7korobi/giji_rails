@@ -94,18 +94,18 @@ page:
       is_cookie: false
     button:
       ALL:       "- すべて -"
-      PAN:       "似顔絵人狼:"
-      WOLF:      "人狼議事標準:"
+      PAN:       "似顔絵人狼"
+      WOLF:      "人狼議事標準"
       RP:        "人狼議事RP:"
-      PRETENSE:  "人狼議事RP:A"
-      PERJURY:   "人狼議事RP:Bp"
-      XEBEC:     "人狼議事RP:Bx"
-      CRAZY:     "人狼議事RP:Bc"
-      CIEL:      "人狼議事RP:Cc"
+      PRETENSE:  "人狼議事RP:Advance"
+      XEBEC:     "人狼議事RP:Braid XEBEX"
+      CRAZY:     "人狼議事RP:Braid Crazy"
+      CIEL:      "人狼議事RP:Cheat Ciel"
+      PERJURY:   "人狼議事RP:Cheat Perjury"
       ULTIMATE:  "人狼議事大乱闘:"
-      ALLSTAR:   "人狼議事大乱闘:A"
-      CABALA:    "人狼議事CabalaCafe:"
-      MORPHE:    "人狼議事モルペウス:"
+      ALLSTAR:   "人狼議事大乱闘:Allstar"
+      CABALA:    "人狼議事CabalaCafe"
+      MORPHE:    "人狼議事モルペウス"
       LOBBY:     "人狼議事ロビー"
       OFFPARTY:  "人狼議事オフ相談所"
 
@@ -222,7 +222,11 @@ selectors:
     30:  30行
     50:  50行
     100: 100行
-    200: 200行
+    300: 300行
+    1000: 1000行
+    3000: 3000行
+    10000: 1万行
+    30000: 3万行
 
   power:
     simple: 携帯用

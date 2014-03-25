@@ -6,12 +6,12 @@ POTOFS = ($scope)->
     all:    []
     scan: ->
       if $scope.potofs?
-        $scope.face.potofs = _.map $scope.potofs, $scope.potof_key
+        $scope.face.potofs = _.map $scope.potofs, Potof.key
       if $scope.event?.messages?
-        log_faces = _.map $scope.event.messages, $scope.potof_key
+        log_faces = _.map $scope.event.messages, Potof.key
         $scope.face.all = _.uniq $scope.face.all.concat(log_faces)
       if $scope.face.potofs?
-        all = _.without $scope.face.all, '-_none_', $scope.potof_key({})
+        all = _.without $scope.face.all, '-_none_', Potof.key({})
         $scope.face.others = _.difference all, $scope.face.potofs
       $scope.do_sort_potofs()
 
@@ -29,8 +29,8 @@ POTOFS = ($scope)->
     calc_potof hide
 
   $scope.potof_only = (potofs)->
-    all  = _.map $scope.potofs, $scope.potof_key
-    only = _.map potofs, $scope.potof_key
+    all  = _.map $scope.potofs, Potof.key
+    only = _.map potofs, Potof.key
     hide = _.difference all, only
     hide.push("others") if potofs != $scope.potofs
 
@@ -40,7 +40,7 @@ POTOFS = ($scope)->
     potof_toggle "others"
 
   $scope.potof_toggle = (select_potof)->
-    potof_toggle $scope.potof_key select_potof
+    potof_toggle Potof.key select_potof
 
   $scope.potofs_toggle = ->
     $scope.potofs_is_small = ! $scope.potofs_is_small
@@ -65,7 +65,7 @@ POTOFS = ($scope)->
 
   potofs_sortBy = (tgt, reverse)->
     return unless $scope.potofs
-    group = (o)-> 
+    group = (o)->
       if o[tgt] instanceof Array
         o[tgt][0]
       else

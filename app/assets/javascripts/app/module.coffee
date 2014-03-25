@@ -1,16 +1,16 @@
 GIJI.msg_styles = []
-for pl in [true, false] 
+for pl in [true, false]
   for power, powername of OPTION.selectors.power
     for row, rowname of OPTION.selectors.row
       for order, ordername of OPTION.selectors.order
         continue unless "simple" == power || head.csstransitions
 
-        o = 
+        o =
           group: rowname
           power: power
           order: order
-          row: row 
-          pl: pl 
+          row: row
+          pl: pl
 
         plname = if pl
           ""
@@ -67,14 +67,6 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
   $scope.win  = win;
   $scope.link = GIJI.link
 
-  $scope.$watch 'title', (value, oldVal)->
-    $('title').text(value);
-
-  # stories support
-  $scope.stories_toggle = ->
-    $scope.stories_is_small = ! $scope.stories_is_small
-    $scope.adjust()
-
   # face_id support
   $scope.img_csid_cid = (csid_cid)->
     if csid_cid?
@@ -88,56 +80,47 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
     csid or= GIJI.csids.default
     "#{URL.file}#{csid.path}#{face_id}#{csid.ext}"
 
-  $scope.potof_key = (o)->
-    csid   = (o.csid || '*').split('_')[0]
-    face_id = o.face_id || '*'
-    "#{csid}-#{face_id}"
+  set_turn = (turn)->
+    $scope.set_turn(turn)
+    if $scope.event.has_all_messages
+      $scope.event.is_news = false
+    $scope.page.value = 1
+    $scope.mode.value = $scope.mode_cache.talk
+    href = $scope.event_url $scope.event
+    win.history "#{$scope.event.name}", href, location.hash
 
-  $scope.ajax_event = (turn, href, is_news)->    
+  $scope.ajax_event = (turn, href, is_news)->
     if $scope.events?
       event = $scope.event
-      change = ->
-        $scope.set_turn(turn)
-        $scope.event.is_news = 
-          if $scope.event.has_all_messages
-            false
-          else
-            is_news
-        $scope.page.value = 1
-        $scope.mode.value = $scope.mode_cache.talk
-        href = $scope.event_url $scope.event
-        win.history "#{$scope.event.name}", href, location.hash
-
       if event.has_all_messages
-        change()
+        set_turn(turn)
       else
         if is_news
           getter = $scope.get_news
         else
-          getter = $scope.get_all 
+          getter = $scope.get_all
         getter event, =>
           $scope.init()
-          change()
+          set_turn(turn)
+          $scope.event.is_news = is_news
 
     else
       location.href = href + location.hash
 
-  $scope.$watch "event.turn", (turn, oldVal)->
-    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
-
-
-  TOKEN_INPUT  $scope
-  HREF_EVAL    $scope
+  TOKEN_INPUT $scope
+  HOGAN_EVENT $scope
   DECOLATE $scope, $sce
   TIMER   $scope
-  CARD    $scope
   CACHE   $scope
   POTOFS  $scope
   AJAX    $scope, $http
-
   DIARY   $scope
-  TITLE   $scope
   GO      $scope
+  TOGGLE  $scope
 
   # INIT FILTER POOL sequence
   POOL    $scope, $filter, $timeout
+
+  $scope.$watch "event.turn", (turn, oldVal)->
+    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
+

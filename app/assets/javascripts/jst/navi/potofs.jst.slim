@@ -1,0 +1,81 @@
+table.potofs
+  thead.head
+    tr
+      th
+        span.name(ng-if="sum.actaddpt")
+          | &nbsp;あと{{sum.actaddpt}}促
+        span.name(ng-if="potofs.length")
+          | &nbsp;({{potofs.length}}人)
+      th(colspan="4" style="text-align: right;")
+        span
+          br
+          code(ng-click="secret_toggle()") ネタバレ
+          | &nbsp;
+        span(ng-if="! secret_is_open")
+          code(ng-click="sort_potofs('stat_at',0)") 日程
+          code(ng-click="sort_potofs('stat_type','')") 状態
+          | &nbsp;
+          code(ng-click="sort_potofs('said_num',0)") 発言
+        span(ng-if="secret_is_open")
+          code(ng-click="sort_potofs('stat_at',0)") 日程
+          code(ng-click="sort_potofs('stat_type','')") 状態
+          | &nbsp;
+          code(ng-click="sort_potofs('said_num',0)") 発言
+          | &nbsp;
+          code(ng-click="sort_potofs('text','')") 補足
+          br
+          code(ng-click="sort_potofs('win_name','')") 陣営
+          code(ng-click="sort_potofs('role_names','')") 役割
+          | &nbsp;
+          code(ng-click="sort_potofs('win_result','')") 勝敗
+          | &nbsp;
+          code(ng-click="sort_potofs('select_name','')") 希望
+      th(style="width: 1ex")
+        a.glyphicon.glyphicon-pushpin(ng-click="potof_only(potofs)")
+
+table.potofs
+  tbody(ng-repeat="key in potofs_keys")
+    tr.head(ng-if="potofs_groups[key].has_head")
+      th.mark(colspan="5")
+        span(ng-bind-html="potofs_groups[key].head")
+        span
+          | ({{potofs_groups[key].length}}人)
+      th(style="width: 1ex")
+        a.glyphicon.glyphicon-pushpin(ng-click="potof_only(potofs_groups[key])")
+
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof.key].class")
+      td(ng-click="potof_toggle(potof)" colspan="2")
+        .name
+          | {{potof.longname || potof.name}}
+        .note.name(ng-if="potof.auth")
+          span.glyphicon.glyphicon-user
+          | {{potof.auth}}
+      td(ng-click="potof_toggle(potof)" style="text-align: right;")
+        span.nowrap
+          | {{potof.stat}}
+        .note.nowrap(ng-if="potof.said")
+          span.glyphicon.glyphicon-pencil
+          | {{potof.said}}
+      td(ng-click="potof_toggle(potof)")
+        div.nowrap(ng-if="secret_is_open")
+          span.note
+            | {{potof.win_name}}::
+          span
+            | {{potof.role_names.join('、')}}
+          .note
+            span.mark
+              | {{potof.win_result}}
+            span.name(ng-if="potof.select_name")
+              | &nbsp; {{potof.select_name}} を希望
+      td(ng-click="potof_toggle(potof)")
+        div(ng-if="secret_is_open")
+          span(ng-bind-html="potof.text.join('')")
+          span.note(ng-if="potof.bond_names")
+            | {{potof.bond_names.join('、')}}
+          span.note(ng-if="potof.bond_names.length && potof.pseudobond_names.length")
+            | 、
+          s.note(ng-if="potof.pseudobond_names")
+            | {{potof.pseudobond_names.join('、')}}
+      th(style="width: 1ex")
+        a.glyphicon.glyphicon-pushpin(ng-click="potof_only([potof])")
+

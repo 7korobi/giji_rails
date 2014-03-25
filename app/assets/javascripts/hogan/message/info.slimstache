@@ -1,0 +1,4 @@
+p.text(class="{{message.mestype}} {{message._id}}")
+  | {{{message.text}}}
+hr.invisible_hr
+

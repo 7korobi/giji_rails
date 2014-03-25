@@ -1,0 +1,61 @@
+table.potofs
+  thead.head
+    tr
+      th
+        span.name(ng-if="sum.actaddpt")
+          | &nbsp;{{sum.actaddpt}}促
+
+      th(colspan="2" style="text-align: right;")
+        span
+          code(ng-click="secret_toggle()") ネタバレ
+        | &nbsp;
+      th(style="width:1ex")
+        a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only(potofs)")
+
+table.potofs
+  tbody(ng-repeat="key in potofs_keys")
+    tr.head(ng-if="potofs_groups[key].has_head")
+      th(colspan="3")
+        span(ng-bind-html="potofs_groups[key].head")
+        span.note
+          | ({{potofs_groups[key].length}}人)
+      th(style="width:1ex")
+        a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only(potofs_groups[key])")
+
+    tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof.key].class")
+      td(ng-click="potof_toggle(potof)" colspan="2")
+        span.name
+          | {{potof.name}}
+      td(ng-click="potof_toggle(potof)" style="text-align: right;")
+        span.nowrap.note(ng-bind-html="potof.summary(potofs_order.value)")
+      td(style="width:1ex")
+        a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only([potof])")
+
+table.potofs
+  tbody
+    tr.head
+      th(colspan="4")
+    tr(ng-class="hide_potofs.of.others.class")
+      td(colspan="4" ng-click="other_toggle()")
+        span.name 他の人々
+    tr.head
+      th(colspan="4")
+        div.nowrap(ng-if="! secret_is_open")
+          code(ng-click="sort_potofs('stat_at',0)") 日程
+          code(ng-click="sort_potofs('stat_type','')") 状態
+          | &nbsp;
+          code(ng-click="sort_potofs('said_num',0)") 発言
+        div.nowrap(ng-if="secret_is_open")
+          code(ng-click="sort_potofs('stat_at',0)") 日程
+          code(ng-click="sort_potofs('stat_type','')") 状態
+          | &nbsp;
+          code(ng-click="sort_potofs('said_num',0)") 発言
+          | &nbsp;
+          code(ng-click="sort_potofs('text','')") 補足
+          br
+          code(ng-click="sort_potofs('win_name','')") 陣営
+          code(ng-click="sort_potofs('role_names','')") 役割
+          | &nbsp;
+          code(ng-click="sort_potofs('win_result','')") 勝敗
+          | &nbsp;
+          code(ng-click="sort_potofs('select_name','')") 希望

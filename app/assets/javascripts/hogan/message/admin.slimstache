@@ -1,0 +1,13 @@
+div.guide(class="{{message.mestype}} {{message._id}}")
+  h3.mesname
+    b
+      | {{{message.name}}}
+  p.text(class="{{message.style}}")
+    | {{{message.text}}}
+  p.mes_date
+    a.mark(hogan-click="attention('{{message.key}}')") 注目
+    | &nbsp;
+    a.mark(hogan-click="add_diary('{{message.anchor}}', {{message.turn}}, '{{message.name}}')") {{message.anchor}}
+    span &nbsp;
+    | {{{message.time}}}
+    | {{{message.cancel_btn}}}

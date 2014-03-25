@@ -1,28 +1,36 @@
 TIMER = ($scope)->
-  $scope.lax_date = (date)->
-    postfix = ["頃","半頃"][(date.getMinutes()/30).floor()]
-    date.format(Date.ISO8601_DATE + '({dow}) {tt}{12hr}時' + postfix)
+  $scope.timestamp = Timer.time_stamp
 
   lax_time = {}
+  $scope.set_time = (log)->
+    log.time = lax_time[Number log.updated_at] || """<span time>#{$scope.lax_time(log.updated_at)}</span>"""
+
   $scope.lax_time = (date)->
-    return lax_time[date] if lax_time[date]?
+    return lax_time[Number date] if lax_time[Number date]?
 
     if date?
-      timespan = (new Date() - date)/1000
+      second = (new Date() - date)/1000
+      if 0 < second
+        minute = Math.ceil second / 60
+        hour   = Math.ceil minute / 60
+      if second < 0
+        minute = Math.floor - second / 60
+        hour   = Math.floor - minute / 60
       limit = 3 * 60 * 60
-      if - limit < timespan < limit
-        return "1分後"    if -60 < timespan < -25
-        return "25秒以内" if -25 < timespan <  25
-        return "1分前"    if  25 < timespan <  60
-        return date.relative('ja')
+      if - limit < second < limit
+        live = (str, timeout)->
+          $scope.timer.add_next date, timeout
+          str
+        return live "#{hour}時間後", 3600000 if -limit < second < -1800
+        return live "#{minute}分後",   60000 if  -1800 < second <   -25
+        return live "25秒以内",        25000 if    -25 < second <    25
+        return live "#{minute}分前",   60000 if     25 < second <  1800
+        return live "#{hour}時間前", 3600000 if   1800 < second < limit
       else
-        now = Date.create date
-        now.addMinutes(15)
-        postfix = ["頃","半頃"][(now.getMinutes()/30).floor()]
-        time = now.format(Date.ISO8601_DATE + '({dow})  {TT}{hh}時' + postfix, 'ja')
-        lax_time[date] = time if timespan < 0
+        time = Timer.date_time_stamp(date)
+        lax_time[Number date] = time if second < 0
         time
     else
-      lax_time[date] = "....-..-..(？？？) --..時頃"
+      lax_time[Number date] = "....-..-..(？？？) --..時頃"
 
 
