@@ -19,7 +19,10 @@ class Navi
   popstate: ()->
     l = @location_val(@key)
     c = win.cookies[@key] if @params.is_cookie?
-    @value = @params.current_type l or c or ""
+    val = @params.current_type l or c or ""
+    reject = @select? && _.every @select, (o)-> val != o.val
+
+    @value = if reject then "" else val
     @value or= @params.current_type @params.current
 
   constructor: ($scope, key, def)->
@@ -44,7 +47,6 @@ class Navi
     @popstate()
 
     @scope.$watch "#{@key}.value", (value,oldVal)=>
-#      @value = "" if @select? && _.every @select, (o)=> @value != o.val
       @_move()
 
       for func in @watch
