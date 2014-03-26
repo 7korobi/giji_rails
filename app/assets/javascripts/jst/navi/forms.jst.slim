@@ -5,14 +5,14 @@
       li(ng-if="story.announce.totalcommit")
         | {{story.announce.totalcommit}}
       li(ng-if="story.is_totalcommit")
-        | {{story.timer.nextcommitdt.relative('ja')}}にcommit
+        | {{lax_time(story.timer.nextcommitdt)}}にcommit
 
       li
-        | {{story.timer.nextupdatedt.relative('ja')}}に更新
+        | {{lax_time(story.timer.nextupdatedt)}}に更新
       li
-        | {{story.timer.nextchargedt.relative('ja')}}に補充
+        | {{lax_time(story.timer.nextchargedt)}}に補充
       li(ng-if="story.is_prologue")
-        | {{story.timer.scraplimitdt.relative('ja')}}に廃村
+        | {{lax_time(story.timer.scraplimitdt)}}に廃村
       li
         | あと {{story.timer.extend}}回、更新を延長できる。
 

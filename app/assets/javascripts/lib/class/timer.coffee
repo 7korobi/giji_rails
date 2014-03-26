@@ -30,8 +30,9 @@ class Timer
 
 Timer.hh = (hh)->
   tt = ["午前","午後"][ Math.floor hh / 12 ]
+  hh = hh % 12
   hh = "0" + hh if hh < 10
-  "#{tt}#{hh % 12}時"
+  "#{tt}#{hh}時"
 
 Timer.hhmm = (hh, mi)->
   mi = "0" + mi if mi < 10
