@@ -245,7 +245,7 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
       addHtml = (dom, html)-> html_cache += html
       closeHtml = (dom)-> dom.replaceHTML = html_cache
 
-    $scope.$watchCollection attr.logs, (oldVal, newVal)->
+    $scope.$watchCollection attr.logs, (newVal, oldVal)->
       logs = newVal || []
       now = new Date
       data =
