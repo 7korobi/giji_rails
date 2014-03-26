@@ -3046,15 +3046,19 @@ Navi = (function() {
     })(this)));
   };
 
-  Navi.prototype.popstate = function() {
-    var c, l;
-    l = this.location_val(this.key);
-    if (this.params.is_cookie != null) {
-      c = win.cookies[this.key];
-    }
-    this.value = this.params.current_type(l || c || "");
-    return this.value || (this.value = this.params.current_type(this.params.current));
-  };
+  Navi.prototype.popstate = function() { 
+    var c, l, reject, val; 
+    l = this.location_val(this.key); 
+    if (this.params.is_cookie != null) { 
+      c = win.cookies[this.key]; 
+    } 
+    val = this.params.current_type(l || c || ""); 
+    reject = (this.select != null) && _.every(this.select, function(o) { 
+      return val !== o.val; 
+    }); 
+    this.value = reject ? "" : val; 
+    return this.value || (this.value = this.params.current_type(this.params.current)); 
+  }; 
 
   function Navi($scope, key, def) {
     var btn_key, btn_val, _base, _base1, _base2, _ref;
