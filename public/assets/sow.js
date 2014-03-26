@@ -3047,12 +3047,16 @@ Navi = (function() {
   };
 
   Navi.prototype.popstate = function() {
-    var c, l;
+    var c, l, reject, val;
     l = this.location_val(this.key);
     if (this.params.is_cookie != null) {
       c = win.cookies[this.key];
     }
-    this.value = this.params.current_type(l || c || "");
+    val = this.params.current_type(l || c || "");
+    reject = (this.select != null) && _.every(this.select, function(o) {
+      return val !== o.val;
+    });
+    this.value = reject ? "" : val;
     return this.value || (this.value = this.params.current_type(this.params.current));
   };
 
