@@ -555,7 +555,7 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
           return dom.replaceHTML = html_cache;
         };
       }
-      return $scope.$watchCollection(attr.logs, function(oldVal, newVal) {
+      return $scope.$watchCollection(attr.logs, function(newVal, oldVal) {
         var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref;
         logs = newVal || [];
         now = new Date;
@@ -623,7 +623,7 @@ angular.module("giji").directive("potofs", function($parse, $compile) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      return $scope.$watchCollection(attr.potofs, function(oldVal, potofs) {
+      return $scope.$watchCollection(attr.potofs, function(potofs, oldVal) {
         var angular_elm, data, potof, _i, _j, _len, _len1, _ref, _results;
         elm.html("");
         if (!logs) {
@@ -979,6 +979,99 @@ var Event;
 Event = (function() {
   function Event() {}
 
+  Event.prototype.init = function($scope) {
+    var cb, message, _i, _len, _ref, _results;
+    cb = (function(_this) {
+      return function() {
+        $scope.init();
+        return _this.set_turn();
+      };
+    })(this);
+    this.cache = {};
+    this.set_turn = (function(_this) {
+      return function() {
+        if (_this.has_all_messages) {
+          _this.is_news = false;
+        }
+        $scope.set_turn(_this.turn);
+        $scope.page.value = 1;
+        $scope.mode.value = $scope.mode_cache.talk;
+        return win.history("" + _this.name, _this.url(), location.hash);
+      };
+    })(this);
+    this.get_news = (function(_this) {
+      return function() {
+        var href;
+        href = _this.url();
+        if (href) {
+          return $scope.get(href, cb);
+        }
+      };
+    })(this);
+    this.get_all = (function(_this) {
+      return function() {
+        var href;
+        href = _this.link;
+        if (href) {
+          return $scope.get(href, cb);
+        }
+      };
+    })(this);
+    if (this.messages == null) {
+      return;
+    }
+    if (this.turn == null) {
+      return;
+    }
+    _ref = this.messages;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      message = _ref[_i];
+      message.__proto__ = Message.prototype;
+      _results.push(message.init_data(this));
+    }
+    return _results;
+  };
+
+  Event.prototype.init_end = function($scope) {
+    var key, message, _ref, _results;
+    _ref = this.cache;
+    _results = [];
+    for (key in _ref) {
+      message = _ref[key];
+      _results.push(message.input = $scope.undecolated(message.text));
+    }
+    return _results;
+  };
+
+  Event.prototype.last_memo = function(key) {
+    var _ref;
+    return (_ref = this.cache[key]) != null ? _ref.input : void 0;
+  };
+
+  Event.prototype.url = function() {
+    return (this.is_news && this.news) || this.link;
+  };
+
+  Event.prototype.set_last_memo = function(key, message) {
+    if ((!this.cache[key]) || this.cache[key].updated_at < message.updated_at) {
+      return this.cache[key] = this;
+    }
+  };
+
+  Event.prototype.show = function(href, is_news) {
+    if (this.has_all_messages) {
+      return this.set_turn;
+    } else {
+      if (is_news) {
+        this.get_news();
+      } else {
+        this.get_all();
+      }
+      return this.is_news = is_news;
+    }
+  };
+
   return Event;
 
 })();
@@ -1186,12 +1279,7 @@ Message = (function() {
         return this.mestype = "TSAY";
       case "M":
         key = "" + this.mestype + ":" + this.csid + "/" + this.face_id;
-        if ((!new_base.last_memo[key]) || new_base.last_memo[key].updated_at < this.updated_at) {
-          return new_base.last_memo[key] = {
-            log: this.log,
-            updated_at: this.updated_at
-          };
-        }
+        return new_base.set_last_memo(key, this);
     }
   };
 
@@ -1832,10 +1920,11 @@ Timer = (function() {
 Timer.hh = function(hh) {
   var tt;
   tt = ["午前", "午後"][Math.floor(hh / 12)];
+  hh = hh % 12;
   if (hh < 10) {
     hh = "0" + hh;
   }
-  return "" + tt + (hh % 12) + "時";
+  return "" + tt + hh + "時";
 };
 
 Timer.hhmm = function(hh, mi) {
@@ -1952,7 +2041,8 @@ CACHE = function($scope) {
         _ref = new_base.events;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           new_event = _ref[_i];
-          INIT_MESSAGES(new_event);
+          new_event.__proto__ = Event.prototype;
+          new_event.init($scope);
         }
         merge_by.simple(old_base, new_base, "events", guard, filter);
         new_event = new_base.event;
@@ -1967,6 +2057,8 @@ CACHE = function($scope) {
           }
         }
         old_event.has_all_messages || (old_event.has_all_messages = new_event.has_all_messages);
+        new_event.__proto__ = Event.prototype;
+        new_event.init($scope);
         merge._messages(old_event, new_event);
         merge._potofs(old_event, new_base);
         old_base.potofs = old_event.potofs;
@@ -1980,12 +2072,11 @@ CACHE = function($scope) {
       filter = function(o) {
         return o.logid;
       };
-      INIT_MESSAGES(new_base);
       if (new_base.has_all_messages) {
         old_base.messages = [];
       }
       merge_by.news(old_base, new_base, 'messages', guard, filter);
-      merge_by.copy(old_base, new_base, 'last_memo');
+      merge_by.copy(old_base, new_base, 'cache');
       order = function(o) {
         return o.order || o.updated_at;
       };
@@ -2304,25 +2395,7 @@ INIT_FACE = function(new_base) {
     });
   }
 };
-var INIT_MESSAGES;
 
-INIT_MESSAGES = function(new_base) {
-  var message, _i, _len, _ref, _results;
-  if ((new_base != null ? new_base.messages : void 0) == null) {
-    return;
-  }
-  if (new_base.turn != null) {
-    new_base.last_memo = {};
-    _ref = new_base.messages;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      message = _ref[_i];
-      message.__proto__ = Message.prototype;
-      _results.push(message.init_data(new_base));
-    }
-    return _results;
-  }
-};
 var DECOLATE;
 
 DECOLATE = function($scope, $sce) {
@@ -2569,14 +2642,14 @@ FORM = function($scope, $sce) {
     }
   };
   set_last_memo = function(f) {
-    var log, _ref, _ref1, _ref2;
+    var log, _ref;
     if ("wrmemo" !== f.cmd) {
       return;
     }
     if (!(f.text || f.is_last_memo)) {
-      log = (_ref = $scope.event) != null ? (_ref1 = _ref.last_memo) != null ? (_ref2 = _ref1["" + f.mestype + ":" + f.csid_cid]) != null ? _ref2.log : void 0 : void 0 : void 0;
+      log = (_ref = $scope.event) != null ? _ref.last_memo("" + f.mestype + ":" + f.csid_cid) : void 0;
       if (log != null) {
-        f.text = $scope.undecolate(log) || "";
+        f.text = log;
         if (f.ver != null) {
           f.ver.commit();
         }
@@ -3047,12 +3120,16 @@ Navi = (function() {
   };
 
   Navi.prototype.popstate = function() {
-    var c, l;
+    var c, l, reject, val;
     l = this.location_val(this.key);
     if (this.params.is_cookie != null) {
       c = win.cookies[this.key];
     }
-    this.value = this.params.current_type(l || c || "");
+    val = this.params.current_type(l || c || "");
+    reject = (this.select != null) && _.every(this.select, function(o) {
+      return val !== o.val;
+    });
+    this.value = reject ? "" : val;
     return this.value || (this.value = this.params.current_type(this.params.current));
   };
 
@@ -3525,7 +3602,7 @@ POOL = function($scope, $filter, $timeout) {
     return $timeout(refresh, DELAY.msg_minute);
   };
   pool_button = function() {
-    return $scope.get_news($scope.event, (function(_this) {
+    return $scope.event.get_news($scope.event, (function(_this) {
       return function() {
         return $scope.init();
       };
@@ -3991,11 +4068,30 @@ if (SOW_RECORD.CABALA.events != null) {
   }
 }
 
-MODULE = function($scope, $filter, $sce, $http, $timeout) {
-  var set_turn;
+MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
+  win.cookies = $cookies;
+  $scope.mode_cache = {
+    info: 'info_open_last',
+    memo: 'memo_all_open_last',
+    talk: 'talk_all_open'
+  };
+  $scope.deploy_mode_common = function() {
+    return $scope.mode_common = $scope.mode != null ? [
+      {
+        name: '情報',
+        value: $scope.mode_cache.info
+      }, {
+        name: 'メモ',
+        value: $scope.mode_cache.memo
+      }, {
+        name: '議事',
+        value: $scope.mode_cache.talk
+      }
+    ] : [];
+  };
   $scope.img_csid_cid = function(csid_cid) {
     var cid, csid, _ref8;
     if (csid_cid != null) {
@@ -4010,41 +4106,6 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
     csid || (csid = GIJI.csids["default"]);
     return "" + URL.file + csid.path + face_id + csid.ext;
   };
-  set_turn = function(turn) {
-    var href;
-    $scope.set_turn(turn);
-    if ($scope.event.has_all_messages) {
-      $scope.event.is_news = false;
-    }
-    $scope.page.value = 1;
-    $scope.mode.value = $scope.mode_cache.talk;
-    href = $scope.event_url($scope.event);
-    return win.history("" + $scope.event.name, href, location.hash);
-  };
-  $scope.ajax_event = function(turn, href, is_news) {
-    var event, getter;
-    if ($scope.events != null) {
-      event = $scope.event;
-      if (event.has_all_messages) {
-        return set_turn(turn);
-      } else {
-        if (is_news) {
-          getter = $scope.get_news;
-        } else {
-          getter = $scope.get_all;
-        }
-        return getter(event, (function(_this) {
-          return function() {
-            $scope.init();
-            set_turn(turn);
-            return $scope.event.is_news = is_news;
-          };
-        })(this));
-      }
-    } else {
-      return location.href = href + location.hash;
-    }
-  };
   TOKEN_INPUT($scope);
   HOGAN_EVENT($scope);
   DECOLATE($scope, $sce);
@@ -4058,60 +4119,14 @@ MODULE = function($scope, $filter, $sce, $http, $timeout) {
   POOL($scope, $filter, $timeout);
   return $scope.$watch("event.turn", function(turn, oldVal) {
     if ((turn != null) && ($scope.event != null) && turn !== oldVal) {
-      return $scope.ajax_event(turn, null, !!$scope.event.is_news);
+      return $scope.event.show(null, $scope.event.is_news);
     }
   });
 };
 var CGI;
 
 CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
-  var get, submit;
-  win.cookies = $cookies;
-  $scope.mode_cache = {
-    info: 'info_open_last',
-    memo: 'memo_all_open_last',
-    talk: 'talk_all_open'
-  };
-  $scope.deploy_mode_common = function() {
-    return $scope.mode_common = [
-      {
-        name: '情報',
-        value: $scope.mode_cache.info
-      }, {
-        name: 'メモ',
-        value: $scope.mode_cache.memo
-      }, {
-        name: '議事',
-        value: $scope.mode_cache.talk
-      }
-    ];
-  };
-  get = function(href, cb) {
-    return $scope.get(href + "&ua=javascript", cb);
-  };
-  $scope.event_url = function(event) {
-    if (!event) {
-      return null;
-    }
-    return (event.is_news && event.news) || event.link;
-  };
-  $scope.get_news = function(event, cb) {
-    var href;
-    href = $scope.event_url(event);
-    if (href) {
-      return get(href, cb);
-    }
-  };
-  $scope.get_all = function(event, cb) {
-    var href;
-    if (!event) {
-      return null;
-    }
-    href = event.link;
-    if (href) {
-      return get(href, cb);
-    }
-  };
+  var submit;
   submit = function(param, cb) {
     var protocol;
     switch (param.cmd) {
@@ -4172,7 +4187,7 @@ CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
     };
     return $scope.submit(param, function() {});
   };
-  MODULE($scope, $filter, $sce, $http, $timeout);
+  MODULE($scope, $filter, $sce, $cookies, $http, $timeout);
   FORM($scope, $sce);
   return $scope.story_has_option = function(option) {
     return _.include($scope.story.options, option);
