@@ -25,7 +25,7 @@ class Config < Thor
 #    require '/www/giji_rails/lib/rsync'
 
     ConfigCreate.new.activate do |files|
-      files && ! files['skip'] && files['lapp'] && files['lapp'][/testbed$/]
+      files && ! files['skip'] && files['lapp'] && files['lapp'][/active-event$/]
     end
   end
 

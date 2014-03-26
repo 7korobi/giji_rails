@@ -441,7 +441,7 @@ SOYBEAN:
   livelog:  /sow.cgi?cmd=rss
   folder: SOYBEAN
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bs"
+  nation: "人狼議事RP:Cs"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: Bs
   config:
@@ -468,7 +468,7 @@ SOYBEAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/soy-bean/config.pl
-    is_angular: angular
+    is_angular: cleanup
 
 CIEL:
   server: ciel.moo.jp
@@ -531,7 +531,7 @@ PERJURY:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
-    is_angular: angular
+    is_angular: cleanup
 
 XEBEC:
   server: xebec.x0.to
@@ -611,7 +611,7 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-    is_angular: angular
+    is_angular: cleanup
 
 ALLSTAR:
   server: jinro.jksy.org
@@ -686,7 +686,7 @@ LOBBY:
       DIR_VIL:  ./data/vil
       DIR_USER: ../data/user
     pl:  /www/giji_log/lobby/config.pl
-    is_angular: active-event
+    is_angular: cleanup
 
 OFFPARTY:
   server: party.ps.land.to
