@@ -62,10 +62,24 @@ if SOW_RECORD.CABALA.events?
     v.key = k
 
 
-MODULE = ($scope, $filter, $sce, $http, $timeout)->
+MODULE = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   $scope.head = head;
   $scope.win  = win;
   $scope.link = GIJI.link
+
+  win.cookies = $cookies
+  $scope.mode_cache =
+    info: 'info_open_last'
+    memo: 'memo_all_open_last'
+    talk: 'talk_all_open'
+  $scope.deploy_mode_common = ->
+    $scope.mode_common = if $scope.mode?
+      [ {name: '情報', value: $scope.mode_cache.info }
+        {name: 'メモ', value: $scope.mode_cache.memo }
+        {name: '議事', value: $scope.mode_cache.talk }
+      ]
+    else
+      []
 
   # face_id support
   $scope.img_csid_cid = (csid_cid)->
@@ -79,33 +93,6 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
     csid = GIJI.csids[csid]
     csid or= GIJI.csids.default
     "#{URL.file}#{csid.path}#{face_id}#{csid.ext}"
-
-  set_turn = (turn)->
-    $scope.set_turn(turn)
-    if $scope.event.has_all_messages
-      $scope.event.is_news = false
-    $scope.page.value = 1
-    $scope.mode.value = $scope.mode_cache.talk
-    href = $scope.event_url $scope.event
-    win.history "#{$scope.event.name}", href, location.hash
-
-  $scope.ajax_event = (turn, href, is_news)->
-    if $scope.events?
-      event = $scope.event
-      if event.has_all_messages
-        set_turn(turn)
-      else
-        if is_news
-          getter = $scope.get_news
-        else
-          getter = $scope.get_all
-        getter event, =>
-          $scope.init()
-          set_turn(turn)
-          $scope.event.is_news = is_news
-
-    else
-      location.href = href + location.hash
 
   TOKEN_INPUT $scope
   HOGAN_EVENT $scope
@@ -122,5 +109,5 @@ MODULE = ($scope, $filter, $sce, $http, $timeout)->
   POOL    $scope, $filter, $timeout
 
   $scope.$watch "event.turn", (turn, oldVal)->
-    $scope.ajax_event(turn, null, !! $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
+    $scope.event.show(null, $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
 

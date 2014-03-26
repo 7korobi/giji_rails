@@ -95,9 +95,9 @@ FORM = ($scope, $sce)->
   set_last_memo = (f)->
     return unless "wrmemo" == f.cmd
     unless f.text || f.is_last_memo
-      log = $scope.event?.last_memo?["#{f.mestype}:#{f.csid_cid}"]?.log
+      log = $scope.event?.last_memo "#{f.mestype}:#{f.csid_cid}"
       if log?
-        f.text = $scope.undecolate(log) || ""
+        f.text = log
         f.ver.commit() if f.ver?
         f.is_last_memo = true
         valid(f)

@@ -15,10 +15,7 @@ class Message
         @mestype = "TSAY"
       when "M"
         key = "#{@mestype}:#{@csid}/#{@face_id}"
-        if (! new_base.last_memo[key]) || new_base.last_memo[key].updated_at < @updated_at
-          new_base.last_memo[key] =
-            log:        @log
-            updated_at: @updated_at
+        new_base.set_last_memo key, @
 
   init_view: ($scope, now)->
     if @updated_at

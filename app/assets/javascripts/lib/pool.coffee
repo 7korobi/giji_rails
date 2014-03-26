@@ -18,7 +18,7 @@ POOL = ($scope, $filter, $timeout)->
     $timeout refresh, DELAY.msg_minute
 
   pool_button = ()->
-    $scope.get_news $scope.event, =>
+    $scope.event.get_news $scope.event, =>
       $scope.init()
   $scope.pool_nolimit = pool_button
   $scope.pool_hand = _.debounce pool_button, DELAY.msg_delete,
