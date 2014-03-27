@@ -19,7 +19,7 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   $scope.submit = _.throttle submit, DELAY.lento
 
   $scope.logined = ->
-    win.cookies.uid && win.cookies.pwd
+    Browser.real.cookies.uid && Browser.real.cookies.pwd
 
   $scope.login = (f)->
     param =
