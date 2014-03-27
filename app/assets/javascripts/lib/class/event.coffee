@@ -51,3 +51,4 @@ class Event
       else
         @get_all()
       @is_news = is_news
+

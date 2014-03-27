@@ -19,6 +19,7 @@ TIMER = ($scope)->
       limit = 3 * 60 * 60
       if - limit < second < limit
         live = (str, timeout)->
+          timeout -= second * 1000 if timeout > second * 1000
           $scope.timer.add_next date, timeout
           str
         return live "#{hour}時間後", 3600000 if -limit < second < -1800
