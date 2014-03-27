@@ -1,3 +1,44 @@
+draw_templates = ($compile, $scope, elm, attr)->
+  logs = []
+  oldDOM = elm[0]
+
+  if oldDOM.insertAdjacentHTML
+    addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
+    closeHtml = (dom)->
+  else
+    html_cache = ""
+    addHtml = (dom, html)-> html_cache += html
+    closeHtml = (dom)-> dom.replaceHTML = html_cache
+
+  (newVal, oldVal)->
+    logs = newVal || []
+    now = new Date
+    data = {}
+    if attr.data?
+      for key,val of attr.data
+        data[key] = val
+
+    newDOM = oldDOM.cloneNode(false)
+    for log in logs
+      template = attr.template(log, now)
+
+      unless template
+        console.log "can't show log!"
+        console.log log
+        continue
+
+      data[attr.target] = log
+      addHtml newDOM, template.render data
+    closeHtml newDOM
+
+    oldDOM.parentNode.replaceChild newDOM, oldDOM
+    oldDOM = newDOM
+
+    elm = $(oldDOM)
+    for angular_elm in elm.find("[template]")
+      $compile(angular_elm)($scope)
+    attr.last() if attr.last?
+
 scrollTo = (newVal, oldVal, $scope)->
   $scope.anchors = []
 
@@ -8,9 +49,6 @@ scrollTo = (newVal, oldVal, $scope)->
           if is_show and mode == form_text.jst
             return
   $scope.go.messages()
-
-filters_common = ($scope)->
-  PageNavi.push $scope, 'page',  OPTION.page.page
 
 filters_common_last = ($scope, $filter)->
   page = $scope.page
@@ -146,7 +184,7 @@ filters_if_event = ($scope, target, from)->
 
 angular.module("giji").directive "stories", ($parse, $compile, $filter)->
   initialize = ($scope, $filter, target, from)->
-    filters_common $scope
+    PageNavi.push $scope, 'page',  OPTION.page.page
     $scope.page.filter_by from
     $scope.page.filter_to target
     StorySummary.navi $scope
@@ -158,51 +196,22 @@ angular.module("giji").directive "stories", ($parse, $compile, $filter)->
     initialize $scope, $filter, attr.stories, attr.from
     initialize = ->
 
-    logs = []
-    oldDOM = elm[0]
-
-    if oldDOM.insertAdjacentHTML
-      addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
-      closeHtml = (dom)->
-    else
-      html_cache = ""
-      addHtml = (dom, html)-> html_cache += html
-      closeHtml = (dom)-> dom.replaceHTML = html_cache
-
+    draw =
+      draw_templates $compile, $scope, elm,
+        target: "story"
+        template: (log)->
+          log.__proto__ = StorySummary.prototype
+          if $scope.stories_is_small
+            HOGAN["hogan/sow/story_summary_small"]
+          else
+            HOGAN["hogan/sow/story_summary"]
     $scope.$watch "stories_is_small", ()-> draw logs
-    $scope.$watchCollection attr.stories, (_, newVal)-> draw newVal
-    draw = (newVal)->
-      logs = newVal || []
-      now = new Date
-      data = {}
-
-      newDOM = oldDOM.cloneNode(false)
-      for log in logs
-        log.__proto__ = StorySummary.prototype
-        if $scope.stories_is_small
-          template = HOGAN["hogan/sow/story_summary_small"]
-        else
-          template = HOGAN["hogan/sow/story_summary"]
-
-        unless template
-          console.log "can't show log!"
-          console.log log
-          continue
-        data.story = log
-        addHtml newDOM, template.render data
-      closeHtml newDOM
-
-      oldDOM.parentNode.replaceChild newDOM, oldDOM
-      oldDOM = newDOM
-
-      elm = $(oldDOM)
-      for angular_elm in elm.find("[template]")
-        $compile(angular_elm)($scope)
+    $scope.$watchCollection attr.stories, draw
 
 
 angular.module("giji").directive "logs", ($parse, $compile, $filter)->
   initialize = ($scope, $filter, target, from)->
-    filters_common $scope
+    PageNavi.push $scope, 'page',  OPTION.page.page
     if from
       Message.navi $scope
       filters_if_event $scope, target, from
@@ -234,47 +243,21 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
     initialize $scope, $filter, attr.logs, attr.from
     initialize = ->
 
-    logs = []
-    oldDOM = elm[0]
+    draw =
+      draw_templates $compile, $scope, elm,
+        data:
+          story: $scope.story
+          event: $scope.event
+        target: "message"
+        template: (log, now)->
+          log.__proto__ = Message.prototype
+          log.init_timer($scope, now)
+          log.init_view($scope, now)
+          HOGAN["hogan/" + log.template]
+        last: ->
+          $scope.timer.start()
+    $scope.$watchCollection attr.logs, draw
 
-    if oldDOM.insertAdjacentHTML
-      addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
-      closeHtml = (dom)->
-    else
-      html_cache = ""
-      addHtml = (dom, html)-> html_cache += html
-      closeHtml = (dom)-> dom.replaceHTML = html_cache
-
-    $scope.$watchCollection attr.logs, (newVal, oldVal)->
-      logs = newVal || []
-      now = new Date
-      data =
-        story: $scope.story
-        event: $scope.event
-
-      newDOM = oldDOM.cloneNode(false)
-      for log in logs
-        log.__proto__ = Message.prototype
-        log.init_timer($scope, now)
-        log.init_view($scope, now)
-
-        template = HOGAN["hogan/" + log.template]
-        unless template
-          console.log "can't show log!"
-          console.log log
-          continue
-        data.message = log
-        addHtml newDOM, template.render data
-      closeHtml newDOM
-
-      oldDOM.parentNode.replaceChild newDOM, oldDOM
-      oldDOM = newDOM
-
-      elm = $(oldDOM)
-      for angular_elm in elm.find("[template]")
-        $compile(angular_elm)($scope)
-
-      $scope.timer.start()
 
 angular.module("giji").directive "log", ($parse, $compile, $sce)->
   restrict: "A"
@@ -284,6 +267,7 @@ angular.module("giji").directive "log", ($parse, $compile, $sce)->
     log.init_view $scope
 
     GIJI.template $scope, elm, log.template
+
 
 angular.module("giji").directive "drag", ->
   restrict: "A"
