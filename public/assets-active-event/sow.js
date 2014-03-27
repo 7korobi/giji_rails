@@ -67,10 +67,12 @@ AJAX = function($scope, $http) {
   };
 };
 angular.module("giji", ['ngTouch', 'ngCookies', 'ngAnimate']).config(function($locationProvider, $sceProvider) {
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(false);
   return $sceProvider.enabled(false);
-}).run(function($templateCache, $compile, $interpolate) {
+}).run(function($templateCache, $compile, $interpolate, $cookies) {
   var templateUrl, text;
+  Browser.real = new Browser(document.location, $cookies);
+  Event.__proto__.browser = Browser.real;
   GIJI.compile = function(name) {
     var template;
     template = JST[name];
@@ -238,7 +240,64 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
     }
   };
 });
-var filters_common, filters_common_last, filters_if_event, scrollTo;
+var draw_templates, filters_common_last, filters_if_event, scrollTo;
+
+draw_templates = function($compile, $scope, elm, attr) {
+  var addHtml, closeHtml, html_cache, logs, oldDOM;
+  logs = [];
+  oldDOM = elm[0];
+  if (oldDOM.insertAdjacentHTML) {
+    addHtml = function(dom, html) {
+      return dom.insertAdjacentHTML('beforeEnd', html);
+    };
+    closeHtml = function(dom) {};
+  } else {
+    html_cache = "";
+    addHtml = function(dom, html) {
+      return html_cache += html;
+    };
+    closeHtml = function(dom) {
+      return dom.replaceHTML = html_cache;
+    };
+  }
+  return function(newVal, oldVal) {
+    var angular_elm, data, key, log, newDOM, now, template, val, _i, _j, _len, _len1, _ref, _ref1;
+    logs = newVal || [];
+    now = new Date;
+    data = {};
+    if (attr.data != null) {
+      _ref = attr.data;
+      for (key in _ref) {
+        val = _ref[key];
+        data[key] = val;
+      }
+    }
+    newDOM = oldDOM.cloneNode(false);
+    for (_i = 0, _len = logs.length; _i < _len; _i++) {
+      log = logs[_i];
+      template = attr.template(log, now);
+      if (!template) {
+        console.log("can't show log!");
+        console.log(log);
+        continue;
+      }
+      data[attr.target] = log;
+      addHtml(newDOM, template.render(data));
+    }
+    closeHtml(newDOM);
+    oldDOM.parentNode.replaceChild(newDOM, oldDOM);
+    oldDOM = newDOM;
+    elm = $(oldDOM);
+    _ref1 = elm.find("[template]");
+    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      angular_elm = _ref1[_j];
+      $compile(angular_elm)($scope);
+    }
+    if (attr.last != null) {
+      return attr.last();
+    }
+  };
+};
 
 scrollTo = function(newVal, oldVal, $scope) {
   var form_text, is_show, mode, _i, _len, _ref, _ref1;
@@ -259,10 +318,6 @@ scrollTo = function(newVal, oldVal, $scope) {
     }
   }
   return $scope.go.messages();
-};
-
-filters_common = function($scope) {
-  return PageNavi.push($scope, 'page', OPTION.page.page);
 };
 
 filters_common_last = function($scope, $filter) {
@@ -424,7 +479,7 @@ filters_if_event = function($scope, target, from) {
 angular.module("giji").directive("stories", function($parse, $compile, $filter) {
   var initialize;
   initialize = function($scope, $filter, target, from) {
-    filters_common($scope);
+    PageNavi.push($scope, 'page', OPTION.page.page);
     $scope.page.filter_by(from);
     $scope.page.filter_to(target);
     StorySummary.navi($scope);
@@ -434,65 +489,24 @@ angular.module("giji").directive("stories", function($parse, $compile, $filter) 
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var addHtml, closeHtml, draw, html_cache, logs, oldDOM;
+      var draw;
       initialize($scope, $filter, attr.stories, attr.from);
       initialize = function() {};
-      logs = [];
-      oldDOM = elm[0];
-      if (oldDOM.insertAdjacentHTML) {
-        addHtml = function(dom, html) {
-          return dom.insertAdjacentHTML('beforeEnd', html);
-        };
-        closeHtml = function(dom) {};
-      } else {
-        html_cache = "";
-        addHtml = function(dom, html) {
-          return html_cache += html;
-        };
-        closeHtml = function(dom) {
-          return dom.replaceHTML = html_cache;
-        };
-      }
+      draw = draw_templates($compile, $scope, elm, {
+        target: "story",
+        template: function(log) {
+          log.__proto__ = StorySummary.prototype;
+          if ($scope.stories_is_small) {
+            return HOGAN["hogan/sow/story_summary_small"];
+          } else {
+            return HOGAN["hogan/sow/story_summary"];
+          }
+        }
+      });
       $scope.$watch("stories_is_small", function() {
         return draw(logs);
       });
-      $scope.$watchCollection(attr.stories, function(_, newVal) {
-        return draw(newVal);
-      });
-      return draw = function(newVal) {
-        var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref, _results;
-        logs = newVal || [];
-        now = new Date;
-        data = {};
-        newDOM = oldDOM.cloneNode(false);
-        for (_i = 0, _len = logs.length; _i < _len; _i++) {
-          log = logs[_i];
-          log.__proto__ = StorySummary.prototype;
-          if ($scope.stories_is_small) {
-            template = HOGAN["hogan/sow/story_summary_small"];
-          } else {
-            template = HOGAN["hogan/sow/story_summary"];
-          }
-          if (!template) {
-            console.log("can't show log!");
-            console.log(log);
-            continue;
-          }
-          data.story = log;
-          addHtml(newDOM, template.render(data));
-        }
-        closeHtml(newDOM);
-        oldDOM.parentNode.replaceChild(newDOM, oldDOM);
-        oldDOM = newDOM;
-        elm = $(oldDOM);
-        _ref = elm.find("[template]");
-        _results = [];
-        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-          angular_elm = _ref[_j];
-          _results.push($compile(angular_elm)($scope));
-        }
-        return _results;
-      };
+      return $scope.$watchCollection(attr.stories, draw);
     }
   };
 });
@@ -501,7 +515,7 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   var initialize;
   initialize = function($scope, $filter, target, from) {
     var from_value;
-    filters_common($scope);
+    PageNavi.push($scope, 'page', OPTION.page.page);
     if (from) {
       Message.navi($scope);
       filters_if_event($scope, target, from);
@@ -536,59 +550,26 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var addHtml, closeHtml, html_cache, logs, oldDOM;
+      var draw;
       initialize($scope, $filter, attr.logs, attr.from);
       initialize = function() {};
-      logs = [];
-      oldDOM = elm[0];
-      if (oldDOM.insertAdjacentHTML) {
-        addHtml = function(dom, html) {
-          return dom.insertAdjacentHTML('beforeEnd', html);
-        };
-        closeHtml = function(dom) {};
-      } else {
-        html_cache = "";
-        addHtml = function(dom, html) {
-          return html_cache += html;
-        };
-        closeHtml = function(dom) {
-          return dom.replaceHTML = html_cache;
-        };
-      }
-      return $scope.$watchCollection(attr.logs, function(newVal, oldVal) {
-        var angular_elm, data, log, newDOM, now, template, _i, _j, _len, _len1, _ref;
-        logs = newVal || [];
-        now = new Date;
-        data = {
+      draw = draw_templates($compile, $scope, elm, {
+        data: {
           story: $scope.story,
           event: $scope.event
-        };
-        newDOM = oldDOM.cloneNode(false);
-        for (_i = 0, _len = logs.length; _i < _len; _i++) {
-          log = logs[_i];
+        },
+        target: "message",
+        template: function(log, now) {
           log.__proto__ = Message.prototype;
           log.init_timer($scope, now);
           log.init_view($scope, now);
-          template = HOGAN["hogan/" + log.template];
-          if (!template) {
-            console.log("can't show log!");
-            console.log(log);
-            continue;
-          }
-          data.message = log;
-          addHtml(newDOM, template.render(data));
+          return HOGAN["hogan/" + log.template];
+        },
+        last: function() {
+          return $scope.timer.start();
         }
-        closeHtml(newDOM);
-        oldDOM.parentNode.replaceChild(newDOM, oldDOM);
-        oldDOM = newDOM;
-        elm = $(oldDOM);
-        _ref = elm.find("[template]");
-        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-          angular_elm = _ref[_j];
-          $compile(angular_elm)($scope);
-        }
-        return $scope.timer.start();
       });
+      return $scope.$watchCollection(attr.logs, draw);
     }
   };
 });
@@ -831,6 +812,84 @@ angular.module("giji").directive("title", function() {
     }
   };
 });
+var Browser;
+
+Browser = (function() {
+  function Browser(location, cookies) {
+    this.location = location;
+    this.cookies = cookies;
+    this.list = {};
+    this.location || (this.location = {
+      search: "",
+      hash: ""
+    });
+    this.cookies || (this.cookies = {});
+  }
+
+  Browser.prototype.location_val = function(target, find_key) {
+    var key, key_value_pair, value, _i, _len, _ref, _ref1;
+    _ref = this.location[target].replace(/^[#?]/, "").split('&');
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      key_value_pair = _ref[_i];
+      _ref1 = key_value_pair.split('='), key = _ref1[0], value = _ref1[1];
+      if (key === find_key) {
+        return decodeURIComponent(value);
+      }
+    }
+  };
+
+  Browser.prototype.set_cookie = function() {
+    var navi, options, _, _ref, _results;
+    _ref = this.list;
+    _results = [];
+    for (_ in _ref) {
+      navi = _ref[_];
+      options = navi.params;
+      if (navi.value && options.is_cookie) {
+        _results.push(this.cookies[navi.key] = navi.value);
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
+  Browser.prototype.to_url = function(append) {
+    var data, key, location, navi, scanner, value, _, _ref;
+    data = {
+      search: [],
+      hash: []
+    };
+    scanner = function(location, key, value) {
+      var cmd, _ref;
+      if (value) {
+        cmd = "" + key + "=" + value;
+        return (_ref = data[location]) != null ? _ref.push(cmd) : void 0;
+      }
+    };
+    _ref = this.list;
+    for (_ in _ref) {
+      navi = _ref[_];
+      scanner(navi.params.location, navi.key, navi.value);
+    }
+    for (location in append) {
+      navi = append[location];
+      for (key in navi) {
+        value = navi[key];
+        scanner(location, key, value);
+      }
+    }
+    if (data.search.length) {
+      this.location.search = "?" + (data.search || []).join("&");
+    }
+    if (data.hash.length) {
+      return this.location.hash = "#" + (data.hash || []).join("&");
+    }
+  };
+
+  return Browser;
+
+})();
 var Config;
 
 Config = (function() {
@@ -2395,7 +2454,6 @@ INIT_FACE = function(new_base) {
     });
   }
 };
-
 var DECOLATE;
 
 DECOLATE = function($scope, $sce) {
@@ -2912,10 +2970,7 @@ GO = function($scope) {
     form: go_anker("#forms"),
     search: go_anker("[ng-model=\"search_input\"]", function(o) {
       return o.focus();
-    }),
-    self_link: function() {
-      return document.location.href;
-    }
+    })
   };
 };
 var HOGAN_EVENT;
@@ -3089,21 +3144,6 @@ var Navi;
 Navi = (function() {
   Navi.list = {};
 
-  Navi.prototype.location_val = function(find_key) {
-    var hash_str, key, key_value, value, _i, _len, _ref, _ref1;
-    if (location[this.params.location]) {
-      hash_str = location[this.params.location].replace(/^[#?]/, "");
-      _ref = hash_str.split('&');
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        key_value = _ref[_i];
-        _ref1 = key_value.split('='), key = _ref1[0], value = _ref1[1];
-        if (key === find_key) {
-          return decodeURIComponent(value);
-        }
-      }
-    }
-  };
-
   Navi.prototype.move = function(newVal) {
     if (newVal != null) {
       this.value = this.params.current_type(newVal);
@@ -3121,9 +3161,9 @@ Navi = (function() {
 
   Navi.prototype.popstate = function() {
     var c, l, reject, val;
-    l = this.location_val(this.key);
+    l = this.browser.location_val(this.params.location, this.key);
     if (this.params.is_cookie != null) {
-      c = win.cookies[this.key];
+      c = this.browser.cookies[this.key];
     }
     val = this.params.current_type(l || c || "");
     reject = (this.select != null) && _.every(this.select, function(o) {
@@ -3133,15 +3173,17 @@ Navi = (function() {
     return this.value || (this.value = this.params.current_type(this.params.current));
   };
 
-  function Navi($scope, key, def) {
+  function Navi(scope, key, def, browser) {
     var btn_key, btn_val, _base, _base1, _base2, _ref;
-    this.scope = $scope;
+    this.scope = scope;
+    this.key = key;
+    this.browser = browser;
+    this.browser.list[this.key] = this;
     this.params = def.options;
     (_base = this.params).current_type || (_base.current_type = String);
     (_base1 = this.params).class_select || (_base1.class_select = 'btn-success');
     (_base2 = this.params).class_default || (_base2.class_default = 'btn-default');
     this.of = {};
-    this.key = key;
     this.watch = [];
     if (def.button != null) {
       this.select = [];
@@ -3159,22 +3201,15 @@ Navi = (function() {
     this.popstate();
     this.scope.$watch("" + this.key + ".value", (function(_this) {
       return function(value, oldVal) {
-        var func, list, _i, _len, _ref1;
+        var func, _i, _len, _ref1;
         _this._move();
         _ref1 = _this.watch;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           func = _ref1[_i];
           func(_this.value);
         }
-        Navi.set_cookie();
-        list = Navi.to_url();
-        if (list.search && list.search !== location.search) {
-          location.search = list.search;
-        }
-        if (list.hash && list.hash !== location.hash) {
-          location.hash = list.hash;
-          return win.history(null, null, list.hash);
-        }
+        _this.browser.set_cookie();
+        return _this.browser.to_url();
       };
     })(this));
   }
@@ -3203,73 +3238,9 @@ Navi = (function() {
 
 })();
 
-Navi.set_cookie = function() {
-  var cmd, expire, navi, options, _, _ref, _results;
-  _ref = Navi.list;
-  _results = [];
-  for (_ in _ref) {
-    navi = _ref[_];
-    options = navi.params;
-    if (navi.value) {
-      cmd = "" + navi.key + "=" + navi.value;
-      if (options.is_cookie) {
-        expire = new Date().advance(OPTION.cookie.expire);
-        _results.push(document.cookie = "" + cmd + "; expires=" + (expire.toGMTString()) + "; path=/");
-      } else {
-        _results.push(void 0);
-      }
-    } else {
-      _results.push(void 0);
-    }
-  }
-  return _results;
-};
-
-Navi.to_hash = function(append) {
-  var hash, key, location, navi, scanner, value, _, _ref;
-  hash = {};
-  scanner = function(location, key, value) {
-    var cmd;
-    if (value) {
-      cmd = "" + key + "=" + value;
-      return hash[key] = [location, cmd];
-    }
-  };
-  _ref = Navi.list;
-  for (_ in _ref) {
-    navi = _ref[_];
-    scanner(navi.params.location, navi.key, navi.value);
-  }
-  for (location in append) {
-    navi = append[location];
-    for (key in navi) {
-      value = navi[key];
-      scanner(location, key, value);
-    }
-  }
-  return hash;
-};
-
-Navi.to_url = function(append) {
-  var cmd, key, list, location, obj, _ref;
-  list = {};
-  _ref = Navi.to_hash(append);
-  for (key in _ref) {
-    obj = _ref[key];
-    location = obj[0], cmd = obj[1];
-    if (location != null) {
-      list[location] || (list[location] = []);
-      list[location].push(cmd);
-    }
-  }
-  list.search = list.search ? "?" + list.search.join("&") : "";
-  list.hash = list.hash ? "#" + list.hash.join("&") : "";
-  return list;
-};
-
-Navi.popstate = function() {
+Navi.popstate = function(list) {
   var navi, _i, _len, _ref, _results;
-  _ref = Navi.list;
+  _ref = Browser.real.list;
   _results = [];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     navi = _ref[_i];
@@ -3280,7 +3251,7 @@ Navi.popstate = function() {
 
 Navi.push = function($scope, key, def) {
   var navi;
-  navi = Navi.list[key] = new Navi($scope, key, def);
+  navi = new Navi($scope, key, def, Browser.real);
   return eval("$scope." + key + " = navi");
 };
 var ArrayNavi,
@@ -3290,15 +3261,18 @@ var ArrayNavi,
 ArrayNavi = (function(_super) {
   __extends(ArrayNavi, _super);
 
-  function ArrayNavi($scope, key, def) {
+  function ArrayNavi(scope, key, def, browser) {
+    this.scope = scope;
+    this.key = key;
+    this.browser = browser;
     ArrayNavi.__super__.constructor.apply(this, arguments);
   }
 
   ArrayNavi.prototype.popstate = function() {
     var c, l, o, value, _i, _len, _ref;
-    l = this.location_val(this.key);
+    l = this.browser.location_val(this.params.location, this.key);
     if (this.params.is_cookie != null) {
-      c = win.cookies[this.key];
+      c = this.browser.cookies[this.key];
     }
     value = [];
     _ref = (l || c || "").split(",");
@@ -3389,7 +3363,7 @@ ArrayNavi = (function(_super) {
 
 ArrayNavi.push = function($scope, key, def) {
   var navi;
-  navi = Navi.list[key] = new ArrayNavi($scope, key, def);
+  navi = new ArrayNavi($scope, key, def, Browser.real);
   return eval("$scope." + key + " = navi");
 };
 var PageNavi,
@@ -3399,8 +3373,11 @@ var PageNavi,
 PageNavi = (function(_super) {
   __extends(PageNavi, _super);
 
-  function PageNavi($scope, key, def) {
+  function PageNavi(scope, key, def, browser) {
     var do_filter_action, do_pager_action, _base;
+    this.scope = scope;
+    this.key = key;
+    this.browser = browser;
     def.options.current_type = Number;
     (_base = def.options).per || (_base.per = 1);
     PageNavi.__super__.constructor.apply(this, arguments);
@@ -3411,7 +3388,7 @@ PageNavi = (function(_super) {
     this.pagers = [];
     do_filter_action = (function(_this) {
       return function() {
-        return $scope.$apply(function() {
+        return _this.scope.$apply(function() {
           if (_this.by_key != null) {
             _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
           }
@@ -3425,7 +3402,7 @@ PageNavi = (function(_super) {
     });
     do_pager_action = (function(_this) {
       return function() {
-        return $scope.$apply(function() {
+        return _this.scope.$apply(function() {
           var list;
           if (_this.list_by_filter != null) {
             list = _this.do_filters(_this.list_by_filter, _this.pagers);
@@ -3577,8 +3554,8 @@ PageNavi = (function(_super) {
 })(Navi);
 
 PageNavi.push = function($scope, key, def) {
-  var navi, _base;
-  navi = (_base = Navi.list)[key] || (_base[key] = new PageNavi($scope, key, def));
+  var navi;
+  navi = new PageNavi($scope, key, def, Browser.real);
   return eval("$scope." + key + " = navi");
 };
 var POOL;
@@ -3790,6 +3767,9 @@ TIMER = function($scope) {
       limit = 3 * 60 * 60;
       if ((-limit < second && second < limit)) {
         live = function(str, timeout) {
+          if (timeout > second * 1000) {
+            timeout -= second * 1000;
+          }
           $scope.timer.add_next(date, timeout);
           return str;
         };
@@ -4072,7 +4052,6 @@ MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
-  win.cookies = $cookies;
   $scope.mode_cache = {
     info: 'info_open_last',
     memo: 'memo_all_open_last',
@@ -4162,7 +4141,7 @@ CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   };
   $scope.submit = _.throttle(submit, DELAY.lento);
   $scope.logined = function() {
-    return win.cookies.uid && win.cookies.pwd;
+    return Browser.real.cookies.uid && Browser.real.cookies.pwd;
   };
   $scope.login = function(f) {
     var param, _ref;
