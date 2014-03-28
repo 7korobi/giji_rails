@@ -24,6 +24,13 @@ class Message
     YAML.load_file(yaml_path) rescue []
   end
 
+  def self.by_story_id(story_id)
+    Event.where(story_id: story_id).map(&:id).map do |event_id|
+      yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
+      YAML.load_file(yaml_path) rescue []
+    end.flatten
+  end
+
   def self.in_story(story_id)
     where(story_id: story_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
   end

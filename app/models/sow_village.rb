@@ -18,9 +18,9 @@ class SowVillage < Story
 
 
   def self.empty_ids
-    has_messages_ids = collection.database.collection_names.grep(/msg-/).map do |o|
-      o["msg-"] = ""
-      o
+    has_messages_ids = Dir.glob("/www/giji_yaml/events/*.yml").map do |path|
+      fname, name = path.match(%r|/([^/]+)\-\d+.yml|).to_a
+      name
     end
     pluck("id") - has_messages_ids
   end
@@ -32,7 +32,7 @@ class SowVillage < Story
       GijiVilScanner.new(path, folder, fname).enqueue :repair
     end
   end
-  
+
   def update_from_file_only_game force = true
     Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
       vid   = self.vid

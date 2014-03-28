@@ -19,7 +19,8 @@ class GijiLogScanner < GijiScanner
     return unless story
 
 #    GijiTalkScanner.perform  path, fname, type, folder, vid, turn
-    GijiMessageScanner.perform path, fname, type, folder, vid, turn
+#    GijiMessageScanner.perform path, fname, type, folder, vid, turn
+    GijiYamlScanner.perform path, fname, type, folder, vid, turn
 
 #    MapReduce::MessageByStory.generate([story.id]) if story.is_finish
   end

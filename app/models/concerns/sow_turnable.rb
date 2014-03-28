@@ -26,11 +26,11 @@ module SowTurnable
     end
 
     def messages_empty
-      where(story_id: SowVillage.empty_ids).not(_id: /^(trpg|lobby-8)/)
+      all.in(story_id: SowVillage.empty_ids).not(_id: /^(trpg|lobby-8)/)
     end
 
     def breaks_each
-      each do |o| 
+      each do |o|
         next if Array === o.attributes['messages']
         yield(o)
       end

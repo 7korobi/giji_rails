@@ -76,11 +76,11 @@ class GijiYamlScanner < GijiScanner
       requests[ key ] = true
     end
 
+    yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
     File.open(yaml_path, "w:utf-8") do |f|
       f.write messages.to_yaml
     end
 
-=begin
     requests.keys.each do |key| request_key, sow_auth_id = key
       account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )
       account.save
@@ -88,6 +88,5 @@ class GijiYamlScanner < GijiScanner
       request.sow_auth_ids |= [account.id]
       request.save
     end
-=end
   end
 end
