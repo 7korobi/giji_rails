@@ -35,8 +35,12 @@ class Browser
 
 
     if data.search.length
-      @location.search = "?" + (data.search || []).join("&")
+      search = "?" + (data.search || []).join("&")
+      unless @location.search == search
+        @location.search = search
 
     if data.hash.length
-      @location.hash = "#" +  (data.hash || []).join("&")
+      hash = "#" +  (data.hash || []).join("&")
+      unless @location.hash == hash
+        @location.hash = hash
       # win.history null, null, h
