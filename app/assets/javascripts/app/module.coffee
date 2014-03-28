@@ -63,8 +63,9 @@ if SOW_RECORD.CABALA.events?
 
 
 MODULE = ($scope, $filter, $sce, $cookies, $http, $timeout)->
-  $scope.head = head;
-  $scope.win  = win;
+  $scope.lib  = Lib
+  $scope.head = head
+  $scope.win  = win
   $scope.link = GIJI.link
 
   $scope.mode_cache =

@@ -12,7 +12,7 @@ class MapReduce::FacesController < ApplicationController
 
   def index
     chrs = @faces = MapReduce::Face.only("value.sow_auth_id").order_by("value.sow_auth_id.all" => -1).map do |o|
-      face = FACE.find{|face|face[:face_id] == o.id}
+      face = FACE.find{|face|face.face_id == o.id}
       if face
         url = map_reduce_face_url(o.id)
         count = o.sow_auth_id["all"].to_i rescue 0
@@ -49,9 +49,7 @@ _HTML_
 
   private
   def select_chrs(chrs, filter)
-    ids = filter[:chr_jobs].map do |o|
-      o[:face_id]
-    end
+    ids = filter.chr_jobs.map(&:face_id)
     chrs.select{|o| ids.member? o[:id] }
   end
 end

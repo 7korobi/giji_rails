@@ -14,4 +14,5 @@
 - content_for :log do
   - if user.sow_auth_ids && gon.messages_raw
     h2= "#{user.name} さんの情報"
-    #messages(template="navi/messages")
+    .message_filter(logs="messages_raw")
+
