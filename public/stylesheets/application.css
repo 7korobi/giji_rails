@@ -124,6 +124,44 @@ address * {
   background: #000 !important;
 }
 
+.mes_text ,
+.mes_text_report ,
+.mes_text_monospace ,
+.memoleft ,
+.memoright {
+  word-wrap:  break-word !important;
+  word-break: break-all  !important;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.text em,
+.mes_text em,
+.mes_text_report em,
+.mes_text_monospace em{
+  opacity: 0.7;
+  font-style:  normal;
+}
+
+.text,
+.mono,
+.mes_text,
+.mes_text_report,
+.mes_text_monospace {
+  padding: 0px;
+  vertical-align: top;
+}
+
+.head:first-line,
+.mes_text_report:first-line{
+  font-weight: bold !important;
+}
+
+.mono,
+.mes_text_monospace {
+  layout-grid: both loose 0 0;
+  font-family: monospace !important;
+}
 
 
 form.login input {

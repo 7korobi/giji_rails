@@ -236,6 +236,7 @@
   .turnnavi,
   .pagenavi {
     .mes_date a,
+    .mesname a,
     .text a {
       @include anker(#333, #043, #030, #333, #033);
     }
