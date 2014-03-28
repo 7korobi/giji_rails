@@ -855,7 +855,7 @@ Browser = (function() {
   };
 
   Browser.prototype.to_url = function(append) {
-    var data, key, location, navi, scanner, value, _, _ref;
+    var data, hash, key, location, navi, scanner, search, value, _, _ref;
     data = {
       search: [],
       hash: []
@@ -880,10 +880,16 @@ Browser = (function() {
       }
     }
     if (data.search.length) {
-      this.location.search = "?" + (data.search || []).join("&");
+      search = "?" + (data.search || []).join("&");
+      if (this.location.search !== search) {
+        this.location.search = search;
+      }
     }
     if (data.hash.length) {
-      return this.location.hash = "#" + (data.hash || []).join("&");
+      hash = "#" + (data.hash || []).join("&");
+      if (this.location.hash !== hash) {
+        return this.location.hash = hash;
+      }
     }
   };
 
@@ -4049,6 +4055,7 @@ if (SOW_RECORD.CABALA.events != null) {
 }
 
 MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
+  $scope.lib = Lib;
   $scope.head = head;
   $scope.win = win;
   $scope.link = GIJI.link;
