@@ -396,7 +396,7 @@ PAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/pan/config.pl
-    is_angular: active-event
+    is_angular: show-fix
 
 MORPHE:
   server: morphe.sakura.ne.jp
