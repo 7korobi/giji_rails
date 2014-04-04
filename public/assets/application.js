@@ -1045,17 +1045,18 @@ Event = (function() {
   function Event() {}
 
   Event.prototype.init = function($scope) {
-    var cb, message, _i, _len, _ref, _results;
+    var cb, key, message, _i, _len, _ref, _ref1, _results;
+    this.cache = {};
     cb = (function(_this) {
       return function() {
         $scope.init();
         return _this.set_turn();
       };
     })(this);
-    this.cache = {};
     this.set_turn = (function(_this) {
       return function() {
         if (_this.has_all_messages) {
+          console.log(["event.coffee:11"]);
           _this.is_news = false;
         }
         $scope.set_turn(_this.turn);
@@ -1089,22 +1090,16 @@ Event = (function() {
       return;
     }
     _ref = this.messages;
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       message = _ref[_i];
       message.__proto__ = Message.prototype;
-      _results.push(message.init_data(this));
+      message.init_data(this);
     }
-    return _results;
-  };
-
-  Event.prototype.init_end = function($scope) {
-    var key, message, _ref, _results;
-    _ref = this.cache;
+    _ref1 = this.cache;
     _results = [];
-    for (key in _ref) {
-      message = _ref[key];
-      _results.push(message.input = $scope.undecolated(message.text));
+    for (key in _ref1) {
+      message = _ref1[key];
+      _results.push(message.input = $scope.undecolate(message.log));
     }
     return _results;
   };
@@ -1114,25 +1109,26 @@ Event = (function() {
     return (_ref = this.cache[key]) != null ? _ref.input : void 0;
   };
 
+  Event.prototype.set_last_memo = function(key, message) {
+    if ((!this.cache[key]) || this.cache[key].updated_at < message.updated_at) {
+      return this.cache[key] = message;
+    }
+  };
+
   Event.prototype.url = function() {
     return (this.is_news && this.news) || this.link;
   };
 
-  Event.prototype.set_last_memo = function(key, message) {
-    if ((!this.cache[key]) || this.cache[key].updated_at < message.updated_at) {
-      return this.cache[key] = this;
-    }
-  };
-
   Event.prototype.show = function(href, is_news) {
     if (this.has_all_messages) {
-      return this.set_turn;
+      return this.set_turn();
     } else {
       if (is_news) {
         this.get_news();
       } else {
         this.get_all();
       }
+      console.log(["event.coffee:53"]);
       return this.is_news = is_news;
     }
   };
@@ -2595,7 +2591,7 @@ DIARY = function($scope) {
 var FORM;
 
 FORM = function($scope, $sce) {
-  var calc_length, calc_point, is_input, preview, preview_action, safe_anker, set_last_memo, submit, valid, write;
+  var calc_length, calc_point, is_input, preview, preview_action, safe_anker, show_last_memo, submit, valid, write;
   $scope.stories_is_small = true;
   calc_length = function(text) {
     var ascii, other;
@@ -2616,7 +2612,7 @@ FORM = function($scope, $sce) {
   };
   valid = function(f, cb) {
     var lines, mark, point, size, text;
-    set_last_memo(f);
+    show_last_memo(f);
     f.valid = true;
     if (f.max) {
       text = f.text.replace(/\n$/g, '\n ');
@@ -2671,7 +2667,7 @@ FORM = function($scope, $sce) {
       }
     }
     return $scope.submit(param, function() {
-      return set_last_memo(f);
+      return show_last_memo(f);
     });
   };
   preview = function(text) {
@@ -2705,7 +2701,7 @@ FORM = function($scope, $sce) {
       return f.preview = preview(f.text.replace(/\n$/g, '\n '));
     }
   };
-  set_last_memo = function(f) {
+  show_last_memo = function(f) {
     var log, _ref;
     if ("wrmemo" !== f.cmd) {
       return;
@@ -3108,6 +3104,7 @@ HOGAN_EVENT = function($scope) {
           if (turn === gon.event.turn) {
             is_news = $scope.event.is_news;
             $scope.merge($scope, gon, "events");
+            console.log(["hogan_event.coffee:107"]);
             $scope.event.is_news = is_news;
           }
           return seek();
@@ -3920,7 +3917,10 @@ if ((typeof history !== "undefined" && history !== null ? history.pushState : vo
   popstate = function(e) {
     return Navi.popstate();
   };
-  $(window).on('popstate', _.throttle(popstate, DELAY.presto));
+  $(window).on('popstate', _.debounce(popstate, DELAY.presto, {
+    leading: false,
+    trailing: true
+  }));
   win.history = function(title, href, hash) {
     href || (href = location.href.replace(/#.*/, ""));
     return history.replaceState(null, title, href + hash);
