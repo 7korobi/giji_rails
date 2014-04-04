@@ -52,7 +52,9 @@ win =
 if history?.pushState?
   popstate = (e)->
     Navi.popstate()
-  $(window).on 'popstate', _.throttle(popstate, DELAY.presto)
+  $(window).on 'popstate', _.debounce popstate, DELAY.presto,
+    leading: false
+    trailing: true
 
   win.history = (title, href, hash)->
     href || href = location.href.replace /#.*/, ""
