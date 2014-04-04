@@ -1,10 +1,10 @@
 class Event
   init: ($scope)->
+    @cache = {}
+
     cb = =>
       $scope.init()
       @set_turn()
-
-    @cache = {}
 
     @set_turn = =>
       if @has_all_messages
@@ -28,23 +28,22 @@ class Event
       message.__proto__ = Message.prototype
       message.init_data @
 
-  init_end: ($scope)->
     for key, message of @cache
-      message.input = $scope.undecolated message.text
+      message.input = $scope.undecolate message.log
 
   last_memo: (key)->
     @cache[key]?.input
 
+  set_last_memo: (key, message)->
+    if (! @cache[key]) || @cache[key].updated_at < message.updated_at
+      @cache[key] = message
+
   url: ->
     (@is_news && @news) || @link
 
-  set_last_memo: (key, message)->
-    if (! @cache[key]) || @cache[key].updated_at < message.updated_at
-      @cache[key] = @
-
   show: (href, is_news)->
     if @has_all_messages
-      @set_turn
+      @set_turn()
     else
       if is_news
         @get_news()
