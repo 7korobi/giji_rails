@@ -74,8 +74,8 @@ address {
 .sayfilter_heading,
 .insayfilter .small,
 .insayfilter .note,
-.chrblank, 
-.chrM, 
+.chrblank,
+.chrM,
 .chrF {
   font-size: $font-size-base * 0.80;
   line-height: $font-size-base * 1.10;
@@ -89,6 +89,7 @@ code {
 }
 
 .choice,
+.pagenavi,
 .board td a,
 .board td,
 .board th {
