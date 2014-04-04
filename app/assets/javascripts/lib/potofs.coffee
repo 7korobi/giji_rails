@@ -99,7 +99,7 @@ POTOFS = ($scope)->
   potofs_sortBy 'stat_at',   true
   potofs_sortBy 'stat_type', true
 
-  Navi.push $scope, 'potofs_order', OPTION.page.potofs
+  Routes.potofs.push new Navi $scope, 'potofs_order', OPTION.page.potofs
 
   $scope.sort_potofs = (tgt, zero)->
     $scope.potofs_reverse = (tgt == @tgt)

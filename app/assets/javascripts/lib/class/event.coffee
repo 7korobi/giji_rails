@@ -1,10 +1,22 @@
-class Event
+class LogHolder
   init: ($scope)->
+    @browser = Routes.event
+    @cache = {}
+
+  last_memo: (key)->
+    @cache[key]?.input
+
+  set_last_memo: (key, message)->
+    if (! @cache[key]) || @cache[key].updated_at < message.updated_at
+      @cache[key] = message
+
+
+class Event extends LogHolder
+  init: ($scope)->
+    super
     cb = =>
       $scope.init()
       @set_turn()
-
-    @cache = {}
 
     @set_turn = =>
       if @has_all_messages
@@ -28,19 +40,11 @@ class Event
       message.__proto__ = Message.prototype
       message.init_data @
 
-  init_end: ($scope)->
     for key, message of @cache
-      message.input = $scope.undecolated message.text
-
-  last_memo: (key)->
-    @cache[key]?.input
+      message.input = $scope.undecolate message.log
 
   url: ->
     (@is_news && @news) || @link
-
-  set_last_memo: (key, message)->
-    if (! @cache[key]) || @cache[key].updated_at < message.updated_at
-      @cache[key] = @
 
   show: (href, is_news)->
     if @has_all_messages

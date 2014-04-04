@@ -18,7 +18,6 @@ class Navi
     @value or= @params.current_type @params.current
 
   constructor: (@scope, @key, def, @browser)->
-    @browser.list[@key] = @
     @params = def.options
     @params.current_type  or= String
     @params.class_select  or= 'btn-success'
@@ -35,15 +34,11 @@ class Navi
     else
       @select = def.select
 
-    @popstate()
-
-    @scope.$watch "#{@key}.value", (value,oldVal)=>
+    @scope.$watch "#{key}.value", (value,oldVal)=>
       @_move()
       for func in @watch
         func @value
-
-      @browser.set_cookie()
-      @browser.to_url()
+    eval "scope.#{key} = this"
 
   _move: ()->
     if @select?
@@ -55,12 +50,4 @@ class Navi
         else
           o.class = @params.class_default
           o.show = false
-
-Navi.popstate = (list)->
-  for navi in Browser.real.list
-    navi.popstate()
-
-Navi.push = ($scope, key, def)->
-  navi = new Navi $scope, key, def, Browser.real
-  eval "$scope.#{key} = navi"
 

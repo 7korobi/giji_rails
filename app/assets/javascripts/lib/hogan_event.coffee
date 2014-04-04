@@ -1,4 +1,5 @@
 HOGAN_EVENT = ($scope)->
+  $scope.floats = []
   hogan_click_event = null
 
   navi = (link)->

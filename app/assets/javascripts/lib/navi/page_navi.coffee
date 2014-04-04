@@ -1,71 +1,18 @@
 
 class PageNavi extends Navi
-  constructor: (@scope, @key, def, @browser)->
+  constructor: (@scope, @key, def)->
     def.options.current_type = Number
     def.options.per or= 1
 
     super
-    @nop = (target,list)-> list
 
-    @filters = []
-    @pagers  = []
+  paginate: (page_per, list)->
+    @visible = true
+    @length = (list.length / page_per).ceil()
 
-    do_filter_action = =>
-      @scope.$apply =>
-        if @by_key?
-          @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
-        @pager_action()
-    @filter_action = _.debounce do_filter_action, DELAY.presto,
-      leading: false
-      trailing: true
-
-
-    do_pager_action = =>
-      @scope.$apply =>
-        if @list_by_filter?
-          list = @do_filters @list_by_filter, @pagers
-          if @to_key? && list
-            eval "_this.scope.#{@to_key} = list"
-        @_move()
-    @pager_action = _.debounce do_pager_action, DELAY.presto,
-      leading: false
-      trailing: true
-
-  start: ->
-    for [key, _] in @filters
-      @scope.$watch key, @filter_action
-    for [key, _] in @pagers
-      @scope.$watch key, @pager_action
-    @filter_action()
-
-  do_filters: (list, filters)->
-    for [target_key, filter] in filters
-      target = @scope.$eval target_key
-      if target && filter
-        list = filter target, list
-    list
-
-  filter_by: (by_key)->
-    @by_key = by_key
-
-  filter_to: (to_key)->
-    @to_key = to_key
-
-  filter: (key, func)->
-    @filters.push [key, func]
-
-  pager: (key, func)->
-    @pagers.push [key, func]
-
-  paginate: (page_per_key, func)->
-    @pager page_per_key, (page_per, list)=>
-      @length = (list.length / page_per).ceil()
-      list
-
-    @pager page_per_key, func
-    @pager "#{@key}.value", (page, list)=>
-      @item_last = _.last list if list.last
-      list
+    @value = @length if @value > @length
+    @value = 1 if @value < 1
+    @_move()
 
   hide: ()->
     for key, item of @of
@@ -116,9 +63,4 @@ class PageNavi extends Navi
         item.class = @params.class_select if @value == n[key]
 
       @of[key] = item
-
-
-PageNavi.push = ($scope, key, def)->
-  navi = new PageNavi $scope, key, def, Browser.real
-  eval "$scope.#{key} = navi"
 

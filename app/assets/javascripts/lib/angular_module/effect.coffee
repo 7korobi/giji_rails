@@ -78,7 +78,7 @@ angular.module("giji").directive "navi", ($compile, $timeout)->
     elm.attr("id", attr_id)
 
     if ! $scope.navi?.select?
-      ArrayNavi.push $scope, 'navi',
+      Routes.base.push new ArrayNavi $scope, 'navi',
         options:
           current: []
           location: 'hash'

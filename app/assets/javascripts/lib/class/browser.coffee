@@ -1,20 +1,50 @@
 class Browser
-  constructor: (@location, @cookies)->
+  constructor: (@name, @parent, cb)->
+    @filter =
+      log: new DataStream @parent?.filter.log, @
+    @to_virtual()
     @list = {}
-    @location ||=
-      search: ""
-      hash: ""
-    @cookies ||= {}
+
+    cb(@) if cb
+
+  to_virtual: ->
+    @cookies = Browser.virtual.cookies
+    @location = Browser.virtual.location
+
+  to_real: ->
+    @cookies = Browser.real.cookies
+    @location = Browser.real.location
+
+  start: ->
+    @popstate()
+
+  popstate: ->
+    @each (navi)=>
+      navi.popstate()
+
+  push: (navi)->
+    @list[navi.key] = navi
+    navi.browser = @
+    navi.popstate()
+    navi.watch.push ()=>
+      for key, data_stream of @filter
+        Bus.refresh data_stream
+
+  each: (cb)->
+    return unless cb
+    @parent.each cb if @parent?
+
+    for _, navi of @list
+      cb(navi)
 
   location_val: (target, find_key)->
     for key_value_pair in @location[target].replace(/^[#?]/,"").split('&')
       [key, value] = key_value_pair.split('=')
-      return decodeURIComponent value if key == find_key
+      return value if key == find_key
 
   set_cookie: ->
-    for _, navi of @list
-      options = navi.params
-      if navi.value && options.is_cookie
+    @each (navi)=>
+      if navi.value && navi.params.is_cookie
         @cookies[navi.key] = navi.value
 
   to_url: (append)->
@@ -25,9 +55,9 @@ class Browser
     scanner = (location, key, value)->
       if value
         cmd = "#{key}=#{value}"
-        data[location]?.push cmd
+        data[location]?.unshift cmd
 
-    for _, navi of @list
+    @each (navi)->
       scanner(navi.params.location, navi.key, navi.value)
     for location, navi of append
       for key, value of navi
@@ -44,3 +74,15 @@ class Browser
       unless @location.hash == hash
         @location.hash = hash
       # win.history null, null, h
+
+
+Browser.routes = (cb)->
+  Browser.current = cb()
+  for _, browser of Routes
+    if Browser.current == browser
+      browser.to_real()
+    else
+      browser.to_virtual()
+
+Browser.virtual = {}
+Browser.real = {}

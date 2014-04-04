@@ -4,9 +4,10 @@ class ArrayNavi extends Navi
 
   popstate: ()->
     l = @browser.location_val @params.location, @key
+    l &&= l.split(",")
     c = @browser.cookies[@key] if @params.is_cookie?
     value = []
-    for o in  (l or c or "").split(",")
+    for o in  l or c or []
       break if @select? && _.every @select, (s)-> o != s.val
       value.push @params.current_type o
     @value = value
@@ -52,7 +53,3 @@ class ArrayNavi extends Navi
     _.map @value, (value)=>
       _.assign {}, _.find @select, (o)-> o.val == value
 
-
-ArrayNavi.push = ($scope, key, def)->
-  navi = new ArrayNavi $scope, key, def, Browser.real
-  eval "$scope.#{key} = navi"

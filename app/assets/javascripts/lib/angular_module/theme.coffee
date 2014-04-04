@@ -15,7 +15,7 @@ angular.module("giji").directive "theme", ($compile, $cookies)->
         width: size
       $scope.h1.path = "#{URL.file}/images/banner/title#{size}#{$scope.h1.type}"
 
-    Navi.push $scope, 'css',
+    Routes.base.push new Navi $scope, 'css',
       options: OPTION.page.css.options
       select: GIJI.styles[attr.theme]
 
@@ -52,7 +52,7 @@ angular.module("giji").directive "theme", ($compile, $cookies)->
 
     OPTION.page.msg_style.options.current = "#{head.browser.power}_asc_50"
 
-    Navi.push $scope, 'msg_style',
+    Routes.base.push new Navi $scope, 'msg_style',
       options: OPTION.page.msg_style.options
       select: GIJI.msg_styles
 

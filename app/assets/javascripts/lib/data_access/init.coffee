@@ -53,21 +53,5 @@ INIT = ($scope, $filter, $timeout)->
     for potof in $scope.potofs
       potofs_hash[potof.key] = potof.name
 
-    unless $scope.hide_potofs?
-      ArrayNavi.push $scope, 'hide_potofs',
-        options:
-          class_select: 'inverse'
-          class_default: 'plane'
-          current: []
-          location: 'hash'
-          is_cookie: true
-        button: potofs_hash
-
-  if $scope.pages?
-    unless $scope.page?
-      PageNavi.push $scope, 'page', OPTION.page.page_search
-
-    $scope.page.length = gon.pages.length
-
 
 

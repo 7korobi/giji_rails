@@ -16,10 +16,9 @@
 
   .insayfilter(navi="page_filter" ng-if="page")
     .paragraph
-      table.sayfilter_content
-        tr
-          td
-            select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
+      .sayfilter_content
+        select.form-control.input-block-level(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
+        select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
   .sayfilter_heading.bottom
 
   .toolbox(adjust="full" navi="page" ng-if="page" template="navi/toolbox")

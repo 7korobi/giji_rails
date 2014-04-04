@@ -19,4 +19,4 @@
   .form-group(ng-if="! event.is_news")
     label(ng-if="event.is_progress")
       a.btn.btn-default(ng-click="event.show(null, true)") 最新の発言
-    label(template="navi/paginate")
+    select.form-control.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")

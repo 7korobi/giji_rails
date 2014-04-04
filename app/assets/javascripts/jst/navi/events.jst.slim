@@ -1,5 +1,5 @@
 ul.nav.nav-list.unstyled
-  li(ng-repeat="e in events" ng-click="set_turn(e.turn)")
+  li(ng-repeat="e in events" ng-click="e.set_turn()")
     a
       i.glyphicon.glyphicon-film( ng-if="e.turn == event.turn")
       i.glyphicon.glyphicon-minus(ng-if="e.turn != event.turn")

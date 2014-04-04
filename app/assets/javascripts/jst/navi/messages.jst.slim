@@ -1,16 +1,14 @@
 .message_filter
   .log
     div.badge(ng-class="page.of.prev.class" ng-click="page.move(page.of.prev.val)" ng-if="page")  前のページ
-    hr.invisible_hr
 
 .message_filter(logs="messages" from="event.messages")
 .message_filter
   .log
     div.badge(ng-class="page.of.next.class" ng-click="page.move(page.of.next.val)" ng-if="page")  次のページ
-    hr.invisible_hr
 
-.message_filter.drag(ng-repeat="message in anchors" drag="message")
-  .contentframe(log="message")
+.message_filter.drag(ng-repeat="event in floats" drag="event")
+  .contentframe(logs="event.messages")
     .drag_head
       span.badge(hogan-click="popup({{message.turn}}, '{{message.logid}}')") ✘
 

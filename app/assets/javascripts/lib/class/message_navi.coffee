@@ -1,11 +1,5 @@
 Message.navi = ($scope)->
-  Navi.push $scope, 'search',
-    options:
-      current: ""
-      location: 'hash'
-      is_cookie: false
-
-  Navi.push $scope, 'mode',
+  Routes.event.push new Navi $scope, 'mode',
     options:
       current: $scope.mode_cache.talk
       location: 'hash'
@@ -14,7 +8,6 @@ Message.navi = ($scope)->
 
   modes_apply = ->
     $scope.modes = $scope.mode.choice()
-    $scope.anchors = []
 
     if $scope.modes.form?
       $scope.form_show = {}

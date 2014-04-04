@@ -38,42 +38,42 @@ class StorySummary
       @is_wbbs = 'wbbs' == @type.start
 
 StorySummary.navi = ($scope)->
-    page = $scope.page
+  filters = [
+    { target: "rating",       key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
+    { target: "roletable",    key: ((o)-> o.type.roletable), text: ((key)-> SOW.roletable[key]) }
+    { target: "game_rule",    key: ((o)-> o.type.game), text: ((key)-> SOW.game_rule[key]?.CAPTION) }
+    { target: "potof_size",   key: ((o)-> String _.last o.vpl), text: ((key)-> key + "人") }
+    { target: "card_event",   key: ((o)-> o.card.event_names || "(なし)"), text: String }
+    { target: "card_win",     key: ((o)-> o.card.win_names || "(なし)"), text: String }
+    { target: "card_role",    key: ((o)-> o.card.role_names || "(なし)"), text: String }
+    { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
+    { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
+    { target: "folder",       key: ((o)-> o.folder), text: ((key)-> OPTION.page.folder.button[key]) }
+  ]
+  set_filter = (filter)->
+    base = OPTION.page[filter.target]
 
-    filters = [
-      { target: "rating",       key: ((o)-> o.rating), text: ((key)-> OPTION.rating[key]?.caption) }
-      { target: "roletable",    key: ((o)-> o.type.roletable), text: ((key)-> SOW.roletable[key]) }
-      { target: "game_rule",    key: ((o)-> o.type.game), text: ((key)-> SOW.game_rule[key]?.CAPTION) }
-      { target: "potof_size",   key: ((o)-> String _.last o.vpl), text: ((key)-> key + "人") }
-      { target: "card_event",   key: ((o)-> o.card.event_names || "(なし)"), text: String }
-      { target: "card_win",     key: ((o)-> o.card.win_names || "(なし)"), text: String }
-      { target: "card_role",    key: ((o)-> o.card.role_names || "(なし)"), text: String }
-      { target: "upd_time",     key: ((o)-> o.upd.time_text),     text: String }
-      { target: "upd_interval", key: ((o)-> o.upd.interval_text), text: String }
-      { target: "folder",       key: ((o)-> o.folder), text: ((key)-> OPTION.page.folder.button[key]) }
-    ]
-    set_filter = (filter)->
-      base = OPTION.page[filter.target]
+    keys = base.button && Object.keys(base.button)
+    keys ||= _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
 
-      keys = base.button && Object.keys(base.button)
-      keys ||= _.chain( $scope.stories ).map(filter.key).uniq().sort().value()
+    navigator =
+      options: base.options
+      button:
+        ALL: "- すべて -"
+    if keys.length > 1
+      for key in keys
+        navigator.button[key] = filter.text(key)
 
-      navigator =
-        options: base.options
-        button:
-          ALL: "- すべて -"
-      if keys.length > 1
-        for key in keys
-          navigator.button[key] = filter.text(key)
+    Routes.stories.push new Navi $scope, filter.target, navigator
+    Routes.stories.filter.log.before $scope, "#{filter.target}.value", (key, list)->
+      if 'ALL' == $scope[filter.target].value
+        list
+      else
+        _.filter list, (o)->
+          filter.key(o) == $scope[filter.target].value
+  set_filter(filter) for filter in filters
+  Routes.stories.filter.log.set $scope, 'stories_is_small'
 
-      Navi.push $scope, filter.target, navigator
-      page.filter "#{filter.target}.value", (key, list)->
-        if 'ALL' == $scope[filter.target].value
-          list
-        else
-          _.filter list, (o)->
-            filter.key(o) == $scope[filter.target].value
-    set_filter(filter) for filter in filters
 
 class Story extends StorySummary
   init: ($scope)->

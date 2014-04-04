@@ -14,7 +14,7 @@ FORM = ($scope, $sce)->
     point.floor()
 
   valid = (f, cb)->
-    set_last_memo(f)
+    show_last_memo(f)
     f.valid = true
 
     if f.max
@@ -58,7 +58,7 @@ FORM = ($scope, $sce)->
           f.action = "-99"
         else
     $scope.submit param, ->
-      set_last_memo(f)
+      show_last_memo(f)
 
   preview = (text)->
     if text?
@@ -92,7 +92,7 @@ FORM = ($scope, $sce)->
       f.is_preview = f.valid
       f.preview = preview f.text.replace(/\n$/g, '\n ')
 
-  set_last_memo = (f)->
+  show_last_memo = (f)->
     return unless "wrmemo" == f.cmd
     unless f.text || f.is_last_memo
       log = $scope.event?.last_memo "#{f.mestype}:#{f.csid_cid}"

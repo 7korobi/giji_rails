@@ -4,9 +4,6 @@ angular.module("giji", ['ngTouch','ngCookies','ngAnimate'])
   $sceProvider.enabled false
 
 .run ($templateCache, $compile, $interpolate, $cookies)->
-  Browser.real = new Browser(document.location, $cookies)
-  Event.__proto__.browser = Browser.real
-
   GIJI.compile = (name)->
     template = JST[name]
     $compile(template)

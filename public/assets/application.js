@@ -71,8 +71,6 @@ angular.module("giji", ['ngTouch', 'ngCookies', 'ngAnimate']).config(function($l
   return $sceProvider.enabled(false);
 }).run(function($templateCache, $compile, $interpolate, $cookies) {
   var templateUrl, text;
-  Browser.real = new Browser(document.location, $cookies);
-  Event.__proto__.browser = Browser.real;
   GIJI.compile = function(name) {
     var template;
     template = JST[name];
@@ -215,14 +213,14 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
       attr_id = "navi_" + attr.navi;
       elm.attr("id", attr_id);
       if (((_ref = $scope.navi) != null ? _ref.select : void 0) == null) {
-        ArrayNavi.push($scope, 'navi', {
+        Routes.base.push(new ArrayNavi($scope, 'navi', {
           options: {
             current: [],
             location: 'hash',
             is_cookie: false
           },
           button: {}
-        });
+        }));
         $scope.navi.watch.push(function() {
           return $scope.adjust();
         });
@@ -240,11 +238,10 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
     }
   };
 });
-var draw_templates, filters_common_last, filters_if_event, scrollTo;
+var draw_templates;
 
 draw_templates = function($compile, $scope, elm, attr) {
-  var addHtml, closeHtml, html_cache, logs, oldDOM;
-  logs = [];
+  var addHtml, closeHtml, html_cache, oldDOM;
   oldDOM = elm[0];
   if (oldDOM.insertAdjacentHTML) {
     addHtml = function(dom, html) {
@@ -260,9 +257,8 @@ draw_templates = function($compile, $scope, elm, attr) {
       return dom.replaceHTML = html_cache;
     };
   }
-  return function(newVal, oldVal) {
+  return function(logs) {
     var angular_elm, data, key, log, newDOM, now, template, val, _i, _j, _len, _len1, _ref, _ref1;
-    logs = newVal || [];
     now = new Date;
     data = {};
     if (attr.data != null) {
@@ -299,198 +295,20 @@ draw_templates = function($compile, $scope, elm, attr) {
   };
 };
 
-scrollTo = function(newVal, oldVal, $scope) {
-  var form_text, is_show, mode, _i, _len, _ref, _ref1;
-  $scope.anchors = [];
-  if ($scope.event != null) {
-    if ($scope.event.is_news) {
-      _ref = $scope.form_show;
-      for (mode in _ref) {
-        is_show = _ref[mode];
-        _ref1 = $scope.form.texts;
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          form_text = _ref1[_i];
-          if (is_show && mode === form_text.jst) {
-            return;
-          }
-        }
-      }
-    }
-  }
-  return $scope.go.messages();
-};
-
-filters_common_last = function($scope, $filter) {
-  var filter_filter, page;
-  page = $scope.page;
-  filter_filter = $filter('filter');
-  page.filter('search.value', function(search, list) {
-    $scope.search_input = search;
-    return filter_filter(list, search);
-  });
-  page.paginate('msg_styles.row', function(row, list) {
-    var from, page_no, page_per, to, _ref;
-    page_per = Number(row);
-    if ((_ref = $scope.event) != null ? _ref.is_news : void 0) {
-      $scope.page.visible = false;
-      to = list.length;
-      from = to - page_per;
-      if (from < 0) {
-        from = 0;
-      }
-      $scope.event.is_rowover = 0 < from;
-    } else {
-      $scope.page.visible = true;
-      if ($scope.page.value > $scope.page.length) {
-        $scope.page.value = $scope.page.length;
-      }
-      if ($scope.page.value < 1) {
-        $scope.page.value = 1;
-      }
-      page_no = $scope.page.value;
-      to = page_no * page_per + OPTION.page.pile;
-      from = (page_no - 1) * page_per;
-    }
-    return list.slice(from, to);
-  });
-  $scope.$watch("page.value", scrollTo);
-  $scope.$watch("search.value", scrollTo);
-  return $scope.$watch("msg_style.value", scrollTo);
-};
-
-filters_if_event = function($scope, target, from) {
-  var mode_params, page;
-  page = $scope.page;
-  page.filter_by(from);
-  page.filter_to(target);
-  page.filter('event.turn');
-  page.filter('event.is_news');
-  page.filter('page.last_updated_at()');
-  $scope.deploy_mode_common();
-  mode_params = _.groupBy(GIJI.modes, 'val');
-  page.filter('mode.value', function(key, list) {
-    var add_filter, add_filters, groups, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist, _ref;
-    is_mob_open = (_ref = $scope.story) != null ? _ref.is_mob_open() : void 0;
-    mode_filters = {
-      info_open_last: /^([aAm].\d+)|(vilinfo)/,
-      info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/,
-      info_all: /^(..\d+)|(potofs)|(status)/,
-      memo_all: /^.M\d+/,
-      memo_open: /^[qcaAmIMS][MX]\d+/,
-      talk_all: /^[^S][^M]\d+/,
-      talk_think: /^[qcaAmIi][^M]\d+/,
-      talk_clan: /^[qcaAmIi\-WPX][^M]\d+/,
-      talk_all_open: /^.[^M]\d+/,
-      talk_think_open: /^[qcaAmIiS][^M]\d+/,
-      talk_clan_open: /^[qcaAmIi\-WPXS][^M]\d+/,
-      talk_all_last: /^[^S][SX]\d+/,
-      talk_think_last: /^[qcaAmIi][SX]\d+/,
-      talk_clan_last: /^[qcaAmIi\-WPX][SX]\d+/,
-      talk_all_open_last: /^.[SX]\d+/,
-      talk_think_open_last: /^[qcaAmIiS][SX]\d+/,
-      talk_clan_open_last: /^[qcaAmIi\-WPXS][SX]\d+/,
-      talk_open: /^[qcaAmIS][^M]\d+/,
-      talk_open_last: /^[qcaAmIS][SX]\d+/
-    };
-    if (is_mob_open) {
-      open_filters = {
-        talk_think_open_last: /^[qcaAmIiVS][SX]\d+/,
-        talk_think_open: /^[qcaAmIiVS][^M]\d+/,
-        memo_open: /^[qcaAmIMVS][MX]\d+/,
-        talk_open: /^[qcaAmIVS][^M]\d+/,
-        talk_open_last: /^[qcaAmIVS][SX]\d+/
-      };
-    } else {
-      open_filters = {};
-    }
-    add_filters = {
-      clan: function(o) {
-        return "" !== o.to && (o.to != null);
-      },
-      think: function(o) {
-        return "" === o.to && o.logid.match(/^T[^M]/);
-      }
-    };
-    mode_filter = open_filters[$scope.modes.regexp];
-    mode_filter || (mode_filter = mode_filters[$scope.modes.regexp]);
-    add_filter = add_filters[$scope.modes.view];
-    add_filter || (add_filter = function() {
-      return false;
-    });
-    list = _.filter(list, function(o) {
-      return o.logid.match(mode_filter) || add_filter(o);
-    });
-    if ($scope.modes.last) {
-      result = [];
-      groups = _.groupBy(list, function(o) {
-        return "" + o.mestype + "-" + (Potof.key(o));
-      });
-      for (key in groups) {
-        sublist = groups[key];
-        result.push(_.last(sublist));
-      }
-      return result;
-    } else {
-      return list;
-    }
-  });
-  Navi.push($scope, 'info_at', {
-    options: {
-      current: 0,
-      current_type: Number,
-      location: 'hash',
-      is_cookie: false
-    }
-  });
-  page.filter('hide_potofs.value', function(hide_faces, list) {
-    var faces;
-    if (_.include(hide_faces, 'others')) {
-      hide_faces = hide_faces.concat($scope.face.others);
-    }
-    faces = _.difference($scope.face.all, hide_faces);
-    return _.filter(list, function(o) {
-      return _.some(faces, function(face) {
-        return face === Potof.key(o);
-      });
-    });
-  });
-  page.filter('info_at.value', function(now, list) {
-    $scope.event.unread_count = 0;
-    if (now && ($scope.event != null)) {
-      return _.filter(list, function(o) {
-        if (now < o.updated_at) {
-          if (o.logid !== "IX99999") {
-            ++$scope.event.unread_count;
-          }
-          return true;
-        }
-        return o.logid.match(/vilinfo|potofs|status/);
-      });
-    } else {
-      return list;
-    }
-  });
-  $scope.$watch('event.is_news', $scope.deploy_mode_common);
-  $scope.$watch("event.turn", scrollTo);
-  $scope.$watch("event.is_news", scrollTo);
-  return $scope.$watch("mode.value", scrollTo);
-};
-
 angular.module("giji").directive("stories", function($parse, $compile, $filter) {
   var initialize;
-  initialize = function($scope, $filter, target, from) {
-    PageNavi.push($scope, 'page', OPTION.page.page);
-    $scope.page.filter_by(from);
-    $scope.page.filter_to(target);
+  initialize = function($scope) {
+    Routes.pager.push(new PageNavi($scope, 'page', OPTION.page.page));
     StorySummary.navi($scope);
-    filters_common_last($scope, $filter);
-    return $scope.page.start();
+    return Browser.routes(function() {
+      return Routes.stories;
+    });
   };
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var draw;
-      initialize($scope, $filter, attr.stories, attr.from);
+      var bus, draw;
+      initialize($scope);
       initialize = function() {};
       draw = draw_templates($compile, $scope, elm, {
         target: "story",
@@ -503,42 +321,46 @@ angular.module("giji").directive("stories", function($parse, $compile, $filter) 
           }
         }
       });
-      $scope.$watch("stories_is_small", function() {
-        return draw(logs);
+      bus = new Bus;
+      bus.on_start(function() {
+        return Routes.stories.filter.log;
       });
-      return $scope.$watchCollection(attr.stories, draw);
+      bus.on_end(draw);
+      return $scope.$watchCollection(attr.from, bus.watch_angular());
     }
   };
 });
 
 angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   var initialize;
-  initialize = function($scope, $filter, target, from) {
+  initialize = function($scope, $filter, from) {
     var from_value;
-    PageNavi.push($scope, 'page', OPTION.page.page);
     if (from) {
-      Message.navi($scope);
-      filters_if_event($scope, target, from);
-    }
-    filters_common_last($scope, $filter);
-    $scope.page.filter('msg_styles.order', function(key, list) {
-      var order;
-      order = "desc" === key ? function(o) {
-        return -o.updated_at;
-      } : function(o) {
-        return +o.updated_at;
+      from_value = $parse(from);
+      $scope.page.last_updated_at = function() {
+        var last;
+        last = _.last(from_value($scope));
+        if (last != null) {
+          return last.updated_at;
+        }
       };
-      return _.sortBy(list, order);
-    });
-    from_value = $parse(from);
-    $scope.page.last_updated_at = function() {
-      var last;
-      last = _.last(from_value($scope));
-      if (last != null) {
-        return last.updated_at;
-      }
-    };
-    $scope.page.start();
+      Browser.routes(function() {
+        if (location.hash.match(/info_at=/)) {
+          return Routes.unread;
+        }
+        if (location.hash.match(/search=/)) {
+          return Routes.search;
+        }
+        if (location.hash.match(/ankers=/)) {
+          return Routes.ankers;
+        }
+        return Routes.event;
+      });
+    } else {
+      Browser.routes(function() {
+        return Routes.search;
+      });
+    }
     return $scope.timer || ($scope.timer = new Timer(function(log, now) {
       var log_elm;
       log.init_timer($scope, now);
@@ -550,8 +372,8 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var draw;
-      initialize($scope, $filter, attr.logs, attr.from);
+      var bus, draw;
+      initialize($scope, $filter, attr.from);
       initialize = function() {};
       draw = draw_templates($compile, $scope, elm, {
         data: {
@@ -569,7 +391,21 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
           return $scope.timer.start();
         }
       });
-      return $scope.$watchCollection(attr.logs, draw);
+      if (attr.from) {
+        $scope.deploy_mode_common();
+        bus = new Bus;
+        bus.on_start(function() {
+          return Browser.current.filter.log;
+        });
+        $scope.$watchCollection(attr.from, bus.watch_angular());
+      } else {
+        bus = new Bus;
+        bus.on_start(function() {
+          return Routes.search.filter.log;
+        });
+        $scope.$watchCollection(attr.logs, bus.watch_angular());
+      }
+      return bus.on_end(draw);
     }
   };
 });
@@ -713,10 +549,10 @@ angular.module("giji").directive("theme", function($compile, $cookies) {
       });
       return $scope.h1.path = "" + URL.file + "/images/banner/title" + size + $scope.h1.type;
     };
-    Navi.push($scope, 'css', {
+    Routes.base.push(new Navi($scope, 'css', {
       options: OPTION.page.css.options,
       select: GIJI.styles[attr.theme]
-    });
+    }));
     html_class = function() {
       if ($scope.styles == null) {
         return;
@@ -742,10 +578,10 @@ angular.module("giji").directive("theme", function($compile, $cookies) {
     };
     css_apply();
     OPTION.page.msg_style.options.current = "" + head.browser.power + "_asc_50";
-    Navi.push($scope, 'msg_style', {
+    Routes.base.push(new Navi($scope, 'msg_style', {
       options: OPTION.page.msg_style.options,
       select: GIJI.msg_styles
-    });
+    }));
     msg_apply = function() {
       $scope.msg_styles = $scope.msg_style.choice();
       return html_class();
@@ -815,16 +651,76 @@ angular.module("giji").directive("title", function() {
 var Browser;
 
 Browser = (function() {
-  function Browser(location, cookies) {
-    this.location = location;
-    this.cookies = cookies;
+  function Browser(name, parent, cb) {
+    var _ref;
+    this.name = name;
+    this.parent = parent;
+    this.filter = {
+      log: new DataStream((_ref = this.parent) != null ? _ref.filter.log : void 0, this)
+    };
+    this.to_virtual();
     this.list = {};
-    this.location || (this.location = {
-      search: "",
-      hash: ""
-    });
-    this.cookies || (this.cookies = {});
+    if (cb) {
+      cb(this);
+    }
   }
+
+  Browser.prototype.to_virtual = function() {
+    this.cookies = Browser.virtual.cookies;
+    return this.location = Browser.virtual.location;
+  };
+
+  Browser.prototype.to_real = function() {
+    this.cookies = Browser.real.cookies;
+    return this.location = Browser.real.location;
+  };
+
+  Browser.prototype.start = function() {
+    return this.popstate();
+  };
+
+  Browser.prototype.popstate = function() {
+    return this.each((function(_this) {
+      return function(navi) {
+        return navi.popstate();
+      };
+    })(this));
+  };
+
+  Browser.prototype.push = function(navi) {
+    this.list[navi.key] = navi;
+    navi.browser = this;
+    navi.popstate();
+    return navi.watch.push((function(_this) {
+      return function() {
+        var data_stream, key, _ref, _results;
+        _ref = _this.filter;
+        _results = [];
+        for (key in _ref) {
+          data_stream = _ref[key];
+          _results.push(Bus.refresh(data_stream));
+        }
+        return _results;
+      };
+    })(this));
+  };
+
+  Browser.prototype.each = function(cb) {
+    var navi, _, _ref, _results;
+    if (!cb) {
+      return;
+    }
+    if (this.parent != null) {
+      this.parent.each(cb);
+    }
+    _ref = this.list;
+    _results = [];
+    for (_ in _ref) {
+      navi = _ref[_];
+      _results.push(cb(navi));
+    }
+    return _results;
+  };
 
   Browser.prototype.location_val = function(target, find_key) {
     var key, key_value_pair, value, _i, _len, _ref, _ref1;
@@ -833,29 +729,23 @@ Browser = (function() {
       key_value_pair = _ref[_i];
       _ref1 = key_value_pair.split('='), key = _ref1[0], value = _ref1[1];
       if (key === find_key) {
-        return decodeURIComponent(value);
+        return value;
       }
     }
   };
 
   Browser.prototype.set_cookie = function() {
-    var navi, options, _, _ref, _results;
-    _ref = this.list;
-    _results = [];
-    for (_ in _ref) {
-      navi = _ref[_];
-      options = navi.params;
-      if (navi.value && options.is_cookie) {
-        _results.push(this.cookies[navi.key] = navi.value);
-      } else {
-        _results.push(void 0);
-      }
-    }
-    return _results;
+    return this.each((function(_this) {
+      return function(navi) {
+        if (navi.value && navi.params.is_cookie) {
+          return _this.cookies[navi.key] = navi.value;
+        }
+      };
+    })(this));
   };
 
   Browser.prototype.to_url = function(append) {
-    var data, hash, key, location, navi, scanner, search, value, _, _ref;
+    var data, hash, key, location, navi, scanner, search, value;
     data = {
       search: [],
       hash: []
@@ -864,14 +754,12 @@ Browser = (function() {
       var cmd, _ref;
       if (value) {
         cmd = "" + key + "=" + value;
-        return (_ref = data[location]) != null ? _ref.push(cmd) : void 0;
+        return (_ref = data[location]) != null ? _ref.unshift(cmd) : void 0;
       }
     };
-    _ref = this.list;
-    for (_ in _ref) {
-      navi = _ref[_];
-      scanner(navi.params.location, navi.key, navi.value);
-    }
+    this.each(function(navi) {
+      return scanner(navi.params.location, navi.key, navi.value);
+    });
     for (location in append) {
       navi = append[location];
       for (key in navi) {
@@ -896,6 +784,93 @@ Browser = (function() {
   return Browser;
 
 })();
+
+Browser.routes = function(cb) {
+  var browser, _, _results;
+  Browser.current = cb();
+  _results = [];
+  for (_ in Routes) {
+    browser = Routes[_];
+    if (Browser.current === browser) {
+      _results.push(browser.to_real());
+    } else {
+      _results.push(browser.to_virtual());
+    }
+  }
+  return _results;
+};
+
+Browser.virtual = {};
+
+Browser.real = {};
+var Bus;
+
+Bus = (function() {
+  function Bus() {
+    Bus.list.push(this);
+    this.from = null;
+    this.target = null;
+  }
+
+  Bus.prototype.refresh = function() {
+    var data_stream;
+    data_stream = this.data_stream();
+    data_stream.browser.set_cookie();
+    data_stream.browser.to_url();
+    this.target = data_stream.filter(this.from);
+    return this.call_end();
+  };
+
+  Bus.prototype.on_values = function(list) {
+    this.from = list;
+    return this.refresh();
+  };
+
+  Bus.prototype.on_start = function(cb) {
+    return this.data_stream = cb;
+  };
+
+  Bus.prototype.on_end = function(cb) {
+    var do_end;
+    do_end = (function(_this) {
+      return function() {
+        return cb(_this.target);
+      };
+    })(this);
+    return this.call_end = _.debounce(do_end, DELAY.presto, {
+      leading: false,
+      trailing: true
+    });
+  };
+
+  Bus.prototype.watch_angular = function() {
+    return (function(_this) {
+      return function(new_val, old_val) {
+        return _this.on_values(new_val);
+      };
+    })(this);
+  };
+
+  return Bus;
+
+})();
+
+Bus.list = [];
+
+Bus.refresh = function(data_stream) {
+  var bus, _i, _len, _ref, _results;
+  _ref = Bus.list;
+  _results = [];
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    bus = _ref[_i];
+    if (data_stream.is_cover(bus.data_stream())) {
+      _results.push(bus.refresh());
+    } else {
+      _results.push(void 0);
+    }
+  }
+  return _results;
+};
 var Config;
 
 Config = (function() {
@@ -927,6 +902,70 @@ Config = (function() {
   };
 
   return Config;
+
+})();
+var DataStream;
+
+DataStream = (function() {
+  function DataStream(parent, browser) {
+    this.parent = parent;
+    this.browser = browser;
+    this.afters = [];
+    this.befores = [];
+    this.filters = [];
+  }
+
+  DataStream.prototype.before = function($scope, key, cb) {
+    return this.befores.push(this.set($scope, key, cb));
+  };
+
+  DataStream.prototype.after = function($scope, key, cb) {
+    return this.afters.unshift(this.set($scope, key, cb));
+  };
+
+  DataStream.prototype.set = function($scope, key, cb) {
+    var item;
+    item = {
+      cb: cb,
+      key: key,
+      scope: $scope,
+      oldVal: null,
+      newVal: null
+    };
+    this.filters.push(item);
+    $scope.$watch(key, (function(_this) {
+      return function(newVal, oldVal) {
+        item.newVal = newVal;
+        item.oldVal = oldVal;
+        return Bus.refresh(_this);
+      };
+    })(this));
+    return item;
+  };
+
+  DataStream.prototype.is_cover = function(target) {
+    return target && (this === target || this.is_cover(target.parent));
+  };
+
+  DataStream.prototype.filter = function(list) {
+    var item, _i, _j, _len, _len1, _ref, _ref1;
+    _ref = this.befores;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      item = _ref[_i];
+      list = item.cb(item.newVal, list);
+    }
+    if (this.parent != null) {
+      list = this.parent.filter(list);
+    }
+    _ref1 = this.afters;
+    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      item = _ref1[_j];
+      list = item.cb(item.newVal, list);
+    }
+    return list;
+  };
+
+  return DataStream;
 
 })();
 var Diary, DiaryHistory;
@@ -1039,20 +1078,49 @@ Diary.base.commit = function(diary) {
   Diary.history.push(item);
   return Diary.base.version = Diary.history.length + 1;
 };
-var Event;
+var Event, LogHolder,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Event = (function() {
-  function Event() {}
+LogHolder = (function() {
+  function LogHolder() {}
+
+  LogHolder.prototype.init = function($scope) {
+    this.browser = Routes.event;
+    return this.cache = {};
+  };
+
+  LogHolder.prototype.last_memo = function(key) {
+    var _ref;
+    return (_ref = this.cache[key]) != null ? _ref.input : void 0;
+  };
+
+  LogHolder.prototype.set_last_memo = function(key, message) {
+    if ((!this.cache[key]) || this.cache[key].updated_at < message.updated_at) {
+      return this.cache[key] = message;
+    }
+  };
+
+  return LogHolder;
+
+})();
+
+Event = (function(_super) {
+  __extends(Event, _super);
+
+  function Event() {
+    return Event.__super__.constructor.apply(this, arguments);
+  }
 
   Event.prototype.init = function($scope) {
-    var cb, message, _i, _len, _ref, _results;
+    var cb, key, message, _i, _len, _ref, _ref1, _results;
+    Event.__super__.init.apply(this, arguments);
     cb = (function(_this) {
       return function() {
         $scope.init();
         return _this.set_turn();
       };
     })(this);
-    this.cache = {};
     this.set_turn = (function(_this) {
       return function() {
         if (_this.has_all_messages) {
@@ -1089,39 +1157,22 @@ Event = (function() {
       return;
     }
     _ref = this.messages;
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       message = _ref[_i];
       message.__proto__ = Message.prototype;
-      _results.push(message.init_data(this));
+      message.init_data(this);
     }
-    return _results;
-  };
-
-  Event.prototype.init_end = function($scope) {
-    var key, message, _ref, _results;
-    _ref = this.cache;
+    _ref1 = this.cache;
     _results = [];
-    for (key in _ref) {
-      message = _ref[key];
-      _results.push(message.input = $scope.undecolated(message.text));
+    for (key in _ref1) {
+      message = _ref1[key];
+      _results.push(message.input = $scope.undecolate(message.log));
     }
     return _results;
-  };
-
-  Event.prototype.last_memo = function(key) {
-    var _ref;
-    return (_ref = this.cache[key]) != null ? _ref.input : void 0;
   };
 
   Event.prototype.url = function() {
     return (this.is_news && this.news) || this.link;
-  };
-
-  Event.prototype.set_last_memo = function(key, message) {
-    if ((!this.cache[key]) || this.cache[key].updated_at < message.updated_at) {
-      return this.cache[key] = this;
-    }
   };
 
   Event.prototype.show = function(href, is_news) {
@@ -1139,7 +1190,7 @@ Event = (function() {
 
   return Event;
 
-})();
+})(LogHolder);
 var FixedBox;
 
 FixedBox = (function() {
@@ -1402,25 +1453,17 @@ Message = (function() {
 })();
 Message.navi = function($scope) {
   var modes_apply, modes_change;
-  Navi.push($scope, 'search', {
-    options: {
-      current: "",
-      location: 'hash',
-      is_cookie: false
-    }
-  });
-  Navi.push($scope, 'mode', {
+  Routes.event.push(new Navi($scope, 'mode', {
     options: {
       current: $scope.mode_cache.talk,
       location: 'hash',
       is_cookie: false
     },
     select: GIJI.modes
-  });
+  }));
   modes_apply = function() {
     var key, _i, _len, _ref, _results;
     $scope.modes = $scope.mode.choice();
-    $scope.anchors = [];
     if ($scope.modes.form != null) {
       $scope.form_show = {};
       _ref = $scope.modes.form;
@@ -1721,6 +1764,26 @@ Potof.key = function(o) {
   face_id = o.face_id || '*';
   return "" + csid + "-" + face_id;
 };
+var Routes;
+
+Routes = {};
+
+Routes.base = new Browser('base', null, function(o) {
+  Routes.pager = new Browser('pager', o, function(o) {
+    Routes.stories = new Browser('stories', o, function(o) {});
+    return Routes.turn = new Browser('turn', o, function(o) {
+      Routes.forms = new Browser('forms', o, function(o) {});
+      Routes.search = new Browser('search', o, function(o) {});
+      Routes.news = new Browser('news', o, function(o) {
+        return Routes.unread = new Browser('unread', o, function(o) {});
+      });
+      return Routes.potofs = new Browser('potofs', o, function(o) {
+        return Routes.event = new Browser('event', o, function(o) {});
+      });
+    });
+  });
+  return Routes.ankers = new Browser('ankers', o, function(o) {});
+});
 var Story, StorySummary,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1782,8 +1845,7 @@ StorySummary = (function() {
 })();
 
 StorySummary.navi = function($scope) {
-  var filter, filters, page, set_filter, _i, _len, _results;
-  page = $scope.page;
+  var filter, filters, set_filter, _i, _len;
   filters = [
     {
       target: "rating",
@@ -1876,8 +1938,8 @@ StorySummary.navi = function($scope) {
         navigator.button[key] = filter.text(key);
       }
     }
-    Navi.push($scope, filter.target, navigator);
-    return page.filter("" + filter.target + ".value", function(key, list) {
+    Routes.stories.push(new Navi($scope, filter.target, navigator));
+    return Routes.stories.filter.log.before($scope, "" + filter.target + ".value", function(key, list) {
       if ('ALL' === $scope[filter.target].value) {
         return list;
       } else {
@@ -1887,12 +1949,11 @@ StorySummary.navi = function($scope) {
       }
     });
   };
-  _results = [];
   for (_i = 0, _len = filters.length; _i < _len; _i++) {
     filter = filters[_i];
-    _results.push(set_filter(filter));
+    set_filter(filter);
   }
-  return _results;
+  return Routes.stories.filter.log.set($scope, 'stories_is_small');
 };
 
 Story = (function(_super) {
@@ -2051,6 +2112,9 @@ CACHE = function($scope) {
     });
     if (event != null) {
       $scope.event = event;
+      Browser.routes(function() {
+        return event.browser;
+      });
     }
     if (form != null) {
       $scope.form = form;
@@ -2420,7 +2484,7 @@ INIT = function($scope, $filter, $timeout) {
       potofs_hash[potof.key] = potof.name;
     }
     if ($scope.hide_potofs == null) {
-      ArrayNavi.push($scope, 'hide_potofs', {
+      Routes.potofs.push(new ArrayNavi($scope, 'hide_potofs', {
         options: {
           class_select: 'inverse',
           class_default: 'plane',
@@ -2429,14 +2493,14 @@ INIT = function($scope, $filter, $timeout) {
           is_cookie: true
         },
         button: potofs_hash
-      });
+      }));
     }
   }
   if ($scope.pages != null) {
     if ($scope.page == null) {
-      PageNavi.push($scope, 'page', OPTION.page.page_search);
+      Routes.pager.push(new PageNavi($scope, 'page', OPTION.page.page_search));
+      return $scope.page.length = gon.pages.length;
     }
-    return $scope.page.length = gon.pages.length;
   }
 };
 var INIT_FACE;
@@ -2595,7 +2659,7 @@ DIARY = function($scope) {
 var FORM;
 
 FORM = function($scope, $sce) {
-  var calc_length, calc_point, is_input, preview, preview_action, safe_anker, set_last_memo, submit, valid, write;
+  var calc_length, calc_point, is_input, preview, preview_action, safe_anker, show_last_memo, submit, valid, write;
   $scope.stories_is_small = true;
   calc_length = function(text) {
     var ascii, other;
@@ -2616,7 +2680,7 @@ FORM = function($scope, $sce) {
   };
   valid = function(f, cb) {
     var lines, mark, point, size, text;
-    set_last_memo(f);
+    show_last_memo(f);
     f.valid = true;
     if (f.max) {
       text = f.text.replace(/\n$/g, '\n ');
@@ -2671,7 +2735,7 @@ FORM = function($scope, $sce) {
       }
     }
     return $scope.submit(param, function() {
-      return set_last_memo(f);
+      return show_last_memo(f);
     });
   };
   preview = function(text) {
@@ -2705,7 +2769,7 @@ FORM = function($scope, $sce) {
       return f.preview = preview(f.text.replace(/\n$/g, '\n '));
     }
   };
-  set_last_memo = function(f) {
+  show_last_memo = function(f) {
     var log, _ref;
     if ("wrmemo" !== f.cmd) {
       return;
@@ -2983,6 +3047,7 @@ var HOGAN_EVENT;
 
 HOGAN_EVENT = function($scope) {
   var add_diary, attention, cancel_say, external, foreground, hogan_click, hogan_click_event, inner, navi, pool_hand, popup, popup_apply;
+  $scope.floats = [];
   hogan_click_event = null;
   navi = function(link) {
     $scope.navi.move(link);
@@ -3145,6 +3210,217 @@ HOGAN_EVENT = function($scope) {
   $('#outframe').on('click', '.drag', foreground);
   return $('#outframe').on('click', '[hogan-click]', hogan_click);
 };
+var LOG_CUTTER;
+
+LOG_CUTTER = function($scope, $filter) {
+  var do_scroll_to, scrollTo;
+  do_scroll_to = function() {
+    var form_text, is_show, mode, _i, _len, _ref, _ref1;
+    if ($scope.event != null) {
+      if ($scope.event.is_news) {
+        _ref = $scope.form_show;
+        for (mode in _ref) {
+          is_show = _ref[mode];
+          _ref1 = $scope.form.texts;
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            form_text = _ref1[_i];
+            if (is_show && mode === form_text.jst) {
+              return;
+            }
+          }
+        }
+      }
+    }
+    return $scope.go.messages();
+  };
+  scrollTo = _.debounce(do_scroll_to, {
+    leading: false,
+    trailing: true
+  });
+  $scope.$watch("search.value", scrollTo);
+  $scope.$watch("page.value", scrollTo);
+  $scope.$watch("msg_style.value", scrollTo);
+  $scope.$watch("mode.value", scrollTo);
+  $scope.$watch("event.turn", scrollTo);
+  $scope.$watch("event.is_news", scrollTo);
+  $scope.$watch('search.value', function(search) {
+    $scope.search_input = search;
+    if (search) {
+      return Browser.routes(function() {
+        return Routes.search;
+      });
+    } else {
+      Browser.routes(function() {
+        return Routes.event;
+      });
+      return Bus.refresh(Routes.current.filter.log);
+    }
+  });
+  Routes.search.filter.log.before($scope, 'search.value', function(search, list) {
+    return $filter('filter')(list, search);
+  });
+  Routes.search.push(new Navi($scope, 'search', {
+    options: {
+      current: "",
+      location: 'hash',
+      is_cookie: false
+    }
+  }));
+  Routes.ankers.filter.log.before($scope, 'ankers.value', function(ankers, list) {
+    var anker, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = ankers.length; _i < _len; _i++) {
+      anker = ankers[_i];
+      _results.push(anker);
+    }
+    return _results;
+  });
+  Routes.ankers.push(new ArrayNavi($scope, 'ankers', {
+    options: {
+      current: "",
+      location: 'hash',
+      is_cookie: false
+    }
+  }));
+  Routes.turn.filter.log.set($scope, 'event.turn');
+  Routes.news.filter.log.set($scope, 'event.is_news');
+  Routes.news.filter.log.after($scope, 'msg_styles.row', function(row, list) {
+    var from, page_per, to;
+    page_per = Number(row);
+    to = list.length;
+    from = to - page_per;
+    if (from < 0) {
+      from = 0;
+    }
+    $scope.page.visible = false;
+    $scope.event.is_rowover = 0 < from;
+    return list.slice(from, to);
+  });
+  Routes.unread.filter.log.before($scope, 'info_at.value', function(now, list) {
+    $scope.event.unread_count = 0;
+    if (now && ($scope.event != null)) {
+      return _.filter(list, function(o) {
+        if (now < o.updated_at) {
+          if (o.logid !== "IX99999") {
+            ++$scope.event.unread_count;
+          }
+          return true;
+        }
+        return o.logid.match(/vilinfo|potofs|status/);
+      });
+    } else {
+      return list;
+    }
+  });
+  Routes.unread.push(new Navi($scope, 'info_at', {
+    options: {
+      current: 0,
+      current_type: Number,
+      location: 'hash',
+      is_cookie: false
+    }
+  }));
+  Routes.pager.filter.log.set($scope, 'page.last_updated_at()');
+  Routes.pager.filter.log.after($scope, 'msg_styles.row', function(row, list) {
+    var from, page_no, page_per, to;
+    page_per = Number(row);
+    $scope.page.paginate(page_per, list);
+    page_no = $scope.page.value;
+    to = page_no * page_per + OPTION.page.pile;
+    from = (page_no - 1) * page_per;
+    return list.slice(from, to);
+  });
+  Routes.pager.filter.log.after($scope, 'msg_styles.order', function(key, list) {
+    var order;
+    order = "desc" === key ? function(o) {
+      return -o.updated_at;
+    } : function(o) {
+      return +o.updated_at;
+    };
+    return _.sortBy(list, order);
+  });
+  Routes.pager.push(new PageNavi($scope, 'page', OPTION.page.page));
+  Routes.potofs.filter.log.before($scope, 'hide_potofs.value', function(hide_faces, list) {
+    var faces;
+    if (_.include(hide_faces, 'others')) {
+      hide_faces = hide_faces.concat($scope.face.others);
+    }
+    faces = _.difference($scope.face.all, hide_faces);
+    return _.filter(list, function(o) {
+      return _.some(faces, function(face) {
+        return face === Potof.key(o);
+      });
+    });
+  });
+  Message.navi($scope);
+  Routes.event.filter.log.before($scope, 'mode.value', function(key, list) {
+    var add_filter, add_filters, groups, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist, _ref;
+    is_mob_open = (_ref = $scope.story) != null ? _ref.is_mob_open() : void 0;
+    mode_filters = {
+      info_open_last: /^([aAm].\d+)|(vilinfo)/,
+      info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/,
+      info_all: /^(..\d+)|(potofs)|(status)/,
+      memo_all: /^.M\d+/,
+      memo_open: /^[qcaAmIMS][MX]\d+/,
+      talk_all: /^[^S][^M]\d+/,
+      talk_think: /^[qcaAmIi][^M]\d+/,
+      talk_clan: /^[qcaAmIi\-WPX][^M]\d+/,
+      talk_all_open: /^.[^M]\d+/,
+      talk_think_open: /^[qcaAmIiS][^M]\d+/,
+      talk_clan_open: /^[qcaAmIi\-WPXS][^M]\d+/,
+      talk_all_last: /^[^S][SX]\d+/,
+      talk_think_last: /^[qcaAmIi][SX]\d+/,
+      talk_clan_last: /^[qcaAmIi\-WPX][SX]\d+/,
+      talk_all_open_last: /^.[SX]\d+/,
+      talk_think_open_last: /^[qcaAmIiS][SX]\d+/,
+      talk_clan_open_last: /^[qcaAmIi\-WPXS][SX]\d+/,
+      talk_open: /^[qcaAmIS][^M]\d+/,
+      talk_open_last: /^[qcaAmIS][SX]\d+/
+    };
+    if (is_mob_open) {
+      open_filters = {
+        talk_think_open_last: /^[qcaAmIiVS][SX]\d+/,
+        talk_think_open: /^[qcaAmIiVS][^M]\d+/,
+        memo_open: /^[qcaAmIMVS][MX]\d+/,
+        talk_open: /^[qcaAmIVS][^M]\d+/,
+        talk_open_last: /^[qcaAmIVS][SX]\d+/
+      };
+    } else {
+      open_filters = {};
+    }
+    add_filters = {
+      clan: function(o) {
+        return "" !== o.to && (o.to != null);
+      },
+      think: function(o) {
+        return "" === o.to && o.logid.match(/^T[^M]/);
+      }
+    };
+    mode_filter = open_filters[$scope.modes.regexp];
+    mode_filter || (mode_filter = mode_filters[$scope.modes.regexp]);
+    add_filter = add_filters[$scope.modes.view];
+    add_filter || (add_filter = function() {
+      return false;
+    });
+    list = _.filter(list, function(o) {
+      return o.logid.match(mode_filter) || add_filter(o);
+    });
+    if ($scope.modes.last) {
+      result = [];
+      groups = _.groupBy(list, function(o) {
+        return "" + o.mestype + "-" + (Potof.key(o));
+      });
+      for (key in groups) {
+        sublist = groups[key];
+        result.push(_.last(sublist));
+      }
+      return result;
+    } else {
+      return list;
+    }
+  });
+  return $scope.$watch('event.is_news', $scope.deploy_mode_common);
+};
 var Navi;
 
 Navi = (function() {
@@ -3184,7 +3460,6 @@ Navi = (function() {
     this.scope = scope;
     this.key = key;
     this.browser = browser;
-    this.browser.list[this.key] = this;
     this.params = def.options;
     (_base = this.params).current_type || (_base.current_type = String);
     (_base1 = this.params).class_select || (_base1.class_select = 'btn-success');
@@ -3204,20 +3479,20 @@ Navi = (function() {
     } else {
       this.select = def.select;
     }
-    this.popstate();
-    this.scope.$watch("" + this.key + ".value", (function(_this) {
+    this.scope.$watch("" + key + ".value", (function(_this) {
       return function(value, oldVal) {
-        var func, _i, _len, _ref1;
+        var func, _i, _len, _ref1, _results;
         _this._move();
         _ref1 = _this.watch;
+        _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           func = _ref1[_i];
-          func(_this.value);
+          _results.push(func(_this.value));
         }
-        _this.browser.set_cookie();
-        return _this.browser.to_url();
+        return _results;
       };
     })(this));
+    eval("scope." + key + " = this");
   }
 
   Navi.prototype._move = function() {
@@ -3243,23 +3518,6 @@ Navi = (function() {
   return Navi;
 
 })();
-
-Navi.popstate = function(list) {
-  var navi, _i, _len, _ref, _results;
-  _ref = Browser.real.list;
-  _results = [];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    navi = _ref[_i];
-    _results.push(navi.popstate());
-  }
-  return _results;
-};
-
-Navi.push = function($scope, key, def) {
-  var navi;
-  navi = new Navi($scope, key, def, Browser.real);
-  return eval("$scope." + key + " = navi");
-};
 var ArrayNavi,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -3277,11 +3535,12 @@ ArrayNavi = (function(_super) {
   ArrayNavi.prototype.popstate = function() {
     var c, l, o, value, _i, _len, _ref;
     l = this.browser.location_val(this.params.location, this.key);
+    l && (l = l.split(","));
     if (this.params.is_cookie != null) {
       c = this.browser.cookies[this.key];
     }
     value = [];
-    _ref = (l || c || "").split(",");
+    _ref = l || c || [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       o = _ref[_i];
       if ((this.select != null) && _.every(this.select, function(s) {
@@ -3366,12 +3625,6 @@ ArrayNavi = (function(_super) {
   return ArrayNavi;
 
 })(Navi);
-
-ArrayNavi.push = function($scope, key, def) {
-  var navi;
-  navi = new ArrayNavi($scope, key, def, Browser.real);
-  return eval("$scope." + key + " = navi");
-};
 var PageNavi,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -3379,112 +3632,25 @@ var PageNavi,
 PageNavi = (function(_super) {
   __extends(PageNavi, _super);
 
-  function PageNavi(scope, key, def, browser) {
-    var do_filter_action, do_pager_action, _base;
+  function PageNavi(scope, key, def) {
+    var _base;
     this.scope = scope;
     this.key = key;
-    this.browser = browser;
     def.options.current_type = Number;
     (_base = def.options).per || (_base.per = 1);
     PageNavi.__super__.constructor.apply(this, arguments);
-    this.nop = function(target, list) {
-      return list;
-    };
-    this.filters = [];
-    this.pagers = [];
-    do_filter_action = (function(_this) {
-      return function() {
-        return _this.scope.$apply(function() {
-          if (_this.by_key != null) {
-            _this.list_by_filter = _this.do_filters(_this.scope.$eval(_this.by_key), _this.filters);
-          }
-          return _this.pager_action();
-        });
-      };
-    })(this);
-    this.filter_action = _.debounce(do_filter_action, DELAY.presto, {
-      leading: false,
-      trailing: true
-    });
-    do_pager_action = (function(_this) {
-      return function() {
-        return _this.scope.$apply(function() {
-          var list;
-          if (_this.list_by_filter != null) {
-            list = _this.do_filters(_this.list_by_filter, _this.pagers);
-            if ((_this.to_key != null) && list) {
-              eval("_this.scope." + _this.to_key + " = list");
-            }
-          }
-          return _this._move();
-        });
-      };
-    })(this);
-    this.pager_action = _.debounce(do_pager_action, DELAY.presto, {
-      leading: false,
-      trailing: true
-    });
   }
 
-  PageNavi.prototype.start = function() {
-    var key, _, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
-    _ref = this.filters;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      _ref1 = _ref[_i], key = _ref1[0], _ = _ref1[1];
-      this.scope.$watch(key, this.filter_action);
+  PageNavi.prototype.paginate = function(page_per, list) {
+    this.visible = true;
+    this.length = (list.length / page_per).ceil();
+    if (this.value > this.length) {
+      this.value = this.length;
     }
-    _ref2 = this.pagers;
-    for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-      _ref3 = _ref2[_j], key = _ref3[0], _ = _ref3[1];
-      this.scope.$watch(key, this.pager_action);
+    if (this.value < 1) {
+      this.value = 1;
     }
-    return this.filter_action();
-  };
-
-  PageNavi.prototype.do_filters = function(list, filters) {
-    var filter, target, target_key, _i, _len, _ref;
-    for (_i = 0, _len = filters.length; _i < _len; _i++) {
-      _ref = filters[_i], target_key = _ref[0], filter = _ref[1];
-      target = this.scope.$eval(target_key);
-      if (target && filter) {
-        list = filter(target, list);
-      }
-    }
-    return list;
-  };
-
-  PageNavi.prototype.filter_by = function(by_key) {
-    return this.by_key = by_key;
-  };
-
-  PageNavi.prototype.filter_to = function(to_key) {
-    return this.to_key = to_key;
-  };
-
-  PageNavi.prototype.filter = function(key, func) {
-    return this.filters.push([key, func]);
-  };
-
-  PageNavi.prototype.pager = function(key, func) {
-    return this.pagers.push([key, func]);
-  };
-
-  PageNavi.prototype.paginate = function(page_per_key, func) {
-    this.pager(page_per_key, (function(_this) {
-      return function(page_per, list) {
-        _this.length = (list.length / page_per).ceil();
-        return list;
-      };
-    })(this));
-    this.pager(page_per_key, func);
-    return this.pager("" + this.key + ".value", (function(_this) {
-      return function(page, list) {
-        if (list.last) {
-          _this.item_last = _.last(list);
-        }
-        return list;
-      };
-    })(this));
+    return this._move();
   };
 
   PageNavi.prototype.hide = function() {
@@ -3558,12 +3724,6 @@ PageNavi = (function(_super) {
   return PageNavi;
 
 })(Navi);
-
-PageNavi.push = function($scope, key, def) {
-  var navi;
-  navi = new PageNavi($scope, key, def, Browser.real);
-  return eval("$scope." + key + " = navi");
-};
 var POOL;
 
 POOL = function($scope, $filter, $timeout) {
@@ -3733,7 +3893,7 @@ POTOFS = function($scope) {
   };
   potofs_sortBy('stat_at', true);
   potofs_sortBy('stat_type', true);
-  Navi.push($scope, 'potofs_order', OPTION.page.potofs);
+  Routes.potofs.push(new Navi($scope, 'potofs_order', OPTION.page.potofs));
   $scope.sort_potofs = function(tgt, zero) {
     $scope.potofs_reverse = tgt === this.tgt;
     $scope.potofs_order.value = tgt;
@@ -3918,9 +4078,12 @@ win = {
 
 if ((typeof history !== "undefined" && history !== null ? history.pushState : void 0) != null) {
   popstate = function(e) {
-    return Navi.popstate();
+    return Browser.current.popstate();
   };
-  $(window).on('popstate', _.throttle(popstate, DELAY.presto));
+  $(window).on('popstate', _.debounce(popstate, DELAY.presto, {
+    leading: false,
+    trailing: true
+  }));
   win.history = function(title, href, hash) {
     href || (href = location.href.replace(/#.*/, ""));
     return history.replaceState(null, title, href + hash);
@@ -4055,6 +4218,16 @@ if (SOW_RECORD.CABALA.events != null) {
 }
 
 MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
+  Browser.virtual.location = {
+    search: "",
+    hash: ""
+  };
+  Browser.virtual.cookies = $cookies;
+  Browser.real.location = document.location;
+  Browser.real.cookies = $cookies;
+  Browser.routes(function() {
+    return Routes.base;
+  });
   $scope.lib = Lib;
   $scope.head = head;
   $scope.win = win;
@@ -4094,6 +4267,7 @@ MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   };
   TOKEN_INPUT($scope);
   HOGAN_EVENT($scope);
+  LOG_CUTTER($scope, $filter);
   DECOLATE($scope, $sce);
   TIMER($scope);
   CACHE($scope);

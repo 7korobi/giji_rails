@@ -63,6 +63,14 @@ if SOW_RECORD.CABALA.events?
 
 
 MODULE = ($scope, $filter, $sce, $cookies, $http, $timeout)->
+  Browser.virtual.location =
+    search: ""
+    hash: ""
+  Browser.virtual.cookies = $cookies
+  Browser.real.location = document.location
+  Browser.real.cookies = $cookies
+  Browser.routes -> Routes.base
+
   $scope.lib  = Lib
   $scope.head = head
   $scope.win  = win
@@ -96,6 +104,7 @@ MODULE = ($scope, $filter, $sce, $cookies, $http, $timeout)->
 
   TOKEN_INPUT $scope
   HOGAN_EVENT $scope
+  LOG_CUTTER $scope, $filter
   DECOLATE $scope, $sce
   TIMER   $scope
   CACHE   $scope
