@@ -2,7 +2,7 @@
   h6(ng-if="mode" style="text-align:left;") 見るログを選ぶ
   .form-inline(ng-if="mode" style="text-align:left;")
     .form-group
-      a.mark(ng-click="story.news().show_info()") 情報
+      a.mark(ng-click="event.show_info()") 情報
     | &thinsp;
     .form-group(ng-repeat="e in events")
       a.mark(ng-click="e.show_talk()") {{e.name}}

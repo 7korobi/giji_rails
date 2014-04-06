@@ -3,8 +3,8 @@ class Event
     @cache = {}
 
     @show_mode = (mode = $scope.mode_cache.talk)=>
-      $scope.mode.value = mode
       $scope.set_turn @turn
+      $scope.mode.value = mode
       $scope.page.value = 1
 
     @refresh = (url, cb)->
@@ -53,22 +53,22 @@ class Event
     @refresh @link, cb
 
   show_info: ->
-    @is_news = true
     @show_mode 'info_all_open'
+    @is_news = true
 
   show_unread: ->
-    @is_news = false
     @show_mode 'info_all'
+    @is_news = false
 
   show_refresh: ->
     @show_with_refresh @url(), ->
 
   show_news: ->
     @show_with_refresh @url(), =>
-      @is_news = true
       @show_mode()
+      @is_news = true
 
   show_talk: ->
     @show_with_refresh @link, =>
-      @is_news = false
       @show_mode()
+      @is_news = false
