@@ -43,7 +43,7 @@ scrollTo = (newVal, oldVal, $scope)->
   $scope.floats = []
 
   if $scope.event?
-    if $scope.event.is_news
+    if $scope.event.is_news && $scope.event.is_progress
       for mode, is_show of $scope.form_show
         for form_text in $scope.form.texts
           if is_show and mode == form_text.jst
@@ -61,6 +61,7 @@ filters_common_last = ($scope, $filter)->
   page.paginate 'msg_styles.row', (row, list)->
     page_per = Number(row)
     if $scope.event?.is_news
+      page_per = 50
       $scope.page.visible = false
       to   = list.length
       from = to - page_per
