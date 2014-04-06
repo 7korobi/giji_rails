@@ -305,7 +305,7 @@ scrollTo = function(newVal, oldVal, $scope) {
   var form_text, is_show, mode, _i, _len, _ref, _ref1;
   $scope.floats = [];
   if ($scope.event != null) {
-    if ($scope.event.is_news) {
+    if ($scope.event.is_news && $scope.event.is_progress) {
       _ref = $scope.form_show;
       for (mode in _ref) {
         is_show = _ref[mode];
@@ -334,6 +334,7 @@ filters_common_last = function($scope, $filter) {
     var from, page_no, page_per, to, _ref;
     page_per = Number(row);
     if ((_ref = $scope.event) != null ? _ref.is_news : void 0) {
+      page_per = 50;
       $scope.page.visible = false;
       to = list.length;
       from = to - page_per;
@@ -3160,11 +3161,11 @@ HOGAN_EVENT = function($scope, $filter) {
     return $scope.floats.push(float);
   };
   attention = function(key) {
-    var drop, float, list;
-    drop = _.remove($scope.floats, function(float) {
+    var float, list;
+    float = _.remove($scope.floats, function(float) {
       return float.event_id === "anker";
-    });
-    float = new EventFloat($scope.pageY);
+    })[0];
+    float || (float = new EventFloat($scope.pageY));
     float.event_id = "anker";
     float.link = Browser.real.to_url({
       hash: {
@@ -3187,7 +3188,6 @@ HOGAN_EVENT = function($scope, $filter) {
     })[0];
     float || (float = new EventFloat($scope.pageY));
     float.event_id = "anker";
-    float.slide($scope.pageY);
     float.link = Browser.real.to_url({
       hash: {
         search: item.key,
