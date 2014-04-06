@@ -31,6 +31,8 @@ angular.module("giji").directive "adjust", ($compile, $timeout)->
       switch adjust
         when 'left'
           small = 185
+        when 'content'
+          small = element.width()
         when 'full'
           small = win.info.width_max
 
@@ -94,4 +96,3 @@ angular.module("giji").directive "navi", ($compile, $timeout)->
         element: elm
       effect($scope, params)
       $scope.navi.select.push params
-    $scope.navi.popstate()

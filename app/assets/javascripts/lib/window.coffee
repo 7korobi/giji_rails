@@ -49,21 +49,6 @@ win =
     $(window).on win.resize_event(), _.throttle(cb, delay)
     $(window).on 'scroll', _.throttle(cb, DELAY.lento)
 
-if history?.pushState?
-  popstate = (e)->
-    Navi.popstate()
-  $(window).on 'popstate', _.debounce popstate, DELAY.presto,
-    leading: false
-    trailing: true
-
-  win.history = (title, href, hash)->
-    href || href = location.href.replace /#.*/, ""
-    history.replaceState null, title, href + hash
-else
-  win.history = (title, href, hash)->
-    location.hash = hash
-
-
 angular.module("giji").run ()->
   win.on_scroll win.refresh
   win.on_resize win.refresh

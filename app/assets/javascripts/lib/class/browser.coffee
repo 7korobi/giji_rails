@@ -6,6 +6,15 @@ class Browser
       hash: ""
     @cookies ||= {}
 
+    do_set_url = =>
+      url = @to_url()
+      if url.search && url.search != @location.search
+        @location.search = url.search
+
+      if url.hash && url.hash != @location.hash
+        @location.hash = url.hash
+    @set_url = _.debounce do_set_url, DELAY.andante
+
   location_val: (target, find_key)->
     for key_value_pair in @location[target].replace(/^[#?]/,"").split('&')
       [key, value] = key_value_pair.split('=')
@@ -33,14 +42,11 @@ class Browser
       for key, value of navi
         scanner(location, key, value)
 
-
+    url = {}
     if data.search.length
-      search = "?" + (data.search || []).join("&")
-      unless @location.search == search
-        @location.search = search
+      url.search = "?" + (data.search || []).join("&")
 
     if data.hash.length
-      hash = "#" +  (data.hash || []).join("&")
-      unless @location.hash == hash
-        @location.hash = hash
-      # win.history null, null, h
+      url.hash = "#" +  (data.hash || []).join("&")
+    url
+

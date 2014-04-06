@@ -43,7 +43,7 @@ class Navi
         func @value
 
       @browser.set_cookie()
-      @browser.to_url()
+      @browser.set_url()
 
   _move: ()->
     if @select?
@@ -55,10 +55,6 @@ class Navi
         else
           o.class = @params.class_default
           o.show = false
-
-Navi.popstate = (list)->
-  for navi in Browser.real.list
-    navi.popstate()
 
 Navi.push = ($scope, key, def)->
   navi = new Navi $scope, key, def, Browser.real
