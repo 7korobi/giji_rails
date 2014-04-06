@@ -12,6 +12,7 @@
   ng-swipe-left="page.move(page.of.prev.val)"
   ng-swipe-right="page.move(page.of.next.val)"
 )
+
 .message_filter(ng-if="page")
   .row
     .col-xs-4
@@ -24,7 +25,9 @@
   .contentframe
     .drag_head
       span.badge(hogan-click="close('{{event.event_id}}')") ✘
+      a.mark.glyphicon.glyphicon-pushpin(ng-click="event.set_url()")
     .message_filter(logs="event.messages")
     .drag_foot
       span.badge(hogan-click="close('{{event.event_id}}')") ✘
+      a.mark.glyphicon.glyphicon-pushpin(ng-click="event.set_url()")
 
