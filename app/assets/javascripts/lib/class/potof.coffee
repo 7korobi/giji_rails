@@ -1,7 +1,6 @@
 class Potof
   is_mob: -> "mob" == @live
   is_live: -> @deathday < 0
-  key: -> Potof.key @
 
   summary: (order)->
     switch order

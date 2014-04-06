@@ -42,13 +42,11 @@ HOGAN_EVENT = ($scope, $filter)->
 
     float = new EventFloat $scope.pageY
     float.event_id = key
-    float.link = Browser.real.to_url
-      hash:
-        search: key
-        turn: $scope.event.turn
-        hide_potofs: ""
-        mode: "talk_all_open"
-        page: 1
+    float.set_url = ->
+      $scope.potof_only _.filter $scope.potofs, ((o)-> o.key == key)
+      $scope.mode.value = "talk_all_open"
+      $scope.page.value = 1
+      $scope.floats = []
 
     order =
       if "desc" == $scope.msg_styles.order
@@ -70,7 +68,6 @@ HOGAN_EVENT = ($scope, $filter)->
 
     float = new EventFloat $scope.pageY
     float.event_id = uri
-    float.link = uri
     float.messages.push
       template:"message/external"
       mestype: "XSAY"
@@ -84,23 +81,30 @@ HOGAN_EVENT = ($scope, $filter)->
       z: Date.now()
     $scope.floats.push float
 
-  attention = (key)->
+  attention = (key, turn)->
     [float] = _.remove $scope.floats, (float)->
       float.event_id == "anker"
 
     float ||= new EventFloat $scope.pageY
     float.event_id = "anker"
-    float.link = Browser.real.to_url
-      hash:
-        search: key
-        turn: $scope.event.turn
-        hide_potofs: ""
-        mode: "talk_all_open"
-        page: 1
+    float.set_url = ->
+      $scope.hide_potofs.value = []
+      $scope.search.value = key
+      $scope.mode.value = "talk_all_open"
+      $scope.page.value = 1
+      $scope.set_turn turn
+      $scope.floats = []
 
-    list = $scope.event.messages
+    list = $scope.events[turn].messages
     list = $filter('filter')(list, key)
-    float.messages = list
+
+    order =
+      if "desc" == $scope.msg_styles.order
+        (o)-> - o.updated_at
+      else
+        (o)-> + o.updated_at
+    float.messages = _.union float.messages, list
+    float.messages = _.sortBy float.messages, order
     $scope.floats.push float
 
   popup_apply = (item, turn)->
@@ -109,23 +113,20 @@ HOGAN_EVENT = ($scope, $filter)->
 
     float ||= new EventFloat $scope.pageY
     float.event_id = "anker"
-    float.link = Browser.real.to_url
-      hash:
-        search: item.key
-        turn: $scope.event.turn
-        hide_potofs: ""
-        mode: "talk_all_open"
-        page: 1
-
-    _.remove float.messages, (message)->
-      message.logid == item.logid
+    float.set_url = ->
+      $scope.hide_potofs.value = []
+      $scope.search.value = item.key
+      $scope.mode.value = "talk_all_open"
+      $scope.page.value = 1
+      $scope.set_turn turn
+      $scope.floats = []
 
     order =
       if "desc" == $scope.msg_styles.order
         (o)-> - o.updated_at
       else
         (o)-> + o.updated_at
-    float.messages.push item
+    float.messages = _.union float.messages, [item]
     float.messages = _.sortBy float.messages, order
 
     $scope.floats.push float

@@ -7,6 +7,10 @@ class EventFloat
     @z = Date.now()
     @top = pageY + 24
 
-  url: ->
-    @link
+  set_url: ->
+    location.hash = @link.hash
+    for key, navi of Browser.real.list
+      navi.popstate()
+
+
 
