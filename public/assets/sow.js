@@ -319,7 +319,7 @@ scrollTo = function(newVal, oldVal, $scope) {
       }
     }
   }
-  return $scope.go.messages();
+  return $scope.go.top();
 };
 
 filters_common_last = function($scope, $filter) {
@@ -3053,6 +3053,7 @@ GO = function($scope) {
     });
   };
   return $scope.go = {
+    top: go_anker("h1"),
     messages: go_anker(".css_changer"),
     form: go_anker("#forms"),
     search: go_anker("[ng-model=\"search_input\"]", function(o) {
