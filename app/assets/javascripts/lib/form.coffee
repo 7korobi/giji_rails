@@ -127,6 +127,8 @@ FORM = ($scope, $sce)->
 
         $scope.errors[f.cmd] = []
         switch f.cmd
+          when "entry"
+            return is_input(f)
           when "write"
             return false if "#{$scope.potof?.pno}" != f.target && ! safe_anker(f)
             return is_input(f)
