@@ -1,1459 +1,3 @@
-
-
-//"日本語";
-this.JST || (this.JST = {});
-
-
-this.JST["form/action"] = "<div class=\"{{f.mestype}}\" ng-show=\"form_show.action\"><form name=\"action_form\"><div class=\"action\"><p class=\"text\" ng-bind-html=\"f.preview\"></p><h6>{{f.count}} {{f.title}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div class=\"controls controls-row formpl_content\"><div class=\"form-inline\"><select class=\"form-control input-medium\" name=\"target\" ng-change=\"text_valid(f)\" ng-model=\"f.target\" ng-options=\"o.val as o.longname for o in f.targets\"></select><select class=\"form-control input-medium\" name=\"actionno\" ng-change=\"text_valid(f)\" ng-model=\"f.action\" ng-options=\"o.val as o.name for o in f.actions\"></select></div><input class=\"form-control input-block-level\" name=\"actiontext\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" type=\"text\" /></div><p><a class=\"btn btn-default\" ng-click=\"action(f)\">アクション</a></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span></p></div></form></div>";
-
-
-this.JST["form/entry"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.entry\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><div class=\"form-group\" ng-show=\"story.entry.limit == &#39;password&#39;\"><label class=\"control-label col-sm-6\" for=\"entrypwd\">参加パスワード</label><div class=\"col-sm-6\"><input class=\"form-control\" id=\"entrypwd\" maxlength=\"8\" ng-model=\"f.password\" size=\"8\" type=\"password\" /></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectid\">希望する配役</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectid\" ng-model=\"f.csid_cid\" ng-options=\"o.val as o.name for o in f.csid_cids\"></select></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectrole\">希望する役職</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectrole\" ng-model=\"f.role\" ng-options=\"o.val as o.name for o in f.roles\"></select></div></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><div ng-show=\"f.is_preview\"><h3 class=\"mesname\"><a>{{option(f.csid_cids, f.csid_cid).name}}</a></h3><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\"></p></div><div ng-hide=\"f.is_preview\"><p> 参加する時のセリフ</p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><div class=\"mark\" ng-bind-html=\"error(f)\"></div></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"entry(f)\">{{f.title}}</a>{{f.count}}<select class=\"form-control input-small\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p>{{f.caption}}<span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
-
-
-this.JST["form/memo"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.memo\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{f.count}} {{f.caption || f.longname}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
-
-
-this.JST["form/open"] = "<table class=\"say {{option(f.targets, f.target).mestype}}\" ng-show=\"form_show.open\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a>&nbsp;({{potof.sow_auth_id}})&nbsp; {{potof.role_names.join(\"、\")}}<span ng-show=\"0 &lt; potof.bonds.length\">&nbsp;★絆</span></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{option(f.targets, f.target).name}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-medium\" ng-change=\"text_valid(f)\" ng-model=\"f.target\" ng-options=\"o.val as o.name for o in f.targets\"></select><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
-
-
-this.JST["form/secret"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.secret\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{f.count}} {{f.caption || f.longname}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
-
-
-this.JST["form/silent"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.secret\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p>{{f.caption}}</p></div></div></div></form></td></tr></table>";
-
-
-this.JST["form/version"] = "<code ng-click=\"diary.copy(f)\">手帳</code><span>&nbsp;履歴:</span><code ng-click=\"f.ver.back(version)\" ng-repeat=\"version in f.ver.versions()\">{{version}}</code>";
-
-
-this.JST["form/vote1"] = "<div class=\"form-inline radio\"><a class=\"btn btn-default\" ng-click=\"vote(ff, f)\">{{ff.title}}</a><select class=\"form-control input-medium\" name=\"target\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target1\" ng-options=\"o.val as o.name for o in ff.targets\"></select></div>";
-
-
-this.JST["form/vote2"] = "<div class=\"form-inline radio\"><a class=\"btn btn-default\" ng-click=\"vote(ff, f)\">{{ff.title}}</a><select class=\"form-control input-medium\" name=\"target1\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target1\" ng-options=\"o.val as o.name for o in ff.targets\"></select>と<select class=\"form-control input-medium\" name=\"target2\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target2\" ng-options=\"o.val as o.name for o in ff.targets\"></select></div>";
-
-
-this.JST["message/action"] = "<div ng-class=\"[message.mestype, message._id]\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><b ng-bind-html=\"message.name\"></b><span>は、</span><span ng-bind-html=\"message.text\"></span></p><p class=\"mes_date\"><span>&nbsp;</span><span>{{message.time()}}</span></p><hr class=\"invisible_hr\" /></div></div>";
-
-
-this.JST["message/admin"] = "<div class=\"guide\" ng-class=\"[message.mestype, message._id]\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p><hr class=\"invisible_hr\" /></div>";
-
-
-this.JST["message/aim"] = "<table class=\"say\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b>&nbsp;→&nbsp;<b ng-bind-html=\"message.to\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
-
-
-this.JST["message/cast"] = "<div class=\"formpl_gm\" template=\"navi/potofs\"></div>";
-
-
-this.JST["message/caution"] = "<p class=\"text caution\" ng-bind-html=\"message.text\"></p><hr class=\"invisible_hr\" />";
-
-
-this.JST["message/external"] = "<div ng-class=\"message.mestype\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><a href=\"{{message.uri}}\" target=\"_blank\"><span class=\"mark\">{{message.protocol}}</span>://<span class=\"mark\">{{message.host}}</span><span class=\"note\">{{message.path}}</span></a></p><hr class=\"invisible_hr\" /></div></div>";
-
-
-this.JST["message/info"] = "<p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"[message.mestype, message._id]\"></p><hr class=\"invisible_hr\" />";
-
-
-this.JST["message/memo"] = "<table class=\"memo\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"memoleft\"><h5 ng-bind-html=\"message.name\"></h5></td><td class=\"memoright\"><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\" ng-if=\"message.text\"></p><p class=\"text\" ng-class=\"message.style\" ng-if=\"! message.text\">メモをはがした</p><p class=\"mes_date\">{{message.time()}}</p></td></tr></tbody></table>";
-
-
-this.JST["message/say"] = "<table class=\"say\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\">{{message.mesicon}}&nbsp;<b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
-
-
-this.JST["navi/chr_list"] = "<hr style=\"border-color:black;\" /><div class=\"chrbox\" ng-repeat=\"chr in chrs\"><img ng-src=\"{{chr.img}}\" /><div class=\"chrblank\" ng-bind-html=\"chr.text\"></div></div><hr style=\"border-color:black;\" />";
-
-
-this.JST["navi/diary"] = "<table class=\"say SAY\"><tbody><tr><td class=\"img\"><img ng-src=\"{{img_cid(null, &#39;blank&#39;)}}\" /></td><td class=\"field\"><div class=\"msg\"><div class=\"form-inline\"><div class=\"formpl_content\"><textarea class=\"form-control input-block-level\" cols=\"30\" ng-model=\"diary.form.text\" rows=\"5\"></textarea><h6>{{diary.head()}}</h6><p><span>&nbsp;履歴:<code ng-click=\"diary.back(version)\" ng-repeat=\"version in diary.versions()\">{{version}}</code></span></p></div></div></div></td></tr></tbody></table>";
-
-
-this.JST["navi/events"] = "<ul class=\"nav nav-list unstyled\"><li ng-click=\"set_turn(e.turn)\" ng-repeat=\"e in events\"><a><i class=\"glyphicon glyphicon-film\" ng-if=\"e.turn == event.turn\"></i><i class=\"glyphicon glyphicon-minus\" ng-if=\"e.turn != event.turn\"></i>{{e.name}}</a></li></ul><br />";
-
-
-this.JST["navi/forms"] = "<div class=\"caution\"><div class=\"text\" listup=\"cautions\"></div><div class=\"text\"><ul><li ng-if=\"story.announce.totalcommit\">{{story.announce.totalcommit}}</li><li ng-if=\"story.is_totalcommit\">{{lax_time(story.timer.nextcommitdt)}}にcommit</li><li>{{lax_time(story.timer.nextupdatedt)}}に更新</li><li>{{lax_time(story.timer.nextchargedt)}}に補充</li><li ng-if=\"story.is_prologue\">{{lax_time(story.timer.scraplimitdt)}}に廃村</li><li>あと {{story.timer.extend}}回、更新を延長できる。</li></ul></div></div><div form=\"f.jst\" ng-repeat=\"f in form.texts\" ng-show=\"logined()\"></div><div class=\"{{form.win}}\" ng-if=\"logined()\"><div class=\"secret\"><p class=\"text\" listup=\"form.secrets\"></p></div></div><div ng-hide=\"form.confirm\" ng-show=\"logined()\"><div class=\"formpl_gm form-inline\" ng-repeat=\"f in form.command_group.commit\"><div class=\"commitbutton\"><select class=\"form-control\" name=\"commit\" ng-change=\"vote_change(f)\" ng-disabled=\"f.disabled\" ng-model=\"f.commit\" ng-options=\"o.val as o.name for o in f.commits\"></select><a class=\"btn btn-default\" ng-click=\"commit(f)\" ng-disabled=\"f.disabled\">{{f.title}}</a></div><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div ng-bind-html=\"f.caption\"></div></div><div class=\"formpl_gm\" ng-if=\"form.command_group.target &amp;&amp; form.command_targets\"><p class=\"commitbutton\"><select class=\"form-control\" name=\"target\" ng-model=\"form.command_target\" ng-options=\"o.val as o.name for o in form.command_targets\"></select></p><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.target\">{{f.title}}</a></p></div><div class=\"formpl_gm\"><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.button\">{{f.title}}</a></p></div></div><div class=\"formpl_gm\" ng-if=\"form.confirm\"><h3>{{form.confirm}}</h3><a class=\"btn btn-default\" ng-click=\"confirm_cancel()\">×</a><a class=\"btn btn-default\" ng-click=\"confirm_complete()\">◯</a></div>";
-
-
-this.JST["navi/headline"] = "<div class=\"choice\"><table class=\"board\"><tr><th class=\"no_choice\" colspan=\"4\" style=\"text-align:center;\"><div class=\"progress_log\"><strong>進行中の村　←　</strong><a onclick=\"$(&#39;.progress_log&#39;).hide();$(&#39;.finished_log&#39;).show();\">終了した村を見る</a></div><div class=\"finished_log\"><a onclick=\"$(&#39;.progress_log&#39;).show();$(&#39;.finished_log&#39;).hide();\">進行中の村を見る</a><strong>　→　終了した村</strong></div></th><td class=\"no_choice link\" rowspan=\"2\"><a href=\"http://soy-bean.sakura.ne.jp/pan/sow.cgi\">似顔絵<br />人狼</a></td></tr><tr class=\"link\"><td class=\"no_choice\">ロビー</td><td class=\"no_choice\">夢の形</td><td class=\"no_choice\">陰謀</td><td class=\"no_choice\">ＲＰ　</td></tr><tr class=\"progress_log\"><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi\">lobby</a><br />offparty<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\">4村:<a href=\"http://morphe.sakura.ne.jp/morphe/sow.cgi\">morphe</a><br />　<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\">wolf<br />ultimate<br />allstar<br />4村:<a href=\"http://cabala.halfmoon.jp/cafe/sow.cgi\">cafe</a><br />　</td><td class=\"no_choice\" style=\"text-align:left;\">role-play<br />RP-advance<br />3村:<a href=\"http://perjury.rulez.jp/sow.cgi\">perjury</a><br />3村:<a href=\"http://xebec.x0.to/xebec/sow.cgi\">xebec</a><br />2村:<a href=\"http://crazy-crazy.sakura.ne.jp/crazy/sow.cgi\">crazy</a><br />2村:<a href=\"http://ciel.moo.jp/cheat/sow.cgi\">ciel</a></td><td class=\"no_choice\" style=\"text-align:left;\">1村:pan<br />　<br />　<br />　<br />　</td></tr><tr class=\"finished_log\"><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=LOBBY\">lobby</a><br /><a href=\"http://giji.check.jp/stories?folder=OFFPARTY\">offparty</a><br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=MORPHE\">morphe</a><br />　<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=WOLF\">wolf</a><br /><a href=\"http://giji.check.jp/stories?folder=ULTIMATE\">ultimate</a><br /><a href=\"http://giji.check.jp/stories?folder=ALLSTAR\">allstar</a><br /><a href=\"http://giji.check.jp/stories?folder=CABALA\">cafe</a><br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=RP\">role-play</a><br /><a href=\"http://giji.check.jp/stories?folder=PRETENSE\">advance</a><br /><a href=\"http://giji.check.jp/stories?folder=PERJURY\">perjury</a><br /><a href=\"http://giji.check.jp/stories?folder=XEBEC\">xebec</a><br /><a href=\"http://giji.check.jp/stories?folder=CRAZY\">crazy</a><br /><a href=\"http://giji.check.jp/stories?folder=CIEL\">ciel</a></td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=PAN\">pan</a><br />　<br />　<br />　<br />　</td></tr></table></div>";
-
-
-this.JST["navi/messages"] = "<div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\" ng-if=\"page\"> 前のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter\" from=\"event.messages\" logs=\"messages\"></div><div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\" ng-if=\"page\"> 次のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter drag\" drag=\"message\" ng-repeat=\"message in anchors\"><div class=\"contentframe\" log=\"message\"><div class=\"drag_head\"><span class=\"badge\" hogan-click=\"popup({{message.turn}}, &#39;{{message.logid}}&#39;)\">✘</span></div></div></div>";
-
-
-this.JST["navi/paginate"] = "<a class=\"btn btn-default\" ng-class=\"page.of.first.class\" ng-click=\"page.move(page.of.first.val)\">{{page.of.first.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.second.class\" ng-click=\"page.move(page.of.second.val)\">{{page.of.second.name}}</a><span ng-class=\"page.of.prev_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\">{{page.of.prev.name}}</a><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"pno.val as pno.name for pno in page.select\"></select><a class=\"btn btn-default\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\">{{page.of.next.name}}</a><span ng-class=\"page.of.next_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.penu.class\" ng-click=\"page.move(page.of.penu.val)\">{{page.of.penu.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.last.class\" ng-click=\"page.move(page.of.last.val)\">{{page.of.last.name}}</a>";
-
-
-this.JST["navi/potofs"] = "<table class=\"potofs\"><thead class=\"head\"><tr><th><span class=\"name\" ng-if=\"sum.actaddpt\">&nbsp;あと{{sum.actaddpt}}促</span><span class=\"name\" ng-if=\"potofs.length\">&nbsp;({{potofs.length}}人)</span></th><th colspan=\"4\" style=\"text-align: right;\"><span><br /><code ng-click=\"secret_toggle()\">ネタバレ</code>&nbsp;</span><span ng-if=\"! secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></span><span ng-if=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></span></th><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only(potofs)\"></a></th></tr></thead></table><table class=\"potofs\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-if=\"potofs_groups[key].has_head\"><th class=\"mark\" colspan=\"5\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span>({{potofs_groups[key].length}}人)</span></th><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only(potofs_groups[key])\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof.key].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><div class=\"name\">{{potof.longname || potof.name}}</div><div class=\"note name\" ng-if=\"potof.auth\"><span class=\"glyphicon glyphicon-user\"></span>{{potof.auth}}</div></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap\">{{potof.stat}}</span><div class=\"note nowrap\" ng-if=\"potof.said\"><span class=\"glyphicon glyphicon-pencil\"></span>{{potof.said}}</div></td><td ng-click=\"potof_toggle(potof)\"><div class=\"nowrap\" ng-if=\"secret_is_open\"><span class=\"note\">{{potof.win_name}}::</span><span>{{potof.role_names.join('、')}}</span><div class=\"note\"><span class=\"mark\">{{potof.win_result}}</span><span class=\"name\" ng-if=\"potof.select_name\">&nbsp; {{potof.select_name}} を希望</span></div></div></td><td ng-click=\"potof_toggle(potof)\"><div ng-if=\"secret_is_open\"><span ng-bind-html=\"potof.text.join(&#39;&#39;)\"></span><span class=\"note\" ng-if=\"potof.bond_names\">{{potof.bond_names.join('、')}}</span><span class=\"note\" ng-if=\"potof.bond_names.length &amp;&amp; potof.pseudobond_names.length\">、</span><s class=\"note\" ng-if=\"potof.pseudobond_names\">{{potof.pseudobond_names.join('、')}}</s></div></td><th style=\"width: 1ex\"><a class=\"glyphicon glyphicon-pushpin\" ng-click=\"potof_only([potof])\"></a></th></tr></tbody></table>";
-
-
-this.JST["navi/potofs_small"] = "<table class=\"potofs\"><thead class=\"head\"><tr><th><span class=\"name\" ng-if=\"sum.actaddpt\">&nbsp;{{sum.actaddpt}}促</span></th><th colspan=\"2\" style=\"text-align: right;\"><span><code ng-click=\"secret_toggle()\">ネタバレ</code></span>&nbsp;</th><th style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only(potofs)\"></a></th></tr></thead></table><table class=\"potofs\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-if=\"potofs_groups[key].has_head\"><th colspan=\"3\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span class=\"note\">({{potofs_groups[key].length}}人)</span></th><th style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only(potofs_groups[key])\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof.key].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><span class=\"name\">{{potof.name}}</span></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap note\" ng-bind-html=\"potof.summary(potofs_order.value)\"></span></td><td style=\"width:1ex\"><a class=\"glyphicon glyphicon-pushpin note\" ng-click=\"potof_only([potof])\"></a></td></tr></tbody></table><table class=\"potofs\"><tbody><tr class=\"head\"><th colspan=\"4\"></th></tr><tr ng-class=\"hide_potofs.of.others.class\"><td colspan=\"4\" ng-click=\"other_toggle()\"><span class=\"name\">他の人々</span></td></tr><tr class=\"head\"><th colspan=\"4\"><div class=\"nowrap\" ng-if=\"! secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></div><div class=\"nowrap\" ng-if=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></div></th></tr></tbody></table>";
-
-
-this.JST["navi/story_navi"] = "<div class=\"form-inline radio\"><label><select class=\"form-control input-small\" ng-model=\"folder.value\" ng-options=\"o.val as o.name for o in folder.select\"></select></label><label ng-if=\"game_rule\"><select class=\"form-control input-small\" ng-model=\"game_rule.value\" ng-options=\"o.val as o.name for o in game_rule.select\"></select></label><label ng-if=\"rating\"><select class=\"form-control input-small\" ng-model=\"rating.value\" ng-options=\"o.val as o.name for o in rating.select\"></select></label><label ng-if=\"potof_size\"><select class=\"form-control input-mini\" ng-model=\"potof_size.value\" ng-options=\"o.val as o.name for o in potof_size.select\"></select></label><label ng-if=\"upd_interval\"><select class=\"form-control input-mini\" ng-model=\"upd_interval.value\" ng-options=\"o.val as o.name for o in upd_interval.select\"></select></label><label ng-if=\"upd_time\"><select class=\"form-control input-small\" ng-model=\"upd_time.value\" ng-options=\"o.val as o.name for o in upd_time.select\"></select></label><label ng-if=\"roletable\"><select class=\"form-control input-small\" ng-model=\"roletable.value\" ng-options=\"o.val as o.name for o in roletable.select\"></select></label><label ng-if=\"card_win\"><select class=\"form-control input-mini\" ng-model=\"card_win.value\" ng-options=\"o.val as o.name for o in card_win.select\"></select></label><label ng-if=\"card_role\"><select class=\"form-control input-mini\" ng-model=\"card_role.value\" ng-options=\"o.val as o.name for o in card_role.select\"></select></label><label ng-if=\"card_event\"><select class=\"form-control input-mini\" ng-model=\"card_event.value\" ng-options=\"o.val as o.name for o in card_event.select\"></select></label></div>";
-
-
-this.JST["navi/toolbox"] = "<div class=\"form-inline\"><div class=\"form-group\"><label><a class=\"mark click\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\">{{a.name}}</a></label></div>&thinsp;<div class=\"form-group\"><label ng-if=\"event.is_progress\"><a class=\"mark click glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\"></a></label></div>&thinsp;<div class=\"form-group\"><label><a class=\"mark click glyphicon glyphicon-search\" ng-click=\"go.search()\"></a><a class=\"mark click glyphicon glyphicon-pencil\" ng-click=\"go.form()\"></a></label></div><div class=\"form-group\"><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></div></div>";
-
-
-this.JST["sow/form/configs"] = "<fieldset><div style=\"display:none;\"><input name=\"trsid\" ng-model=\"config.trsid\" type=\"text\" /><input name=\"hour\" ng-model=\"story.upd.hour\" type=\"text\" /><input name=\"minite\" ng-model=\"story.upd.minute\" type=\"text\" /><input name=\"updinterval\" ng-model=\"story.upd.interval\" type=\"text\" /><input name=\"votetype\" ng-model=\"story.type.vote\" type=\"text\" /><input name=\"roletable\" ng-model=\"story.type.roletable\" type=\"text\" /></div><legend>基本設定</legend><dl><dt>{{config.trs.caption}}</dt><dd>{{config.trs.help}}</dd></dl><dl class=\"dl-horizontal\"><dt><label for=\"vplcnt\">定員</label></dt><dd><div class=\"input-group\"><input class=\"form-control\" id=\"vplcnt\" name=\"vplcnt\" ng-model=\"event.player.limit\" size=\"5\" type=\"number\" /><div class=\"input-group-addon\">人</div></div></dd><dt><label for=\"vplcntstart\">最低人数</label></dt><dd><div class=\"input-group\"><input class=\"form-control\" id=\"vplcntstart\" name=\"vplcntstart\" ng-model=\"event.player.start\" size=\"5\" type=\"number\" /><div class=\"input-group-addon\">人</div></div>※開始方法が人狼BBS型の時のみ</dd><dt><label for=\"updhour\">更新時間</label></dt><dd class=\"row\"><div class=\"form-inline\"><div class=\"form-group\"><select class=\"form-control\" id=\"updhour\" ng-model=\"story.upd.hour\" ng-options=\"o.val as o.name for o in config.hours\"></select></div><div class=\"form-group\"><select class=\"form-control\" id=\"updminite\" ng-model=\"story.upd.minute\" ng-options=\"o.val as o.name for o in config.minutes\"></select></div></div></dd><dt><label for=\"updinterval\">更新間隔</label></dt><dd><div class=\"input-group\"><select class=\"form-control\" id=\"updinterval\" ng-model=\"story.upd.interval\" ng-options=\"o.val as o.name for o in config.intervals\"></select><div class=\"input-group-addon\">ごとに更新</div></div></dd><dt><label for=\"votetype\">投票方法</label></dt><dd><select class=\"form-control\" id=\"votetype\" ng-model=\"story.type.vote\" ng-options=\"o.val as o.name for o in config.votetypes\"></select></dd><dt><label for=\"roletable\">役職配分</label></dt><dd><select class=\"form-control\" id=\"roletable\" ng-model=\"story.type.roletable\" ng-options=\"o.val as o.name for o in config.roletables\"></select></dd></dl></fieldset><fieldset ng-show=\"story.type.roletable == &#39;custom&#39;\"><legend>役職配分自由設定</legend><div ng-repeat=\"title in config.items_keys\"><h3>{{title}}</h3><div class=\"form-inline row\"><div class=\"form-group input-medium\" ng-repeat=\"item in config.items[title]\"><div class=\"input-group\"><div class=\"input-group-addon\" for=\"cnt{{item.key}}\">{{item.name}}</div><input class=\"form-control\" id=\"cnt{{item.key}}\" name=\"cnt{{item.key}}\" ng-model=\"item.count\" size=\"2\" type=\"number\" /></div></div></div></div></fieldset><h3>事件</h3><fieldset class=\"token-input\"><input id=\"eventcard\" name=\"eventcard\" type=\"text\" /><span class=\"btn btn-default\" ng-click=\"tokenInputAdd(&#39;#eventcard&#39;,item.key)\" ng-repeat=\"item in config.items.events\">{{item.name}}</span></fieldset>";
-
-
-this.JST["sow/log_last"] = "<div class=\"caution text\" ng-if=\"event.is_progress\" style=\"padding-left: 0;\"><table><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\" style=\"font-size: 4ex;\"></a></td><td style=\"padding-left: 11px;\">⇚ {{ message.updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja') }} より先を見る。<br /></td></table></div>";
-
-
-this.JST["sow/login"] = "<form ng-if=\"! logined()\" ng-submit=\"login(form.login)\"><p class=\"form-inline\"><label><span class=\"mark\"> user id:</span><input class=\"form-control input-small\" name=\"uid\" ng-model=\"form.login.uid\" size=\"10\" type=\"text\" /></label><label><span class=\"mark\"> password:</span><input class=\"form-control input-small\" name=\"pwd\" ng-model=\"form.login.pwd\" size=\"10\" type=\"password\" /></label><input class=\"form-control\" type=\"submit\" value=\"ログイン\" /></p></form><form ng-if=\"logined()\" ng-submit=\"logout(form.login)\"><p class=\"form-inline\"><span class=\"mes_date\" ng-if=\"form.login.is_admin\">[<a ng-href=\"{{form.login.admin_uri}}\">管理画面</a>]</span><span class=\"mes_date\">ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。</span><input class=\"form-control\" type=\"submit\" value=\"{{form.login.uidtext}} がログアウト\" /></p></form>";
-
-
-this.JST["sow/navi"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"drag\" id=\"topframe\"><div class=\"contentframe form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div><div adjust=\"left\" class=\"sayfilter\" id=\"sayfilter\"><div class=\"sayfilter_heading\">{{story.name}}</div><div class=\"insayfilter\" name=\"移動\" navi=\"link\"><div class=\"paragraph\"><div class=\"sayfilter_caption_enable\"> 他の章へ</div><div class=\"sayfilter_content\" template=\"navi/events\"></div></div></div><div class=\"insayfilter\" name=\"名簿\" navi=\"info\"><div class=\"paragraph\" ng-if=\"potofs\"><div class=\"sayfilter_content\" template=\"navi/potofs_small\"></div></div></div><div class=\"insayfilter\" navi=\"page_filter\" ng-if=\"page\"><div class=\"paragraph\"><div class=\"sayfilter_content\"><select class=\"form-control input-block-level\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\"></select></div></div></div><div class=\"sayfilter_heading bottom\"></div><div adjust=\"full\" class=\"toolbox\" navi=\"page\" ng-if=\"page\" template=\"navi/toolbox\"></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
-
-
-this.JST["sow/navi_edit"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"drag\" id=\"topframe\"><div class=\"contentframe form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
-
-
-this.JST["sow/status_info"] = "<div class=\"mes_maker\" ng-if=\"event.is_progress\"><table><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\" style=\"font-size: 4ex;\"></a></td><td style=\"padding-left: 11px;\"><span ng-if=\"! event.unread_count\">このページには未読の議事録を掲載します。<a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\"></a>を押すと、現在までの未読発言に更新されます。</span><span ng-if=\"event.unread_count\">未読の議事録があります。</span></td></table></div>";
-
-
-this.JST["sow/village_info"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"text head\" ng-bind-html=\"story.comment\"></p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#rule\">国のルール</a></p><p class=\"text\" ng-repeat=\"nrule in story.announce.nrules\">{{nrule}}</p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#mind\">心構え</a></p></div><div class=\"mes_admin story\"><dl><dt class=\"text\" ng-bind-html=\"story.announce.trs_name\"></dt><dd><div class=\"text\" ng-bind-html=\"story.announce.trs_help\"></div></dd><dt class=\"text\" ng-bind-html=\"story.announce.game_name\"></dt><dd><ul class=\"text\" ng-bind-html=\"story.announce.game_help\"></ul></dd><dt class=\"text\">オプション設定</dt><dd><ul class=\"text\"><li>{{story.announce.starttype}}</li><li ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></dd></dl></div><div class=\"mes_admin story\"><dl class=\"dl-horizontal\"><dt>登場人物</dt><dd>{{story.announce.csidcaptions}}</dd><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}<br />{{story.card.config_names}}<br />{{story.card.event_names}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-if=\"story.is_wbbs\">最低人数</dt><dd ng-if=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>廃村期限</dt><dd>{{lax_time(story.timer.scraplimitdt)}}</dd></dl></div>";
-
-
-this.JST["sow/village_info_epilogue"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"head text\" ng-bind-html=\"story.comment\"></p></div><div class=\"mes_maker story\"><dl><dt class=\"text\">オプション設定</dt><dd><ul class=\"text\"><li ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></dd></dl></div><div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-if=\"story.is_wbbs\">最低人数</dt><dd ng-if=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}</dd></dl><div class=\"form-horizontal\"><div class=\"control-group\"><code>編成</code>： {{story.card.config_names}}</div><div class=\"control-group\"><code>残存事件</code>： {{story.card.event_names}}</div><div class=\"control-group\"><code>破棄役職</code>： {{story.card.discard_names}}</div></div></div>";
-
-
-this.JST["theme/css"] = "<span><a class=\"mark\" ng-click=\"styles.width = &#39;center-msg&#39;\">800</a><a class=\"mark\" ng-click=\"styles.width = &#39;mini-msg&#39;\">480</a></span>&thinsp;<span><a class=\"mark\" ng-click=\"styles.theme = &#39;cinema&#39;\">煉瓦</a><a class=\"mark\" ng-click=\"styles.theme = &#39;night&#39;\">月夜</a><a class=\"mark\" ng-click=\"styles.theme = &#39;star&#39;\">蒼穹</a><a class=\"mark\" ng-click=\"styles.theme = &#39;wa&#39;\">和の国</a></span>&thinsp;<a class=\"glyphicon glyphicon-cog\" ng-click=\"show_style_navi = ! show_style_navi\" style=\"font-size: 36px; margin-bottom: -26px; vertical-align: -26px;\" tabindex=\"0\"></a>";
-
-
-this.JST["theme/style_navi"] = "<table class=\"pagenavi\"><tbody><tr><td class=\"events\"><div ng-click=\"e.set_turn()\" ng-repeat=\"e in events\"><a class=\"mark\"><i class=\"glyphicon glyphicon-film\" ng-if=\"e.turn == event.turn\"></i><i class=\"glyphicon glyphicon-minus\" ng-if=\"e.turn != event.turn\"></i>{{e.name}}</a></div></td><td><h6 ng-if=\"show_style_navi\">スタイル：ログの見た目 &emsp;&emsp;&emsp;&emsp;.</h6><div class=\"form-inline\" ng-if=\"show_style_navi\"><div class=\"form-group\"><label><select class=\"form-control input-block-level\" ng-model=\"css.value\" ng-options=\"o.val as o.name group by o.group for o in css.select\"></select></label></div>&thinsp;<div class=\"form-group mark\"><label class=\"checkbox\" ng-repeat=\"key in selector_keys.font\"><input ng-model=\"styles.font\" tabindex=\"-1\" type=\"radio\" value=\"{{key}}\">{{selectors.font[key]}}</input></label></div>&thinsp;<div class=\"form-group mark\"><label class=\"checkbox\" ng-repeat=\"key in selector_keys.width\"><input ng-model=\"styles.width\" tabindex=\"-1\" type=\"radio\" value=\"{{key}}\">{{selectors.width[key]}}</input></label></div></div><h6 ng-if=\"show_style_navi &amp;&amp; page\">ログの表示方法 &emsp;&emsp;&emsp;&emsp;.</h6><div class=\"form-inline\" ng-if=\"show_style_navi &amp;&amp; msg_style\"><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.power\" ng-options=\"key as selectors.power[key] for key in selector_keys.power\"></select></label>&thinsp;</div><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.order\" ng-options=\"key as selectors.order[key] for key in selector_keys.order\"></select></label>&thinsp;</div><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.row\" ng-options=\"key as selectors.row[key] for key in selector_keys.row\"></select></label>&thinsp;</div></div><h6 ng-if=\"mode\">フィルタ：表示するログ &emsp;&emsp;&emsp;&emsp;</h6><div class=\"form-inline\" ng-if=\"mode\"><div class=\"form-group\"><a class=\"mark click\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\">{{a.name}}</a></div>&thinsp;<div class=\"form-group mark\" ng-if=\"show_style_navi\"><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"open\">公開</input></label><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"clan\">内緒話</input></label><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"think\">独り言</input></label><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"all\">全部</input></label></div>&thinsp;<div class=\"form-group mark\" ng-if=\"show_style_navi\"><label class=\"checkbox\"><input ng-model=\"modes.last\" tabindex=\"-1\" type=\"checkbox\">最後の言葉</input></label><label class=\"checkbox\"><input ng-model=\"modes.open\" tabindex=\"-1\" type=\"checkbox\">公開発言</input></label><label class=\"checkbox\"><input ng-model=\"msg_styles.pl\" tabindex=\"-1\" type=\"checkbox\">中身発言</input></label></div></div><h6 ng-if=\"event\">ページ、日程の移動 &emsp;&emsp;&emsp;&emsp;</h6><div class=\"form-inline\" ng-if=\"event\"><div class=\"form-group\"><label ng-if=\"! event.is_news\"><label template=\"navi/paginate\"></label></label></div>&thinsp;<div class=\"form-group\" ng-if=\"event.is_progress\"><label><a class=\"btn btn-default\" ng-click=\"event.show(null, false)\" ng-if=\"  event.is_news\">ページ表示</a><a class=\"btn btn-default\" ng-click=\"event.show(null, true)\" ng-if=\"! event.is_news\">最新の発言</a></label></div>&thinsp;<div class=\"form-group\"><label><input class=\"form-control input-medium\" ng-blur=\"search.value = search_input\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /></label></div>&thinsp;<div class=\"form-group\" ng-if=\"event.is_progress\"><label><a class=\"mark click glyphicon glyphicon-pencil\" ng-click=\"go.form()\"></a></label></div></div></td></tr></tbody></table>";
-
-
-this.FACES = [
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "b44",
-    "name": "ドナルド",
-    "order": 70010
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "b49",
-    "name": "ボリス",
-    "order": 70012
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m01",
-    "name": "ケムシ",
-    "order": 70007
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m02",
-    "name": "ポプラ",
-    "order": 70008
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m03",
-    "name": "トノサマ",
-    "order": 70003
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m04",
-    "name": "アオイ",
-    "order": 70009
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m05",
-    "name": "ナナコロ",
-    "order": 70004
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m06",
-    "name": "リリンラ",
-    "order": 70002
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m07",
-    "name": "アリス",
-    "order": 70006
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m08",
-    "name": "おっぱい",
-    "order": 70011
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m09",
-    "name": "カミジャー",
-    "order": 70012
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m10",
-    "name": "アチャポ",
-    "order": 70013
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m11",
-    "name": "ライトニング",
-    "order": 70015
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m12",
-    "name": "トルニトス",
-    "order": 70014
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m13",
-    "name": "ミケ",
-    "order": 70016
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m14",
-    "name": "カリュクス",
-    "order": 70017
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m15",
-    "name": "ミソチャ",
-    "order": 70005
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "m99",
-    "name": "パルック",
-    "order": 70001
-  },
-  {
-    "caption": "とのさま広場",
-    "csid": "changed",
-    "face_id": "r30",
-    "name": "トリ",
-    "order": 70006
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c01",
-    "name": "メアリー",
-    "order": 55
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c02",
-    "name": "アルフレッド",
-    "order": 38
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c03",
-    "name": "スティーブン",
-    "order": 71
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c04",
-    "name": "ノーリーン",
-    "order": 29
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c05",
-    "name": "キャサリン",
-    "order": 59
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c07",
-    "name": "ティモシー",
-    "order": 20
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c08",
-    "name": "ベネット",
-    "order": 66
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c09",
-    "name": "ヒロシ",
-    "order": 32
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c10",
-    "name": "ゾーイ",
-    "order": 17
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c100",
-    "name": "グレッグ",
-    "order": 87
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c101",
-    "name": "クラリッサ",
-    "order": 88
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c102",
-    "name": "ウォーレン",
-    "order": 168
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c103",
-    "name": "ナンシー",
-    "order": 998
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c104",
-    "name": "ヒュー",
-    "order": 89
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c105",
-    "name": "シメオン",
-    "order": 82
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c106",
-    "name": "ワンダ",
-    "order": 90
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c107",
-    "name": "イヴォン",
-    "order": 195
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c108",
-    "name": "ブローリン",
-    "order": 91
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c109",
-    "name": "ラディスラヴァ",
-    "order": 163
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c11",
-    "name": "カルヴィン",
-    "order": 16
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c110",
-    "name": "リー",
-    "order": 92
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c111",
-    "name": "スージー",
-    "order": 93
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c113",
-    "name": "ジェレミー",
-    "order": 94
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c12",
-    "name": "バーナバス",
-    "order": 12
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c13",
-    "name": "ロミオ",
-    "order": 62
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c14",
-    "name": "レティーシャ",
-    "order": 31
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c15",
-    "name": "ウェーズリー",
-    "order": 73
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c16",
-    "name": "マリアンヌ",
-    "order": 13
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c17",
-    "name": "ユリシーズ",
-    "order": 23
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c18",
-    "name": "エマ",
-    "order": 63
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c19",
-    "name": "タバサ",
-    "order": 67
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c20",
-    "name": "グロリア",
-    "order": 78
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c21",
-    "name": "ニール",
-    "order": 50
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c22",
-    "name": "ワット",
-    "order": 60
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c23",
-    "name": "チャールズ",
-    "order": 44
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c24",
-    "name": "ナタリア",
-    "order": 41
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c25",
-    "name": "ルーカス",
-    "order": 77
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c27",
-    "name": "リンダ",
-    "order": 65
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c28",
-    "name": "ケイト",
-    "order": 47
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c29",
-    "name": "イアン",
-    "order": 11
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c30",
-    "name": "フィリップ",
-    "order": 49
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c31",
-    "name": "ネル",
-    "order": 250
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c32",
-    "name": "オスカー",
-    "order": 36
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c33",
-    "name": "ホリー",
-    "order": 37
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c34",
-    "name": "トニー",
-    "order": 14
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c37",
-    "name": "セシル",
-    "order": 34
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c39",
-    "name": "シビル",
-    "order": 24
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c40",
-    "name": "ハワード",
-    "order": 25
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c41",
-    "name": "ヤニク",
-    "order": 21
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c42",
-    "name": "ラルフ",
-    "order": 33
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c43",
-    "name": "ガストン",
-    "order": 72
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c44",
-    "name": "ドナルド",
-    "order": 15
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c45",
-    "name": "プリシラ",
-    "order": 218
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c46",
-    "name": "ゲイル",
-    "order": 30
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c47",
-    "name": "ペラジー",
-    "order": 80
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c48",
-    "name": "ビアンカ",
-    "order": 225
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c51",
-    "name": "ヨーランダ",
-    "order": 53
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c52",
-    "name": "ギリアン",
-    "order": 52
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c54",
-    "name": "ザック",
-    "order": 75
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c55",
-    "name": "パピヨン",
-    "order": 10
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c56",
-    "name": "ゴドウィン",
-    "order": 19
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c57",
-    "name": "ツェツィーリヤ",
-    "order": 28
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c58",
-    "name": "ブルーノ",
-    "order": 22
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c59",
-    "name": "ムパムピス",
-    "order": 27
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c60",
-    "name": "ポーチュラカ",
-    "order": 215
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c61",
-    "name": "ヌマタロウ",
-    "order": 43
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c62",
-    "name": "ヴェラ",
-    "order": 61
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c63",
-    "name": "ピッパ",
-    "order": 57
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c64",
-    "name": "ヘクター",
-    "order": 190
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c65",
-    "name": "ズリエル",
-    "order": 26
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c66",
-    "name": "クリストファー",
-    "order": 39
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c67",
-    "name": "ソフィア",
-    "order": 200
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c68",
-    "name": "ヨアヒム",
-    "order": 48
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c69",
-    "name": "ギネス",
-    "order": 56
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c70",
-    "name": "パティ",
-    "order": 18
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c71",
-    "name": "ノックス",
-    "order": 70
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c72",
-    "name": "ヴェスパタイン",
-    "order": 79
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c73",
-    "name": "ローズマリー",
-    "order": 170
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c75",
-    "name": "ビリー",
-    "order": 35
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c76",
-    "name": "ジョージ",
-    "order": 210
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c78",
-    "name": "ネイサン",
-    "order": 150
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c79",
-    "name": "マーゴ",
-    "order": 42
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c80",
-    "name": "テッド",
-    "order": 81
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c81",
-    "name": "サイラス",
-    "order": 180
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c82",
-    "name": "ロビン",
-    "order": 160
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c83",
-    "name": "アイリス",
-    "order": 240
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c84",
-    "name": "ブレンダ",
-    "order": 128
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c85",
-    "name": "ハナ",
-    "order": 129
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c86",
-    "name": "ホレーショー",
-    "order": 230
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c87",
-    "name": "エリアス",
-    "order": 220
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c88",
-    "name": "ピエール",
-    "order": 126
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c89",
-    "name": "カトリーナ",
-    "order": 127
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c90",
-    "name": "ケヴィン",
-    "order": 125
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c91",
-    "name": "ドロシー",
-    "order": 130
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c92",
-    "name": "セレスト",
-    "order": 140
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c93",
-    "name": "ベッキー",
-    "order": 145
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c94",
-    "name": "ダーラ",
-    "order": 165
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c95",
-    "name": "モリス",
-    "order": 84
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c96",
-    "name": "レオナルド",
-    "order": 83
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c97",
-    "name": "ジェフ",
-    "order": 85
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c98",
-    "name": "オズワルド",
-    "order": 86
-  },
-  {
-    "caption": "人狼議事",
-    "csid": "ririnra",
-    "face_id": "c99",
-    "name": "サイモン",
-    "order": 999
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf01",
-    "name": "ラッシード",
-    "order": 80001
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf02",
-    "name": "エスペラント",
-    "order": 80002
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf03",
-    "name": "ピート",
-    "order": 80003
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf04",
-    "name": "アシモフ",
-    "order": 80004
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf05",
-    "name": "モナリザ",
-    "order": 80005
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf06",
-    "name": "ワレンチナ",
-    "order": 80006
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf07",
-    "name": "ヤンファ",
-    "order": 80007
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf08",
-    "name": "ＰＪ",
-    "order": 80008
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf09",
-    "name": "キリシマ",
-    "order": 80009
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf10",
-    "name": "ナユタ",
-    "order": 80010
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf11",
-    "name": "イワノフ",
-    "order": 80011
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf12",
-    "name": "†ルシフェル†",
-    "order": 80012
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf13",
-    "name": "トルドヴィン",
-    "order": 80013
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf14",
-    "name": "クリスマス",
-    "order": 80016
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf15",
-    "name": "ジェームス",
-    "order": 80017
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf16",
-    "name": "ライジ",
-    "order": 80018
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf17",
-    "name": "ジャック",
-    "order": 80019
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf18",
-    "name": "玖休",
-    "order": 80014
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf19",
-    "name": "参休",
-    "order": 80015
-  },
-  {
-    "caption": "明後日への道標",
-    "csid": "SF",
-    "face_id": "sf20",
-    "name": "ティソ",
-    "order": 80020
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w01",
-    "name": "鏡花",
-    "order": 90038
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w02",
-    "name": "慶三郎",
-    "order": 90041
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w03",
-    "name": "朔",
-    "order": 90022
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w04",
-    "name": "小鈴",
-    "order": 90034
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w05",
-    "name": "定吉",
-    "order": 90001
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w06",
-    "name": "ゆり",
-    "order": 90035
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w07",
-    "name": "夕顔",
-    "order": 90030
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w08",
-    "name": "朝顔",
-    "order": 90028
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w09",
-    "name": "チャールズ",
-    "order": 90017
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w10",
-    "name": "博史",
-    "order": 90015
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w11",
-    "name": "沼太郎",
-    "order": 90021
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w12",
-    "name": "おみつ",
-    "order": 90014
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w13",
-    "name": "たまこ",
-    "order": 90020
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w14",
-    "name": "華月斎",
-    "order": 90019
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w15",
-    "name": "八重",
-    "order": 90039
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w16",
-    "name": "勢",
-    "order": 90005
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w17",
-    "name": "雷門",
-    "order": 90026
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w18",
-    "name": "菊",
-    "order": 90006
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w20",
-    "name": "藤之助",
-    "order": 90012
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w21",
-    "name": "鉄平",
-    "order": 90002
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w22",
-    "name": "竹三",
-    "order": 90003
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w23",
-    "name": "仁右衛門",
-    "order": 90033
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w24",
-    "name": "辰次",
-    "order": 90009
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w25",
-    "name": "法泉",
-    "order": 90016
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w26",
-    "name": "勝丸",
-    "order": 90007
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w27",
-    "name": "源蔵",
-    "order": 90024
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w28",
-    "name": "甚六",
-    "order": 90025
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w29",
-    "name": "志乃",
-    "order": 90011
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w30",
-    "name": "雪代",
-    "order": 90018
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w31",
-    "name": "日向",
-    "order": 90013
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w32",
-    "name": "明之進",
-    "order": 90040
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w33",
-    "name": "団十郎",
-    "order": 90032
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w34",
-    "name": "余四朗",
-    "order": 90023
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w35",
-    "name": "奈須麿",
-    "order": 90008
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w36",
-    "name": "ウト",
-    "order": 90004
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w37",
-    "name": "芙蓉",
-    "order": 90010
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w38",
-    "name": "一平太",
-    "order": 90037
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w39",
-    "name": "沙耶",
-    "order": 90027
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w40",
-    "name": "朧",
-    "order": 90031
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w43",
-    "name": "春松",
-    "order": 90029
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w44",
-    "name": "雪客",
-    "order": 90042
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w45",
-    "name": "亀吉",
-    "order": 90043
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w46",
-    "name": "梅子",
-    "order": 90044
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w47",
-    "name": "置壱",
-    "order": 90045
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w48",
-    "name": "直円",
-    "order": 90048
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w49",
-    "name": "錠",
-    "order": 90049
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w50",
-    "name": "丁助",
-    "order": 90050
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w51",
-    "name": "鬼丞",
-    "order": 90051
-  },
-  {
-    "caption": "和の国てやんでえ",
-    "csid": "wa",
-    "face_id": "w52",
-    "name": "櫻子",
-    "order": 90052
-  }
-]
-;
 //"日本語";
 
 
@@ -1605,7 +149,7 @@ this.GIJI = {
     },
     {
       "val": "info_all",
-      "name": "進行状況",
+      "name": "未読発言",
       "group": "情報",
       "form": [
         "action"
@@ -3830,6 +2374,1464 @@ this.SOW_RECORD = {"CABALA":{
     "秘:"
   ]
 }};
+
+this.FACES = [
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "b44",
+    "name": "ドナルド",
+    "order": 70010
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "b49",
+    "name": "ボリス",
+    "order": 70012
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m01",
+    "name": "ケムシ",
+    "order": 70007
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m02",
+    "name": "ポプラ",
+    "order": 70008
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m03",
+    "name": "トノサマ",
+    "order": 70003
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m04",
+    "name": "アオイ",
+    "order": 70009
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m05",
+    "name": "ナナコロ",
+    "order": 70004
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m06",
+    "name": "リリンラ",
+    "order": 70002
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m07",
+    "name": "アリス",
+    "order": 70006
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m08",
+    "name": "おっぱい",
+    "order": 70011
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m09",
+    "name": "カミジャー",
+    "order": 70012
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m10",
+    "name": "アチャポ",
+    "order": 70013
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m11",
+    "name": "ライトニング",
+    "order": 70015
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m12",
+    "name": "トルニトス",
+    "order": 70014
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m13",
+    "name": "ミケ",
+    "order": 70016
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m14",
+    "name": "カリュクス",
+    "order": 70017
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m15",
+    "name": "ミソチャ",
+    "order": 70005
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "m99",
+    "name": "パルック",
+    "order": 70001
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
+    "face_id": "r30",
+    "name": "トリ",
+    "order": 70006
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c01",
+    "name": "メアリー",
+    "order": 55
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c02",
+    "name": "アルフレッド",
+    "order": 38
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c03",
+    "name": "スティーブン",
+    "order": 71
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c04",
+    "name": "ノーリーン",
+    "order": 29
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c05",
+    "name": "キャサリン",
+    "order": 59
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c07",
+    "name": "ティモシー",
+    "order": 20
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c08",
+    "name": "ベネット",
+    "order": 66
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c09",
+    "name": "ヒロシ",
+    "order": 32
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c10",
+    "name": "ゾーイ",
+    "order": 17
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c100",
+    "name": "グレッグ",
+    "order": 87
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c101",
+    "name": "クラリッサ",
+    "order": 88
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c102",
+    "name": "ウォーレン",
+    "order": 168
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c103",
+    "name": "ナンシー",
+    "order": 998
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c104",
+    "name": "ヒュー",
+    "order": 89
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c105",
+    "name": "シメオン",
+    "order": 82
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c106",
+    "name": "ワンダ",
+    "order": 90
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c107",
+    "name": "イヴォン",
+    "order": 195
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c108",
+    "name": "ブローリン",
+    "order": 91
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c109",
+    "name": "ラディスラヴァ",
+    "order": 163
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c11",
+    "name": "カルヴィン",
+    "order": 16
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c110",
+    "name": "リー",
+    "order": 92
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c111",
+    "name": "スージー",
+    "order": 93
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c113",
+    "name": "ジェレミー",
+    "order": 94
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c12",
+    "name": "バーナバス",
+    "order": 12
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c13",
+    "name": "ロミオ",
+    "order": 62
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c14",
+    "name": "レティーシャ",
+    "order": 31
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c15",
+    "name": "ウェーズリー",
+    "order": 73
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c16",
+    "name": "マリアンヌ",
+    "order": 13
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c17",
+    "name": "ユリシーズ",
+    "order": 23
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c18",
+    "name": "エマ",
+    "order": 63
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c19",
+    "name": "タバサ",
+    "order": 67
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c20",
+    "name": "グロリア",
+    "order": 78
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c21",
+    "name": "ニール",
+    "order": 50
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c22",
+    "name": "ワット",
+    "order": 60
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c23",
+    "name": "チャールズ",
+    "order": 44
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c24",
+    "name": "ナタリア",
+    "order": 41
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c25",
+    "name": "ルーカス",
+    "order": 77
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c27",
+    "name": "リンダ",
+    "order": 65
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c28",
+    "name": "ケイト",
+    "order": 47
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c29",
+    "name": "イアン",
+    "order": 11
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c30",
+    "name": "フィリップ",
+    "order": 49
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c31",
+    "name": "ネル",
+    "order": 250
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c32",
+    "name": "オスカー",
+    "order": 36
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c33",
+    "name": "ホリー",
+    "order": 37
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c34",
+    "name": "トニー",
+    "order": 14
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c37",
+    "name": "セシル",
+    "order": 34
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c39",
+    "name": "シビル",
+    "order": 24
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c40",
+    "name": "ハワード",
+    "order": 25
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c41",
+    "name": "ヤニク",
+    "order": 21
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c42",
+    "name": "ラルフ",
+    "order": 33
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c43",
+    "name": "ガストン",
+    "order": 72
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c44",
+    "name": "ドナルド",
+    "order": 15
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c45",
+    "name": "プリシラ",
+    "order": 218
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c46",
+    "name": "ゲイル",
+    "order": 30
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c47",
+    "name": "ペラジー",
+    "order": 80
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c48",
+    "name": "ビアンカ",
+    "order": 225
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c51",
+    "name": "ヨーランダ",
+    "order": 53
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c52",
+    "name": "ギリアン",
+    "order": 52
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c54",
+    "name": "ザック",
+    "order": 75
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c55",
+    "name": "パピヨン",
+    "order": 10
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c56",
+    "name": "ゴドウィン",
+    "order": 19
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c57",
+    "name": "ツェツィーリヤ",
+    "order": 28
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c58",
+    "name": "ブルーノ",
+    "order": 22
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c59",
+    "name": "ムパムピス",
+    "order": 27
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c60",
+    "name": "ポーチュラカ",
+    "order": 215
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c61",
+    "name": "ヌマタロウ",
+    "order": 43
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c62",
+    "name": "ヴェラ",
+    "order": 61
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c63",
+    "name": "ピッパ",
+    "order": 57
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c64",
+    "name": "ヘクター",
+    "order": 190
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c65",
+    "name": "ズリエル",
+    "order": 26
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c66",
+    "name": "クリストファー",
+    "order": 39
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c67",
+    "name": "ソフィア",
+    "order": 200
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c68",
+    "name": "ヨアヒム",
+    "order": 48
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c69",
+    "name": "ギネス",
+    "order": 56
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c70",
+    "name": "パティ",
+    "order": 18
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c71",
+    "name": "ノックス",
+    "order": 70
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c72",
+    "name": "ヴェスパタイン",
+    "order": 79
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c73",
+    "name": "ローズマリー",
+    "order": 170
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c75",
+    "name": "ビリー",
+    "order": 35
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c76",
+    "name": "ジョージ",
+    "order": 210
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c78",
+    "name": "ネイサン",
+    "order": 150
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c79",
+    "name": "マーゴ",
+    "order": 42
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c80",
+    "name": "テッド",
+    "order": 81
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c81",
+    "name": "サイラス",
+    "order": 180
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c82",
+    "name": "ロビン",
+    "order": 160
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c83",
+    "name": "アイリス",
+    "order": 240
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c84",
+    "name": "ブレンダ",
+    "order": 128
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c85",
+    "name": "ハナ",
+    "order": 129
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c86",
+    "name": "ホレーショー",
+    "order": 230
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c87",
+    "name": "エリアス",
+    "order": 220
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c88",
+    "name": "ピエール",
+    "order": 126
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c89",
+    "name": "カトリーナ",
+    "order": 127
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c90",
+    "name": "ケヴィン",
+    "order": 125
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c91",
+    "name": "ドロシー",
+    "order": 130
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c92",
+    "name": "セレスト",
+    "order": 140
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c93",
+    "name": "ベッキー",
+    "order": 145
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c94",
+    "name": "ダーラ",
+    "order": 165
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c95",
+    "name": "モリス",
+    "order": 84
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c96",
+    "name": "レオナルド",
+    "order": 83
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c97",
+    "name": "ジェフ",
+    "order": 85
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c98",
+    "name": "オズワルド",
+    "order": 86
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c99",
+    "name": "サイモン",
+    "order": 999
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf01",
+    "name": "ラッシード",
+    "order": 80001
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf02",
+    "name": "エスペラント",
+    "order": 80002
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf03",
+    "name": "ピート",
+    "order": 80003
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf04",
+    "name": "アシモフ",
+    "order": 80004
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf05",
+    "name": "モナリザ",
+    "order": 80005
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf06",
+    "name": "ワレンチナ",
+    "order": 80006
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf07",
+    "name": "ヤンファ",
+    "order": 80007
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf08",
+    "name": "ＰＪ",
+    "order": 80008
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf09",
+    "name": "キリシマ",
+    "order": 80009
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf10",
+    "name": "ナユタ",
+    "order": 80010
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf11",
+    "name": "イワノフ",
+    "order": 80011
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf12",
+    "name": "†ルシフェル†",
+    "order": 80012
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf13",
+    "name": "トルドヴィン",
+    "order": 80013
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf14",
+    "name": "クリスマス",
+    "order": 80016
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf15",
+    "name": "ジェームス",
+    "order": 80017
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf16",
+    "name": "ライジ",
+    "order": 80018
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf17",
+    "name": "ジャック",
+    "order": 80019
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf18",
+    "name": "玖休",
+    "order": 80014
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf19",
+    "name": "参休",
+    "order": 80015
+  },
+  {
+    "caption": "明後日への道標",
+    "csid": "SF",
+    "face_id": "sf20",
+    "name": "ティソ",
+    "order": 80020
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w01",
+    "name": "鏡花",
+    "order": 90038
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w02",
+    "name": "慶三郎",
+    "order": 90041
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w03",
+    "name": "朔",
+    "order": 90022
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w04",
+    "name": "小鈴",
+    "order": 90034
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w05",
+    "name": "定吉",
+    "order": 90001
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w06",
+    "name": "ゆり",
+    "order": 90035
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w07",
+    "name": "夕顔",
+    "order": 90030
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w08",
+    "name": "朝顔",
+    "order": 90028
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w09",
+    "name": "チャールズ",
+    "order": 90017
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w10",
+    "name": "博史",
+    "order": 90015
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w11",
+    "name": "沼太郎",
+    "order": 90021
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w12",
+    "name": "おみつ",
+    "order": 90014
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w13",
+    "name": "たまこ",
+    "order": 90020
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w14",
+    "name": "華月斎",
+    "order": 90019
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w15",
+    "name": "八重",
+    "order": 90039
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w16",
+    "name": "勢",
+    "order": 90005
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w17",
+    "name": "雷門",
+    "order": 90026
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w18",
+    "name": "菊",
+    "order": 90006
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w20",
+    "name": "藤之助",
+    "order": 90012
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w21",
+    "name": "鉄平",
+    "order": 90002
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w22",
+    "name": "竹三",
+    "order": 90003
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w23",
+    "name": "仁右衛門",
+    "order": 90033
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w24",
+    "name": "辰次",
+    "order": 90009
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w25",
+    "name": "法泉",
+    "order": 90016
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w26",
+    "name": "勝丸",
+    "order": 90007
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w27",
+    "name": "源蔵",
+    "order": 90024
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w28",
+    "name": "甚六",
+    "order": 90025
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w29",
+    "name": "志乃",
+    "order": 90011
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w30",
+    "name": "雪代",
+    "order": 90018
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w31",
+    "name": "日向",
+    "order": 90013
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w32",
+    "name": "明之進",
+    "order": 90040
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w33",
+    "name": "団十郎",
+    "order": 90032
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w34",
+    "name": "余四朗",
+    "order": 90023
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w35",
+    "name": "奈須麿",
+    "order": 90008
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w36",
+    "name": "ウト",
+    "order": 90004
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w37",
+    "name": "芙蓉",
+    "order": 90010
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w38",
+    "name": "一平太",
+    "order": 90037
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w39",
+    "name": "沙耶",
+    "order": 90027
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w40",
+    "name": "朧",
+    "order": 90031
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w43",
+    "name": "春松",
+    "order": 90029
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w44",
+    "name": "雪客",
+    "order": 90042
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w45",
+    "name": "亀吉",
+    "order": 90043
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w46",
+    "name": "梅子",
+    "order": 90044
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w47",
+    "name": "置壱",
+    "order": 90045
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w48",
+    "name": "直円",
+    "order": 90048
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w49",
+    "name": "錠",
+    "order": 90049
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w50",
+    "name": "丁助",
+    "order": 90050
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w51",
+    "name": "鬼丞",
+    "order": 90051
+  },
+  {
+    "caption": "和の国てやんでえ",
+    "csid": "wa",
+    "face_id": "w52",
+    "name": "櫻子",
+    "order": 90052
+  }
+]
+
+
+
+//"日本語";
+this.JST || (this.JST = {});
+
+
+this.JST["form/action"] = "<div class=\"{{f.mestype}}\" ng-show=\"form_show.action\"><form name=\"action_form\"><div class=\"action\"><p class=\"text\" ng-bind-html=\"f.preview\"></p><h6>{{f.count}} {{f.title}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div class=\"controls controls-row formpl_content\"><div class=\"form-inline\"><select class=\"form-control input-medium\" name=\"target\" ng-change=\"text_valid(f)\" ng-model=\"f.target\" ng-options=\"o.val as o.longname for o in f.targets\"></select><select class=\"form-control input-medium\" name=\"actionno\" ng-change=\"text_valid(f)\" ng-model=\"f.action\" ng-options=\"o.val as o.name for o in f.actions\"></select></div><input class=\"form-control input-block-level\" name=\"actiontext\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" type=\"text\" /></div><p><a class=\"btn btn-default\" ng-click=\"action(f)\">アクション</a></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span></p></div></form></div>";
+
+
+this.JST["form/entry"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.entry\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><div class=\"form-group\" ng-show=\"story.entry.limit == &#39;password&#39;\"><label class=\"control-label col-sm-6\" for=\"entrypwd\">参加パスワード</label><div class=\"col-sm-6\"><input class=\"form-control\" id=\"entrypwd\" maxlength=\"8\" ng-model=\"f.password\" size=\"8\" type=\"password\" /></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectid\">希望する配役</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectid\" ng-model=\"f.csid_cid\" ng-options=\"o.val as o.name for o in f.csid_cids\"></select></div></div><div class=\"form-group\"><label class=\"control-label col-sm-6\" for=\"selectrole\">希望する役職</label><div class=\"col-sm-6\"><select class=\"form-control\" id=\"selectrole\" ng-model=\"f.role\" ng-options=\"o.val as o.name for o in f.roles\"></select></div></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><div ng-show=\"f.is_preview\"><h3 class=\"mesname\"><a>{{option(f.csid_cids, f.csid_cid).name}}</a></h3><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\"></p><h6>参加する時のセリフ</h6></div><div ng-hide=\"f.is_preview\"><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>参加する時のセリフ</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"entry(f)\">{{f.title}}</a>{{f.count}}<select class=\"form-control input-small\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p>{{f.caption}}<span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
+
+
+this.JST["form/memo"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.memo\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{f.count}} {{f.caption || f.longname}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
+
+
+this.JST["form/open"] = "<table class=\"say {{option(f.targets, f.target).mestype}}\" ng-show=\"form_show.open\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a>&nbsp;({{potof.sow_auth_id}})&nbsp; {{potof.role_names.join(\"、\")}}<span ng-show=\"0 &lt; potof.bonds.length\">&nbsp;★絆</span></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{option(f.targets, f.target).name}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-medium\" ng-change=\"text_valid(f)\" ng-model=\"f.target\" ng-options=\"o.val as o.name for o in f.targets\"></select><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
+
+
+this.JST["form/secret"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.secret\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p class=\"{{f.style}} text\" ng-bind-html=\"f.preview\" ng-show=\"f.is_preview\"></p><textarea class=\"form-control\" cols=\"30\" ng-change=\"text_valid(f)\" ng-hide=\"f.is_preview\" ng-init=\"text_valid(f)\" ng-model=\"f.text\" ng-trim=\"false\" rows=\"{{f.lines}}\"></textarea><h6>{{f.count}} {{f.caption || f.longname}}</h6><div class=\"mark\" ng-bind-html=\"error(f)\"></div><p><a class=\"btn btn-default\" ng-click=\"f.is_preview = false\" ng-show=\"f.is_preview\">戻る</a><a class=\"btn btn-default\" ng-click=\"write(f)\">{{f.title}}</a><select class=\"form-control input-mini\" ng-model=\"f.style\" ng-options=\"o.val as o.name for o in form.styles\"></select></p><p><span class=\"{{f.error}}\" ng-bind-html=\"f.valid_text\"></span><span diary=\"f\" ng-hide=\"f.is_preview\"></span></p></div></div></div></form></td></tr></table>";
+
+
+this.JST["form/silent"] = "<table class=\"say {{f.mestype}}\" ng-show=\"form_show.secret\"><tr><td class=\"img\"><img ng-src=\"{{img_csid_cid(f.csid_cid)}}\" /></td><td class=\"field\"><form name=\"write_form\"><div class=\"msg\"><div class=\"form-horizontal\"><h3 class=\"mesname\"><a>{{f.longname}}</a></h3><div class=\"vote\" form=\"ff.jst\" ng-repeat=\"ff in f.votes\"></div><div class=\"mark\" ng-bind-html=\"error(ff)\" ng-repeat=\"ff in f.votes\"></div></div><div class=\"form-inline\"><div class=\"formpl_content\"><p>{{f.caption}}</p></div></div></div></form></td></tr></table>";
+
+
+this.JST["form/version"] = "<code ng-click=\"diary.copy(f)\">手帳</code><span>&nbsp;履歴:</span><code ng-click=\"f.ver.back(version)\" ng-repeat=\"version in f.ver.versions()\">{{version}}</code>";
+
+
+this.JST["form/vote1"] = "<div class=\"form-inline radio\"><a class=\"btn btn-default\" ng-click=\"vote(ff, f)\">{{ff.title}}</a><select class=\"form-control input-medium\" name=\"target\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target1\" ng-options=\"o.val as o.name for o in ff.targets\"></select></div>";
+
+
+this.JST["form/vote2"] = "<div class=\"form-inline radio\"><a class=\"btn btn-default\" ng-click=\"vote(ff, f)\">{{ff.title}}</a><select class=\"form-control input-medium\" name=\"target1\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target1\" ng-options=\"o.val as o.name for o in ff.targets\"></select>と<select class=\"form-control input-medium\" name=\"target2\" ng-change=\"vote_change(ff)\" ng-model=\"ff.target2\" ng-options=\"o.val as o.name for o in ff.targets\"></select></div>";
+
+
+this.JST["message/action"] = "<div ng-class=\"[message.mestype, message._id]\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><b ng-bind-html=\"message.name\"></b><span>は、</span><span ng-bind-html=\"message.text\"></span></p><p class=\"mes_date\"><span>&nbsp;</span><span>{{message.time()}}</span></p><hr class=\"invisible_hr\" /></div></div>";
+
+
+this.JST["message/admin"] = "<div class=\"guide\" ng-class=\"[message.mestype, message._id]\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p><hr class=\"invisible_hr\" /></div>";
+
+
+this.JST["message/aim"] = "<table class=\"say\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\"><b ng-bind-html=\"message.name\"></b>&nbsp;→&nbsp;<b ng-bind-html=\"message.to\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
+
+
+this.JST["message/cast"] = "<div class=\"formpl_gm\" template=\"navi/potofs\"></div>";
+
+
+this.JST["message/caution"] = "<p class=\"text caution\" ng-bind-html=\"message.text\"></p><hr class=\"invisible_hr\" />";
+
+
+this.JST["message/external"] = "<div ng-class=\"message.mestype\"><div class=\"action\"><p class=\"text\" ng-class=\"message.style\"><a href=\"{{message.uri}}\" target=\"_blank\"><span class=\"mark\">{{message.protocol}}</span>://<span class=\"mark\">{{message.host}}</span><span class=\"note\">{{message.path}}</span></a></p><hr class=\"invisible_hr\" /></div></div>";
+
+
+this.JST["message/info"] = "<p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"[message.mestype, message._id]\"></p><hr class=\"invisible_hr\" />";
+
+
+this.JST["message/memo"] = "<table class=\"memo\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"memoleft\"><h5 ng-bind-html=\"message.name\"></h5></td><td class=\"memoright\"><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\" ng-if=\"message.text\"></p><p class=\"text\" ng-class=\"message.style\" ng-if=\"! message.text\">メモをはがした</p><p class=\"mes_date\">{{message.time()}}</p></td></tr></tbody></table>";
+
+
+this.JST["message/say"] = "<table class=\"say\" ng-class=\"[message.mestype, message._id]\"><tbody><tr><td class=\"img\"><img ng-src=\"{{message.img}}\" /></td><td class=\"field\"><div class=\"msg\"><h3 class=\"mesname\">{{message.mesicon}}&nbsp;<b ng-bind-html=\"message.name\"></b></h3><p class=\"text\" ng-bind-html=\"message.text\" ng-class=\"message.style\"></p><p class=\"mes_date\"><a class=\"mark\" ng-click=\"message.attention()\">注目</a>&nbsp;<a class=\"mark\" ng-click=\"diary.add.anchor(message)\">{{message.anchor}}</a><span>&nbsp;</span><span>{{message.time()}}</span><span ng-bind-html=\"message.cancel_btn()\"></span></p></div></td></tr></tbody></table>";
+
+
+this.JST["navi/chr_list"] = "<hr style=\"border-color:black;\" /><div class=\"chrbox\" ng-repeat=\"chr in chrs\"><img ng-src=\"{{chr.img}}\" /><div class=\"chrblank\" ng-bind-html=\"chr.text\"></div></div><hr style=\"border-color:black;\" />";
+
+
+this.JST["navi/diary"] = "<table class=\"say SAY\"><tbody><tr><td class=\"img\"><img ng-src=\"{{img_cid(null, &#39;blank&#39;)}}\" /></td><td class=\"field\"><div class=\"msg\"><div class=\"form-inline\"><div class=\"formpl_content\"><textarea class=\"form-control input-block-level\" cols=\"30\" ng-model=\"diary.form.text\" rows=\"5\"></textarea><h6>{{diary.head()}}</h6><p><span>&nbsp;履歴:<code ng-click=\"diary.back(version)\" ng-repeat=\"version in diary.versions()\">{{version}}</code></span></p></div></div></div></td></tr></tbody></table>";
+
+
+this.JST["navi/events"] = "<ul class=\"nav nav-list unstyled\"><li ng-click=\"e.show_talk()\" ng-repeat=\"e in events\"><a><i class=\"glyphicon glyphicon-film\" ng-if=\"e.turn == event.turn\"></i><i class=\"glyphicon glyphicon-minus\" ng-if=\"e.turn != event.turn\"></i>{{e.name}}</a></li></ul><br />";
+
+
+this.JST["navi/forms"] = "<div class=\"caution\"><div class=\"text\" listup=\"cautions\"></div><div class=\"text\"><ul><li ng-if=\"story.announce.totalcommit\">{{story.announce.totalcommit}}</li><li ng-if=\"story.is_totalcommit\">{{lax_time(story.timer.nextcommitdt)}}にcommit</li><li>{{lax_time(story.timer.nextupdatedt)}}に更新</li><li>{{lax_time(story.timer.nextchargedt)}}に補充</li><li ng-if=\"story.is_prologue\">{{lax_time(story.timer.scraplimitdt)}}に廃村</li><li>あと {{story.timer.extend}}回、更新を延長できる。</li></ul></div></div><div form=\"f.jst\" ng-if=\"event.is_progress\" ng-repeat=\"f in form.texts\" ng-show=\"logined()\"></div><div class=\"{{form.win}}\" ng-if=\"logined()\"><div class=\"secret\"><p class=\"text\" listup=\"form.secrets\"></p></div></div><div ng-show=\"logined() &amp;&amp; ! form.confirm\"><div class=\"formpl_gm form-inline\" ng-repeat=\"f in form.command_group.commit\"><div class=\"commitbutton\"><select class=\"form-control\" name=\"commit\" ng-change=\"vote_change(f)\" ng-disabled=\"f.disabled\" ng-model=\"f.commit\" ng-options=\"o.val as o.name for o in f.commits\"></select><a class=\"btn btn-default\" ng-click=\"commit(f)\" ng-disabled=\"f.disabled\">{{f.title}}</a></div><div class=\"mark\" ng-bind-html=\"error(f)\"></div><div ng-bind-html=\"f.caption\"></div></div><div class=\"formpl_gm\" ng-if=\"form.command_group.target &amp;&amp; form.command_targets\"><p class=\"commitbutton\"><select class=\"form-control\" name=\"target\" ng-model=\"form.command_target\" ng-options=\"o.val as o.name for o in form.command_targets\"></select></p><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.target\">{{f.title}}</a></p></div><div class=\"formpl_gm\"><p class=\"commitbutton\"><a class=\"btn btn-default\" ng-click=\"confirm(f)\" ng-disabled=\"f.disabled\" ng-repeat=\"f in form.command_group.button\">{{f.title}}</a></p></div></div><div class=\"formpl_gm\" ng-if=\"form.confirm\"><h3>{{form.confirm}}</h3><a class=\"btn btn-default\" ng-click=\"confirm_cancel()\">×</a><a class=\"btn btn-default\" ng-click=\"confirm_complete()\">◯</a></div>";
+
+
+this.JST["navi/headline"] = "<div class=\"choice\"><table class=\"board\"><tr><th class=\"no_choice\" colspan=\"4\" style=\"text-align:center;\"><div class=\"progress_log\"><strong>進行中の村　←　</strong><a onclick=\"$(&#39;.progress_log&#39;).hide();$(&#39;.finished_log&#39;).show();\">終了した村を見る</a></div><div class=\"finished_log\"><a onclick=\"$(&#39;.progress_log&#39;).show();$(&#39;.finished_log&#39;).hide();\">進行中の村を見る</a><strong>　→　終了した村</strong></div></th><td class=\"no_choice link\" rowspan=\"2\"><a href=\"http://soy-bean.sakura.ne.jp/pan/sow.cgi\">似顔絵<br />人狼</a></td></tr><tr class=\"link\"><td class=\"no_choice\">ロビー</td><td class=\"no_choice\">夢の形</td><td class=\"no_choice\">陰謀</td><td class=\"no_choice\">ＲＰ　</td></tr><tr class=\"progress_log\"><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi\">lobby</a><br />offparty<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\">4村:<a href=\"http://morphe.sakura.ne.jp/morphe/sow.cgi\">morphe</a><br />　<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\">wolf<br />ultimate<br />allstar<br />4村:<a href=\"http://cabala.halfmoon.jp/cafe/sow.cgi\">cafe</a><br />　</td><td class=\"no_choice\" style=\"text-align:left;\">role-play<br />RP-advance<br />3村:<a href=\"http://perjury.rulez.jp/sow.cgi\">perjury</a><br />3村:<a href=\"http://xebec.x0.to/xebec/sow.cgi\">xebec</a><br />2村:<a href=\"http://crazy-crazy.sakura.ne.jp/crazy/sow.cgi\">crazy</a><br />2村:<a href=\"http://ciel.moo.jp/cheat/sow.cgi\">ciel</a></td><td class=\"no_choice\" style=\"text-align:left;\">1村:pan<br />　<br />　<br />　<br />　</td></tr><tr class=\"finished_log\"><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=LOBBY\">lobby</a><br /><a href=\"http://giji.check.jp/stories?folder=OFFPARTY\">offparty</a><br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=MORPHE\">morphe</a><br />　<br />　<br />　<br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=WOLF\">wolf</a><br /><a href=\"http://giji.check.jp/stories?folder=ULTIMATE\">ultimate</a><br /><a href=\"http://giji.check.jp/stories?folder=ALLSTAR\">allstar</a><br /><a href=\"http://giji.check.jp/stories?folder=CABALA\">cafe</a><br />　</td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=RP\">role-play</a><br /><a href=\"http://giji.check.jp/stories?folder=PRETENSE\">advance</a><br /><a href=\"http://giji.check.jp/stories?folder=PERJURY\">perjury</a><br /><a href=\"http://giji.check.jp/stories?folder=XEBEC\">xebec</a><br /><a href=\"http://giji.check.jp/stories?folder=CRAZY\">crazy</a><br /><a href=\"http://giji.check.jp/stories?folder=CIEL\">ciel</a></td><td class=\"no_choice\" style=\"text-align:left;\"><a href=\"http://giji.check.jp/stories?folder=PAN\">pan</a><br />　<br />　<br />　<br />　</td></tr></table></div>";
+
+
+this.JST["navi/messages"] = "<div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\" ng-if=\"page\"> 前のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"message_filter\" from=\"event.messages\" logs=\"messages\"></div><div class=\"message_filter\"><div class=\"log\"><div class=\"badge\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\" ng-if=\"page\"> 次のページ</div><hr class=\"invisible_hr\" /></div></div><div class=\"drag\" drag=\"event\" ng-repeat=\"event in floats\"><div class=\"contentframe\"><div class=\"drag_head\"><span class=\"badge\" hogan-click=\"close(&#39;{{event.event_id}}&#39;)\">✘</span></div><div class=\"message_filter\" logs=\"event.messages\"></div><div class=\"drag_foot\"><span class=\"badge\" hogan-click=\"close(&#39;{{event.event_id}}&#39;)\">✘</span></div></div></div>";
+
+
+this.JST["navi/paginate"] = "<a class=\"btn btn-default\" ng-class=\"page.of.first.class\" ng-click=\"page.move(page.of.first.val)\">{{page.of.first.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.second.class\" ng-click=\"page.move(page.of.second.val)\">{{page.of.second.name}}</a><span ng-class=\"page.of.prev_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.prev.class\" ng-click=\"page.move(page.of.prev.val)\">{{page.of.prev.name}}</a><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"pno.val as pno.name for pno in page.select\"></select><a class=\"btn btn-default\" ng-class=\"page.of.next.class\" ng-click=\"page.move(page.of.next.val)\">{{page.of.next.name}}</a><span ng-class=\"page.of.next_gap.class\">…</span><a class=\"btn btn-default\" ng-class=\"page.of.penu.class\" ng-click=\"page.move(page.of.penu.val)\">{{page.of.penu.name}}</a><a class=\"btn btn-default\" ng-class=\"page.of.last.class\" ng-click=\"page.move(page.of.last.val)\">{{page.of.last.name}}</a>";
+
+
+this.JST["navi/potofs"] = "<table class=\"potofs\"><thead class=\"head\"><tr><th><span class=\"name\" ng-if=\"sum.actaddpt\">&nbsp;あと{{sum.actaddpt}}促</span><span class=\"name\" ng-if=\"potofs.length\">&nbsp;({{potofs.length}}人)</span></th><th colspan=\"4\" style=\"text-align: right;\"><span><br /><code ng-click=\"secret_toggle()\">ネタバレ</code>&nbsp;</span><span ng-if=\"! secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></span><span ng-if=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></span></th><th ng-click=\"potof_only(potofs)\" style=\"width: 3ex\"><a class=\"glyphicon glyphicon-pushpin\"></a></th></tr></thead></table><table class=\"potofs\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-click=\"potof_only(potofs_groups[key])\" ng-if=\"potofs_groups[key].has_head\"><th class=\"mark\" colspan=\"5\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span>({{potofs_groups[key].length}}人)</span></th><th style=\"width: 3ex\"><a class=\"glyphicon glyphicon-pushpin\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof.key].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><div class=\"name\">{{potof.longname || potof.name}}</div><div class=\"note name\" ng-if=\"potof.auth\"><span class=\"glyphicon glyphicon-user\"></span>{{potof.auth}}</div></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap\">{{potof.stat}}</span><div class=\"note nowrap\" ng-if=\"potof.said\"><span class=\"glyphicon glyphicon-pencil\"></span>{{potof.said}}</div></td><td ng-click=\"potof_toggle(potof)\"><div class=\"nowrap\" ng-if=\"secret_is_open\"><span class=\"note\">{{potof.win_name}}::</span><span>{{potof.role_names.join('、')}}</span><div class=\"note\"><span class=\"mark\">{{potof.win_result}}</span><span class=\"name\" ng-if=\"potof.select_name\">&nbsp; {{potof.select_name}} を希望</span></div></div></td><td ng-click=\"potof_toggle(potof)\"><div ng-if=\"secret_is_open\"><span ng-bind-html=\"potof.text.join(&#39;&#39;)\"></span><span class=\"note\" ng-if=\"potof.bond_names\">{{potof.bond_names.join('、')}}</span><span class=\"note\" ng-if=\"potof.bond_names.length &amp;&amp; potof.pseudobond_names.length\">、</span><s class=\"note\" ng-if=\"potof.pseudobond_names\">{{potof.pseudobond_names.join('、')}}</s></div></td><th style=\"width: 3ex\"><a class=\"glyphicon glyphicon-paperclip\" hogan-click=\"potof(&#39;{{potof.key}}&#39;)\"></a></th></tr></tbody></table>";
+
+
+this.JST["navi/potofs_small"] = "<table class=\"potofs\"><thead class=\"head\"><tr><th><span class=\"name\" ng-if=\"sum.actaddpt\">&nbsp;{{sum.actaddpt}}促</span></th><th colspan=\"2\" style=\"text-align: right;\"><span><code ng-click=\"secret_toggle()\">ネタバレ</code></span>&nbsp;</th><th ng-click=\"potof_only(potofs)\" style=\"width:3ex\"><a class=\"glyphicon glyphicon-pushpin note\"></a></th></tr></thead></table><table class=\"potofs\"><tbody ng-repeat=\"key in potofs_keys\"><tr class=\"head\" ng-click=\"potof_only(potofs_groups[key])\" ng-if=\"potofs_groups[key].has_head\"><th colspan=\"3\"><span ng-bind-html=\"potofs_groups[key].head\"></span><span class=\"note\">({{potofs_groups[key].length}}人)</span></th><th style=\"width:2ex\"><a class=\"glyphicon glyphicon-pushpin note\"></a></th></tr><tr ng-class=\"hide_potofs.of[potof.key].class\" ng-repeat=\"potof in potofs_groups[key]\"><td colspan=\"2\" ng-click=\"potof_toggle(potof)\"><span class=\"name\">{{potof.name}}</span></td><td ng-click=\"potof_toggle(potof)\" style=\"text-align: right;\"><span class=\"nowrap note\" ng-bind-html=\"potof.summary(potofs_order.value)\"></span></td><td style=\"width:2ex\"><a class=\"glyphicon glyphicon-paperclip note\" hogan-click=\"potof(&#39;{{potof.key}}&#39;)\"></a></td></tr></tbody></table><table class=\"potofs\"><tbody><tr class=\"head\"><th colspan=\"4\"></th></tr><tr ng-class=\"hide_potofs.of.others.class\"><td colspan=\"4\" ng-click=\"other_toggle()\"><span class=\"name\">他の人々</span></td></tr><tr class=\"head\"><th colspan=\"4\"><div class=\"nowrap\" ng-if=\"! secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code></div><div class=\"nowrap\" ng-if=\"secret_is_open\"><code ng-click=\"sort_potofs(&#39;stat_at&#39;,0)\">日程</code><code ng-click=\"sort_potofs(&#39;stat_type&#39;,&#39;&#39;)\">状態</code>&nbsp;<code ng-click=\"sort_potofs(&#39;said_num&#39;,0)\">発言</code>&nbsp;<code ng-click=\"sort_potofs(&#39;text&#39;,&#39;&#39;)\">補足</code><br /><code ng-click=\"sort_potofs(&#39;win_name&#39;,&#39;&#39;)\">陣営</code><code ng-click=\"sort_potofs(&#39;role_names&#39;,&#39;&#39;)\">役割</code>&nbsp;<code ng-click=\"sort_potofs(&#39;win_result&#39;,&#39;&#39;)\">勝敗</code>&nbsp;<code ng-click=\"sort_potofs(&#39;select_name&#39;,&#39;&#39;)\">希望</code></div></th></tr></tbody></table>";
+
+
+this.JST["navi/story_navi"] = "<div class=\"form-inline radio\"><label><select class=\"form-control input-small\" ng-model=\"folder.value\" ng-options=\"o.val as o.name for o in folder.select\"></select></label><label ng-if=\"game_rule\"><select class=\"form-control input-small\" ng-model=\"game_rule.value\" ng-options=\"o.val as o.name for o in game_rule.select\"></select></label><label ng-if=\"rating\"><select class=\"form-control input-small\" ng-model=\"rating.value\" ng-options=\"o.val as o.name for o in rating.select\"></select></label><label ng-if=\"potof_size\"><select class=\"form-control input-mini\" ng-model=\"potof_size.value\" ng-options=\"o.val as o.name for o in potof_size.select\"></select></label><label ng-if=\"upd_interval\"><select class=\"form-control input-mini\" ng-model=\"upd_interval.value\" ng-options=\"o.val as o.name for o in upd_interval.select\"></select></label><label ng-if=\"upd_time\"><select class=\"form-control input-small\" ng-model=\"upd_time.value\" ng-options=\"o.val as o.name for o in upd_time.select\"></select></label><label ng-if=\"roletable\"><select class=\"form-control input-small\" ng-model=\"roletable.value\" ng-options=\"o.val as o.name for o in roletable.select\"></select></label><label ng-if=\"card_win\"><select class=\"form-control input-mini\" ng-model=\"card_win.value\" ng-options=\"o.val as o.name for o in card_win.select\"></select></label><label ng-if=\"card_role\"><select class=\"form-control input-mini\" ng-model=\"card_role.value\" ng-options=\"o.val as o.name for o in card_role.select\"></select></label><label ng-if=\"card_event\"><select class=\"form-control input-mini\" ng-model=\"card_event.value\" ng-options=\"o.val as o.name for o in card_event.select\"></select></label></div>";
+
+
+this.JST["navi/toolbox"] = "<div class=\"form-inline\"><div class=\"form-group\"><label><a class=\"mark click\" ng-click=\"mode.value = a.value\" ng-repeat=\"a in mode_common\">{{a.name}}</a></label></div>&thinsp;<div class=\"form-group\" ng-if=\"! event.is_news\"><select class=\"form-control input-mini\" ng-model=\"page.value\" ng-options=\"o.val as o.name for o in page.select\"></select></div></div>";
+
+
+this.JST["sow/form/configs"] = "<fieldset><div style=\"display:none;\"><input name=\"trsid\" ng-model=\"config.trsid\" type=\"text\" /><input name=\"hour\" ng-model=\"story.upd.hour\" type=\"text\" /><input name=\"minite\" ng-model=\"story.upd.minute\" type=\"text\" /><input name=\"updinterval\" ng-model=\"story.upd.interval\" type=\"text\" /><input name=\"votetype\" ng-model=\"story.type.vote\" type=\"text\" /><input name=\"roletable\" ng-model=\"story.type.roletable\" type=\"text\" /></div><legend>基本設定</legend><dl><dt>{{config.trs.caption}}</dt><dd>{{config.trs.help}}</dd></dl><dl class=\"dl-horizontal\"><dt><label for=\"vplcnt\">定員</label></dt><dd><div class=\"input-group\"><input class=\"form-control\" id=\"vplcnt\" name=\"vplcnt\" ng-model=\"event.player.limit\" size=\"5\" type=\"number\" /><div class=\"input-group-addon\">人</div></div></dd><dt><label for=\"vplcntstart\">最低人数</label></dt><dd><div class=\"input-group\"><input class=\"form-control\" id=\"vplcntstart\" name=\"vplcntstart\" ng-model=\"event.player.start\" size=\"5\" type=\"number\" /><div class=\"input-group-addon\">人</div></div>※開始方法が人狼BBS型の時のみ</dd><dt><label for=\"updhour\">更新時間</label></dt><dd class=\"row\"><div class=\"form-inline\"><div class=\"form-group\"><select class=\"form-control\" id=\"updhour\" ng-model=\"story.upd.hour\" ng-options=\"o.val as o.name for o in config.hours\"></select></div><div class=\"form-group\"><select class=\"form-control\" id=\"updminite\" ng-model=\"story.upd.minute\" ng-options=\"o.val as o.name for o in config.minutes\"></select></div></div></dd><dt><label for=\"updinterval\">更新間隔</label></dt><dd><div class=\"input-group\"><select class=\"form-control\" id=\"updinterval\" ng-model=\"story.upd.interval\" ng-options=\"o.val as o.name for o in config.intervals\"></select><div class=\"input-group-addon\">ごとに更新</div></div></dd><dt><label for=\"votetype\">投票方法</label></dt><dd><select class=\"form-control\" id=\"votetype\" ng-model=\"story.type.vote\" ng-options=\"o.val as o.name for o in config.votetypes\"></select></dd><dt><label for=\"roletable\">役職配分</label></dt><dd><select class=\"form-control\" id=\"roletable\" ng-model=\"story.type.roletable\" ng-options=\"o.val as o.name for o in config.roletables\"></select></dd></dl></fieldset><fieldset ng-show=\"story.type.roletable == &#39;custom&#39;\"><legend>役職配分自由設定</legend><div ng-repeat=\"title in config.items_keys\"><h3>{{title}}</h3><div class=\"form-inline row\"><div class=\"form-group input-medium\" ng-repeat=\"item in config.items[title]\"><div class=\"input-group\"><div class=\"input-group-addon\" for=\"cnt{{item.key}}\">{{item.name}}</div><input class=\"form-control\" id=\"cnt{{item.key}}\" name=\"cnt{{item.key}}\" ng-model=\"item.count\" size=\"2\" type=\"number\" /></div></div></div></div></fieldset><h3>事件</h3><fieldset class=\"token-input\"><input id=\"eventcard\" name=\"eventcard\" type=\"text\" /><span class=\"btn btn-default\" ng-click=\"tokenInputAdd(&#39;#eventcard&#39;,item.key)\" ng-repeat=\"item in config.items.events\">{{item.name}}</span></fieldset>";
+
+
+this.JST["sow/log_last"] = "<div class=\"caution text\" ng-if=\"event.is_progress\" style=\"padding-left: 0;\"><table><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\" style=\"font-size: 4ex;\"></a></td><td style=\"padding-left: 11px;\">⇚ {{ message.updated_at.format('({dow}) {TT}{hh}時{mm}分', 'ja') }} より先を見る。<br /></td></table></div>";
+
+
+this.JST["sow/login"] = "<form ng-if=\"! logined()\" ng-submit=\"login(form.login)\"><p class=\"form-inline\"><label><span class=\"mark\"> user id:</span><input class=\"form-control input-small\" name=\"uid\" ng-model=\"form.login.uid\" size=\"10\" type=\"text\" /></label><label><span class=\"mark\"> password:</span><input class=\"form-control input-small\" name=\"pwd\" ng-model=\"form.login.pwd\" size=\"10\" type=\"password\" /></label><input class=\"form-control\" type=\"submit\" value=\"ログイン\" /></p></form><form ng-if=\"logined()\" ng-submit=\"logout(form.login)\"><p class=\"form-inline\"><span class=\"mes_date\" ng-if=\"form.login.is_admin\">[<a ng-href=\"{{form.login.admin_uri}}\">管理画面</a>]</span><span class=\"mes_date\">ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。</span><input class=\"form-control\" type=\"submit\" value=\"{{form.login.uidtext}} がログアウト\" /></p></form>";
+
+
+this.JST["sow/navi"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"drag\" id=\"topframe\"><div class=\"contentframe form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div><div adjust=\"left\" class=\"sayfilter\" id=\"sayfilter\"><div class=\"sayfilter_heading\">{{story.name}}</div><div class=\"insayfilter\" name=\"移動\" navi=\"link\"><div class=\"paragraph\"><div class=\"sayfilter_caption_enable\"> 他の章へ</div><div class=\"sayfilter_content\" template=\"navi/events\"></div></div></div><div class=\"insayfilter\" name=\"名簿\" navi=\"info\"><div class=\"paragraph\" ng-if=\"potofs\"><div class=\"sayfilter_content\" template=\"navi/potofs_small\"></div></div></div><div class=\"insayfilter\" navi=\"page_filter\" ng-if=\"page\"><div class=\"paragraph\"><div class=\"sayfilter_content\"><select class=\"form-control input-block-level\" ng-model=\"mode.value\" ng-options=\"o.val as o.name group by o.group for o in mode_select\"></select></div></div></div><div class=\"sayfilter_heading bottom\"></div><div class=\"toolbox\" navi=\"page\" ng-if=\"page\" style=\"white-space: nowrap;\" template=\"navi/toolbox\"></div></div><div id=\"buttons\"><nav><span ng-if=\"event.is_progress\"><a class=\"btn btn-default click glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\"></a></span><span><a class=\"btn btn-default click glyphicon glyphicon-search\" ng-click=\"go.search()\"></a></span><span><a class=\"btn btn-default click glyphicon glyphicon-pencil\" ng-click=\"go.form()\"></a></span><span ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></span><span><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></span></nav></div>";
+
+
+this.JST["sow/navi_edit"] = "<div id=\"topviewer\" ng-cloak=\"\"><div class=\"drag\" id=\"topframe\"><div class=\"contentframe form-inline\" name=\"手帳\" navi=\"diary\" template=\"navi/diary\"></div></div></div><div id=\"buttons\"><nav><div ng-repeat=\"o in navi.select\"><a class=\"btn\" ng-class=\"o.class\" ng-click=\"navi.move(o.val)\">{{o.name}}</a></div><div><a class=\"btn btn-default\" ng-click=\"navi.blank()\">✗</a></div></nav></div>";
+
+
+this.JST["sow/unread_info"] = "<div class=\"mes_maker\" ng-if=\"event.is_progress\"><table><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\" style=\"font-size: 4ex;\"></a></td><td ng-if=\"! event.unread_count\" style=\"padding-left: 11px;\"><span>{{lax_time(info_at.value)}}以降に投稿された議事録を掲載します。</span><ul><li><a class=\"mark glyphicon glyphicon-refresh\" ng-click=\"pool_hand()\"></a>を押すと、現在の状況に更新します。</li></ul></td><td ng-if=\"  event.unread_count\" style=\"padding-left: 11px;\"><span ng-if=\"event.unread_count\">{{lax_time(info_at.value)}}以降の議事録があります。</span><ul></ul></td></table></div>";
+
+
+this.JST["sow/village_info"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"text head\" ng-bind-html=\"story.comment\"></p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#rule\">国のルール</a></p><p class=\"text\" ng-repeat=\"nrule in story.announce.nrules\">{{nrule}}</p><p class=\"text\">■<a href=\"sow.cgi?cmd=rule#mind\">心構え</a></p></div><div class=\"mes_admin story\"><dl><dt class=\"text\" ng-bind-html=\"story.announce.trs_name\"></dt><dd><div class=\"text\" ng-bind-html=\"story.announce.trs_help\"></div></dd><dt class=\"text\" ng-bind-html=\"story.announce.game_name\"></dt><dd><ul class=\"text\" ng-bind-html=\"story.announce.game_help\"></ul></dd><dt class=\"text\">オプション設定</dt><dd><ul class=\"text\"><li>{{story.announce.starttype}}</li><li ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></dd></dl></div><div class=\"mes_admin story\"><dl class=\"dl-horizontal\"><dt>登場人物</dt><dd>{{story.announce.csidcaptions}}</dd><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}<br />{{story.card.config_names}}<br />{{story.card.event_names}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-if=\"story.is_wbbs\">最低人数</dt><dd ng-if=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>廃村期限</dt><dd>{{lax_time(story.timer.scraplimitdt)}}</dd></dl></div>";
+
+
+this.JST["sow/village_info_epilogue"] = "<div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>村の名前</dt><dd>{{story.name}}</dd><dt>こだわり</dt><dd><img ng-src=\"{{story.rating_url}}\" />{{story.announce.rating}}</dd></dl><p class=\"head text\" ng-bind-html=\"story.comment\"></p></div><div class=\"mes_maker story\"><dl><dt class=\"text\">オプション設定</dt><dd><ul class=\"text\"><li ng-repeat=\"option_help in story.option_helps\">{{option_help}}</li></ul></dd></dl></div><div class=\"mes_maker story\"><dl class=\"dl-horizontal\"><dt>更新時間</dt><dd>{{story.upd.time_text}}</dd><dt>更新間隔</dt><dd>{{story.upd.interval_text}}{{story.type.recovery}}</dd><dt>発言制限</dt><dd>{{story.type.saycnt.CAPTION}}<br />{{story.type.saycnt.HELP}}</dd><dt>定員</dt><dd>{{event.player.limit}}人 （ダミーキャラを含む）</dd><dt>人数</dt><dd>{{potofs.length - potofs.mob().length}}人 （ダミーキャラを含む）</dd><dt ng-if=\"story.is_wbbs\">最低人数</dt><dd ng-if=\"story.is_wbbs\">{{event.player.start}}人 （ダミーキャラを含む）</dd><dt>投票方法</dt><dd>{{story.type.vote_text.CAPTION}}</dd><dt>見物人</dt><dd>{{story.type.mob_text.CAPTION}}に {{event.player.mob}}人まで （{{story.type.mob_text.HELP}}）</dd><dt>役職配分</dt><dd>{{story.type.roletable_text}}</dd></dl><div class=\"form-horizontal\"><div class=\"control-group\"><code>編成</code>： {{story.card.config_names}}</div><div class=\"control-group\"><code>残存事件</code>： {{story.card.event_names}}</div><div class=\"control-group\"><code>破棄役職</code>： {{story.card.discard_names}}</div></div></div>";
+
+
+this.JST["theme/css"] = "<span><a class=\"mark\" ng-click=\"styles.width = &#39;center-msg&#39;\">800</a><a class=\"mark\" ng-click=\"styles.width = &#39;mini-msg&#39;\">480</a></span>&thinsp;<span><a class=\"mark\" ng-click=\"styles.theme = &#39;cinema&#39;\">煉瓦</a><a class=\"mark\" ng-click=\"styles.theme = &#39;night&#39;\">月夜</a><a class=\"mark\" ng-click=\"styles.theme = &#39;star&#39;\">蒼穹</a><a class=\"mark\" ng-click=\"styles.theme = &#39;wa&#39;\">和の国</a></span>&thinsp;<a class=\"glyphicon glyphicon-cog\" ng-click=\"show_style_navi = ! show_style_navi\" style=\"font-size: 36px; margin-bottom: -26px; vertical-align: -26px;\" tabindex=\"0\"></a>";
+
+
+this.JST["theme/style_navi"] = "<div class=\"pagenavi\"><h6 ng-if=\"mode\" style=\"text-align:left;\">見るログを選ぶ</h6><div class=\"form-inline\" ng-if=\"mode\" style=\"text-align:left;\"><div class=\"form-group\"><a class=\"mark\" ng-click=\"story.news().show_info()\">情報</a></div>&thinsp;<div class=\"form-group\" ng-repeat=\"e in events\"><a class=\"mark\" ng-click=\"e.show_talk()\">{{e.name}}</a></div><div class=\"form-group\" ng-if=\"story.news().is_progress\">&thinsp;/&thinsp;<a class=\"mark\" ng-click=\"story.news().show_news()\">最新</a>&thinsp;<a class=\"mark\" ng-click=\"story.news().show_unread()\">未読</a></div></div><h6 ng-if=\"show_style_navi &amp;&amp; msg_style\">ログの表示方法</h6><div class=\"form-inline\" ng-if=\"show_style_navi &amp;&amp; msg_style\"><div class=\"form-group\"><label><select class=\"form-control input-medium\" ng-model=\"css.value\" ng-options=\"o.val as o.name group by o.group for o in css.select\"></select></label></div>&thinsp;<div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.power\" ng-options=\"key as selectors.power[key] for key in selector_keys.power\"></select></label>&thinsp;</div><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.order\" ng-options=\"key as selectors.order[key] for key in selector_keys.order\"></select></label>&thinsp;</div><div class=\"form-group\"><label><select class=\"form-control input-mini\" ng-model=\"msg_styles.row\" ng-options=\"key as selectors.row[key] for key in selector_keys.row\"></select></label>&thinsp;</div></div><h6 ng-if=\"show_style_navi\">スタイル（ログの見た目）を調整する</h6><div class=\"form-inline\" ng-if=\"show_style_navi\"><div class=\"form-group mark\"><label class=\"checkbox\" ng-repeat=\"key in selector_keys.font\"><input ng-model=\"styles.font\" tabindex=\"-1\" type=\"radio\" value=\"{{key}}\">{{selectors.font[key]}}</input></label></div>&thinsp;<div class=\"form-group mark\"><label class=\"checkbox\" ng-repeat=\"key in selector_keys.width\"><input ng-model=\"styles.width\" tabindex=\"-1\" type=\"radio\" value=\"{{key}}\">{{selectors.width[key]}}</input></label></div></div><h6 ng-if=\"show_style_navi &amp;&amp; mode\">ログから表示する部分を選ぶ</h6><div class=\"form-inline\" ng-if=\"show_style_navi &amp;&amp; mode\"><div class=\"form-group mark\"><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"open\">公開</input></label><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"clan\">内緒話</input></label><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"think\">独り言</input></label><label><input ng-model=\"modes.view\" tabindex=\"-1\" type=\"radio\" value=\"all\">全部</input></label></div>&thinsp;<div class=\"form-group mark\"><label class=\"checkbox\"><input ng-model=\"modes.last\" tabindex=\"-1\" type=\"checkbox\">最後の言葉</input></label><label class=\"checkbox\"><input ng-model=\"modes.open\" tabindex=\"-1\" type=\"checkbox\">公開発言</input></label><label class=\"checkbox\"><input ng-model=\"msg_styles.pl\" tabindex=\"-1\" type=\"checkbox\">中身発言</input></label></div></div><h6 ng-if=\"event\">ページ移動</h6><div class=\"form-inline\" ng-if=\"event\" style=\"text-align:right;\"><div class=\"form-group\" ng-if=\"page &amp;&amp; ! event.is_news\" template=\"navi/paginate\"></div>&thinsp;<div class=\"form-group\" ng-if=\"mode\"><a class=\"mark click\" ng-click=\"mode.value = mode_common[1].value\">メモ</a></div>&thinsp;<div class=\"form-group\" ng-if=\"mode\"><a class=\"mark click\" ng-click=\"mode.value = mode_common[2].value\">議事</a></div>&thinsp;<div class=\"form-group\"><input class=\"form-control input-medium\" ng-blur=\"search.value = search_input\" ng-model=\"search_input\" placeholder=\"ログを探す\" type=\"text\" /></div>&thinsp;<div class=\"form-group\" ng-if=\"event.is_progress\"><a class=\"mark click glyphicon glyphicon-pencil\" ng-click=\"go.form()\"></a></div></div></div>";
+
+
+
 /*!
  *  Copyright 2011 Twitter, Inc.
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -4591,11 +4593,11 @@ var Hogan = {};
         this.HOGAN || (this.HOGAN = {});
         this.HOGAN["hogan/sow/log_last"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<div class=\"caution text\" ng-if=\"event.is_progress\" style=\"padding-left: 0;\"><table><td style=\"height: 6ex;\"><a class=\"mark glyphicon glyphicon-refresh\" hogan-click=\"pool_hand()\" style=\"font-size: 4ex;\"></a></td><td style=\"padding-left: 11px;\">⇚ ");t.b(t.v(t.d("message.timestamp",c,p,0)));t.b(" より先を見る。<br /></td></table></div>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
         this.HOGAN || (this.HOGAN = {});
-        this.HOGAN["hogan/sow/status_info"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<div class=\"message_filter\" template=\"sow/status_info\"></div>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
-        this.HOGAN || (this.HOGAN = {});
         this.HOGAN["hogan/sow/story_summary"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<tr><td><a href=\"");t.b(t.v(t.d("story.file",c,p,0)));t.b("\"><code class=\"glyphicon glyphicon-folder-open\"></code></a><span class=\"small\">");t.b(t.v(t.d("story._id",c,p,0)));t.b("</span><a href=\"");t.b(t.v(t.d("story.link",c,p,0)));t.b("\">");t.b(t.v(t.d("story.name",c,p,0)));t.b("</a><img src=\"/images/icon/cd_");t.b(t.v(t.d("story.rating",c,p,0)));t.b(".png\" /><span class=\"note\" hide=\"stories_is_small\"><br />　　更新 : ");t.b(t.v(t.d("story.upd.time_text",c,p,0)));t.b(" ");t.b(t.v(t.d("story.upd.interval_text",c,p,0)));t.b("<br />");t.b(t.v(t.d("story.card.role_names",c,p,0)));t.b("<br />");t.b(t.v(t.d("story.card.event_names",c,p,0)));t.b("</span></td><td class=\"small\">");t.b(t.v(t.d("story.vpl.last()",c,p,0)));t.b("人</td><td class=\"small\"><span class=\"note\">");t.b(t.v(t.d("story.type.saycnt.CAPTION",c,p,0)));t.b("<br /></span>");t.b(t.v(t.d("story.type.game_rule.CAPTION",c,p,0)));t.b("</td></tr>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
         this.HOGAN || (this.HOGAN = {});
         this.HOGAN["hogan/sow/story_summary_small"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<tr><td><a href=\"");t.b(t.v(t.d("story.file",c,p,0)));t.b("\"><code class=\"glyphicon glyphicon-folder-open\"></code></a><span class=\"small\">");t.b(t.v(t.d("story._id",c,p,0)));t.b("</span><a href=\"");t.b(t.v(t.d("story.link",c,p,0)));t.b("\">");t.b(t.v(t.d("story.name",c,p,0)));t.b("</a><img src=\"/images/icon/cd_");t.b(t.v(t.d("story.rating",c,p,0)));t.b(".png\" /></td></tr>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
+        this.HOGAN || (this.HOGAN = {});
+        this.HOGAN["hogan/sow/unread_info"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<div class=\"message_filter\" template=\"sow/unread_info\"></div>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
         this.HOGAN || (this.HOGAN = {});
         this.HOGAN["hogan/sow/village_info"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<div class=\"message_filter\" template=\"sow/village_info\"></div>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
 

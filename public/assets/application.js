@@ -150,6 +150,9 @@ angular.module("giji").directive("adjust", function($compile, $timeout) {
         case 'left':
           small = 185;
           break;
+        case 'content':
+          small = element.width();
+          break;
         case 'full':
           small = win.info.width_max;
       }
@@ -234,9 +237,8 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
           element: elm
         };
         effect($scope, params);
-        $scope.navi.select.push(params);
+        return $scope.navi.select.push(params);
       }
-      return $scope.navi.popstate();
     }
   };
 });
@@ -301,7 +303,7 @@ draw_templates = function($compile, $scope, elm, attr) {
 
 scrollTo = function(newVal, oldVal, $scope) {
   var form_text, is_show, mode, _i, _len, _ref, _ref1;
-  $scope.anchors = [];
+  $scope.floats = [];
   if ($scope.event != null) {
     if ($scope.event.is_news) {
       _ref = $scope.form_show;
@@ -369,57 +371,9 @@ filters_if_event = function($scope, target, from) {
   $scope.deploy_mode_common();
   mode_params = _.groupBy(GIJI.modes, 'val');
   page.filter('mode.value', function(key, list) {
-    var add_filter, add_filters, groups, is_mob_open, mode_filter, mode_filters, open_filters, result, sublist, _ref;
+    var groups, is_mob_open, result, sublist, _ref;
     is_mob_open = (_ref = $scope.story) != null ? _ref.is_mob_open() : void 0;
-    mode_filters = {
-      info_open_last: /^([aAm].\d+)|(vilinfo)/,
-      info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/,
-      info_all: /^(..\d+)|(potofs)|(status)/,
-      memo_all: /^.M\d+/,
-      memo_open: /^[qcaAmIMS][MX]\d+/,
-      talk_all: /^[^S][^M]\d+/,
-      talk_think: /^[qcaAmIi][^M]\d+/,
-      talk_clan: /^[qcaAmIi\-WPX][^M]\d+/,
-      talk_all_open: /^.[^M]\d+/,
-      talk_think_open: /^[qcaAmIiS][^M]\d+/,
-      talk_clan_open: /^[qcaAmIi\-WPXS][^M]\d+/,
-      talk_all_last: /^[^S][SX]\d+/,
-      talk_think_last: /^[qcaAmIi][SX]\d+/,
-      talk_clan_last: /^[qcaAmIi\-WPX][SX]\d+/,
-      talk_all_open_last: /^.[SX]\d+/,
-      talk_think_open_last: /^[qcaAmIiS][SX]\d+/,
-      talk_clan_open_last: /^[qcaAmIi\-WPXS][SX]\d+/,
-      talk_open: /^[qcaAmIS][^M]\d+/,
-      talk_open_last: /^[qcaAmIS][SX]\d+/
-    };
-    if (is_mob_open) {
-      open_filters = {
-        talk_think_open_last: /^[qcaAmIiVS][SX]\d+/,
-        talk_think_open: /^[qcaAmIiVS][^M]\d+/,
-        memo_open: /^[qcaAmIMVS][MX]\d+/,
-        talk_open: /^[qcaAmIVS][^M]\d+/,
-        talk_open_last: /^[qcaAmIVS][SX]\d+/
-      };
-    } else {
-      open_filters = {};
-    }
-    add_filters = {
-      clan: function(o) {
-        return "" !== o.to && (o.to != null);
-      },
-      think: function(o) {
-        return "" === o.to && o.logid.match(/^T[^M]/);
-      }
-    };
-    mode_filter = open_filters[$scope.modes.regexp];
-    mode_filter || (mode_filter = mode_filters[$scope.modes.regexp]);
-    add_filter = add_filters[$scope.modes.view];
-    add_filter || (add_filter = function() {
-      return false;
-    });
-    list = _.filter(list, function(o) {
-      return o.logid.match(mode_filter) || add_filter(o);
-    });
+    list = _.filter(list, Lib.message_filter(is_mob_open, $scope.modes.regexp, $scope.modes.view));
     if ($scope.modes.last) {
       result = [];
       groups = _.groupBy(list, function(o) {
@@ -464,7 +418,7 @@ filters_if_event = function($scope, target, from) {
           }
           return true;
         }
-        return o.logid.match(/vilinfo|potofs|status/);
+        return o.updated_at < 9999;
       });
     } else {
       return list;
@@ -574,28 +528,27 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   };
 });
 
-angular.module("giji").directive("log", function($parse, $compile, $sce) {
-  return {
-    restrict: "A",
-    link: function($scope, elm, attr, ctrl) {
-      var log;
-      log = $scope.$eval(attr.log);
-      log.__proto__ = Message.prototype;
-      log.init_view($scope);
-      return GIJI.template($scope, elm, log.template);
-    }
-  };
-});
-
 angular.module("giji").directive("drag", function() {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      return $scope.$watch(attr.drag, function(log) {
+      $scope.$watch("" + attr.drag + ".z", function(z) {
         return elm.css({
-          "z-index": log.z,
-          "top": log.top
+          "z-index": z
         });
+      });
+      $scope.$watch("" + attr.drag + ".top", function(top) {
+        return elm.css({
+          "top": top
+        });
+      });
+      return $scope.$watch("attr.drag", function(event) {
+        if (event != null) {
+          return elm.css({
+            "z-index": event.z,
+            "top": event.top
+          });
+        }
       });
     }
   };
@@ -805,6 +758,20 @@ angular.module("giji").directive("title", function() {
       fix_title = function() {
         return elm.text(title($scope));
       };
+      if ((typeof history !== "undefined" && history !== null ? history.pushState : void 0) != null) {
+        window.onpopstate = function(event) {
+          return $scope.$apply(function() {
+            var key, navi, _ref, _results;
+            _ref = Browser.real.list;
+            _results = [];
+            for (key in _ref) {
+              navi = _ref[key];
+              _results.push(navi.popstate());
+            }
+            return _results;
+          });
+        };
+      }
       $scope.$watch('modes.face', fix_title);
       $scope.$watch("story.name", fix_title);
       $scope.$watch('event.turn', fix_title);
@@ -816,6 +783,7 @@ var Browser;
 
 Browser = (function() {
   function Browser(location, cookies) {
+    var do_set_url;
     this.location = location;
     this.cookies = cookies;
     this.list = {};
@@ -824,6 +792,19 @@ Browser = (function() {
       hash: ""
     });
     this.cookies || (this.cookies = {});
+    do_set_url = (function(_this) {
+      return function() {
+        var url;
+        url = _this.to_url();
+        if (url.search && url.search !== _this.location.search) {
+          _this.location.search = url.search;
+        }
+        if (url.hash && url.hash !== _this.location.hash) {
+          return _this.location.hash = url.hash;
+        }
+      };
+    })(this);
+    this.set_url = _.debounce(do_set_url, DELAY.andante);
   }
 
   Browser.prototype.location_val = function(target, find_key) {
@@ -855,7 +836,7 @@ Browser = (function() {
   };
 
   Browser.prototype.to_url = function(append) {
-    var data, hash, key, location, navi, scanner, search, value, _, _ref;
+    var data, key, location, navi, scanner, url, value, _, _ref;
     data = {
       search: [],
       hash: []
@@ -879,18 +860,14 @@ Browser = (function() {
         scanner(location, key, value);
       }
     }
+    url = {};
     if (data.search.length) {
-      search = "?" + (data.search || []).join("&");
-      if (this.location.search !== search) {
-        this.location.search = search;
-      }
+      url.search = "?" + (data.search || []).join("&");
     }
     if (data.hash.length) {
-      hash = "#" + (data.hash || []).join("&");
-      if (this.location.hash !== hash) {
-        return this.location.hash = hash;
-      }
+      url.hash = "#" + (data.hash || []).join("&");
     }
+    return url;
   };
 
   return Browser;
@@ -1045,44 +1022,52 @@ Event = (function() {
   function Event() {}
 
   Event.prototype.init = function($scope) {
-    var cb, key, message, _i, _len, _ref, _ref1, _results;
+    var key, message, _i, _len, _ref, _ref1, _results;
     this.cache = {};
-    cb = (function(_this) {
-      return function() {
-        $scope.init();
-        return _this.set_turn();
-      };
-    })(this);
-    this.set_turn = (function(_this) {
-      return function() {
-        if (_this.has_all_messages) {
-          console.log(["event.coffee:11"]);
-          _this.is_news = false;
+    this.show_mode = (function(_this) {
+      return function(mode) {
+        if (mode == null) {
+          mode = $scope.mode_cache.talk;
         }
+        $scope.mode.value = mode;
         $scope.set_turn(_this.turn);
-        $scope.page.value = 1;
-        $scope.mode.value = $scope.mode_cache.talk;
-        return win.history("" + _this.name, _this.url(), location.hash);
+        return $scope.page.value = 1;
       };
     })(this);
-    this.get_news = (function(_this) {
-      return function() {
-        var href;
-        href = _this.url();
-        if (href) {
-          return $scope.get(href, cb);
+    this.refresh = function(url, cb) {
+      var is_news;
+      if (this.has_all_messages) {
+        cb();
+        return this.is_news = false;
+      } else {
+        if (url) {
+          is_news = this.is_news;
+          return $scope.get(url, (function(_this) {
+            return function() {
+              $scope.merge($scope, gon, "events");
+              _this.is_news = is_news;
+              return cb();
+            };
+          })(this));
         }
-      };
-    })(this);
-    this.get_all = (function(_this) {
-      return function() {
-        var href;
-        href = _this.link;
-        if (href) {
-          return $scope.get(href, cb);
+      }
+    };
+    this.show_with_refresh = function(url, cb) {
+      if (this.has_all_messages) {
+        cb();
+        $scope.set_turn(this.turn);
+        return this.is_news = false;
+      } else {
+        if (url) {
+          return $scope.get(url, (function(_this) {
+            return function() {
+              $scope.init();
+              return cb();
+            };
+          })(this));
         }
-      };
-    })(this);
+      }
+    };
     if (this.messages == null) {
       return;
     }
@@ -1119,21 +1104,63 @@ Event = (function() {
     return (this.is_news && this.news) || this.link;
   };
 
-  Event.prototype.show = function(href, is_news) {
-    if (this.has_all_messages) {
-      return this.set_turn();
-    } else {
-      if (is_news) {
-        this.get_news();
-      } else {
-        this.get_all();
-      }
-      console.log(["event.coffee:53"]);
-      return this.is_news = is_news;
-    }
+  Event.prototype.search_with_refresh = function(cb) {
+    return this.refresh(this.link, cb);
+  };
+
+  Event.prototype.show_info = function() {
+    this.is_news = true;
+    return this.show_mode('info_all_open');
+  };
+
+  Event.prototype.show_unread = function() {
+    this.is_news = false;
+    return this.show_mode('info_all');
+  };
+
+  Event.prototype.show_refresh = function() {
+    return this.show_with_refresh(this.url(), function() {});
+  };
+
+  Event.prototype.show_news = function() {
+    return this.show_with_refresh(this.url(), (function(_this) {
+      return function() {
+        _this.is_news = true;
+        return _this.show_mode();
+      };
+    })(this));
+  };
+
+  Event.prototype.show_talk = function() {
+    return this.show_with_refresh(this.link, (function(_this) {
+      return function() {
+        _this.is_news = false;
+        return _this.show_mode();
+      };
+    })(this));
   };
 
   return Event;
+
+})();
+var EventFloat;
+
+EventFloat = (function() {
+  function EventFloat(pageY) {
+    this.messages = [];
+    this.slide(pageY);
+  }
+
+  EventFloat.prototype.slide = function(pageY) {
+    this.z = Date.now();
+    return this.top = pageY + 24;
+  };
+
+  EventFloat.prototype.url = function() {
+    return this.link;
+  };
+
+  return EventFloat;
 
 })();
 var FixedBox;
@@ -1271,6 +1298,61 @@ Form = (function() {
 var Lib;
 
 Lib = {
+  message_filter: function(is_mob_open, mode, add) {
+    var add_filter, mode_filter, open_filters;
+    if (is_mob_open) {
+      open_filters = Lib.filters.mob_open;
+    } else {
+      open_filters = {};
+    }
+    mode_filter = Lib.filters.mode[mode];
+    mode_filter || (mode_filter = mode_filters[mode]);
+    add_filter = Lib.filters.think[add];
+    add_filter || (add_filter = function() {
+      return false;
+    });
+    return function(o) {
+      return o.logid.match(mode_filter) || add_filter(o);
+    };
+  },
+  filters: {
+    think: {
+      clan: function(o) {
+        return "" !== o.to && (o.to != null);
+      },
+      think: function(o) {
+        return "" === o.to && o.logid.match(/^T[^M]/);
+      }
+    },
+    mode: {
+      info_open_last: /^([aAm].\d+)|(vilinfo)/,
+      info_all_open: /^(..\d+)|(vilinfo)|(potofs)/,
+      info_all: /^(..\d+)|(unread)|(potofs)/,
+      memo_all: /^.M\d+/,
+      memo_open: /^[qcaAmIMS][MX]\d+/,
+      talk_all: /^[^S][^M]\d+/,
+      talk_think: /^[qcaAmIi][^M]\d+/,
+      talk_clan: /^[qcaAmIi\-WPX][^M]\d+/,
+      talk_all_open: /^.[^M]\d+/,
+      talk_think_open: /^[qcaAmIiS][^M]\d+/,
+      talk_clan_open: /^[qcaAmIi\-WPXS][^M]\d+/,
+      talk_all_last: /^[^S][SX]\d+/,
+      talk_think_last: /^[qcaAmIi][SX]\d+/,
+      talk_clan_last: /^[qcaAmIi\-WPX][SX]\d+/,
+      talk_all_open_last: /^.[SX]\d+/,
+      talk_think_open_last: /^[qcaAmIiS][SX]\d+/,
+      talk_clan_open_last: /^[qcaAmIi\-WPXS][SX]\d+/,
+      talk_open: /^[qcaAmIS][^M]\d+/,
+      talk_open_last: /^[qcaAmIS][SX]\d+/
+    },
+    mob_open: {
+      talk_think_open_last: /^[qcaAmIiVS][SX]\d+/,
+      talk_think_open: /^[qcaAmIiVS][^M]\d+/,
+      memo_open: /^[qcaAmIMVS][MX]\d+/,
+      talk_open: /^[qcaAmIVS][^M]\d+/,
+      talk_open_last: /^[qcaAmIVS][SX]\d+/
+    }
+  },
   name: {
     folder: function(o) {
       return o;
@@ -1385,9 +1467,6 @@ Message = (function() {
     if (!this.updated_at) {
       return;
     }
-    if (!("M" === this.subid || "S" === this.subid)) {
-      return;
-    }
     $scope.timer.cache(this);
     this.cancel_btn = (this.logid != null) && "q" === this.logid[0] && ((now - this.updated_at) < DELAY.msg_delete) ? ($scope.timer.add_next(this.updated_at, DELAY.msg_delete), "<span cancel_btn>なら削除できます。<a hogan-click='cancel_say(\"" + this.logid + "\")()' class=\"btn btn-danger click glyphicon glyphicon-trash\"></a></span>") : "";
     return this.time = $scope.set_time(this);
@@ -1416,7 +1495,7 @@ Message.navi = function($scope) {
   modes_apply = function() {
     var key, _i, _len, _ref, _results;
     $scope.modes = $scope.mode.choice();
-    $scope.anchors = [];
+    $scope.floats = [];
     if ($scope.modes.form != null) {
       $scope.form_show = {};
       _ref = $scope.modes.form;
@@ -1903,7 +1982,10 @@ Story = (function(_super) {
     this.option_helps = _.map(this.options, function(o) {
       return SOW.options[o].help;
     });
-    return this.comment = $scope.text_decolate(this.comment);
+    this.comment = $scope.text_decolate(this.comment);
+    return this.news = function() {
+      return _.last($scope.events);
+    };
   };
 
   Story.prototype.is_mob_open = function() {
@@ -2755,6 +2837,8 @@ FORM = function($scope, $sce) {
         }
         $scope.errors[f.cmd] = [];
         switch (f.cmd) {
+          case "entry":
+            return is_input(f);
           case "write":
             if (("" + ((_ref = $scope.potof) != null ? _ref.pno : void 0)) !== f.target && !safe_anker(f)) {
               return false;
@@ -2977,8 +3061,8 @@ GO = function($scope) {
 };
 var HOGAN_EVENT;
 
-HOGAN_EVENT = function($scope) {
-  var add_diary, attention, cancel_say, external, foreground, hogan_click, hogan_click_event, inner, navi, pool_hand, popup, popup_apply;
+HOGAN_EVENT = function($scope, $filter) {
+  var add_diary, attention, cancel_say, close, external, foreground, hogan_click, hogan_click_event, inner, navi, pool_hand, popup, popup_apply, potof;
   hogan_click_event = null;
   navi = function(link) {
     $scope.navi.move(link);
@@ -3010,71 +3094,127 @@ HOGAN_EVENT = function($scope) {
       return item.html("" + val);
     }
   };
-  external = function(id, uri, protocol, host, path) {
-    var idx, item;
-    item = _.find($scope.anchors, function(log) {
-      return log.logid === id;
-    });
-    idx = $scope.anchors.indexOf(item);
-    if (idx < 0) {
-      item = {
-        template: "message/external",
-        mestype: "XSAY",
-        turn: -1,
-        logid: id,
-        protocol: protocol,
-        host: host,
-        path: path,
-        uri: uri,
-        top: $scope.pageY + 24,
-        z: Date.now()
-      };
-      return $scope.anchors.push(item);
-    } else {
-      return $scope.anchors.splice(idx, 1);
-    }
-  };
-  attention = function(key) {
-    var base, url, wo;
-    base = location.href.replace(location.hash, "");
-    url = Navi.to_url({
-      hash: {
-        search: key,
-        hide_potofs: "",
-        mode: "talk_all_open",
-        page: 1
-      }
-    });
-    wo = window.open();
-    wo.opener = null;
-    return wo.location.href = "" + base + url.hash;
-  };
   add_diary = function(anchor, turn, name) {
     return $scope.diary.add.anchor(anchor, turn, name);
   };
   pool_hand = function() {
     return $scope.pool_hand();
   };
+  close = function(event_id) {
+    var item;
+    return item = _.remove($scope.floats, function(event) {
+      return event.event_id === event_id;
+    });
+  };
+  potof = function(key) {
+    var drop, float, is_mob_open, list, order, _ref;
+    drop = _.remove($scope.floats, function(float) {
+      return float.event_id === key;
+    });
+    float = new EventFloat($scope.pageY);
+    float.event_id = key;
+    float.link = Browser.real.to_url({
+      hash: {
+        search: key,
+        turn: $scope.event.turn,
+        hide_potofs: "",
+        mode: "talk_all_open",
+        page: 1
+      }
+    });
+    order = "desc" === $scope.msg_styles.order ? function(o) {
+      return -o.updated_at;
+    } : function(o) {
+      return +o.updated_at;
+    };
+    is_mob_open = (_ref = $scope.story) != null ? _ref.is_mob_open() : void 0;
+    list = $scope.event.messages;
+    list = _.filter(list, Lib.message_filter(is_mob_open, $scope.modes.regexp, $scope.modes.view));
+    list = _.filter(list, function(o) {
+      return ("" + o.csid + "-" + o.face_id) === key;
+    });
+    list = _.sortBy(list, order);
+    float.messages = list;
+    return $scope.floats.push(float);
+  };
+  external = function(id, uri, protocol, host, path) {
+    var drop, float;
+    drop = _.remove($scope.floats, function(float) {
+      return float.event_id === uri;
+    });
+    float = new EventFloat($scope.pageY);
+    float.event_id = uri;
+    float.link = uri;
+    float.messages.push({
+      template: "message/external",
+      mestype: "XSAY",
+      turn: -1,
+      logid: id,
+      protocol: protocol,
+      host: host,
+      path: path,
+      uri: uri,
+      top: $scope.pageY + 24,
+      z: Date.now()
+    });
+    return $scope.floats.push(float);
+  };
+  attention = function(key) {
+    var drop, float, list;
+    drop = _.remove($scope.floats, function(float) {
+      return float.event_id === "anker";
+    });
+    float = new EventFloat($scope.pageY);
+    float.event_id = "anker";
+    float.link = Browser.real.to_url({
+      hash: {
+        search: key,
+        turn: $scope.event.turn,
+        hide_potofs: "",
+        mode: "talk_all_open",
+        page: 1
+      }
+    });
+    list = $scope.event.messages;
+    list = $filter('filter')(list, key);
+    float.messages = list;
+    return $scope.floats.push(float);
+  };
   popup_apply = function(item, turn) {
-    var idx;
-    idx = $scope.anchors.indexOf(item);
-    if (idx < 0) {
-      $scope.anchors.push(item);
-      item.turn = turn;
-      item.z = Date.now();
-      item.top = $scope.pageY + 24;
-    } else {
-      $scope.anchors.splice(idx, 1);
-    }
-    return idx;
+    var float, order;
+    float = _.remove($scope.floats, function(float) {
+      return float.event_id === "anker";
+    })[0];
+    float || (float = new EventFloat($scope.pageY));
+    float.event_id = "anker";
+    float.slide($scope.pageY);
+    float.link = Browser.real.to_url({
+      hash: {
+        search: item.key,
+        turn: $scope.event.turn,
+        hide_potofs: "",
+        mode: "talk_all_open",
+        page: 1
+      }
+    });
+    _.remove(float.messages, function(message) {
+      return message.logid === item.logid;
+    });
+    order = "desc" === $scope.msg_styles.order ? function(o) {
+      return -o.updated_at;
+    } : function(o) {
+      return +o.updated_at;
+    };
+    float.messages.push(item);
+    float.messages = _.sortBy(float.messages, order);
+    return $scope.floats.push(float);
   };
   popup = function(turn, ank) {
-    var href, popup_ajax, popup_find;
-    href = location.href.replace(location.hash, "");
+    var popup_ajax, popup_find;
     popup_find = function(turn) {
       var event, item, list;
       if (turn < 0) {
-        list = $scope.anchors;
+        list = [];
       } else {
         event = $scope.events[turn];
         if ((event != null ? event.messages : void 0) == null) {
@@ -3096,20 +3236,9 @@ HOGAN_EVENT = function($scope) {
       if (event == null) {
         return;
       }
-      if (event.has_all_messages) {
+      return event.search_with_refresh(function() {
         return seek();
-      } else {
-        return $scope.get_all(event, function() {
-          var is_news;
-          if (turn === gon.event.turn) {
-            is_news = $scope.event.is_news;
-            $scope.merge($scope, gon, "events");
-            console.log(["hogan_event.coffee:107"]);
-            $scope.event.is_news = is_news;
-          }
-          return seek();
-        });
-      }
+      });
     };
     if (!popup_find(turn)) {
       return popup_ajax(turn, function() {
@@ -3212,7 +3341,7 @@ Navi = (function() {
           func(_this.value);
         }
         _this.browser.set_cookie();
-        return _this.browser.to_url();
+        return _this.browser.set_url();
       };
     })(this));
   }
@@ -3240,17 +3369,6 @@ Navi = (function() {
   return Navi;
 
 })();
-
-Navi.popstate = function(list) {
-  var navi, _i, _len, _ref, _results;
-  _ref = Browser.real.list;
-  _results = [];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    navi = _ref[_i];
-    _results.push(navi.popstate());
-  }
-  return _results;
-};
 
 Navi.push = function($scope, key, def) {
   var navi;
@@ -3582,11 +3700,7 @@ POOL = function($scope, $filter, $timeout) {
     return $timeout(refresh, DELAY.msg_minute);
   };
   pool_button = function() {
-    return $scope.event.get_news($scope.event, (function(_this) {
-      return function() {
-        return $scope.init();
-      };
-    })(this));
+    return $scope.event.show_refresh();
   };
   $scope.pool_nolimit = pool_button;
   $scope.pool_hand = _.debounce(pool_button, DELAY.msg_delete, {
@@ -3856,7 +3970,7 @@ TOKEN_INPUT = function($scope) {
   };
   return _.delay(doIt, DELAY.andante);
 };
-var popstate, win;
+var win;
 
 win = {
   top: 0,
@@ -3912,24 +4026,6 @@ win = {
     return $(window).on('scroll', _.throttle(cb, DELAY.lento));
   }
 };
-
-if ((typeof history !== "undefined" && history !== null ? history.pushState : void 0) != null) {
-  popstate = function(e) {
-    return Navi.popstate();
-  };
-  $(window).on('popstate', _.debounce(popstate, DELAY.presto, {
-    leading: false,
-    trailing: true
-  }));
-  win.history = function(title, href, hash) {
-    href || (href = location.href.replace(/#.*/, ""));
-    return history.replaceState(null, title, href + hash);
-  };
-} else {
-  win.history = function(title, href, hash) {
-    return location.hash = hash;
-  };
-}
 
 angular.module("giji").run(function() {
   var dummy, scan_motion;
@@ -4093,7 +4189,7 @@ MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
     return "" + URL.file + csid.path + face_id + csid.ext;
   };
   TOKEN_INPUT($scope);
-  HOGAN_EVENT($scope);
+  HOGAN_EVENT($scope, $filter);
   DECOLATE($scope, $sce);
   TIMER($scope);
   CACHE($scope);
@@ -4105,7 +4201,11 @@ MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   POOL($scope, $filter, $timeout);
   return $scope.$watch("event.turn", function(turn, oldVal) {
     if ((turn != null) && ($scope.event != null) && turn !== oldVal) {
-      return $scope.event.show(null, $scope.event.is_news);
+      if ($scope.event.is_news) {
+        return $scope.event.show_news();
+      } else {
+        return $scope.event.show_talk();
+      }
     }
   });
 };
