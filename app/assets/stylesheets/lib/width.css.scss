@@ -43,6 +43,7 @@
   .drag,
   .ajax,
   .memo,
+  .pagenavi,
   .log .badge,
   .toppage,
   .outframe,
@@ -75,13 +76,14 @@
 @mixin film($film-top) {
   .accordion dd,
   .CAST code,
-  .paragraph, 
+  .paragraph,
   .say .chrblank,
   .say img {
     margin-left: $film-top;
   }
 
-  .drag_head .badge {
+  .drag_head .badge,
+  .drag_foot .badge {
     width:  84px;
     margin-left: ( $film-top - 3px ) * 2;
   }
@@ -142,7 +144,7 @@
     .action {
       margin: 0 0 4px 99px;
       padding: 4px 12px 0px 4px;
-    }    
+    }
   }
 }
 

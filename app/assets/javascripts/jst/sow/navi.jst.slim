@@ -21,11 +21,18 @@
 
   .sayfilter_heading.bottom
 
-  .toolbox(adjust="full" navi="page" ng-if="page" template="navi/toolbox")
+  .toolbox(navi="page" ng-if="page" template="navi/toolbox" style="white-space: nowrap;")
 
 #buttons
   nav
-    div(ng-repeat="o in navi.select")
+    span(ng-if="event.is_progress")
+      a.btn.btn-default.click.glyphicon.glyphicon-refresh(ng-click="pool_hand()")
+    span
+      a.btn.btn-default.click.glyphicon.glyphicon-search(ng-click="go.search()")
+    span
+      a.btn.btn-default.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
+
+    span(ng-repeat="o in navi.select")
       a.btn(ng-class="o.class" ng-click="navi.move(o.val)") {{o.name}}
-    div
+    span
       a.btn.btn-default(ng-click="navi.blank()") ✗

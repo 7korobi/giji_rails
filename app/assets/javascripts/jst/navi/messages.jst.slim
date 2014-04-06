@@ -9,8 +9,11 @@
     div.badge(ng-class="page.of.next.class" ng-click="page.move(page.of.next.val)" ng-if="page")  次のページ
     hr.invisible_hr
 
-.message_filter.drag(ng-repeat="message in anchors" drag="message")
-  .contentframe(log="message")
+.drag(ng-repeat="event in floats" drag="event")
+  .contentframe
     .drag_head
-      span.badge(hogan-click="popup({{message.turn}}, '{{message.logid}}')") ✘
+      span.badge(hogan-click="close('{{event.event_id}}')") ✘
+    .message_filter(logs="event.messages")
+    .drag_foot
+      span.badge(hogan-click="close('{{event.event_id}}')") ✘
 

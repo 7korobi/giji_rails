@@ -1,85 +1,82 @@
-table.pagenavi
-  tbody
-    tr
-      td.events
-        div(ng-repeat="e in events" ng-click="e.set_turn()")
-          a.mark
-            i.glyphicon.glyphicon-film( ng-if="e.turn == event.turn")
-            i.glyphicon.glyphicon-minus(ng-if="e.turn != event.turn")
-            | {{e.name}}
-      td
-        h6(ng-if="show_style_navi") スタイル：ログの見た目 &emsp;&emsp;&emsp;&emsp;.
-        .form-inline(ng-if="show_style_navi")
-          .form-group
-            label
-              select.form-control.input-block-level(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
-          | &thinsp;
-          .form-group.mark
-            label.checkbox(ng-repeat="key in selector_keys.font")
-              input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.font")
-                | {{selectors.font[key]}}
-          | &thinsp;
-          .form-group.mark
-            label.checkbox(ng-repeat="key in selector_keys.width")
-              input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.width")
-                | {{selectors.width[key]}}
+.pagenavi
+  h6(ng-if="mode" style="text-align:left;") 見るログを選ぶ
+  .form-inline(ng-if="mode" style="text-align:left;")
+    .form-group
+      a.mark(ng-click="story.news().show_info()") 情報
+    | &thinsp;
+    .form-group(ng-repeat="e in events")
+      a.mark(ng-click="e.show_talk()") {{e.name}}
+    .form-group(ng-if="story.news().is_progress")
+      | &thinsp;/&thinsp;
+      a.mark(ng-click="story.news().show_news()") 最新
+      | &thinsp;
+      a.mark(ng-click="story.news().show_unread()") 未読
 
-        h6(ng-if="show_style_navi && page") ログの表示方法 &emsp;&emsp;&emsp;&emsp;.
-        .form-inline(ng-if="show_style_navi && msg_style")
-          .form-group
-            label
-              select.form-control.input-mini(ng-model="msg_styles.power"   ng-options="key as selectors.power[key] for key in selector_keys.power" )
-            | &thinsp;
-          .form-group
-            label
-              select.form-control.input-mini(ng-model="msg_styles.order"   ng-options="key as selectors.order[key] for key in selector_keys.order" )
-            | &thinsp;
-          .form-group
-            label
-              select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
-            | &thinsp;
+  h6(ng-if="show_style_navi && msg_style") ログの表示方法
+  .form-inline(ng-if="show_style_navi && msg_style")
+    .form-group
+      label
+        select.form-control.input-medium(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
+    | &thinsp;
+    .form-group
+      label
+        select.form-control.input-mini(ng-model="msg_styles.power"   ng-options="key as selectors.power[key] for key in selector_keys.power" )
+      | &thinsp;
+    .form-group
+      label
+        select.form-control.input-mini(ng-model="msg_styles.order"   ng-options="key as selectors.order[key] for key in selector_keys.order" )
+      | &thinsp;
+    .form-group
+      label
+        select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
+      | &thinsp;
+
+  h6(ng-if="show_style_navi") スタイル（ログの見た目）を調整する
+  .form-inline(ng-if="show_style_navi")
+    .form-group.mark
+      label.checkbox(ng-repeat="key in selector_keys.font")
+        input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.font")
+          | {{selectors.font[key]}}
+    | &thinsp;
+    .form-group.mark
+      label.checkbox(ng-repeat="key in selector_keys.width")
+        input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.width")
+          | {{selectors.width[key]}}
+
+  h6(ng-if="show_style_navi && mode") ログから表示する部分を選ぶ
+  .form-inline(ng-if="show_style_navi && mode")
+    .form-group.mark
+      label
+        input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
+      label
+        input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
+      label
+        input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
+      label
+        input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
+    | &thinsp;
+    .form-group.mark
+      label.checkbox
+        input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
+      label.checkbox
+        input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
+      label.checkbox
+        input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
 
 
-        h6(ng-if="mode") フィルタ：表示するログ &emsp;&emsp;&emsp;&emsp;
-        .form-inline(ng-if="mode")
-          .form-group
-            a.mark.click(ng-repeat="a in mode_common" ng-click="mode.value = a.value") {{a.name}}
-          | &thinsp;
-          .form-group.mark(ng-if="show_style_navi")
-            label
-              input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
-            label
-              input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
-            label
-              input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
-            label
-              input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
-          | &thinsp;
-          .form-group.mark(ng-if="show_style_navi")
-            label.checkbox
-              input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
-            label.checkbox
-              input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
-            label.checkbox
-              input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
-
-
-        h6(ng-if="event") ページ、日程の移動 &emsp;&emsp;&emsp;&emsp;
-        .form-inline(ng-if="event")
-          .form-group
-            label(ng-if="! event.is_news")
-              label(template="navi/paginate")
-          | &thinsp;
-          .form-group(ng-if="event.is_progress")
-            label
-              a.btn.btn-default(ng-if="  event.is_news" ng-click="event.show(null, false)") ページ表示
-              a.btn.btn-default(ng-if="! event.is_news" ng-click="event.show(null, true)") 最新の発言
-          | &thinsp;
-          .form-group
-            label
-              input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
-          | &thinsp;
-          .form-group(ng-if="event.is_progress")
-            label
-              a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
+  h6(ng-if="event") ページ移動
+  .form-inline(ng-if="event" style="text-align:right;")
+    .form-group(ng-if="page && ! event.is_news" template="navi/paginate")
+    | &thinsp;
+    .form-group(ng-if="mode")
+      a.mark.click(ng-click="mode.value = mode_common[1].value") メモ
+    | &thinsp;
+    .form-group(ng-if="mode")
+      a.mark.click(ng-click="mode.value = mode_common[2].value") 議事
+    | &thinsp;
+    .form-group
+      input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
+    | &thinsp;
+    .form-group(ng-if="event.is_progress")
+      a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
 

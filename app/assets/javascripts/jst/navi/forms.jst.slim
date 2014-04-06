@@ -17,14 +17,13 @@
         | あと {{story.timer.extend}}回、更新を延長できる。
 
 
-div(form="f.jst" ng-repeat="f in form.texts" ng-show="logined()")
+div(form="f.jst" ng-repeat="f in form.texts" ng-show="logined()" ng-if="event.is_progress")
 
 div(class="{{form.win}}" ng-if="logined()")
   .secret
     p.text(listup="form.secrets")
 
-
-div(ng-hide="form.confirm" ng-show="logined()")
+div(ng-show="logined() && ! form.confirm")
   .formpl_gm.form-inline(ng-repeat="f in form.command_group.commit")
     .commitbutton
       select.form-control(name="commit" ng-change="vote_change(f)" ng-model="f.commit" ng-disabled="f.disabled" ng-options="o.val as o.name for o in f.commits")
