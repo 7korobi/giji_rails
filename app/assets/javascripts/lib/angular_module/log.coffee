@@ -48,7 +48,7 @@ scrollTo = (newVal, oldVal, $scope)->
         for form_text in $scope.form.texts
           if is_show and mode == form_text.jst
             return
-  $scope.go.messages()
+  $scope.go.top()
 
 filters_common_last = ($scope, $filter)->
   page = $scope.page
