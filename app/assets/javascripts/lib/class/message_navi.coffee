@@ -14,7 +14,7 @@ Message.navi = ($scope)->
 
   modes_apply = ->
     $scope.modes = $scope.mode.choice()
-    $scope.anchors = []
+    $scope.floats = []
 
     if $scope.modes.form?
       $scope.form_show = {}

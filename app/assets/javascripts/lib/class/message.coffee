@@ -47,7 +47,6 @@ class Message
 
   init_timer: ($scope, now)->
     return unless @updated_at
-    return unless "M" == @subid || "S" == @subid
 
     $scope.timer.cache @
     @cancel_btn =

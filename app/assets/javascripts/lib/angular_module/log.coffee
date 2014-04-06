@@ -40,7 +40,7 @@ draw_templates = ($compile, $scope, elm, attr)->
     attr.last() if attr.last?
 
 scrollTo = (newVal, oldVal, $scope)->
-  $scope.anchors = []
+  $scope.floats = []
 
   if $scope.event?
     if $scope.event.is_news
@@ -97,50 +97,7 @@ filters_if_event = ($scope, target, from)->
 
   page.filter 'mode.value', (key, list)->
     is_mob_open = $scope.story?.is_mob_open()
-
-    # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
-    mode_filters =
-      info_open_last: /^([aAm].\d+)|(vilinfo)/
-      info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/
-      info_all: /^(..\d+)|(potofs)|(status)/
-      memo_all:  /^.M\d+/
-      memo_open: /^[qcaAmIMS][MX]\d+/
-      talk_all:   /^[^S][^M]\d+/
-      talk_think: /^[qcaAmIi][^M]\d+/
-      talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
-      talk_all_open:   /^.[^M]\d+/
-      talk_think_open: /^[qcaAmIiS][^M]\d+/
-      talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
-      talk_all_last:   /^[^S][SX]\d+/
-      talk_think_last: /^[qcaAmIi][SX]\d+/
-      talk_clan_last:  /^[qcaAmIi\-WPX][SX]\d+/
-      talk_all_open_last:   /^.[SX]\d+/
-      talk_think_open_last: /^[qcaAmIiS][SX]\d+/
-      talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]\d+/
-      talk_open:      /^[qcaAmIS][^M]\d+/
-      talk_open_last: /^[qcaAmIS][SX]\d+/
-
-    if is_mob_open
-      open_filters =
-        talk_think_open_last: /^[qcaAmIiVS][SX]\d+/
-        talk_think_open: /^[qcaAmIiVS][^M]\d+/
-        memo_open:      /^[qcaAmIMVS][MX]\d+/
-        talk_open:      /^[qcaAmIVS][^M]\d+/
-        talk_open_last: /^[qcaAmIVS][SX]\d+/
-    else
-      open_filters = {}
-
-    add_filters =
-      clan:  (o)-> "" != o.to && o.to?
-      think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
-
-    mode_filter   = open_filters[$scope.modes.regexp]
-    mode_filter ||= mode_filters[$scope.modes.regexp]
-    add_filter   = add_filters[$scope.modes.view]
-    add_filter ||= -> false
-
-    list = _.filter list, (o)->
-      o.logid.match(mode_filter) || add_filter(o)
+    list = _.filter list, Lib.message_filter is_mob_open, $scope.modes.regexp, $scope.modes.view
 
     if $scope.modes.last
       result = []
@@ -172,7 +129,7 @@ filters_if_event = ($scope, target, from)->
         if now < o.updated_at
           ++$scope.event.unread_count unless o.logid == "IX99999"
           return true
-        return o.logid.match(/vilinfo|potofs|status/)
+        return o.updated_at < 9999
     else
       list
 
@@ -258,23 +215,14 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
           $scope.timer.start()
     $scope.$watchCollection attr.logs, draw
 
-
-angular.module("giji").directive "log", ($parse, $compile, $sce)->
-  restrict: "A"
-  link: ($scope, elm, attr, ctrl)->
-    log = $scope.$eval attr.log
-    log.__proto__ = Message.prototype
-    log.init_view $scope
-
-    GIJI.template $scope, elm, log.template
-
-
 angular.module("giji").directive "drag", ->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    $scope.$watch attr.drag, (log) ->
-      elm.css
-        "z-index": log.z
-        "top":     log.top
-
+    $scope.$watch "#{attr.drag}.z",   (z)->   elm.css "z-index": z
+    $scope.$watch "#{attr.drag}.top", (top)-> elm.css "top":     top
+    $scope.$watch "attr.drag", (event) ->
+      if event?
+        elm.css
+          "z-index": event.z
+          "top":     event.top
 
