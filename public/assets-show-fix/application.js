@@ -1030,8 +1030,8 @@ Event = (function() {
         if (mode == null) {
           mode = $scope.mode_cache.talk;
         }
-        $scope.mode.value = mode;
         $scope.set_turn(_this.turn);
+        $scope.mode.value = mode;
         return $scope.page.value = 1;
       };
     })(this);
@@ -1110,13 +1110,13 @@ Event = (function() {
   };
 
   Event.prototype.show_info = function() {
-    this.is_news = true;
-    return this.show_mode('info_all_open');
+    this.show_mode('info_all_open');
+    return this.is_news = true;
   };
 
   Event.prototype.show_unread = function() {
-    this.is_news = false;
-    return this.show_mode('info_all');
+    this.show_mode('info_all');
+    return this.is_news = false;
   };
 
   Event.prototype.show_refresh = function() {
@@ -1126,8 +1126,8 @@ Event = (function() {
   Event.prototype.show_news = function() {
     return this.show_with_refresh(this.url(), (function(_this) {
       return function() {
-        _this.is_news = true;
-        return _this.show_mode();
+        _this.show_mode();
+        return _this.is_news = true;
       };
     })(this));
   };
@@ -1135,8 +1135,8 @@ Event = (function() {
   Event.prototype.show_talk = function() {
     return this.show_with_refresh(this.link, (function(_this) {
       return function() {
-        _this.is_news = false;
-        return _this.show_mode();
+        _this.show_mode();
+        return _this.is_news = false;
       };
     })(this));
   };
@@ -1157,8 +1157,16 @@ EventFloat = (function() {
     return this.top = pageY + 24;
   };
 
-  EventFloat.prototype.url = function() {
-    return this.link;
+  EventFloat.prototype.set_url = function() {
+    var key, navi, _ref, _results;
+    location.hash = this.link.hash;
+    _ref = Browser.real.list;
+    _results = [];
+    for (key in _ref) {
+      navi = _ref[key];
+      _results.push(navi.popstate());
+    }
+    return _results;
   };
 
   return EventFloat;
@@ -1566,10 +1574,6 @@ Potof = (function() {
 
   Potof.prototype.is_live = function() {
     return this.deathday < 0;
-  };
-
-  Potof.prototype.key = function() {
-    return Potof.key(this);
   };
 
   Potof.prototype.summary = function(order) {
@@ -3115,15 +3119,14 @@ HOGAN_EVENT = function($scope, $filter) {
     });
     float = new EventFloat($scope.pageY);
     float.event_id = key;
-    float.link = Browser.real.to_url({
-      hash: {
-        search: key,
-        turn: $scope.event.turn,
-        hide_potofs: "",
-        mode: "talk_all_open",
-        page: 1
-      }
-    });
+    float.set_url = function() {
+      $scope.potof_only(_.filter($scope.potofs, (function(o) {
+        return o.key === key;
+      })));
+      $scope.mode.value = "talk_all_open";
+      $scope.page.value = 1;
+      return $scope.floats = [];
+    };
     order = "desc" === $scope.msg_styles.order ? function(o) {
       return -o.updated_at;
     } : function(o) {
@@ -3146,7 +3149,6 @@ HOGAN_EVENT = function($scope, $filter) {
     });
     float = new EventFloat($scope.pageY);
     float.event_id = uri;
-    float.link = uri;
     float.messages.push({
       template: "message/external",
       mestype: "XSAY",
@@ -3161,25 +3163,30 @@ HOGAN_EVENT = function($scope, $filter) {
     });
     return $scope.floats.push(float);
   };
-  attention = function(key) {
-    var float, list;
+  attention = function(key, turn) {
+    var float, list, order;
     float = _.remove($scope.floats, function(float) {
       return float.event_id === "anker";
     })[0];
     float || (float = new EventFloat($scope.pageY));
     float.event_id = "anker";
-    float.link = Browser.real.to_url({
-      hash: {
-        search: key,
-        turn: $scope.event.turn,
-        hide_potofs: "",
-        mode: "talk_all_open",
-        page: 1
-      }
-    });
-    list = $scope.event.messages;
+    float.set_url = function() {
+      $scope.hide_potofs.value = [];
+      $scope.search.value = key;
+      $scope.mode.value = "talk_all_open";
+      $scope.page.value = 1;
+      $scope.set_turn(turn);
+      return $scope.floats = [];
+    };
+    list = $scope.events[turn].messages;
     list = $filter('filter')(list, key);
-    float.messages = list;
+    order = "desc" === $scope.msg_styles.order ? function(o) {
+      return -o.updated_at;
+    } : function(o) {
+      return +o.updated_at;
+    };
+    float.messages = _.union(float.messages, list);
+    float.messages = _.sortBy(float.messages, order);
     return $scope.floats.push(float);
   };
   popup_apply = function(item, turn) {
@@ -3189,24 +3196,20 @@ HOGAN_EVENT = function($scope, $filter) {
     })[0];
     float || (float = new EventFloat($scope.pageY));
     float.event_id = "anker";
-    float.link = Browser.real.to_url({
-      hash: {
-        search: item.key,
-        turn: $scope.event.turn,
-        hide_potofs: "",
-        mode: "talk_all_open",
-        page: 1
-      }
-    });
-    _.remove(float.messages, function(message) {
-      return message.logid === item.logid;
-    });
+    float.set_url = function() {
+      $scope.hide_potofs.value = [];
+      $scope.search.value = item.key;
+      $scope.mode.value = "talk_all_open";
+      $scope.page.value = 1;
+      $scope.set_turn(turn);
+      return $scope.floats = [];
+    };
     order = "desc" === $scope.msg_styles.order ? function(o) {
       return -o.updated_at;
     } : function(o) {
       return +o.updated_at;
     };
-    float.messages.push(item);
+    float.messages = _.union(float.messages, [item]);
     float.messages = _.sortBy(float.messages, order);
     return $scope.floats.push(float);
   };
