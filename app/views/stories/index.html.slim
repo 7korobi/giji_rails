@@ -2,13 +2,7 @@
   | ページをめくる
 
 - content_for :tool do
-  .toolbox(adjust="full" navi="page" name="頁番")
-    .form-inline
-      .form-group
-        label
-          a.mark.click.glyphicon.glyphicon-search(ng-click="go.search()")
-      .form-group
-        label(template="navi/paginate")
+  .toolbox(navi="page" ng-if="page" template="navi/toolbox" style="white-space: nowrap;")
 
 - content_for :log do
 

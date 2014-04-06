@@ -62,12 +62,12 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_cl
       #footer
 
       #tab(ng-cloak)
-        #topviewer
-          #topframe.drag(ng-cloak)
+        #topviewer(ng-cloak)
+          #topframe.drag
             .contentframe
               = yield :navi_top
         #sayfilter.sayfilter(adjust="left")
-          .sayfilter_heading#navi_head
+          .sayfilter_heading
             = yield :navi_head
           = yield :navi
           - if flash[:error]
@@ -78,9 +78,11 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_cl
           = yield :tool
         #buttons
           nav
-            div(ng-repeat="o in navi.select")
-              a.btn(ng-click="navi.move(o.val)"  ng-class="o.class")
-                | {{o.name}}
-            div
-              a.btn.btn-default(ng-click="navi.blank()")
-                | ✘
+            span
+              a.btn.btn-default.click.glyphicon.glyphicon-search(ng-click="go.search()")
+            span
+              a.btn.btn-default.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
+            span(ng-repeat="o in navi.select")
+              a.btn(ng-class="o.class" ng-click="navi.move(o.val)") {{o.name}}
+            span
+              a.btn.btn-default(ng-click="navi.blank()") ✗

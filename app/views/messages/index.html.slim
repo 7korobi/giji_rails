@@ -16,16 +16,13 @@
     .paragraph(ng-show="potofs")
       .sayfilter_content(template="navi/potofs_small")
 
-  .insayfilter(navi="page_filter" ng-show="page")
+  .insayfilter(navi="page_filter" ng-if="page")
     .paragraph
-      table.sayfilter_content
-        tr
-          td
-            select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select" style="margin-bottom: 0;")
+      .sayfilter_content
+        select.form-control.input-block-level(ng-model="mode.value" ng-options="o.val as o.name group by o.group for o in mode_select")
 
 - content_for :tool do
-  .toolbox(adjust="full" navi="page" ng-show="page")
-    .sayfilter_content(template="navi/toolbox")
+  .toolbox(navi="page" ng-if="page" template="navi/toolbox" style="white-space: nowrap;")
 
 - content_for :log do
   h2
