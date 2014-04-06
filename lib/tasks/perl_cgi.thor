@@ -6,7 +6,7 @@ class PerlCgi < Thor
     files = %w[index.html sow.cgi] + (0..9).map{|d| "sow#{d}.cgi"}
     sync_to_servers(files) do |folder, files|
       next if files['skip']
-      files && files['lapp'] && files['lapp'][/testbed$/]
+      files && files['lapp'] && files['lapp'][/show-fix$/]
     end
   end
 
@@ -41,7 +41,7 @@ class PerlCgi < Thor
     files = %w[index.html sow.cgi]
     sync_to_servers(files) do |folder, files|
       next if files['skip']
-      files && files['lapp'] && files['lapp'][/angular$/]
+      files && files['lapp'] && files['lapp'][/show-fix$/]
     end
   end
 
@@ -50,7 +50,7 @@ class PerlCgi < Thor
     files = %w[index.html sow.cgi]
     sync_to_servers(files) do |folder, files|
       next if files['skip']
-      files && files['lapp'] && files['lapp'][/active-event$/]
+      files && files['lapp'] && files['lapp'][/show-fix$/]
     end
   end
 

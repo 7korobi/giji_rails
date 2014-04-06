@@ -468,7 +468,7 @@ SOYBEAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/soy-bean/config.pl
-    is_angular: cleanup
+    is_angular: show-fix
 
 CIEL:
   server: ciel.moo.jp
@@ -502,7 +502,7 @@ CIEL:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/ciel/config.pl
-    is_angular: angular
+    is_angular: show-fix
 
 PERJURY:
   server: perjury.rulez.jp
@@ -531,7 +531,7 @@ PERJURY:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
-    is_angular: cleanup
+    is_angular: show-fix
 
 XEBEC:
   server: xebec.x0.to
@@ -611,7 +611,7 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-    is_angular: cleanup
+    is_angular: show-fix
 
 ALLSTAR:
   server: jinro.jksy.org
@@ -686,7 +686,7 @@ LOBBY:
       DIR_VIL:  ./data/vil
       DIR_USER: ../data/user
     pl:  /www/giji_log/lobby/config.pl
-    is_angular: cleanup
+    is_angular: show-fix
 
 OFFPARTY:
   server: party.ps.land.to
