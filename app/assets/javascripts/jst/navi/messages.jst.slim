@@ -1,13 +1,24 @@
-.message_filter
-  .log
-    div.badge(ng-class="page.of.prev.class" ng-click="page.move(page.of.prev.val)" ng-if="page")  前のページ
-    hr.invisible_hr
+.message_filter(ng-if="page")
+  .row
+    .col-xs-4
+      .badge(style="display: block;" ng-class="page.of.prev.class" ng-click="page.move(page.of.prev.val)")  前のページ
+    .col-xs-4
+    .col-xs-4
+      .badge(style="display: block;" ng-class="page.of.next.class" ng-click="page.move(page.of.next.val)")  次のページ
 
-.message_filter(logs="messages" from="event.messages")
-.message_filter
-  .log
-    div.badge(ng-class="page.of.next.class" ng-click="page.move(page.of.next.val)" ng-if="page")  次のページ
-    hr.invisible_hr
+.message_filter(
+  logs="messages"
+  from="event.messages"
+  ng-swipe-left="page.move(page.of.prev.val)"
+  ng-swipe-right="page.move(page.of.next.val)"
+)
+.message_filter(ng-if="page")
+  .row
+    .col-xs-4
+      .badge(style="display: block;" ng-class="page.of.prev.class" ng-click="page.move(page.of.prev.val)")  前のページ
+    .col-xs-4
+    .col-xs-4
+      .badge(style="display: block;" ng-class="page.of.next.class" ng-click="page.move(page.of.next.val)")  次のページ
 
 .drag(ng-repeat="event in floats" drag="event")
   .contentframe
