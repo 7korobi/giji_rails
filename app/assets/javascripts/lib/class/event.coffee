@@ -2,25 +2,33 @@ class Event
   init: ($scope)->
     @cache = {}
 
-    cb = =>
-      $scope.init()
-      @set_turn()
-
-    @set_turn = =>
-      if @has_all_messages
-        @is_news = false
+    @show_mode = (mode = $scope.mode_cache.talk)=>
+      $scope.mode.value = mode
       $scope.set_turn @turn
       $scope.page.value = 1
-      $scope.mode.value = $scope.mode_cache.talk
-      win.history "#{@name}", @url(), location.hash
 
-    @get_news = =>
-      href = @url()
-      $scope.get href, cb if href
+    @refresh = (url, cb)->
+      if @has_all_messages
+        cb()
+        @is_news = false
+      else
+        if url
+          is_news = @is_news
+          $scope.get url, =>
+            $scope.merge $scope, gon, "events"
+            @is_news = is_news
+            cb()
 
-    @get_all = =>
-      href = @link
-      $scope.get href, cb if href
+    @show_with_refresh = (url, cb)->
+      if @has_all_messages
+        cb()
+        $scope.set_turn @turn
+        @is_news = false
+      else
+        if url
+          $scope.get url, =>
+            $scope.init()
+            cb()
 
     return unless @messages?
     return unless @turn?
@@ -41,13 +49,26 @@ class Event
   url: ->
     (@is_news && @news) || @link
 
-  show: (href, is_news)->
-    if @has_all_messages
-      @set_turn()
-    else
-      if is_news
-        @get_news()
-      else
-        @get_all()
-      @is_news = is_news
+  search_with_refresh: (cb)->
+    @refresh @link, cb
 
+  show_info: ->
+    @is_news = true
+    @show_mode 'info_all_open'
+
+  show_unread: ->
+    @is_news = false
+    @show_mode 'info_all'
+
+  show_refresh: ->
+    @show_with_refresh @url(), ->
+
+  show_news: ->
+    @show_with_refresh @url(), =>
+      @is_news = true
+      @show_mode()
+
+  show_talk: ->
+    @show_with_refresh @link, =>
+      @is_news = false
+      @show_mode()

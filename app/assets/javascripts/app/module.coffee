@@ -95,7 +95,7 @@ MODULE = ($scope, $filter, $sce, $cookies, $http, $timeout)->
     "#{URL.file}#{csid.path}#{face_id}#{csid.ext}"
 
   TOKEN_INPUT $scope
-  HOGAN_EVENT $scope
+  HOGAN_EVENT $scope, $filter
   DECOLATE $scope, $sce
   TIMER   $scope
   CACHE   $scope
@@ -109,5 +109,9 @@ MODULE = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   POOL    $scope, $filter, $timeout
 
   $scope.$watch "event.turn", (turn, oldVal)->
-    $scope.event.show(null, $scope.event.is_news) if turn? && $scope.event? && turn != oldVal
+    if turn? && $scope.event? && turn != oldVal
+      if $scope.event.is_news
+        $scope.event.show_news()
+      else
+        $scope.event.show_talk()
 

@@ -80,6 +80,7 @@ class Story extends StorySummary
     super
     @option_helps = _.map @options, (o)-> SOW.options[o].help
     @comment = $scope.text_decolate @comment
+    @news = -> _.last($scope.events)
 
   is_mob_open: ->
     return true if 'alive' == @type.mob
