@@ -85,10 +85,10 @@ HOGAN_EVENT = ($scope, $filter)->
     $scope.floats.push float
 
   attention = (key)->
-    drop = _.remove $scope.floats, (float)->
+    [float] = _.remove $scope.floats, (float)->
       float.event_id == "anker"
 
-    float = new EventFloat $scope.pageY
+    float ||= new EventFloat $scope.pageY
     float.event_id = "anker"
     float.link = Browser.real.to_url
       hash:
@@ -109,7 +109,6 @@ HOGAN_EVENT = ($scope, $filter)->
 
     float ||= new EventFloat $scope.pageY
     float.event_id = "anker"
-    float.slide $scope.pageY
     float.link = Browser.real.to_url
       hash:
         search: item.key
