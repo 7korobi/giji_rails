@@ -1,3 +1,8 @@
+
+.row {
+  margin-bottom: 10px;
+}
+
 .formpl_gm,
 .img img {
   margin-bottom: 4px;
@@ -93,7 +98,8 @@ hr,
 .clearboth {
   clear: both;
 }
-hr.invisible_hr { display: none; }
+
+.invisible_hr { display: none; }
 
 .drag,
 .ajax {
