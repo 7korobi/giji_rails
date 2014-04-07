@@ -59,7 +59,7 @@ class PageNavi extends Navi
 
   paginate: (page_per_key, func)->
     @pager page_per_key, (page_per, list)=>
-      @length = (list.length / page_per).ceil()
+      @length = Math.ceil list.length / page_per
       list
 
     @pager page_per_key, func

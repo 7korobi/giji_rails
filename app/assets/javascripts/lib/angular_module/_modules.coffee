@@ -1,4 +1,4 @@
-angular.module("giji", ['ngTouch','ngCookies','ngAnimate'])
+angular.module("giji", ['ngTouch','ngCookies'])
 .config ($locationProvider, $sceProvider)->
   $locationProvider.html5Mode false
   $sceProvider.enabled false

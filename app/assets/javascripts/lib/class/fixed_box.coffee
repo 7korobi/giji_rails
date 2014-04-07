@@ -5,7 +5,7 @@ class FixedBox
     @dx = dx
     @dy = dy
     @box = fixed_box
-    
+
     if @box
       @box.css
         left: 0
@@ -33,13 +33,13 @@ class FixedBox
     win.top  = 0            if                win.top   < 0
 
     if @box && head.browser.power != "simple"
-      @box.to_z_front()
+      @box.css("z-index", (new Date).getTime())
 
       if 0 == @dx
         @box.css
           position: "fixed"
           left: ""
-          width: @box.parent().width() 
+          width: @box.parent().width()
       else
         @box.css
           position: "fixed"

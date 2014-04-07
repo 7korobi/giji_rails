@@ -47,7 +47,7 @@ DECOLATE = ($scope, $sce)->
 
   link = (log)->
     return log unless log
-    text = log.replace(/\s|<br>/g, ' ').stripTags()
+    text = log.replace(/\s|<br>/g, ' ').replace(/(<([^>]+)>)/ig,"")
     uris = text.match link_regexp_g
     if uris
       for uri in uris

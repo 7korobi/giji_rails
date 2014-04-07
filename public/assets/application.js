@@ -47,7 +47,7 @@ AJAX = function($scope, $http) {
     return $("#submit_request").remove();
   };
   $scope.post_submit = function(href, param) {
-    $("body").append("<form id=\"submit_request\" method=\"post\" action=\"" + (href.escapeURL()) + "#" + location.hash + "\"></form>");
+    $("body").append("<form id=\"submit_request\" method=\"post\" action=\"" + (encodeURI(href)) + "\"></form>");
     form_submit(param);
     return $scope.pool_nolimit();
   };
@@ -62,11 +62,11 @@ AJAX = function($scope, $http) {
       $scope.pool_nolimit();
       return $('iframe').remove();
     });
-    $("body").append("<form id=\"submit_request\" target=\"submit_result\" method=\"post\" action=\"" + (href.escapeURL()) + "\"></form>");
+    $("body").append("<form id=\"submit_request\" target=\"submit_result\" method=\"post\" action=\"" + (encodeURI(href)) + "\"></form>");
     return form_submit(param);
   };
 };
-angular.module("giji", ['ngTouch', 'ngCookies', 'ngAnimate']).config(function($locationProvider, $sceProvider) {
+angular.module("giji", ['ngTouch', 'ngCookies']).config(function($locationProvider, $sceProvider) {
   $locationProvider.html5Mode(false);
   return $sceProvider.enabled(false);
 }).run(function($templateCache, $compile, $interpolate, $cookies) {
@@ -660,7 +660,7 @@ angular.module("giji").directive("theme", function($compile, $cookies) {
       size = OPTION.css.h1.widths[$scope.styles.width];
       day_or_night = ((date + 3 * hour) / (12 * hour)) % 2;
       $scope.h1 = {
-        type: OPTION.head_img[size][$scope.styles.theme][day_or_night.floor()]
+        type: OPTION.head_img[size][$scope.styles.theme][Math.floor(day_or_night)]
       };
       ({
         width: size
@@ -1236,7 +1236,7 @@ FixedBox = (function() {
       win.top = 0;
     }
     if (this.box && head.browser.power !== "simple") {
-      this.box.to_z_front();
+      this.box.css("z-index", (new Date).getTime());
       if (0 === this.dx) {
         this.box.css({
           position: "fixed",
@@ -2103,15 +2103,14 @@ Timer.time_stamp = function(date) {
 
 Timer.date_time_stamp = function(date) {
   var dd, dow, hh, mi, mm, now, postfix, yyyy;
-  now = new Date(date);
-  now.addMinutes(15);
+  now = new Date(date - -15 * 60000);
   yyyy = now.getFullYear();
   mm = now.getMonth() + 1;
   dd = now.getDate();
   dow = Timer.dow(now.getDay());
   hh = now.getHours();
   mi = now.getMinutes();
-  postfix = ["頃", "半頃"][(mi / 30).floor()];
+  postfix = ["頃", "半頃"][Math.floor(mi / 30)];
   if (mm < 10) {
     mm = "0" + mm;
   }
@@ -2607,7 +2606,7 @@ DECOLATE = function($scope, $sce) {
     if (!log) {
       return log;
     }
-    text = log.replace(/\s|<br>/g, ' ').stripTags();
+    text = log.replace(/\s|<br>/g, ' ').replace(/(<([^>]+)>)/ig, "");
     uris = text.match(link_regexp_g);
     if (uris) {
       for (_i = 0, _len = uris.length; _i < _len; _i++) {
@@ -2695,7 +2694,7 @@ FORM = function($scope, $sce) {
     if (50 < size) {
       point += (size - 50) / 14;
     }
-    return point.floor();
+    return Math.floor(point);
   };
   valid = function(f, cb) {
     var lines, mark, point, size, text;
@@ -2758,8 +2757,11 @@ FORM = function($scope, $sce) {
     });
   };
   preview = function(text) {
+    var elm;
     if (text != null) {
-      return $scope.preview_decolate(text.escapeHTML().replace(/&#x2f;/g, "/").replace(/\n/g, "<br>"));
+      elm = document.createElement("div");
+      elm.innerText = text;
+      return $scope.preview_decolate(elm.innerHTML);
     } else {
       return "";
     }
@@ -3591,7 +3593,7 @@ PageNavi = (function(_super) {
   PageNavi.prototype.paginate = function(page_per_key, func) {
     this.pager(page_per_key, (function(_this) {
       return function(page_per, list) {
-        _this.length = (list.length / page_per).ceil();
+        _this.length = Math.ceil(list.length / page_per);
         return list;
       };
     })(this));

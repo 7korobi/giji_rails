@@ -11,7 +11,7 @@ FORM = ($scope, $sce)->
   calc_point = (size)->
     point  = 20
     point += (size - 50)/14 if 50 < size
-    point.floor()
+    Math.floor point
 
   valid = (f, cb)->
     show_last_memo(f)
@@ -62,7 +62,9 @@ FORM = ($scope, $sce)->
 
   preview = (text)->
     if text?
-      $scope.preview_decolate text.escapeHTML().replace(/&#x2f;/g,"/").replace(/\n/g, "<br>")
+      elm = document.createElement("div")
+      elm.innerText = text
+      $scope.preview_decolate elm.innerHTML
     else
       ""
 
