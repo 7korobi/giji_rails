@@ -11,11 +11,11 @@ TIMER = ($scope)->
     if date?
       second = (new Date() - date)/1000
       if 0 < second
-        minute = Math.ceil second / 60
-        hour   = Math.ceil minute / 60
+        minute = Math.ceil(  second /   60)
+        hour   = Math.ceil(  second / 3600)
       if second < 0
-        minute = Math.floor - second / 60
-        hour   = Math.floor - minute / 60
+        minute = Math.ceil(- second /   60)
+        hour   = Math.ceil(- second / 3600)
       limit = 3 * 60 * 60
       if - limit < second < limit
         live = (str, timeout)->
