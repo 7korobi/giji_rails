@@ -54,6 +54,12 @@ filters_common_last = ($scope, $filter)->
   page = $scope.page
   filter_filter = $filter 'filter'
 
+  Navi.push $scope, 'search',
+    options:
+      current: ""
+      location: 'hash'
+      is_cookie: false
+
   page.filter 'search.value', (search, list)->
     $scope.search_input = search
     filter_filter list, search
@@ -154,6 +160,7 @@ angular.module("giji").directive "stories", ($parse, $compile, $filter)->
     initialize $scope, $filter, attr.stories, attr.from
     initialize = ->
 
+    logs = []
     draw =
       draw_templates $compile, $scope, elm,
         target: "story"
@@ -163,8 +170,11 @@ angular.module("giji").directive "stories", ($parse, $compile, $filter)->
             HOGAN["hogan/sow/story_summary_small"]
           else
             HOGAN["hogan/sow/story_summary"]
-    $scope.$watch "stories_is_small", ()-> draw logs
-    $scope.$watchCollection attr.stories, draw
+    $scope.$watch "stories_is_small", ()->
+      draw logs
+    $scope.$watchCollection attr.stories, (newVal)->
+      logs = newVal
+      draw logs
 
 
 angular.module("giji").directive "logs", ($parse, $compile, $filter)->

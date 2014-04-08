@@ -1,10 +1,4 @@
 Message.navi = ($scope)->
-  Navi.push $scope, 'search',
-    options:
-      current: ""
-      location: 'hash'
-      is_cookie: false
-
   Navi.push $scope, 'mode',
     options:
       current: $scope.mode_cache.talk
