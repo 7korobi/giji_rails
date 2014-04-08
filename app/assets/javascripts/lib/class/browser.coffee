@@ -18,7 +18,7 @@ class Browser
   location_val: (target, find_key)->
     for key_value_pair in @location[target].replace(/^[#?]/,"").split('&')
       [key, value] = key_value_pair.split('=')
-      return decodeURIComponent value if key == find_key
+      return value if key == find_key
 
   set_cookie: ->
     for _, navi of @list

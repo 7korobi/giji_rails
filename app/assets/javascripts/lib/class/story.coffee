@@ -37,6 +37,11 @@ class StorySummary
         @type.recovery = ' （発言の補充があります。）' if 1 < @upd.interval
       @is_wbbs = 'wbbs' == @type.start
 
+    if @timer? && ! @timer.is_time
+      for key, str of @timer
+        @timer[key] = new Date @timer[key] if key.match /dt$/
+      @timer.is_time = true
+
 StorySummary.navi = ($scope)->
     page = $scope.page
 
