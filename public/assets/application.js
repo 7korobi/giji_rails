@@ -326,6 +326,13 @@ filters_common_last = function($scope, $filter) {
   var filter_filter, page;
   page = $scope.page;
   filter_filter = $filter('filter');
+  Navi.push($scope, 'search', {
+    options: {
+      current: "",
+      location: 'hash',
+      is_cookie: false
+    }
+  });
   page.filter('search.value', function(search, list) {
     $scope.search_input = search;
     return filter_filter(list, search);
@@ -444,9 +451,10 @@ angular.module("giji").directive("stories", function($parse, $compile, $filter) 
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var draw;
+      var draw, logs;
       initialize($scope, $filter, attr.stories, attr.from);
       initialize = function() {};
+      logs = [];
       draw = draw_templates($compile, $scope, elm, {
         target: "story",
         template: function(log) {
@@ -461,7 +469,10 @@ angular.module("giji").directive("stories", function($parse, $compile, $filter) 
       $scope.$watch("stories_is_small", function() {
         return draw(logs);
       });
-      return $scope.$watchCollection(attr.stories, draw);
+      return $scope.$watchCollection(attr.stories, function(newVal) {
+        logs = newVal;
+        return draw(logs);
+      });
     }
   };
 });
@@ -815,7 +826,7 @@ Browser = (function() {
       key_value_pair = _ref[_i];
       _ref1 = key_value_pair.split('='), key = _ref1[0], value = _ref1[1];
       if (key === find_key) {
-        return decodeURIComponent(value);
+        return value;
       }
     }
   };
@@ -1486,13 +1497,6 @@ Message = (function() {
 })();
 Message.navi = function($scope) {
   var modes_apply, modes_change;
-  Navi.push($scope, 'search', {
-    options: {
-      current: "",
-      location: 'hash',
-      is_cookie: false
-    }
-  });
   Navi.push($scope, 'mode', {
     options: {
       current: $scope.mode_cache.talk,
@@ -1809,7 +1813,7 @@ StorySummary = (function() {
   function StorySummary() {}
 
   StorySummary.prototype.init = function($scope) {
-    var event_config, role_config, role_wins, win_config, _base, _ref;
+    var event_config, key, role_config, role_wins, str, win_config, _base, _ref, _ref1;
     this.rating_url = "" + URL.file + "/images/icon/cd_" + this.rating + ".png";
     event_config = _.filter(this.card.config, function(o) {
       return SOW.events[o];
@@ -1853,7 +1857,17 @@ StorySummary = (function() {
           this.type.recovery = ' （発言の補充があります。）';
         }
       }
-      return this.is_wbbs = 'wbbs' === this.type.start;
+      this.is_wbbs = 'wbbs' === this.type.start;
+    }
+    if ((this.timer != null) && !this.timer.is_time) {
+      _ref1 = this.timer;
+      for (key in _ref1) {
+        str = _ref1[key];
+        if (key.match(/dt$/)) {
+          this.timer[key] = new Date(this.timer[key]);
+        }
+      }
+      return this.timer.is_time = true;
     }
   };
 
@@ -3567,6 +3581,7 @@ PageNavi = (function(_super) {
     for (_i = 0, _len = filters.length; _i < _len; _i++) {
       _ref = filters[_i], target_key = _ref[0], filter = _ref[1];
       target = this.scope.$eval(target_key);
+      console.log([target_key, target]);
       if (target && filter) {
         list = filter(target, list);
       }
