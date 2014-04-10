@@ -1346,7 +1346,7 @@ Lib = {
     },
     mode: {
       info_open_last: /^([aAm].\d+)|(vilinfo)/,
-      info_all_open: /^(..\d+)|(vilinfo)|(potofs)/,
+      info_all_open: /^(vilinfo)|(potofs)/,
       info_all: /^(..\d+)|(unread)|(potofs)/,
       memo_all: /^.M\d+/,
       memo_open: /^[qcaAmIMS][MX]\d+/,
@@ -1419,7 +1419,8 @@ Lib = {
     win: function(list) {
       return this.common(Lib.name.win, list);
     }
-  }
+  },
+  comma: d3.format(",.0f")
 };
 var Message;
 
@@ -3581,7 +3582,6 @@ PageNavi = (function(_super) {
     for (_i = 0, _len = filters.length; _i < _len; _i++) {
       _ref = filters[_i], target_key = _ref[0], filter = _ref[1];
       target = this.scope.$eval(target_key);
-      console.log([target_key, target]);
       if (target && filter) {
         list = filter(target, list);
       }
