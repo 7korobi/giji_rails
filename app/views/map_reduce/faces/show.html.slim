@@ -91,13 +91,13 @@
         | {{face.say_titles[say.logid_head]}}
       td.msg
         .mark(style="text-align:right")
-          | {{say.max.metric(0,0)}} 字
+          | {{lib.comma(say.max)}} 字
       td.msg
         .mark(style="text-align:right")
-          | {{say.all.metric(0,0)}} 字
+          | {{lib.comma(say.all)}} 字
       td.msg
         .mark(style="text-align:right")
-          | {{say.count.metric(0,0)}} 回
+          | {{lib.comma(say.count)}} 回
 
   table.say.info
     tr.caution
@@ -118,10 +118,10 @@
           | {{say.vil}} 村
       td.msg
         .mark(style="text-align:right")
-          | {{(say.all / say.vil).metric(0,0)}} 字
+          | {{lib.comma(say.all / say.vil)}} 字
       td.msg
         .mark(style="text-align:right")
-          | {{(say.count / say.vil).metric(0,0)}} 回
+          | {{lib.comma(say.count / say.vil)}} 回
 
   .MAKER.guide
       h3.mesname
