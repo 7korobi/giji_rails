@@ -21,7 +21,7 @@ Lib =
       think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
     mode:
       info_open_last: /^([aAm].\d+)|(vilinfo)/
-      info_all_open: /^(..\d+)|(vilinfo)|(potofs)/
+      info_all_open: /^(vilinfo)|(potofs)/
       info_all: /^(..\d+)|(unread)|(potofs)/
       memo_all:  /^.M\d+/
       memo_open: /^[qcaAmIMS][MX]\d+/
@@ -76,4 +76,6 @@ Lib =
 
     win: (list)->
       @common(Lib.name.win, list)
+
+  comma: d3.format(",.0f")
 
