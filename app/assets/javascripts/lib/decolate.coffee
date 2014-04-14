@@ -61,12 +61,23 @@ DECOLATE = ($scope, $sce)->
       nbsps = s2.replace /\ /g, '&nbsp;'
       "#{s1}#{nbsps}"
 
+  br = (log)->
+    log.replace /\n/gm, (br)-> "<br>"
+
   unbr = (log)->
     log.replace /<br>/gm, (br)-> "\n"
 
+  unhtml = (log)->
+    log.replace /&/g, "&amp;"
+       .replace /</g, "&lt;"
+       .replace />/g, "&gt;"
+       .replace /"/g, "&quot;"
+       .replace /'/g, "&apos;"
+       .replace /\//g, "&#x2f;"
+
   $scope.preview_decolate = (log)->
     if log
-      $sce.trustAsHtml space player anchor_preview link random_preview log
+      $sce.trustAsHtml br space player anchor_preview link random_preview unhtml log
     else
       null
 

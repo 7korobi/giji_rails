@@ -62,9 +62,7 @@ FORM = ($scope, $sce)->
 
   preview = (text)->
     if text?
-      elm = document.createElement("div")
-      elm.innerText = text
-      $scope.preview_decolate elm.innerHTML
+      $scope.preview_decolate text
     else
       ""
 
