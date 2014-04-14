@@ -33,6 +33,8 @@ angular.module("giji").directive "theme", ($compile, $cookies)->
         $scope.msg_styles.power
       ]
       $scope.html_class.push 'no-player' unless $scope.msg_styles.pl
+      $scope.html_class.push 'win' if head.browser.win
+      $scope.html_class.push 'mac' if head.browser.mac
 
     css_apply = ->
       $scope.styles = $scope.css.choice()
