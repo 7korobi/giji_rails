@@ -692,7 +692,13 @@ angular.module("giji").directive("theme", function($compile, $cookies) {
       $scope.adjust();
       $scope.html_class = [$scope.styles.item, $scope.styles.color, $scope.styles.theme, $scope.styles.width, $scope.styles.pixel, $scope.styles.font, $scope.msg_styles.power];
       if (!$scope.msg_styles.pl) {
-        return $scope.html_class.push('no-player');
+        $scope.html_class.push('no-player');
+      }
+      if (head.browser.win) {
+        $scope.html_class.push('win');
+      }
+      if (head.browser.mac) {
+        return $scope.html_class.push('mac');
       }
     };
     css_apply = function() {
@@ -2560,7 +2566,7 @@ INIT_FACE = function(new_base) {
 var DECOLATE;
 
 DECOLATE = function($scope, $sce) {
-  var anchor, anchor_preview, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unbr, unrandom, uri_to_link;
+  var anchor, anchor_preview, br, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unbr, unhtml, unrandom, uri_to_link;
   player = function(log) {
     if (!log) {
       return log;
@@ -2642,14 +2648,22 @@ DECOLATE = function($scope, $sce) {
       return "" + s1 + nbsps;
     });
   };
+  br = function(log) {
+    return log.replace(/\n/gm, function(br) {
+      return "<br>";
+    });
+  };
   unbr = function(log) {
     return log.replace(/<br>/gm, function(br) {
       return "\n";
     });
   };
+  unhtml = function(log) {
+    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
+  };
   $scope.preview_decolate = function(log) {
     if (log) {
-      return $sce.trustAsHtml(space(player(anchor_preview(link(random_preview(log))))));
+      return $sce.trustAsHtml(br(space(player(anchor_preview(link(random_preview(unhtml(log))))))));
     } else {
       return null;
     }
@@ -2772,11 +2786,8 @@ FORM = function($scope, $sce) {
     });
   };
   preview = function(text) {
-    var elm;
     if (text != null) {
-      elm = document.createElement("div");
-      elm.innerText = text;
-      return $scope.preview_decolate(elm.innerHTML);
+      return $scope.preview_decolate(text);
     } else {
       return "";
     }
