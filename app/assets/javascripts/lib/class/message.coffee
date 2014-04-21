@@ -14,7 +14,9 @@ class Message
       when "B"
         @mestype = "TSAY"
       when "M"
-        key = "#{@mestype}:#{@csid}/#{@face_id}"
+        type = @mestype
+        type = "SAY" if "MSAY" == type
+        key = "#{type}:#{@csid}/#{@face_id}"
         new_base.set_last_memo key, @
 
   init_view: ($scope, now)->
