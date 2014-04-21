@@ -19,7 +19,7 @@ giji_map_reduce_message:
   description: MapReduce::Message  を作成
 
 giji_git_scanner:
-  cron: '5  12  *  *  *'
+  cron: '19,39,59  *  *  *  *'
   class: GijiScheduler
   args:  git
   queue: giji_schedules
