@@ -526,7 +526,7 @@ PERJURY:
       URL_SW:         http://perjury.rulez.jp
       TYPE:           CHEAT
       RULE:           PERJURY
-      MAX_VILLAGES:   3
+      MAX_VILLAGES:   2
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play Cheat -
     path:
       <<: *SIMPLE_PATH
