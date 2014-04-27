@@ -301,7 +301,7 @@ draw_templates = function($compile, $scope, elm, attr) {
   };
 };
 
-scrollTo = function(newVal, oldVal, $scope) {
+scrollTo = function($scope) {
   var form_text, is_show, mode, _i, _len, _ref, _ref1;
   $scope.floats = [];
   if ($scope.event != null) {
@@ -313,6 +313,7 @@ scrollTo = function(newVal, oldVal, $scope) {
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           form_text = _ref1[_i];
           if (is_show && mode === form_text.jst) {
+            $scope.go.form();
             return;
           }
         }
@@ -337,7 +338,7 @@ filters_common_last = function($scope, $filter) {
     $scope.search_input = search;
     return filter_filter(list, search);
   });
-  page.paginate('msg_styles.row', function(row, list) {
+  return page.paginate('msg_styles.row', function(row, list) {
     var from, page_no, page_per, to, _ref;
     page_per = Number(row);
     if ((_ref = $scope.event) != null ? _ref.is_news : void 0) {
@@ -363,9 +364,6 @@ filters_common_last = function($scope, $filter) {
     }
     return list.slice(from, to);
   });
-  $scope.$watch("page.value", scrollTo);
-  $scope.$watch("search.value", scrollTo);
-  return $scope.$watch("msg_style.value", scrollTo);
 };
 
 filters_if_event = function($scope, target, from) {
@@ -432,10 +430,7 @@ filters_if_event = function($scope, target, from) {
       return list;
     }
   });
-  $scope.$watch('event.is_news', $scope.deploy_mode_common);
-  $scope.$watch("event.turn", scrollTo);
-  $scope.$watch("event.is_news", scrollTo);
-  return $scope.$watch("mode.value", scrollTo);
+  return $scope.$watch('event.is_news', $scope.deploy_mode_common);
 };
 
 angular.module("giji").directive("stories", function($parse, $compile, $filter) {
@@ -464,6 +459,9 @@ angular.module("giji").directive("stories", function($parse, $compile, $filter) 
           } else {
             return HOGAN["hogan/sow/story_summary"];
           }
+        },
+        last: function() {
+          return scrollTo($scope);
         }
       });
       $scope.$watch("stories_is_small", function() {
@@ -532,7 +530,8 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
           return HOGAN["hogan/" + log.template];
         },
         last: function() {
-          return $scope.timer.start();
+          $scope.timer.start();
+          return scrollTo($scope);
         }
       });
       return $scope.$watchCollection(attr.logs, draw);
@@ -1434,7 +1433,7 @@ Message = (function() {
   function Message() {}
 
   Message.prototype.init_data = function(new_base) {
-    var key;
+    var key, type;
     this.turn = new_base.turn;
     if (this.logid != null) {
       this.key = "" + this.logid + "," + this.turn;
@@ -1448,7 +1447,11 @@ Message = (function() {
       case "B":
         return this.mestype = "TSAY";
       case "M":
-        key = "" + this.mestype + ":" + this.csid + "/" + this.face_id;
+        type = this.mestype;
+        if ("MSAY" === type) {
+          type = "SAY";
+        }
+        key = "" + type + ":" + this.csid + "/" + this.face_id;
         return new_base.set_last_memo(key, this);
     }
   };
@@ -3066,17 +3069,16 @@ var GO;
 
 GO = function($scope) {
   var go_anker;
-  go_anker = function(anker, cb) {
+  go_anker = function(anker, input) {
     return _.debounce(function() {
-      var offset, target, targetY;
+      var target, targetY;
       target = $($(anker)[0]);
-      offset = win.height / 10;
       if (target.offset() != null) {
-        targetY = target.offset().top - offset;
+        targetY = target.offset().top;
         return $("html,body").animate({
           scrollTop: targetY
         }, 200, "linear", function() {
-          return typeof cb === "function" ? cb(target) : void 0;
+          return $(input).focus();
         });
       }
     }, DELAY.animato, {
@@ -3088,9 +3090,7 @@ GO = function($scope) {
     top: go_anker("h1"),
     messages: go_anker(".css_changer"),
     form: go_anker("#forms"),
-    search: go_anker("[ng-model=\"search_input\"]", function(o) {
-      return o.focus();
-    })
+    search: go_anker("h1", "[ng-model=\"search_input\"]")
   };
 };
 var HOGAN_EVENT;
