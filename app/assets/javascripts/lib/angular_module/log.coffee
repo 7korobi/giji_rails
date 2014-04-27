@@ -39,7 +39,7 @@ draw_templates = ($compile, $scope, elm, attr)->
       $compile(angular_elm)($scope)
     attr.last() if attr.last?
 
-scrollTo = (newVal, oldVal, $scope)->
+scrollTo = ($scope)->
   $scope.floats = []
 
   if $scope.event?
@@ -47,6 +47,7 @@ scrollTo = (newVal, oldVal, $scope)->
       for mode, is_show of $scope.form_show
         for form_text in $scope.form.texts
           if is_show and mode == form_text.jst
+            $scope.go.form()
             return
   $scope.go.top()
 
@@ -83,11 +84,6 @@ filters_common_last = ($scope, $filter)->
       from = (page_no - 1) * page_per
 
     list.slice from, to
-
-  $scope.$watch "page.value",      scrollTo
-  $scope.$watch "search.value",    scrollTo
-  $scope.$watch "msg_style.value", scrollTo
-
 
 filters_if_event = ($scope, target, from)->
   page = $scope.page
@@ -141,9 +137,6 @@ filters_if_event = ($scope, target, from)->
       list
 
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
-  $scope.$watch "event.turn",    scrollTo
-  $scope.$watch "event.is_news", scrollTo
-  $scope.$watch "mode.value",    scrollTo
 
 
 angular.module("giji").directive "stories", ($parse, $compile, $filter)->
@@ -170,6 +163,8 @@ angular.module("giji").directive "stories", ($parse, $compile, $filter)->
             HOGAN["hogan/sow/story_summary_small"]
           else
             HOGAN["hogan/sow/story_summary"]
+        last: ->
+          scrollTo $scope
     $scope.$watch "stories_is_small", ()->
       draw logs
     $scope.$watchCollection attr.stories, (newVal)->
@@ -224,6 +219,8 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
           HOGAN["hogan/" + log.template]
         last: ->
           $scope.timer.start()
+          scrollTo $scope
+
     $scope.$watchCollection attr.logs, draw
 
 angular.module("giji").directive "drag", ->
