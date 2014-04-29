@@ -242,7 +242,7 @@ angular.module("giji").directive("navi", function($compile, $timeout) {
     }
   };
 });
-var draw_templates, filters_common_last, filters_if_event, scrollTo;
+var draw_templates, filters_common_last, filters_if_event;
 
 draw_templates = function($compile, $scope, elm, attr) {
   var addHtml, closeHtml, html_cache, logs, oldDOM;
@@ -299,28 +299,6 @@ draw_templates = function($compile, $scope, elm, attr) {
       return attr.last();
     }
   };
-};
-
-scrollTo = function($scope) {
-  var form_text, is_show, mode, _i, _len, _ref, _ref1;
-  $scope.floats = [];
-  if ($scope.event != null) {
-    if ($scope.event.is_news && $scope.event.is_progress) {
-      _ref = $scope.form_show;
-      for (mode in _ref) {
-        is_show = _ref[mode];
-        _ref1 = $scope.form.texts;
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          form_text = _ref1[_i];
-          if (is_show && mode === form_text.jst) {
-            $scope.go.form();
-            return;
-          }
-        }
-      }
-    }
-  }
-  return $scope.go.top();
 };
 
 filters_common_last = function($scope, $filter) {
@@ -461,7 +439,9 @@ angular.module("giji").directive("stories", function($parse, $compile, $filter) 
           }
         },
         last: function() {
-          return scrollTo($scope);
+          if (attr.scroll) {
+            return $scope.go.top();
+          }
         }
       });
       $scope.$watch("stories_is_small", function() {
@@ -514,9 +494,29 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
   return {
     restrict: "A",
     link: function($scope, elm, attr, ctrl) {
-      var draw;
+      var draw, scrollTo;
       initialize($scope, $filter, attr.logs, attr.from);
       initialize = function() {};
+      scrollTo = function() {
+        var form_text, is_show, mode, _i, _len, _ref, _ref1;
+        if ($scope.event != null) {
+          if ($scope.event.is_news && $scope.event.is_progress) {
+            _ref = $scope.form_show;
+            for (mode in _ref) {
+              is_show = _ref[mode];
+              _ref1 = $scope.form.texts;
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                form_text = _ref1[_i];
+                if (is_show && mode === form_text.jst) {
+                  $scope.go.form();
+                  return;
+                }
+              }
+            }
+          }
+        }
+        return $scope.go.top();
+      };
       draw = draw_templates($compile, $scope, elm, {
         data: {
           story: $scope.story,
@@ -531,7 +531,10 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         },
         last: function() {
           $scope.timer.start();
-          return scrollTo($scope);
+          $scope.floats = [];
+          if (attr.scroll) {
+            return scrollTo();
+          }
         }
       });
       return $scope.$watchCollection(attr.logs, draw);
