@@ -19,7 +19,7 @@
             i.glyphicon.glyphicon-resize-small(ng-hide="stories_is_small")
         th(scope="col" ng-hide="stories_is_small") 人数
         th(scope="col" ng-hide="stories_is_small") ルール
-    tbody(stories="stories_find" from="stories")
+    tbody(stories="stories_find" from="stories" scroll="true")
     thead
       tr
         th(scope="col")

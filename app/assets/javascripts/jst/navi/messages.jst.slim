@@ -9,6 +9,7 @@
 .message_filter(
   logs="messages"
   from="event.messages"
+  scroll="true"
   ng-swipe-left="page.move(page.of.prev.val)"
   ng-swipe-right="page.move(page.of.next.val)"
 )
