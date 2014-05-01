@@ -4274,7 +4274,14 @@ giji = {
       return _.compact([SOW_RECORD.CABALA.roles[role], SOW_RECORD.CABALA.gifts[gift]]);
     },
     select: function(selrole) {
-      return SOW_RECORD.CABALA.roles[selrole];
+      switch (selrole) {
+        case -1:
+          return "ランダム";
+        case 999:
+          return "見物人";
+        default:
+          return SOW_RECORD.CABALA.roles[selrole];
+      }
     }
   },
   story: {
