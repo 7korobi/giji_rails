@@ -4244,7 +4244,56 @@ MODULE = function($scope, $filter, $sce, $cookies, $http, $timeout) {
     }
   });
 };
-var CGI;
+var CGI, giji;
+
+giji = {
+  gon: function() {
+    return _.merge({}, OPTION.gon);
+  },
+  log: {
+    mesicon: function(mestype) {
+      return SOW_RECORD.CABALA.mestypeicons[mestype];
+    },
+    mestype: function(mestype) {
+      return SOW_RECORD.CABALA.mestypes[mestype];
+    }
+  },
+  form: {
+    mestype: function(sayswitch) {
+      return SOW["switch"][sayswitch].mestype;
+    }
+  },
+  potof: {
+    roles: function(role, gift) {
+      return _.compact([SOW_RECORD.CABALA.roles[role], SOW_RECORD.CABALA.gifts[gift]]);
+    },
+    select: function(selrole) {
+      return SOW_RECORD.CABALA.roles[selrole];
+    }
+  },
+  story: {
+    card: {
+      event: function(list) {
+        return _.compact(_.map(list.split('/'), function(id) {
+          return SOW_RECORD.CABALA.gifts[id];
+        }));
+      },
+      discard: function(list) {
+        return _.compact(_.map(list.split('/'), function(id) {
+          return SOW_RECORD.CABALA.events[id];
+        }));
+      }
+    }
+  },
+  event: {
+    event: function(id) {
+      return SOW_RECORD.CABALA.events[id];
+    },
+    winner: function(id) {
+      return SOW_RECORD.CABALA.winners[id];
+    }
+  }
+};
 
 CGI = function($scope, $filter, $sce, $cookies, $http, $timeout) {
   var submit;
