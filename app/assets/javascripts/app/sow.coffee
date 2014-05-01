@@ -1,3 +1,4 @@
+
 giji =
   gon: -> _.merge {}, OPTION.gon
   log:
@@ -16,7 +17,13 @@ giji =
         SOW_RECORD.CABALA.gifts[gift]
       ]
     select: (selrole)->
-      SOW_RECORD.CABALA.roles[selrole]
+      switch selrole
+        when -1
+          "ランダム"
+        when 999
+          "見物人"
+        else
+          SOW_RECORD.CABALA.roles[selrole]
   story:
     card:
       event:   (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.gifts[id]
