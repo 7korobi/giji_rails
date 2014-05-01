@@ -1,9 +1,13 @@
 giji =
-  gon: -> _.merge({}, OPTION.gon)
+  gon: -> _.merge {}, OPTION.gon
   log:
     mesicon: (mestype)-> SOW_RECORD.CABALA.mestypeicons[mestype]
     mestype: (mestype)-> SOW_RECORD.CABALA.mestypes[mestype]
   form:
+    gon: (title, uri)->
+      _.merge {}, OPTION.gon.form,
+        title: title
+        uri:   uri
     mestype: (sayswitch)-> SOW.switch[sayswitch].mestype
   potof:
     roles: (role, gift)->
