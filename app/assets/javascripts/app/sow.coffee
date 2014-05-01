@@ -1,3 +1,27 @@
+giji =
+  gon: -> _.merge({}, OPTION.gon)
+  log:
+    mesicon: (mestype)-> SOW_RECORD.CABALA.mestypeicons[mestype]
+    mestype: (mestype)-> SOW_RECORD.CABALA.mestypes[mestype]
+  form:
+    mestype: (sayswitch)-> SOW.switch[sayswitch].mestype
+  potof:
+    roles: (role, gift)->
+      _.compact [
+        SOW_RECORD.CABALA.roles[role]
+        SOW_RECORD.CABALA.gifts[gift]
+      ]
+    select: (selrole)->
+      SOW_RECORD.CABALA.roles[selrole]
+  story:
+    card:
+      event:   (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.gifts[id]
+      discard: (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.events[id]
+  event:
+    event:  (id)-> SOW_RECORD.CABALA.events[id]
+    winner: (id)-> SOW_RECORD.CABALA.winners[id]
+
+
 CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   submit = (param, cb)->
     switch param.cmd
