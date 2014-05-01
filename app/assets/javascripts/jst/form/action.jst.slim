@@ -2,7 +2,7 @@ div(class="{{f.mestype}}" ng-show="form_show.action")
   form(name="action_form")
     .action
       p.text(ng-bind-html="f.preview")
-      h6 
+      h6
         | {{f.count}} {{f.title}}
       .mark(ng-bind-html="error(f)")
 
@@ -14,5 +14,5 @@ div(class="{{f.mestype}}" ng-show="form_show.action")
         input.form-control.input-block-level(type="text" name="actiontext" ng-model="f.text" ng-init="text_valid(f)" ng-change="text_valid(f)")
       p
         a.btn.btn-default(ng-click="action(f)") アクション
-      p
+      p.form-inline
         span(class="{{f.error}}" ng-bind-html="f.valid_text")
