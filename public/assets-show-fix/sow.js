@@ -4259,6 +4259,12 @@ giji = {
     }
   },
   form: {
+    gon: function(title, uri) {
+      return _.merge({}, OPTION.gon.form, {
+        title: title,
+        uri: uri
+      });
+    },
     mestype: function(sayswitch) {
       return SOW["switch"][sayswitch].mestype;
     }
