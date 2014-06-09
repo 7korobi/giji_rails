@@ -48,8 +48,7 @@ AJAX = function($scope, $http) {
   };
   $scope.post_submit = function(href, param) {
     $("body").append("<form id=\"submit_request\" method=\"post\" action=\"" + (encodeURI(href)) + "\"></form>");
-    form_submit(param);
-    return $scope.pool_nolimit();
+    return form_submit(param);
   };
   return $scope.post_iframe = function(href, param, cb) {
     var dynamic_div, iframe;
@@ -59,6 +58,8 @@ AJAX = function($scope, $http) {
     iframe = $('iframe');
     iframe[0].contentWindow.name = "submit_result";
     iframe.load(function() {
+      $scope.replace_gon(iframe[0].contentDocument.body.innerHTML);
+      cb();
       $scope.pool_nolimit();
       return $('iframe').remove();
     });
@@ -2488,6 +2489,7 @@ INIT = function($scope, $filter, $timeout) {
   if (typeof gon === "undefined" || gon === null) {
     return;
   }
+  $scope.error_text || ($scope.error_text = {});
   INIT_POTOFS($scope, gon);
   if (gon.stories != null) {
     _ref = gon.stories;
@@ -2767,7 +2769,7 @@ FORM = function($scope, $sce) {
   submit = function(f, param) {
     var _ref;
     if (f) {
-      if ((_ref = $scope.errors) != null) {
+      if ((_ref = $scope.error_text) != null) {
         _ref[f.cmd] = null;
       }
       f.is_delete = true;
@@ -2788,7 +2790,17 @@ FORM = function($scope, $sce) {
       }
     }
     return $scope.submit(param, function() {
-      return show_last_memo(f);
+      var key, val, _ref1, _ref2;
+      if (f) {
+        _ref1 = gon.errors;
+        for (key in _ref1) {
+          val = _ref1[key];
+          if ((_ref2 = $scope.error_text) != null) {
+            _ref2[key] = val;
+          }
+        }
+        return show_last_memo(f);
+      }
     });
   };
   preview = function(text) {
@@ -2850,7 +2862,7 @@ FORM = function($scope, $sce) {
   };
   $scope.error = function(f) {
     var list, _ref;
-    list = (_ref = $scope.errors) != null ? _ref[f != null ? f.cmd : void 0] : void 0;
+    list = (_ref = $scope.error_text) != null ? _ref[f != null ? f.cmd : void 0] : void 0;
     list || (list = []);
     return list.join("<br>");
   };
@@ -2858,7 +2870,7 @@ FORM = function($scope, $sce) {
     var _ref;
     if (f.mestype === "SAY" && !((_ref = $scope.event) != null ? _ref.is_epilogue : void 0)) {
       if (f.text.match(/>>[\=\*\!]\d+/)) {
-        $scope.errors[f.cmd] = ["あぶない！秘密会話へのアンカーがありますよ！"];
+        $scope.error_text[f.cmd] = ["あぶない！秘密会話へのアンカーがありますよ！"];
         return false;
       }
     }
@@ -2874,7 +2886,7 @@ FORM = function($scope, $sce) {
         if (f.max.line < lines) {
           return false;
         }
-        $scope.errors[f.cmd] = [];
+        $scope.error_text[f.cmd] = [];
         switch (f.cmd) {
           case "entry":
             return is_input(f);
@@ -2993,8 +3005,8 @@ FORM = function($scope, $sce) {
     });
   };
   $scope.vote_change = function(f) {
-    if ($scope.errors != null) {
-      return $scope.errors[f.cmd] = ["" + f.title + "をクリックしましょう。"];
+    if ($scope.error_text != null) {
+      return $scope.error_text[f.cmd] = ["" + f.title + "をクリックしましょう。"];
     }
   };
   $scope.vote = function(f) {
