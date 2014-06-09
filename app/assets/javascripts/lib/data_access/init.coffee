@@ -21,6 +21,8 @@ INIT_POTOFS = ($scope, gon)->
 INIT = ($scope, $filter, $timeout)->
   return unless gon?
 
+  $scope.error_text ||= {}
+
   INIT_POTOFS $scope, gon
 
   if gon.stories?
@@ -35,7 +37,6 @@ INIT = ($scope, $filter, $timeout)->
   for key, news of gon
     $scope.merge $scope, gon, key
   $scope.merge_turn $scope, gon
-
 
   if $scope.potofs?
     live_potofs = _.filter $scope.potofs, (o)-> o.is_live()

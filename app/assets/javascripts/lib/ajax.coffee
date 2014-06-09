@@ -12,13 +12,13 @@ AJAX = ($scope, $http)->
   $scope.get = (href, cb)->
     $http.get(href)
     .success (data)->
-      $scope.replace_gon data
+      $scope.replace_gon(data)
       cb()
 
   $scope.post = (href, param, cb)->
     $http.post(href, $.param param)
     .success (data)->
-      $scope.replace_gon data
+      $scope.replace_gon(data)
       cb()
 
   form_submit = (param)->
@@ -36,7 +36,6 @@ AJAX = ($scope, $http)->
   $scope.post_submit = (href, param)->
     $("body").append("""<form id="submit_request" method="post" action="#{encodeURI(href)}"></form>""")
     form_submit(param)
-    $scope.pool_nolimit()
 
   $scope.post_iframe = (href, param, cb)->
     dynamic_div = document.createElement 'DIV'
@@ -47,6 +46,9 @@ AJAX = ($scope, $http)->
     iframe[0].contentWindow.name = "submit_result"
 
     iframe.load ->
+      $scope.replace_gon iframe[0].contentDocument.body.innerHTML
+      cb()
+
       $scope.pool_nolimit()
       $('iframe').remove()
 

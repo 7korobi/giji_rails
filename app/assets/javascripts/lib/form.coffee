@@ -43,7 +43,7 @@ FORM = ($scope, $sce)->
 
   submit = (f, param)->
     if f
-      $scope.errors?[f.cmd] = null
+      $scope.error_text?[f.cmd] = null
       f.is_delete = true
       switch f.cmd
         when "wrmemo"
@@ -58,7 +58,10 @@ FORM = ($scope, $sce)->
           f.action = "-99"
         else
     $scope.submit param, ->
-      show_last_memo(f)
+      if f
+        for key, val of gon.errors
+          $scope.error_text?[key] = val
+        show_last_memo(f)
 
   preview = (text)->
     if text?
@@ -108,14 +111,14 @@ FORM = ($scope, $sce)->
     true
 
   $scope.error = (f)->
-    list = $scope.errors?[f?.cmd]
+    list = $scope.error_text?[f?.cmd]
     list ||= []
     list.join("<br>")
 
   safe_anker = (f)->
     if f.mestype == "SAY" && ! $scope.event?.is_epilogue
       if f.text.match ///>>[\=\*\!]\d+///
-        $scope.errors[f.cmd] = ["あぶない！秘密会話へのアンカーがありますよ！"]
+        $scope.error_text[f.cmd] = ["あぶない！秘密会話へのアンカーがありますよ！"]
         return false
     return true
 
@@ -125,7 +128,7 @@ FORM = ($scope, $sce)->
         return false if f.max.size < size
         return false if f.max.line < lines
 
-        $scope.errors[f.cmd] = []
+        $scope.error_text[f.cmd] = []
         switch f.cmd
           when "entry"
             return is_input(f)
@@ -207,8 +210,8 @@ FORM = ($scope, $sce)->
       submit f, param
 
   $scope.vote_change = (f)->
-    if $scope.errors?
-      $scope.errors[f.cmd] = ["#{f.title}をクリックしましょう。"]
+    if $scope.error_text?
+      $scope.error_text[f.cmd] = ["#{f.title}をクリックしましょう。"]
 
   $scope.vote = (f)->
     return if f.disabled
