@@ -18,13 +18,6 @@ giji_map_reduce_message:
   queue: giji_schedules
   description: MapReduce::Message  を作成
 
-giji_git_scanner:
-  cron: '19,39,59  *  *  *  *'
-  class: GijiScheduler
-  args:  git
-  queue: giji_schedules
-  description: GIT コマンドで保管。
-
 giji_vil_scanner:
   cron: '1,21,41  *  *  *  *'
   class: GijiScheduler
@@ -39,9 +32,3 @@ giji_log_scanner:
   queue: giji_schedules
   description: SowTurn.messages がまだ空のぶんを、ファイルから登録
 
-giji_cleaner:
-  cron: '55 4 * * *'
-  class: GijiScheduler
-  args:  clean
-  queue: giji_schedules
-  description: cleanup before vil_scanner

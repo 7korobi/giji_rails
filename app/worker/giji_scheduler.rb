@@ -2,12 +2,6 @@ class GijiScheduler
   @queue = :giji_schedules
   def self.perform type
     case type.to_sym
-    when :git
-      system <<-_SH_
-        cd /www/giji_log
-        git add .
-        git commit -a -m "regular collection"
-      _SH_
     when :vil
       GijiRsyncWorker.perform
       GijiVilScanner.save
@@ -15,9 +9,6 @@ class GijiScheduler
     when :log
       GijiLogScanner.save
 
-    when :clean
-      errors = Potof.where(story_id: /......................../ ).count
-      Potof.where(story_id: /......................../ ).delete  if 0 < errors
     end
   end
 
