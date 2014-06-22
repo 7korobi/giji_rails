@@ -43,11 +43,11 @@ class Message
     rsync = Giji::RSync.new
     rsync.each_logs([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      GijiYamlScanner.new(path, folder, fname).enqueue :log
+      GijiYamlScanner.new(path, folder, fname).save
     end
     rsync.each_memos([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      GijiYamlScanner.new(path, folder, fname).enqueue :memo
+      GijiYamlScanner.new(path, folder, fname).save
     end
   end
 end

@@ -8,8 +8,14 @@
 require 'timeout'
 
 class GijiMessageScanner < GijiScanner
-  def enqueue  type
-    Resque.enqueue(self.class, @path, @fname, type, @folder, @vid, @turn)
+  def save
+    case @fname
+    when /log.cgi/
+      Resque.enqueue(self.class, @path, @fname, :log, @folder, @vid, @turn)
+    when /memo.cgi/
+      Resque.enqueue(self.class, @path, @fname, :memo, @folder, @vid, @turn)
+    else
+    end
   end
 
   @queue = :giji_vils

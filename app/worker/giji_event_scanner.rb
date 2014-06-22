@@ -3,8 +3,13 @@
 require 'timeout'
 
 class GijiEventScanner < GijiScanner
-  def enqueue  type
-    Resque.enqueue(self.class, @path, @fname, type, @folder, @vid, @turn)
+  def save(type)
+    @keys = nil
+    case @fname
+    when /vil.cgi/
+      Resque.enqueue(self.class, @path, @fname, type, @folder, @vid, @turn)
+    else
+    end
   end
 
   @queue = :giji_vils

@@ -1,6 +1,6 @@
 class Story
   include Giji
-  
+
   field :_id, default: ->{ [folder, vid].join("-").downcase }
   field :folder
   field :vid,    type: Integer

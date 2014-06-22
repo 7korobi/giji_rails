@@ -17,20 +17,4 @@ class GijiScanner
     @vid  = vid
     @turn = turn
   end
-
-  def save
-    @keys = nil
-    case @fname
-    when /vil.cgi/
-      enqueue
-    when /logcnt.cgi/
-    when /log.cgi/
-      enqueue  :log
-    when /memo.cgi/
-      enqueue  :memo
-    when /memoidx.cgi/
-    when /logidx.cgi/
-    else
-    end
-  end
 end

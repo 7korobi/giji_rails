@@ -17,6 +17,10 @@ class SowVillage < Story
   field :timer, type:Hash
 
 
+  def freeze_to_html
+    GijiVilWriter.new(self.id).save
+  end
+
   def self.empty_ids
     has_messages_ids = Dir.glob("/www/giji_yaml/events/*.yml").map do |path|
       fname, name = path.match(%r|/([^/]+)\-\d+.yml|).to_a
@@ -25,11 +29,17 @@ class SowVillage < Story
     pluck("id") - has_messages_ids
   end
 
+  def self.freeze_to_html_all
+    all.each do |story|
+      story.freeze_to_html
+    end
+  end
+
   def self.repair_from_file(folders = nil)
     rsync = Giji::RSync.new
     rsync.each_villages([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      GijiVilScanner.new(path, folder, fname).enqueue :repair
+      GijiVilScanner.new(path, folder, fname).save :repair
     end
   end
 
