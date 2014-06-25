@@ -533,9 +533,10 @@ angular.module("giji").directive("logs", function($parse, $compile, $filter) {
         last: function() {
           $scope.timer.start();
           $scope.floats = [];
-          if (attr.scroll) {
-            return scrollTo();
+          if (attr.scroll && $scope.scroll) {
+            scrollTo();
           }
+          return $scope.scroll = true;
         }
       });
       return $scope.$watchCollection(attr.logs, draw);
@@ -3283,6 +3284,7 @@ HOGAN_EVENT = function($scope, $filter) {
       if (event == null) {
         return;
       }
+      $scope.scroll = false;
       return event.search_with_refresh(function() {
         return seek();
       });
@@ -3792,6 +3794,7 @@ POTOFS = function($scope) {
     }
   };
   calc_potof = function(hide) {
+    $scope.scroll = false;
     return $scope.hide_potofs.value = hide;
   };
   potof_toggle = function(select_face) {
