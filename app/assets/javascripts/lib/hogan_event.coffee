@@ -150,6 +150,7 @@ HOGAN_EVENT = ($scope, $filter)->
       event = $scope.events[turn]
       return unless event?
 
+      $scope.scroll = false
       event.search_with_refresh ->
         seek()
 

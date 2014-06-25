@@ -219,7 +219,8 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
         last: ->
           $scope.timer.start()
           $scope.floats = []
-          scrollTo() if attr.scroll
+          scrollTo() if attr.scroll && $scope.scroll
+          $scope.scroll = true
 
     $scope.$watchCollection attr.logs, draw
 
