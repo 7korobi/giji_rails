@@ -196,6 +196,6 @@ class GijiVilScanner < GijiScanner
         freeze_story_id = vid
       end
     end
-    GijiVilWriter.new(freeze_story_id) if freeze_story_id
+    GijiVilWriter.new(freeze_story_id).save if freeze_story_id
   end
 end
