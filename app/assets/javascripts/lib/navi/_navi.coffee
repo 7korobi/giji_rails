@@ -1,21 +1,21 @@
-
-class Navi
+class LinkNavi
   @list = {}
-  move: (newVal)->
-    @value = @params.current_type newVal if newVal?
-    @value
 
   choice: ->
-    _.assign {}, _.find @select, (o)=> o.val == @value
+    _.assign {}, _.find @select, (o)=> o.val == @move()
 
-  popstate: ()->
+  browser_value: ()->
     l = @browser.location_val @params.location, @key
     c = @browser.cookies[@key] if @params.is_cookie?
-    val = @params.current_type l or c or ""
+    @params.current_type l or c or ""
+
+  popstate: ()->
+    val = @browser_value()
     reject = @select? && _.every @select, (o)-> val != o.val
 
-    @value = if reject then "" else val
-    @value or= @params.current_type @params.current
+    val = if reject then "" else val
+    val or= @params.current_type @params.current
+    @move(val)
 
   constructor: (@scope, @key, def, @browser)->
     @browser.list[@key] = @
@@ -35,12 +35,11 @@ class Navi
     else
       @select = def.select
 
-    @popstate()
-
-    @scope.$watch "#{@key}.value", (value,oldVal)=>
+  link: (target)->
+    @scope.$watch target, (value,oldVal)=>
       @_move()
       for func in @watch
-        func @value
+        func value
 
       @browser.set_cookie()
       @browser.set_url()
@@ -49,12 +48,26 @@ class Navi
     if @select?
       for o in @select
         @of[o.val] = o
-        if o.val == @value
+        if o.val == @move()
           o.class = @params.class_select
           o.show = true
         else
           o.class = @params.class_default
           o.show = false
+
+LinkNavi.push = ($scope, key, def)->
+  navi = new LinkNavi $scope, key, def, Browser.real
+  eval "$scope.#{key} = navi"
+
+class Navi extends LinkNavi
+  constructor: (@scope, @key, def, @browser)->
+    super
+    @popstate()
+    @link "#{@key}.value"
+
+  move: (newVal)->
+    @value = @params.current_type newVal if newVal?
+    @value
 
 Navi.push = ($scope, key, def)->
   navi = new Navi $scope, key, def, Browser.real

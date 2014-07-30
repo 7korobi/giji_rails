@@ -4,9 +4,10 @@ INIT_FORM = (new_base)->
 
 INIT_POTOFS = ($scope, gon)->
   if gon.potofs?
+    event = _.find gon.events, (o)-> o.turn == gon.event.turn
     for potof in gon.potofs
       potof.story = gon.story
-      potof.event = gon.event
+      potof.event = event
       potof.potofs = gon.potofs
       potof.scope = $scope
       potof.__proto__ = Potof.prototype
@@ -63,6 +64,30 @@ INIT = ($scope, $filter, $timeout)->
           location: 'hash'
           is_cookie: true
         button: potofs_hash
+
+  if $scope.events?
+    unless $scope.turn?
+      LinkNavi.push $scope, 'turn', OPTION.page.turn
+      $scope.turn.move = (newVal)->
+        if newVal?
+          $scope.set_turn Number newVal
+          is_news = $scope.event.is_news
+          page = $scope.page?.browser_value()
+          do_page_change = ->
+            $scope.page.move page
+          page_change = _.debounce do_page_change, DELAY.presto + 10,
+            leading: false
+            trailing: true
+
+          if $scope.event.messages
+            page_change() if page
+          else
+            $scope.event.show_with_refresh $scope.event.url(), ->
+              do_page_change() if page
+
+        $scope.event.turn
+      $scope.turn.popstate()
+      $scope.turn.link 'event.turn'
 
   if $scope.pages?
     unless $scope.page?

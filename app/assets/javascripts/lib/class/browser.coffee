@@ -23,8 +23,9 @@ class Browser
   set_cookie: ->
     for _, navi of @list
       options = navi.params
-      if navi.value && options.is_cookie
-        @cookies[navi.key] = navi.value
+      value = navi.move()
+      if value? && options.is_cookie
+        @cookies[navi.key] = value
 
   to_url: (append)->
     data =
@@ -32,12 +33,12 @@ class Browser
       hash: []
 
     scanner = (location, key, value)->
-      if value
+      if value?
         cmd = "#{key}=#{value}"
         data[location]?.push cmd
 
     for _, navi of @list
-      scanner(navi.params.location, navi.key, navi.value)
+      scanner(navi.params.location, navi.key, navi.move())
     for location, navi of append
       for key, value of navi
         scanner(location, key, value)

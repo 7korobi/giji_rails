@@ -2,11 +2,14 @@ class ArrayNavi extends Navi
   constructor: (@scope, @key, def, @browser)->
     super
 
-  popstate: ()->
+  browser_value: ()->
     l = @browser.location_val @params.location, @key
     c = @browser.cookies[@key] if @params.is_cookie?
+    (l or c or "").split(",")
+
+  popstate: ()->
     value = []
-    for o in  (l or c or "").split(",")
+    for o in  @browser_value()
       break if @select? && _.every @select, (s)-> o != s.val
       value.push @params.current_type o
     @value = value
