@@ -54,9 +54,14 @@ HOGAN_EVENT = ($scope, $filter)->
       else
         (o)-> + o.updated_at
     is_mob_open = $scope.story?.is_mob_open()
+    modes =
+      if "info" == $scope.modes.face
+        $scope.mode.of[$scope.mode_cache.talk]
+      else
+        $scope.modes
 
     list = $scope.event.messages
-    list = _.filter list, Lib.message_filter is_mob_open, $scope.modes.regexp, $scope.modes.view
+    list = _.filter list, Lib.message_filter is_mob_open, modes.regexp, modes.view
     list = _.filter list, (o)-> "#{o.csid}-#{o.face_id}" == key
     list = _.sortBy list, order
     float.messages = list
