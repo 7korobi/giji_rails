@@ -842,14 +842,15 @@ Browser = (function() {
   };
 
   Browser.prototype.set_cookie = function() {
-    var navi, options, _, _ref, _results;
+    var navi, options, value, _, _ref, _results;
     _ref = this.list;
     _results = [];
     for (_ in _ref) {
       navi = _ref[_];
       options = navi.params;
-      if (navi.value && options.is_cookie) {
-        _results.push(this.cookies[navi.key] = navi.value);
+      value = navi.move();
+      if ((value != null) && options.is_cookie) {
+        _results.push(this.cookies[navi.key] = value);
       } else {
         _results.push(void 0);
       }
@@ -865,7 +866,7 @@ Browser = (function() {
     };
     scanner = function(location, key, value) {
       var cmd, _ref;
-      if (value) {
+      if (value != null) {
         cmd = "" + key + "=" + value;
         return (_ref = data[location]) != null ? _ref.push(cmd) : void 0;
       }
@@ -873,7 +874,7 @@ Browser = (function() {
     _ref = this.list;
     for (_ in _ref) {
       navi = _ref[_];
-      scanner(navi.params.location, navi.key, navi.value);
+      scanner(navi.params.location, navi.key, navi.move());
     }
     for (location in append) {
       navi = append[location];
@@ -2462,14 +2463,17 @@ INIT_FORM = function(new_base) {
 };
 
 INIT_POTOFS = function($scope, gon) {
-  var potof, _i, _len, _ref, _results;
+  var event, potof, _i, _len, _ref, _results;
   if (gon.potofs != null) {
+    event = _.find(gon.events, function(o) {
+      return o.turn === gon.event.turn;
+    });
     _ref = gon.potofs;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       potof = _ref[_i];
       potof.story = gon.story;
-      potof.event = gon.event;
+      potof.event = event;
       potof.potofs = gon.potofs;
       potof.scope = $scope;
       potof.__proto__ = Potof.prototype;
@@ -2542,6 +2546,40 @@ INIT = function($scope, $filter, $timeout) {
         },
         button: potofs_hash
       });
+    }
+  }
+  if ($scope.events != null) {
+    if ($scope.turn == null) {
+      LinkNavi.push($scope, 'turn', OPTION.page.turn);
+      $scope.turn.move = function(newVal) {
+        var do_page_change, is_news, page, page_change, _ref2;
+        if (newVal != null) {
+          $scope.set_turn(Number(newVal));
+          is_news = $scope.event.is_news;
+          page = (_ref2 = $scope.page) != null ? _ref2.browser_value() : void 0;
+          do_page_change = function() {
+            return $scope.page.move(page);
+          };
+          page_change = _.debounce(do_page_change, DELAY.presto + 10, {
+            leading: false,
+            trailing: true
+          });
+          if ($scope.event.messages) {
+            if (page) {
+              page_change();
+            }
+          } else {
+            $scope.event.show_with_refresh($scope.event.url(), function() {
+              if (page) {
+                return do_page_change();
+              }
+            });
+          }
+        }
+        return $scope.event.turn;
+      };
+      $scope.turn.popstate();
+      $scope.turn.link('event.turn');
     }
   }
   if ($scope.pages != null) {
@@ -3157,7 +3195,7 @@ HOGAN_EVENT = function($scope, $filter) {
     });
   };
   potof = function(key) {
-    var drop, float, is_mob_open, list, order, _ref;
+    var drop, float, is_mob_open, list, modes, order, _ref;
     drop = _.remove($scope.floats, function(float) {
       return float.event_id === key;
     });
@@ -3177,8 +3215,9 @@ HOGAN_EVENT = function($scope, $filter) {
       return +o.updated_at;
     };
     is_mob_open = (_ref = $scope.story) != null ? _ref.is_mob_open() : void 0;
+    modes = "info" === $scope.modes.face ? $scope.mode.of[$scope.mode_cache.talk] : $scope.modes;
     list = $scope.event.messages;
-    list = _.filter(list, Lib.message_filter(is_mob_open, $scope.modes.regexp, $scope.modes.view));
+    list = _.filter(list, Lib.message_filter(is_mob_open, modes.regexp, modes.view));
     list = _.filter(list, function(o) {
       return ("" + o.csid + "-" + o.face_id) === key;
     });
@@ -3320,41 +3359,42 @@ HOGAN_EVENT = function($scope, $filter) {
   $('#outframe').on('click', '.drag', foreground);
   return $('#outframe').on('click', '[hogan-click]', hogan_click);
 };
-var Navi;
+var LinkNavi, Navi,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Navi = (function() {
-  Navi.list = {};
+LinkNavi = (function() {
+  LinkNavi.list = {};
 
-  Navi.prototype.move = function(newVal) {
-    if (newVal != null) {
-      this.value = this.params.current_type(newVal);
-    }
-    return this.value;
-  };
-
-  Navi.prototype.choice = function() {
+  LinkNavi.prototype.choice = function() {
     return _.assign({}, _.find(this.select, (function(_this) {
       return function(o) {
-        return o.val === _this.value;
+        return o.val === _this.move();
       };
     })(this)));
   };
 
-  Navi.prototype.popstate = function() {
-    var c, l, reject, val;
+  LinkNavi.prototype.browser_value = function() {
+    var c, l;
     l = this.browser.location_val(this.params.location, this.key);
     if (this.params.is_cookie != null) {
       c = this.browser.cookies[this.key];
     }
-    val = this.params.current_type(l || c || "");
+    return this.params.current_type(l || c || "");
+  };
+
+  LinkNavi.prototype.popstate = function() {
+    var reject, val;
+    val = this.browser_value();
     reject = (this.select != null) && _.every(this.select, function(o) {
       return val !== o.val;
     });
-    this.value = reject ? "" : val;
-    return this.value || (this.value = this.params.current_type(this.params.current));
+    val = reject ? "" : val;
+    val || (val = this.params.current_type(this.params.current));
+    return this.move(val);
   };
 
-  function Navi(scope, key, def, browser) {
+  function LinkNavi(scope, key, def, browser) {
     var btn_key, btn_val, _base, _base1, _base2, _ref;
     this.scope = scope;
     this.key = key;
@@ -3379,23 +3419,25 @@ Navi = (function() {
     } else {
       this.select = def.select;
     }
-    this.popstate();
-    this.scope.$watch("" + this.key + ".value", (function(_this) {
+  }
+
+  LinkNavi.prototype.link = function(target) {
+    return this.scope.$watch(target, (function(_this) {
       return function(value, oldVal) {
-        var func, _i, _len, _ref1;
+        var func, _i, _len, _ref;
         _this._move();
-        _ref1 = _this.watch;
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          func = _ref1[_i];
-          func(_this.value);
+        _ref = _this.watch;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          func = _ref[_i];
+          func(value);
         }
         _this.browser.set_cookie();
         return _this.browser.set_url();
       };
     })(this));
-  }
+  };
 
-  Navi.prototype._move = function() {
+  LinkNavi.prototype._move = function() {
     var o, _i, _len, _ref, _results;
     if (this.select != null) {
       _ref = this.select;
@@ -3403,7 +3445,7 @@ Navi = (function() {
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         o = _ref[_i];
         this.of[o.val] = o;
-        if (o.val === this.value) {
+        if (o.val === this.move()) {
           o["class"] = this.params.class_select;
           _results.push(o.show = true);
         } else {
@@ -3415,9 +3457,38 @@ Navi = (function() {
     }
   };
 
-  return Navi;
+  return LinkNavi;
 
 })();
+
+LinkNavi.push = function($scope, key, def) {
+  var navi;
+  navi = new LinkNavi($scope, key, def, Browser.real);
+  return eval("$scope." + key + " = navi");
+};
+
+Navi = (function(_super) {
+  __extends(Navi, _super);
+
+  function Navi(scope, key, def, browser) {
+    this.scope = scope;
+    this.key = key;
+    this.browser = browser;
+    Navi.__super__.constructor.apply(this, arguments);
+    this.popstate();
+    this.link("" + this.key + ".value");
+  }
+
+  Navi.prototype.move = function(newVal) {
+    if (newVal != null) {
+      this.value = this.params.current_type(newVal);
+    }
+    return this.value;
+  };
+
+  return Navi;
+
+})(LinkNavi);
 
 Navi.push = function($scope, key, def) {
   var navi;
@@ -3438,14 +3509,19 @@ ArrayNavi = (function(_super) {
     ArrayNavi.__super__.constructor.apply(this, arguments);
   }
 
-  ArrayNavi.prototype.popstate = function() {
-    var c, l, o, value, _i, _len, _ref;
+  ArrayNavi.prototype.browser_value = function() {
+    var c, l;
     l = this.browser.location_val(this.params.location, this.key);
     if (this.params.is_cookie != null) {
       c = this.browser.cookies[this.key];
     }
+    return (l || c || "").split(",");
+  };
+
+  ArrayNavi.prototype.popstate = function() {
+    var o, value, _i, _len, _ref;
     value = [];
-    _ref = (l || c || "").split(",");
+    _ref = this.browser_value();
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       o = _ref[_i];
       if ((this.select != null) && _.every(this.select, function(s) {
@@ -4303,7 +4379,7 @@ giji = {
     card: {
       event: function(list) {
         return _.compact(_.map(list.split('/'), function(id) {
-          return SOW_RECORD.CABALA.gifts[id];
+          return SOW_RECORD.CABALA.events[id];
         }));
       },
       discard: function(list) {

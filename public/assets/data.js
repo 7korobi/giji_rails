@@ -720,6 +720,12 @@ this.OPTION = {
         "is_cookie": false
       }
     },
+    "turn": {
+      "options": {
+        "location": "hash",
+        "is_cookie": false
+      }
+    },
     "css": {
       "options": {
         "current": "cinema_center-msg_std-font",
