@@ -26,7 +26,7 @@ giji =
           SOW_RECORD.CABALA.roles[selrole]
   story:
     card:
-      event:   (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.gifts[id]
+      event:   (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.events[id]
       discard: (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.events[id]
   event:
     event:  (id)-> SOW_RECORD.CABALA.events[id]
