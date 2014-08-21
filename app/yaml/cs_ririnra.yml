@@ -399,6 +399,9 @@ attributes: !ruby/hash:Moped::BSON::Document
   - face_id: c111
     job: "愛人"
     _id: c111
+  - face_id: c112
+    job: "許婚"
+    _id: c112
   - face_id: c113
     job: "紐"
     _id: c113

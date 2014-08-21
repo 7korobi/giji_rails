@@ -69,6 +69,9 @@ attributes: !ruby/hash:Moped::BSON::Document
   - face_id: m15
     job: "びじん"
     _id: m15
+  - face_id: m16
+    job: "りゅうきへい"
+    _id: m16
   - face_id: m99
     job: "かみさま"
     _id: m99

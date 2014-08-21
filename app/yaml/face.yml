@@ -463,14 +463,14 @@
     _id: c84
     face_id: c84
     name: "ブレンダ"
-    order: 128
+    order: 129
     comment: 2011/12/05
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     _id: c85
     face_id: c85
     name: "ハナ"
-    order: 129
+    order: 130
     comment: 2011/12/05
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
@@ -478,7 +478,7 @@
     comment: 2011/12/06 姦しい奥様♪
     face_id: c91
     name: "ドロシー"
-    order: 130
+    order: 131
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     _id: c92
@@ -1533,6 +1533,33 @@
     name: "ジェレミー"
     comment: "リニューアル記念！"
     order: 94
+
+#########################
+# 2014-08-22 update 
+
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c112
+    face_id: c112
+    name: "ニコラス"
+    comment: "！？"
+    order: 128
+
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: m16
+    face_id: m16
+    name: "アーサー"
+    comment: "円卓の騎士"
+    order: 70018
+
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: t20
+    face_id: t20
+    name: "エリ"
+    comment: "英国情報局秘密組織チェラブ (CHERUB)"
+    order: 30020
 
 
 #########################

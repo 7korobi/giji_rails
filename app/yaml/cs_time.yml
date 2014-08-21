@@ -75,3 +75,6 @@ attributes: !ruby/hash:Moped::BSON::Document
   - face_id: t19
     job: "聖戦士募集"
     _id: t19
+  - face_id: t20
+    job: "MI:18"
+    _id: t20
