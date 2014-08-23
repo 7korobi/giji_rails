@@ -36,3 +36,6 @@ attributes: !ruby/hash:Moped::BSON::Document
   - face_id: g07
     job: "お針子"
     _id: g07
+  - face_id: g08
+    job: "馬鹿"
+    _id: g08

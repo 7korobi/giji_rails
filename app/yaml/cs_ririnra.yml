@@ -405,4 +405,7 @@ attributes: !ruby/hash:Moped::BSON::Document
   - face_id: c113
     job: "紐"
     _id: c113
+  - face_id: c114
+    job: "革命家"
+    _id: c114
 

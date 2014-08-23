@@ -478,14 +478,14 @@
     comment: 2011/12/06 姦しい奥様♪
     face_id: c91
     name: "ドロシー"
-    order: 131
+    order: 143
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     _id: c92
     comment: 2011/12/06 姦し娘ーず♪
     face_id: c92
     name: "セレスト"
-    order: 140
+    order: 144
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     _id: c93
@@ -1561,6 +1561,24 @@
     comment: "英国情報局秘密組織チェラブ (CHERUB)"
     order: 30020
 
+#########################
+# 2014-08-23 update 
+
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: g08
+    face_id: g08
+    name: "イワン"
+    comment: "Иван-дурак"
+    order: 10009
+
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c114
+    face_id: c114
+    name: "モンド"
+    comment: "８８件のご応募、ありがとう。そして、ありがとう。"
+    order: 131
 
 #########################
 # xxxx-xx-xx update
