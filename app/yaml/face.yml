@@ -1,6 +1,61 @@
 ---
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
+    _id: c49
+    comment: test
+    face_id: c49
+    name: "ボリス"
+    order: 1
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c38
+    order: 2
+    face_id: c38
+    name: "コリーン"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c77
+    order: 3
+    face_id: c77
+    name: "キャロライナ"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c35
+    order: 4
+    face_id: c35
+    name: "ダン"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c53
+    order: 5
+    face_id: c53
+    name: "ゼルダ"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c74
+    order: 6
+    face_id: c74
+    name: "フランシスカ"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c50
+    order: 7
+    face_id: c50
+    name: "ディーン"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c36
+    order: 8
+    face_id: c36
+    name: "ミッシェル"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
+    _id: c26
+    order: 9
+    face_id: c26
+    name: "モニカ"
+- !ruby/object:Face
+  attributes: !ruby/hash:Moped::BSON::Document
     _id: c55
     order: 10
     face_id: c55
@@ -930,56 +985,56 @@
     order: 80012
     face_id: sf12
     name: "†ルシフェル†"
-    comment:
+    comment: 
     _id: sf12
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80013
     face_id: sf13
     name: "トルドヴィン"
-    comment:
+    comment: 
     _id: sf13
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80014
     face_id: sf18
     name: "玖休"
-    comment:
+    comment: 
     _id: sf18
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80015
     face_id: sf19
     name: "参休"
-    comment:
+    comment: 
     _id: sf19
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80016
     face_id: sf14
     name: "クリスマス"
-    comment:
+    comment: 
     _id: sf14
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80017
     face_id: sf15
     name: "ジェームス"
-    comment:
+    comment: 
     _id: sf15
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80018
     face_id: sf16
     name: "ライジ"
-    comment:
+    comment: 
     _id: sf16
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
     order: 80019
     face_id: sf17
     name: "ジャック"
-    comment:
+    comment: 
     _id: sf17
 - !ruby/object:Face
   attributes: !ruby/hash:Moped::BSON::Document
