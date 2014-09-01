@@ -4,8 +4,8 @@ html(lang="ja" id="ng-app" ng-app="giji" ng-controller="RAILS" ng-class="html_cl
     =render partial: 'layouts/old_support'
     =render partial: 'layouts/head'
     title#flashes
-      = if flash[:error]  then flash[:error]  else "人狼議事" end
-      = if flash[:notice] then flash[:notice] end
+      = if flash[:error]  then flash[:error]  else "人狼議事"
+      = if flash[:notice] then flash[:notice]
   body
     #outframe.outframe
       #contentframe.contentframe
