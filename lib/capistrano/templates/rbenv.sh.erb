@@ -1,0 +1,32 @@
+#!/bin/sh
+
+PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+APP_ROOT=<%= current_path %>
+RUBY=<%= fetch :rbenv_ruby %>
+
+export PATH
+
+cd $APP_ROOT
+echo $RUBY > .ruby-version
+
+test -s /home/7korobi/.rbenv/versions/$RUBY && exit 0
+
+
+TARGET=~/.rbenv
+test -s $TARGET || mkdir $TARGET
+test -s $TARGET/.git || git clone https://github.com/sstephenson/rbenv.git $TARGET
+
+TARGET=~/.rbenv/plugins/ruby-build
+test -s $TARGET || mkdir $TARGET
+test -s $TARGET/.git || git clone https://github.com/sstephenson/ruby-build.git $TARGET
+
+cd ~/.rbenv
+git pull
+cd ~/.rbenv/plugins/ruby-build/
+git pull
+
+cd $APP_ROOT
+rbenv install $RUBY
+rbenv shell $RUBY
+gem install bundler
+rbenv exec bundle install

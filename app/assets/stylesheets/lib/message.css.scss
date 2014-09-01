@@ -30,7 +30,6 @@
 
 .msg p {
   overflow: hidden;
-  overflow-x: auto;
   word-wrap: break-word;
   word-break: keep-all;
 }
@@ -68,7 +67,7 @@ h6 {
   border-collapse: collapse; /* CSS2? */
 }
 
-
+.text,
 .mes_text ,
 .mes_text_report ,
 .mes_text_monospace ,

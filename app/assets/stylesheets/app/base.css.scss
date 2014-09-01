@@ -99,7 +99,7 @@ $screen-lg: 770px;
   color: $text-color;
 }
 
-.action p {
+.action .text {
   overflow: hidden;
   overflow-x: auto;
   word-wrap: break-word;
@@ -163,4 +163,3 @@ ul.unstyled, ol.unstyled {
     margin-left: 0;
     list-style: none
 }
-

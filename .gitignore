@@ -6,7 +6,6 @@ db/*.sqlite3
 log/*.log
 tmp/
 .sass-cache/
-Gemfile.lock
 config/database.yml
 config/mongoid.yml
 config/omni_auth.yml
@@ -27,4 +26,3 @@ public/images/portrate_sf++
 public/images/sow
 test/
 vendor/cache
-

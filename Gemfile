@@ -81,6 +81,9 @@ gem "kaminari"
 gem "moji"
 gem "jpmobile"
 
+gem "hashie"
+gem "capistrano"
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

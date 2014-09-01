@@ -2509,6 +2509,13 @@ this.FACES = [
   {
     "caption": "とのさま広場",
     "csid": "changed",
+    "face_id": "m16",
+    "name": "アーサー",
+    "order": 70018
+  },
+  {
+    "caption": "とのさま広場",
+    "csid": "changed",
     "face_id": "m99",
     "name": "パルック",
     "order": 70001
@@ -2677,9 +2684,23 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
+    "face_id": "c112",
+    "name": "ニコラス",
+    "order": 128
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
     "face_id": "c113",
     "name": "ジェレミー",
     "order": 94
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c114",
+    "name": "モンド",
+    "order": 131
   },
   {
     "caption": "人狼議事",
@@ -2782,6 +2803,13 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
+    "face_id": "c26",
+    "name": "モニカ",
+    "order": 9
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
     "face_id": "c27",
     "name": "リンダ",
     "order": 65
@@ -2838,9 +2866,30 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
+    "face_id": "c35",
+    "name": "ダン",
+    "order": 4
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c36",
+    "name": "ミッシェル",
+    "order": 8
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
     "face_id": "c37",
     "name": "セシル",
     "order": 34
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c38",
+    "name": "コリーン",
+    "order": 2
   },
   {
     "caption": "人狼議事",
@@ -2915,6 +2964,20 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
+    "face_id": "c49",
+    "name": "ボリス",
+    "order": 1
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c50",
+    "name": "ディーン",
+    "order": 7
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
     "face_id": "c51",
     "name": "ヨーランダ",
     "order": 53
@@ -2925,6 +2988,13 @@ this.FACES = [
     "face_id": "c52",
     "name": "ギリアン",
     "order": 52
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c53",
+    "name": "ゼルダ",
+    "order": 5
   },
   {
     "caption": "人狼議事",
@@ -3069,6 +3139,13 @@ this.FACES = [
   {
     "caption": "人狼議事",
     "csid": "ririnra",
+    "face_id": "c74",
+    "name": "フランシスカ",
+    "order": 6
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
     "face_id": "c75",
     "name": "ビリー",
     "order": 35
@@ -3079,6 +3156,13 @@ this.FACES = [
     "face_id": "c76",
     "name": "ジョージ",
     "order": 210
+  },
+  {
+    "caption": "人狼議事",
+    "csid": "ririnra",
+    "face_id": "c77",
+    "name": "キャロライナ",
+    "order": 3
   },
   {
     "caption": "人狼議事",
@@ -3127,14 +3211,14 @@ this.FACES = [
     "csid": "ririnra",
     "face_id": "c84",
     "name": "ブレンダ",
-    "order": 128
+    "order": 129
   },
   {
     "caption": "人狼議事",
     "csid": "ririnra",
     "face_id": "c85",
     "name": "ハナ",
-    "order": 129
+    "order": 130
   },
   {
     "caption": "人狼議事",
@@ -3176,14 +3260,14 @@ this.FACES = [
     "csid": "ririnra",
     "face_id": "c91",
     "name": "ドロシー",
-    "order": 130
+    "order": 143
   },
   {
     "caption": "人狼議事",
     "csid": "ririnra",
     "face_id": "c92",
     "name": "セレスト",
-    "order": 140
+    "order": 144
   },
   {
     "caption": "人狼議事",
