@@ -20,7 +20,7 @@ class MapReduce::Face
   end
 
   def name
-    ::Face.find(face_id).name
+    raise RuntimeError
   end
 
   def says

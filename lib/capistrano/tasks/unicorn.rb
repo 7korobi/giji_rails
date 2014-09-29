@@ -46,16 +46,6 @@ namespace :unicorn do
   end
   after "deploy:updating", "unicorn:setup"
 
-  desc "Start Unicorn"
-  task :start do
-    on roles(:app), in: :parallel do |server|
-      execute fetch(:app_script), :start
-    end
-    on roles(:app, :resque, :queue), in: :parallel do
-      execute fetch(:app_script), :pid_list
-    end
-  end
-
   desc "Stop Unicorn"
   task :stop do
     on roles(:app), in: :parallel do
@@ -87,7 +77,7 @@ namespace :unicorn do
   end
 
   desc "Zero-downtime restart strategy."
-  task :conditional_start do
+  task :start do
     on roles(:app, :resque, :queue), in: :parallel do |server|
       if previous_path(server)
         next unless remote_diff?(server, "Gemfile.lock", ".ruby-version")
@@ -112,5 +102,5 @@ namespace :unicorn do
     end
   end
 
-  after "deploy:publishing", "unicorn:conditional_start"
+  after "deploy:publishing", "unicorn:start"
 end
