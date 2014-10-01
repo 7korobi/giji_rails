@@ -11,20 +11,21 @@
           li=link_to 'あなたのトップページ', user_path(user.id)
 
 - content_for :log do
-  h2= "#{user.name} さんの情報"
+  .inframe.toppage
+    h2= "#{user.name} さんの情報"
 
-  table.memo.TSAY
-    tbody
-      tr
-        td.memoleft
-          h5
-            | アカウント設定
-        td.memoright
-          =semantic_form_for user, html:{class: ""} do |f|
-            = f.semantic_errors :sow_auths, :byebyes
-            = f.inputs
-            = f.input :sow_auths, as: :text, input_html: { rows: 5, cols: 20 }, label: "人狼議事で使っているID"
-            = f.input :byebyes, as: :text, input_html: { rows: 5, cols: 20 }, label: "Bye-Bye List"
-            .form-group
-              = f.actions do
-                = f.submit
+    table.memo.TSAY
+      tbody
+        tr
+          td.memoleft
+            h5
+              | アカウント設定
+          td.memoright
+            =semantic_form_for user, html:{class: ""} do |f|
+              = f.semantic_errors :sow_auths, :byebyes
+              = f.inputs
+              = f.input :sow_auths, as: :text, input_html: { rows: 5, cols: 20 }, label: "人狼議事で使っているID"
+              = f.input :byebyes, as: :text, input_html: { rows: 5, cols: 20 }, label: "Bye-Bye List"
+              .form-group
+                = f.actions do
+                  = f.submit

@@ -10,6 +10,7 @@
         li=link_to 'あなたのトップページ', user_path(user.id)
 
 - content_for :log do
-  h2 あなたが参加中の村について
-  .message_filter(logs="byebyes")
+  .inframe
+    h2 あなたが参加中の村について
+  .inframe#byebyes
 

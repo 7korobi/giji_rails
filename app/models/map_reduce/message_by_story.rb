@@ -49,8 +49,12 @@ class MapReduce::MessageByStory
       o = self.new(value: {})
       o.id = story_id
 
-      Message.by_story_id(story_id).each do |talk|
+      ::Message.by_story_id(story_id).each do |talk|
         next if deny_sow_auth_ids.member? talk.sow_auth_id
+        unless talk.logid && talk.date
+          p talk
+          next 
+        end
         logid_head = talk.logid[0..1]
         logs = o.value[logid_head] ||= {}
         counter(talk, logs, :all)
@@ -58,6 +62,8 @@ class MapReduce::MessageByStory
         counter(talk, logs, :sow_auth_id)
       end
       o.save
+
+      GijiVilWriter.new(story_id).save
     end
   end
 end

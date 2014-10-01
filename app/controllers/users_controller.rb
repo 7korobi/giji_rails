@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 class UsersController < ApplicationController
+  layout "mithril"
+
   expose(:users_for_admin){ users.order_by(:name.asc) }
   expose(:users){ User }
   expose(:user, attributes: :user_params)
@@ -12,7 +14,7 @@ class UsersController < ApplicationController
   before_filter :self_require, only:%w[edit update byebye_list]
 
   def index
-    gon.messages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
+    gon.villages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
       active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
       prologue_story_ids = active_story_ids - SowTurn.all.in(story_id: active_story_ids).pluck(:story_id)
       progless_story_ids = active_story_ids - prologue_story_ids
@@ -114,10 +116,10 @@ class UsersController < ApplicationController
       0 - story.timer["updateddt"].to_i
     end
 
-    gon.messages_raw = list.map do |chr|
+    gon.history = list.map do |chr|
       story   = stories[chr.story_id].first
       nation  = GAME[story.folder][:nation] rescue ' - '
-      link    = message_file_path(chr.story_id)
+      link    = "http://7korobi.gehirn.ne.jp/stories/#{chr.story_id}.html"
       created = story.timer["updateddt"]
 
       chr.attributes.merge(

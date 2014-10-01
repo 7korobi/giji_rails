@@ -189,13 +189,10 @@ class GijiVilScanner < GijiScanner
       end
     end
     return if repair
-    freeze_story_id = nil
     sow.events.each do |event|
       if Message.in_event(event.id).count == 0
         event.update_from_file
-        freeze_story_id = vid
       end
     end
-    GijiVilWriter.new(freeze_story_id).save if freeze_story_id
   end
 end

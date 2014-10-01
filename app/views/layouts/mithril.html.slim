@@ -20,12 +20,12 @@ html(lang="ja")
       #contentframe.contentframe
         h1#to_root
         .inframe#top
+          .login#headline
           .toppage
             .choice#css_changer
             .paginavi(template="theme/style_navi")
             hr.invisible_hr
-            = yield :top
-
+        = yield :top
         = yield :log
 
         .inframe

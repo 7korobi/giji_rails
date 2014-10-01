@@ -12,7 +12,7 @@
         li=link_to 'あなたのトップページ', user_path(user.id)
 
 - content_for :log do
-  - if user.sow_auth_ids && gon.messages_raw
+  .inframe
     h2= "#{user.name} さんの情報"
-    .message_filter(logs="messages_raw")
+  .inframe#history
 
