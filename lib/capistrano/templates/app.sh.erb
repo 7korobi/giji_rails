@@ -31,6 +31,9 @@ QUEUE_PID=<%= fetch :queue_pid %>
 PID=$UNICORN_PID
 
 export PATH
+export REDIS_URL
+export MONGO_URL
+export RBENV_VERSION
 export BUNDLE_GEMFILE
 
 APP_ROOT=<%= current_path %>

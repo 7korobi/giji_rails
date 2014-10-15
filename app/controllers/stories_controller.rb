@@ -1,5 +1,8 @@
 class StoriesController < ApplicationController
+  layout "mithril"
+
   expose(:stories) do
+    params[:folder] = "ALL"
     Rails.cache.fetch("stories_finished_#{params[:folder]}", :expires_in => 4.hours) do
       query = SowVillage.epilogued
       query = query.where(folder: params[:folder])  if  params[:folder] != "ALL"

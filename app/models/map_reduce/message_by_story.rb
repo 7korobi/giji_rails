@@ -8,6 +8,16 @@ class MapReduce::MessageByStory
     field :"value.#{key}.sow_auth_id", as: :"#{key}_sow_auth_ids", type: Hash
   end
 
+  def self.face_says(id)
+    key = "value.SS.face_id.#{id}"
+    self.where(key.to_sym.exists => true).only(key).map do |o|
+      if o[key]
+        o[key]["logid_head"] = o.id
+      end
+      o[key]
+    end.compact.sort_by{|o| MapReduce::Message::SAYS_ORDER.index o["logid_head"]}
+  end
+
   def self.frontier_story
     done = MapReduce::MessageByStory.pluck("id")
     SowVillage.not.in(id: done).where(is_finish: true)

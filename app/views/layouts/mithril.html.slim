@@ -22,9 +22,10 @@ html(lang="ja")
         .inframe#top
           .login#headline
           .toppage
-            .choice#css_changer
+            #css_changer
             .paginavi(template="theme/style_navi")
             hr.invisible_hr
+        a(name="search")
         = yield :top
         = yield :log
 

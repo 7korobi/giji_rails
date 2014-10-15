@@ -18,13 +18,11 @@ namespace :rsync do
   desc "Stage and rsync to the server (or its cache)."
   task :run do
     open(fetch(:rsync_script),"w") do |f|
-      on roles(:app, :resque, :queue, :infra) do |server|
+      on roles(:all) do |server|
         options = "--links --recursive --delete --exclude='run' --exclude='.git' --exclude='.svn'"
         path = "/utage/"
         f.puts %Q|TARGET=#{path}; rsync -e "ssh -p #{server.port}" #{options} $TARGET #{server.user}@#{server.hostname}:$TARGET &|
-      end
 
-      on roles(:all), in: :parallel do |server|
         rsync = %w[rsync]
         rsync.push %Q|-e "ssh -p #{server.port || 22}"|
         rsync.concat fetch(:rsync_options)

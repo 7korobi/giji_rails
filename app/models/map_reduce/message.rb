@@ -19,7 +19,7 @@ class MapReduce::Message
 
   def self.face_says(id)
     key = "value.face_id.#{id}"
-    self.in(id:SAYS.keys).only(key).map do |o|
+    self.in(id:SAYS.keys).where(key.to_sym.exists => true).only(key).map do |o|
       if o[key]
         o[key]["logid_head"] = o.id
       end
