@@ -30,6 +30,9 @@ RESQUE_PID=<%= fetch :resque_pid %>
 QUEUE_PID=<%= fetch :queue_pid %>
 PID=$UNICORN_PID
 
+export RACK_ENV=<%= server.properties.rails_env %>
+export RAILS_ENV=<%= server.properties.rails_env %>
+
 export PATH
 export REDIS_URL
 export MONGO_URL
@@ -106,7 +109,7 @@ unicorn)
   sig 0 "$UNICORN_OLD_PID" && echo >&2 "Already running." && exit 0
   sig 0 "$UNICORN_PID" && echo >&2 "Already running." && exit 0
   cd $APP_ROOT
-  rbenv exec unicorn_rails -D -c <%= fetch(:unicorn_config) %> -E <%= server.properties.rails_env %>
+  rbenv exec unicorn_rails -E <%= server.properties.rails_env %> -D -c <%= fetch(:unicorn_config) %>
   ;;
 
 stop)
