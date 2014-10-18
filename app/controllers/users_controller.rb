@@ -22,6 +22,7 @@ class UsersController < ApplicationController
 
       prologue_story_ids.map do |story_id|
         to_message(
+          _id: story_id,
           story: stories[story_id].first,
           link:  message_file_path(story_id),
           mestype: "VSAY",
@@ -29,6 +30,7 @@ class UsersController < ApplicationController
         )
       end + progless_story_ids.map do |story_id|
         to_message(
+          _id: story_id,
           story: stories[story_id].first,
           link:  message_file_path(story_id),
           mestype: "XSAY",
@@ -91,6 +93,7 @@ class UsersController < ApplicationController
       end
 
       to_message(
+        _id: story_id,
         story: stories[story_id].first,
         link:  message_file_path(story_id),
         mestype: mestype,
@@ -123,6 +126,7 @@ class UsersController < ApplicationController
       created = story.timer["updateddt"]
 
       chr.attributes.merge(
+        _id: chr.story_id,
         template: "message/say",
         mestype: "SAY",
         anchor: "#{nation}#{story.vid}",
@@ -168,7 +172,7 @@ _HTML_
     params.require(:user).permit(:user_id, :name, :email, :sow_auths, :byebyes)
   end
 
-  def to_message(story: SowVillage.new, link: message_file_path(story.id), mestype: "SAY", log: "")
+  def to_message(_id: , story: SowVillage.new, link: message_file_path(story.id), mestype: "SAY", log: "")
     nation  = GAME[story.folder][:nation] rescue ' - '
     created = story["timer.updateddt"]
 
@@ -178,6 +182,7 @@ _HTML_
       style: '',
       updated_at:  created,
       log: log,
+      _id: _id
     }
   end
 
