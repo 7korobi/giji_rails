@@ -16,6 +16,9 @@ class GijiVilWriter
       "wget -O #{vid}.html 'http://giji.check.jp/#{vid}/file'",
       "(gzip -c #{vid}.html > #{vid}.html.gz)",
       "rm #{vid}.html",
+      "wget -O all.html 'http://giji.check.jp/stories?folder=ALL'",
+      "(gzip -c all.html > all.html.gz)",
+      "rm all.html",
     ].join(";").inspect
   end
 end
