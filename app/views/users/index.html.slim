@@ -2,69 +2,67 @@
 
 
 - content_for :top do
-  .inframe.toppage
-    h2 ログイン
-    .paragraph
-      -if login?
-        = "#{current.auth.provider} アカウントを使っています。"
-        span.mark = link_to '  click to logout', destroy_user_session_path
-      -if user?
-        ul
-          li
-            = link_to current.user.name, user_path(current.user.id)
-            | さんのページ
-
-    -unless user?
-      h2 ログインするIDを選ぼう
-      .choice
-        table.vindex
-          tr
-            td
-              = link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
-              br
-              | Twitter
-            td
-              = link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
-              br
-              | Facebook
-            td
-              ul
-                li
-                  label.label= link_to 'mixi',   '/users/auth/mixi'
-                li
-                  label.label= link_to 'google', '/users/auth/google'
-                li
-                  label.label= link_to 'yahoo',  '/users/auth/yahoo'
-
-    h2 ようこそ！
-    .paragraph
+  h2 ログイン
+  .paragraph
+    -if login?
+      = "#{current.auth.provider} アカウントを使っています。"
+      span.mark = link_to '  click to logout', destroy_user_session_path
+    -if user?
       ul
         li
-          | いままでの
-          a(href="https://github.com/7korobi/giji_rails/commits/show-fix") 更新履歴
-          | はこちら。
-        li
-          = link_to "集計ページ", map_reduce_faces_path
-          | に、人狼議事のキャラクターたちの活躍をまとめてある。
+          = link_to current.user.name, user_path(current.user.id)
+          | さんのページ
 
-  .inframe
-    h3 開始待ちの村／進行中の村
-  .inframe#villages
+  -unless user?
+    h2 ログインするIDを選ぼう
+    .choice
+      table.vindex
+        tr
+          td
+            = link_to image_tag('/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
+            br
+            | Twitter
+          td
+            = link_to image_tag('/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
+            br
+            | Facebook
+          td
+            ul
+              li
+                label.label= link_to 'mixi',   '/users/auth/mixi'
+              li
+                label.label= link_to 'google', '/users/auth/google'
+              li
+                label.label= link_to 'yahoo',  '/users/auth/yahoo'
 
-  .inframe.toppage
-    - if admin?
-      h2 アカウント一覧
-      .paragraph
-        = ' / '
-        - users_for_admin.each do |user|
-          - if (user.sow_auth_ids or []).size > 0
-            - if (user.byebye_ids or []).size > 0
-              u
-                = link_to user.name, user, style:"color:red;"
-            - else
-              u
-                = link_to user.name, user
-            = ' / '
+  h2 ようこそ！
+  .paragraph
+    ul
+      li
+        | いままでの
+        a(href="https://github.com/7korobi/giji_rails/commits/show-fix") 更新履歴
+        | はこちら。
+      li
+        = link_to "集計ページ", map_reduce_faces_path
+        | に、人狼議事のキャラクターたちの活躍をまとめてある。
+
+  
+  h3 開始待ちの村／進行中の村
+  #villages
+
+  - if admin?
+    h2 アカウント一覧
+    .paragraph
+      = ' / '
+      - users_for_admin.each do |user|
+        - if (user.sow_auth_ids or []).size > 0
+          - if (user.byebye_ids or []).size > 0
+            u
+              = link_to user.name, user, style:"color:red;"
           - else
-            = link_to user.name, user
-            = ' / '
+            u
+              = link_to user.name, user
+          = ' / '
+        - else
+          = link_to user.name, user
+          = ' / '

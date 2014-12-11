@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   expose(:users_for_admin){ users.order_by(:name.asc) }
   expose(:users){ User }
-  expose(:user, attributes: :user_params)
+  expose(:user, attributes: :user_params, finder: :find_by_id)
 
   respond_to :html, :json
 

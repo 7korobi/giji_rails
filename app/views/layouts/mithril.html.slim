@@ -2,6 +2,9 @@ doctype html
 html(lang="ja")
   head
     link href="mailto:7korobi@gmail.com" rev="Made"
+    meta name="apple-mobile-web-app-capable" content="yes"
+    meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"
+    meta name="format-detection" content="telephone=no"
     meta name="viewport" content="initial-scale=1.0"
     meta http-equiv='Content-Type' content='text/html; charset=utf-8'
     meta content="7korobi@gmail.com" name="Author"
@@ -10,8 +13,6 @@ html(lang="ja")
 
     link(media="screen" rel="stylesheet" type="text/css" href="http://7korobi.gehirn.ne.jp/assets-master/application.css")
 
-    = include_gon
-
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事"
       = if flash[:notice] then flash[:notice]
@@ -19,17 +20,14 @@ html(lang="ja")
     #outframe.outframe
       #contentframe.contentframe
         h1#to_root
-        .inframe#top
+        .inframe
           .login#headline
-          .toppage
-            #css_changer
-            .paginavi(template="theme/style_navi")
-            hr.invisible_hr
-        a(name="search")
-        = yield :top
-        = yield :log
+          #css_changer
+        .inframe.toppage = yield :top
+        .inframe = yield :log
 
         .inframe
+          br
           address
             | 人狼議事キャラセット by りりんら
             br
@@ -37,6 +35,8 @@ html(lang="ja")
             code  sol・la
             code
               a(href="mailto:7korobi@gmail.com" taborder="-1") ななころび
+
+            br
             br
             code(style="display:inline-block;")
               | 下記の場所以外では、人狼議事内キャラチップ
@@ -67,25 +67,20 @@ html(lang="ja")
               | Sangria
               br
               | @7korobi
+            br
+            br
+          br
+          br
 
       #footer
 
       #tab
         #topviewer
-          #topframe.drag
-            .contentframe
-              = yield :navi_top
-        #sayfilter.sayfilter(adjust="left")
-          .sayfilter_heading
-            = yield :navi_head
-          = yield :navi
-          - if flash[:error]
-            .insayfilter#navi_error
-              .paragraph.sayfilter_content
-                = ERROR[flash[:error]]
-          .sayfilter_heading.bottom
-          = yield :tool
+        #sayfilter
         #buttons
   script(type="text/javascript" src="http://7korobi.gehirn.ne.jp/assets-master/base.js")
+  script(type="text/javascript" src="http://7korobi.gehirn.ne.jp/assets-master/const.js")
+  = include_gon
   script(type="text/javascript" src="http://7korobi.gehirn.ne.jp/assets-master/rails.js")
+
 

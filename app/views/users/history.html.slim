@@ -1,18 +1,6 @@
 =render 'login'
 
-- content_for :navi_head do
-  | history user
-
-- content_for :navi do
-  .insayfilter(navi="link" name="移動")
-    .paragraph
-      .sayfilter_caption_enable
-        | 他のことを知りたい
-      .sayfilter_content
-        li=link_to 'あなたのトップページ', user_path(user.id)
-
 - content_for :log do
-  .inframe
-    h2= "#{user.name} さんの情報"
-  .inframe#history
+  h2= "#{user.name} さんの情報"
+  #history
 
