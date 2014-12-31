@@ -1,10 +1,11 @@
 development:
   application:
-    http://localhost:3000/assets-show-fix
+    http://7korobi.gehirn.ne.jp/assets-show-fix
   file:
-    http://localhost:3000
+#    http://localhost
+    http://7korobi.gehirn.ne.jp
   rails:
-    http://localhost:3000
+    http://giji.check.jp
 production:
   application:
     http://7korobi.gehirn.ne.jp/assets-show-fix

@@ -1,26 +1,4 @@
 <%
-all_faces = FACE.group_by(&:face_id)
-faces = []
-
-[CS_CHANGED, CS_RIRINRA, CS_SF, CS_WA].each do |set|
-  npc = set.chr_npcs.sort_by(&:csid).first
-  set.chr_jobs.each do |job|
-    next unless all_faces[job.face_id]
-    face = all_faces[job.face_id].first
-
-    faces.push(
-      caption: npc.caption,
-      csid:    npc.csid,
-      face_id: face.face_id,
-      name:    face.name,
-      order:   face.order,
-    )
-  end
-end
-%>
-this.FACES = <%= JSON.pretty_generate faces %>
-
-<%
 namespace = "this.JST"
 head = "app/assets/javascripts/jst/"
 %>
