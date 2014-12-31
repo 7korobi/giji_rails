@@ -2,8 +2,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'unicorn'
-gem 'rails', '4.0.1'
-gem 'activesupport', '4.0.1'
+gem 'rails', '4.2.0'
 gem 'quiet_assets'
 
 # queue
@@ -34,13 +33,11 @@ gem 'omniauth-openid'
 # yum install mysql-server
 # yum install mysql-mroonga
 # yum install groonga-tokenizer-mecab
-gem 'mongoid_rails4', :require => 'mongoid'
-#gem 'mongoid', github: 'mongoid/mongoid'
+gem 'mongoid', '~> 4.0.0'
 gem "redis-store"
 gem "redis-rails"
 gem 'sqlite3'
 gem "paperclip"
-gem "composite_primary_keys"
 
 # javascript
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes

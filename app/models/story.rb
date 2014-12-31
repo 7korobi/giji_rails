@@ -13,7 +13,7 @@ class Story
   has_many :potofs, inverse_of: :story
 
   scope :summary, ->(folder) { where(folder:folder).order_by(:vid.desc) }
-  scope :finished,  where(is_finish: true)
-  scope :epilogued, where(is_epilogue: true)
+  scope :finished,  -> { where(is_finish: true) }
+  scope :epilogued, -> { where(is_epilogue: true) }
   paginates_per 50
 end

@@ -24,7 +24,7 @@ class User
   devise :trackable, :omniauthable
   has_many :auths,    inverse_of: :user
 
-  default_scope where(services:nil)
+  default_scope -> { where(services:nil) }
 
   validates_each :sow_auth_ids do |record, field, value|
     if 0 < where(field.in => value.to_a, :user_id.ne => record.user_id).count

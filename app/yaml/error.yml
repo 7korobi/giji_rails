@@ -1,9 +1,0 @@
-deny/admin:
-deny/self: |-
-  本人ではありません。
-deny/login: |-
-  ログインして、アカウントを作りましょう。
-deny/auth: |-
-  ログインしてください。
-deny/not_finish: |-
-  まだ終了していません。

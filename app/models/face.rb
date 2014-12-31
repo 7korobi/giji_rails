@@ -7,7 +7,7 @@ class Face
   field :comment
   field :order,   type: Integer
 
-  default_scope order_by(:order.asc)
+#  default_scope order_by(:order.asc)
 
   validates_length_of :face_id,   in: 1.. 5
   validates_length_of :name,      in: 1..10

@@ -11,7 +11,7 @@ module Eventable
     has_many :potofs,      inverse_of: :event
     belongs_to :story,     inverse_of: :events
 
-    scope :summary, only(:_type, :story_id, :turn, :name).order_by(:turn.asc)
+    scope :summary, -> { only(:_type, :story_id, :turn, :name).order_by(:turn.asc) }
     paginates_per 50
   end
 end

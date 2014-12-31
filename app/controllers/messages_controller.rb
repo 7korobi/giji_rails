@@ -1,9 +1,10 @@
 class MessagesController < BasePastLogController
+  layout "mithril"
+
   expose(:events_summary){ story.events.summary.cache }
   expose(:events) do
     story.events.order_by(turn:1).cache.map do |e|
       e.messages = Message.by_event_id(e.id)
-      vil_info e
       e
     end
   end
@@ -11,7 +12,6 @@ class MessagesController < BasePastLogController
     Message
     e = story.events.where(turn: params[:turn]).cache.first
     e.messages = Message.by_event_id(e.id)
-    vil_info e
     e
   end
 

@@ -7,12 +7,13 @@ class StoriesController < ApplicationController
       query = SowVillage.epilogued
       query = query.where(folder: params[:folder])  if  params[:folder] != "ALL"
       query.
-        only(%w[_type folder vid name rating options upd vpl type card]).
+        only(%w[_id _type folder vid name rating options upd vpl type card]).
         sort_by{|o|[o.folder, - o.vid]}.
         map do |story|
-          story[:file] = "#{URL[:file]}/stories/#{story.id}.html"
-          story[:link] = messages_path(story, 0) + "#mode=info_all_open"
-          story
+          json = story.attributes
+          json["file"] = "#{URL[:file]}/stories/#{story.id}.html"
+          json["link"] = messages_path(story, 0) + "#mode=info_all_open"
+          json
         end
     end
   end

@@ -10,7 +10,7 @@ class ChrVote
   belongs_to :user, inverse_of: :chr_votes
   belongs_to :face, inverse_of: :chr_votes
 
-#  default_scope order_by(created_at: -1)
+  default_scope -> { order_by(created_at: -1) }
 
   validates_length_of :phase,   in: 1..100, allow_blank: false
   validates_length_of :comment, in: 1..100, allow_blank: true

@@ -88,7 +88,7 @@ class UsersController < ApplicationController
       text = "村を抜けておいたほうがいい。" if byebye_story_ids.member? story_id
       if kick_ids[story_id].present?
         mestype = "WSAY"
-        kick_names = SowUser.where(story_id:story_id).in(sow_auth_id:kick_ids[story_id]).only(:name).map(&:name)
+        kick_names = SowUser.where(story_id:story_id).in(sow_auth_id:kick_ids[story_id]).pluck(:name)
         text = kick_names.join('、') + "に退去願おう。"
       end
 
@@ -174,7 +174,7 @@ _HTML_
 
   def to_message(_id: , story: SowVillage.new, link: message_file_path(story.id), mestype: "SAY", log: "")
     nation  = GAME[story.folder][:nation] rescue ' - '
-    created = story["timer.updateddt"]
+    created = story["timer"]["updateddt"]
 
     { template: "message/action",
       mestype:  mestype,
@@ -188,7 +188,7 @@ _HTML_
 
   def story_in(story_ids)
     @stories ||= {}
-    @stories[story_ids] ||= SowVillage.only(:folder, :vid, :name, :timer, :sow_auth_id, :turn, :is_finish).in(_id:story_ids).group_by(&:_id)
+    @stories[story_ids] ||= SowVillage.only(:_id, :folder, :vid, :name, :timer, :sow_auth_id, :turn, :is_finish).in(_id:story_ids).group_by(&:_id)
   end
 
 
