@@ -1,0 +1,700 @@
+---
+PERL_DEFAULT:
+  config:
+    csid: &csid_giji
+      - ririnra
+      - ririnra_c05
+      - ririnra_c08
+      - ririnra_c19
+      - ririnra_c67
+      - ririnra_c68
+      - ririnra_c72
+      - ririnra_c51
+      - ririnra_c20
+      - ririnra_c32
+      - all
+      - mad
+      - time
+      - ger
+      - animal
+      - school
+      - changed
+      - changed_m05
+      - SF
+      - SF_sf10
+      - wa
+      - wa_w23
+
+      # SFが大文字なのは、従来との互換性を保つため。たぶん変更不能。
+    path: &GIJI_PATH
+      DIR_LIB:  ../cabala/lib
+      DIR_HTML: ../cabala/html
+      DIR_RS:   ../cabala/rs
+      DIR_VIL:  ./data/vil
+      DIR_USER: ../sow/data/user
+    enable: &enable
+      DEFAULT_VOTETYPE:     ['anonymity', "標準の投票方法(sign: 記名、anonymity:無記名)"]
+      ENABLED_DELETED:      [1, "削除発言を表示するかどうか"]
+      ENABLED_WINNER_LABEL: [1, "1:勝利者表示をする。"]
+
+      ENABLED_MAX_ESAY:     [0, "エピローグを発言制限対象に 0:しない、1:する"]
+      ENABLED_RANDOMTARGET: [1, "1:投票・能力先に「ランダム」を含める"]
+      ENABLED_SUDDENDEATH:  [1, "1:突然死あり"]
+
+      ENABLED_BITTY:        [1, "少女や交霊者ののぞきみがひらがなのみ。"]
+      ENABLED_PERMIT_DEAD:  [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"]
+      ENABLED_UNDEAD:       [0, "1:幽界トーク村を設定可能"]
+
+      ENABLED_AIMING:       [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_MOB_AIMING:   [1, "1:見物人が内緒話を使える。"]
+
+      ENABLED_AMBIDEXTER:   [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
+      ENABLED_SUICIDE_VOTE: [1, "1:自殺投票"]
+
+PERL_NEW:
+  config: &config_new
+    trsid:
+      - all
+      - star
+      - regend
+      - heavy
+      - complexx
+      - secret
+    game:  &game_cabala
+      - TABULA
+      - LIVE_TABULA
+      - MILLERHOLLOW
+      - LIVE_MILLERHOLLOW
+      - TROUBLE
+      - MISTERY
+      - SECRET
+
+PERL_GAME:
+  config: &config_game
+    csid: *csid_giji
+    erb: ./app/views/sow/giji.pl.erb
+    cd_default: 戦
+    maxsize: &maxsize_game
+      MAXSIZE_ACTION:     60
+      MAXSIZE_MEMOCNT:  1000
+      MAXSIZE_MEMOLINE:   25
+    saycnt: &saycnt_game
+      - tiny
+      - weak
+      - juna
+      - say5x200
+      - say5x300
+      - saving
+      - euro
+    game:  &game_cabala
+      - TABULA
+      - LIVE_TABULA
+      - MILLERHOLLOW
+      - LIVE_MILLERHOLLOW
+      - TROUBLE
+      - MISTERY
+    trsid: &trsid_cabala
+      - all
+      - star
+      - regend
+      - heavy
+      - complexx
+    path: &SIMPLE_PATH
+      DIR_LIB:  ./lib
+      DIR_HTML: ./html
+      DIR_RS:   ./rs
+      DIR_VIL:  ./data/vil
+      DIR_USER: ../sow/data/user
+
+PERL_UNION:
+  config: &config_all
+    <<: *config_game
+    erb: ./app/views/sow/giji.pl.erb
+    saycnt: &saycnt_all
+      - tiny
+      - weak
+      - juna
+      - say5x200
+      - say5x300
+      - wbbs
+      - saving
+      - euro
+    game:  &game_all
+      - TABULA
+      - LIVE_TABULA
+      - MILLERHOLLOW
+      - LIVE_MILLERHOLLOW
+      - TROUBLE
+      - MISTERY
+      - SECRET
+    trsid: &trsid_all
+      - sow
+      - all
+      - star
+      - regend
+      - heavy
+      - complexx
+      - tabula
+      - millerhollow
+      - ultimate
+    cfg: &cfg_union
+      TYPE: CABALA
+      RULE: UNION
+      USERID_NPC:    master
+      USERID_ADMIN:  admin
+      ENABLED_VMAKE:  1
+      TIMEOUT_ENTRY:  3
+      TIMEOUT_SCRAP: 10
+      TOPPAGE_INFO:  ../sow/_info.pl
+      BASEDIR_CGI:   .
+      BASEDIR_DAT:   ./data
+      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
+
+PERL_BRAID:
+  config: &config_braid
+    csid: *csid_giji
+    erb: ./app/views/sow/giji.pl.erb
+    cd_default: 演
+    maxsize: &maxsize_braid
+      MAXSIZE_ACTION:    120
+      MAXSIZE_MEMOCNT:  2000
+      MAXSIZE_MEMOLINE:   25
+    saycnt: &saycnt_braid
+      - weak
+      - juna
+      - vulcan
+    game:  &game_braid
+      - TABULA
+      - MILLERHOLLOW
+      - TROUBLE
+      - MISTERY
+    trsid: &trsid_braid
+      - all
+      - star
+      - regend
+      - heavy
+      - complexx
+    enable: &enable_braid
+      <<: *enable
+      ENABLED_DELETED:      [0, "削除発言を表示するかどうか"]
+      ENABLED_WINNER_LABEL: [0, "1:勝利者表示をする。"]
+
+      ENABLED_BITTY:        [0, "少女や交霊者ののぞきみがひらがなのみ。"]
+      ENABLED_PERMIT_DEAD:  [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"]
+
+      ENABLED_UNDEAD:       [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING:       [0, "1:対象を指定した発言（内緒話）を含める"]
+
+      ENABLED_AMBIDEXTER:   [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
+      ENABLED_SUICIDE_VOTE: [0, "1:自殺投票"]
+    cfg: &cfg_braid
+      TYPE: BRAID
+      RULE: BRAID
+      USERID_NPC:    master
+      USERID_ADMIN:  admin
+      ENABLED_VMAKE:  1
+      TIMEOUT_ENTRY:  2
+      TIMEOUT_SCRAP:  5
+      TOPPAGE_INFO:  ./_info.pl
+      BASEDIR_CGI:   .
+      BASEDIR_DAT:   ./data
+      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
+
+# 内部 人狼議事
+#
+TESTBED:
+  config: &TEST_CONFIG
+    <<: *config_all
+    saycnt: &saycnt_testbed
+      - weak
+      - juna
+      - say5x200
+      - say5x300
+      - wbbs
+      - saving
+      - euro
+      - vulcan
+      - infinity
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD:      [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING:      [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_SUDDENDEATH: [0, "1:突然死あり"]
+    cfg:
+      <<: *cfg_union
+      URL_SW:         http://utage.family.jp/testbed
+      BASEDIR_CGIERR: http://utage.family.jp//testbed
+      NAME_HOME:      人狼議事 手元テスト
+      RULE:           ALLSTAR
+      MAX_VILLAGES:   9
+      TIMEOUT_SCRAP:  1
+      TIMEOUT_ENTRY:  1
+    path: &TEST_PATH
+      DIR_LIB:  ../testbed/lib
+      DIR_HTML: ../testbed/html
+      DIR_RS:   ../testbed/rs
+      DIR_VIL:  ./data/vil
+      DIR_USER: ../sow/data/user
+    pl:  /www/giji_log/testbed/config.pl
+
+PERJURY_OLD:
+  server: utage.family.jp
+  oldlog:   /perjury/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /perjury/sow.cgi?cmd=rss
+  folder: PERJURY_OLD
+  info_url: /perjury/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Bp"
+  epi_url:  /perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Bp
+  config:
+    <<: *config_braid
+    cfg:
+      <<: *cfg_union
+      URL_SW:         http://utage.family.jp/perjury
+      BASEDIR_CGIERR: http://utage.family.jp//perjury
+      NAME_HOME:      人狼議事 Role Play braid perjury
+      RULE:           BRAID
+      MAX_VILLAGES:   0
+      TIMEOUT_ENTRY:  2
+      TIMEOUT_SCRAP:  5
+      ENABLED_VMAKE:  0
+    path:
+      <<: *GIJI_PATH
+    pl:  /www/giji_log/perjury/config.pl
+
+PRETENSE:
+  server: utage.family.jp
+  oldlog:   /pretense/sow.cgi?cmd=oldlog&rowall=on
+  folder: PRETENSE
+  info_url: /pretense/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:A"
+  epi_url:  /pretense/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: A
+RP:
+  server: utage.family.jp
+  oldlog:   /rp/sow.cgi?cmd=oldlog&rowall=on
+  folder: RP
+  info_url: /rp/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:"
+  epi_url:  /rp/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: ""
+CABALA_OLD:
+  server: utage.family.jp
+  oldlog:   /cabala/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /cabala/sow.cgi?cmd=rss
+  folder: CABALA
+  info_url: /cabala/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事陰謀:"
+  epi_url:  /cabala/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: C
+  config:
+    <<: *config_game
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_union
+      URL_SW:         http://utage.family.jp/cabala
+      BASEDIR_CGIERR: http://utage.family.jp//cabala
+      NAME_HOME:      人狼議事 陰謀の苑
+      RULE:           CABALA
+      MAX_VILLAGES:   0
+    path:
+      <<: *GIJI_PATH
+      DIR_VIL:  ../cafe/data/vil
+    pl:  /www/giji_log/cabala/config.pl
+ALLSTAR_OLD:
+  server: utage.family.jp
+  oldlog:   /allstar/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /allstar/sow.cgi?cmd=rss
+  folder: ALLSTAR
+  info_url: /allstar/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事大乱闘:A"
+  epi_url:  /allstar/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: A
+  config:
+    <<: *config_all
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_union
+      URL_SW:         http://utage.family.jp/allstar
+      BASEDIR_CGIERR: http://utage.family.jp//allstar
+      NAME_HOME:      人狼議事 大乱闘オールスター
+      RULE:           ALLSTAR
+      MAX_VILLAGES:   0
+    path:
+      <<: *GIJI_PATH
+      DIR_VIL:  ../jksy/data/vil
+    pl:  /www/giji_log/allstar/config.pl
+ULTIMATE:
+  server: utage.family.jp
+  oldlog:   /ultimate/sow.cgi?cmd=oldlog&rowall=on
+  folder: ULTIMATE
+  info_url: /ultimate/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事大乱闘:"
+  epi_url:  /ultimate/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: ""
+
+WOLF:
+  folder: WOLF
+  nation: "人狼議事標準:"
+  server: utage.family.jp
+  oldlog:   /wolf/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /wolf/sow.cgi?cmd=rss
+  info_url: /wolf/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  epi_url:  /wolf/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: ""
+
+# 外部 人狼議事
+#
+PAN:
+  server: soy-bean.sakura.ne.jp
+  oldlog:   /pan/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /pan/sow.cgi?cmd=rss
+  folder: PAN
+  info_url: /pan/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "似顔絵人狼"
+  epi_url:  /pan/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  config:
+    <<: *config_all
+    csid:
+      - sow
+      - juna
+      - name
+      - bloody
+      - orange
+      - 15girls
+      - tmmi
+      - cat
+      - bunmei
+    erb: ./app/views/sow/pan.pl.erb
+    enable:
+      <<: *enable
+      ENABLED_PERMIT_DEAD: [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"]
+      ENABLED_UNDEAD:      [1, "1:幽界トーク村を設定可能"]
+
+      ENABLED_AIMING:      [0, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_MOB_AIMING:  [0, "1:見物人が内緒話を使える。"]
+
+      ENABLED_AMBIDEXTER:  [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"]
+      ENABLED_SEQ_EVENT:   [0, "0:ランダムイベント 1:順序通りのイベント"]
+
+    cfg:
+      <<: *cfg_union
+      URL_SW:         http://soy-bean.sakura.ne.jp/pan
+      BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/pan//
+      NAME_HOME:      似顔絵人狼
+      RULE:           PAN
+      MAX_VILLAGES:    1
+      TIMEOUT_SCRAP:  10
+      TIMEOUT_ENTRY:   3
+    path:
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/pan/config.pl
+    is_angular: show-fix
+
+MORPHE:
+  server: morphe.sakura.ne.jp
+  oldlog:   /sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /sow.cgi?cmd=rss
+  folder: MORPHE
+  info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事:M"
+  epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: M
+  config:
+    <<: *config_game
+    saycnt:
+      - tiny
+      - weak
+      - juna
+      - vulcan
+      - say5x200
+      - say5x300
+      - saving
+      - euro
+
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      RULE:           MORPHE
+      URL_SW:         http://morphe.sakura.ne.jp/morphe
+      BASEDIR_CGIERR: http://morphe.sakura.ne.jp/morphe//
+      NAME_HOME:      人狼議事 夢の形
+      MAX_VILLAGES:   4
+    path:
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/morphe/config.pl
+
+SOYBEAN:
+  server: soy-bean.sakura.ne.jp
+  oldlog:   /sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /sow.cgi?cmd=rss
+  folder: SOYBEAN
+  info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Cs"
+  epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Bs
+  config:
+    <<: *config_braid
+    <<: *config_new
+    saycnt:
+      - weak
+      - juna
+      - vulcan
+      - infinity
+    enable:
+      <<: *enable_braid
+      ENABLED_AIMING:       [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_SUICIDE_VOTE: [1, "1:自殺投票"]
+      ENABLED_SEQ_EVENT:    [1, "1:事件正順の選択を有効にする。"]
+      ENABLED_TEST_ROLE:    [1, "1:テスト中役職を有効にする。"]
+    cfg:
+      <<: *cfg_braid
+      URL_SW:         http://soy-bean.sakura.ne.jp/soy-bean
+      BASEDIR_CGIERR: http://soy-bean.sakura.ne.jp/soy-bean//
+      NAME_HOME:      人狼議事 鯖の味噌煮
+      MAX_VILLAGES:   2
+    path:
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/soy-bean/config.pl
+    is_angular: show-fix
+
+CIEL:
+  server: ciel.moo.jp
+  oldlog:   /cheat/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /cheat/sow.cgi?cmd=rss
+  folder: CIEL
+  info_url: /cheat/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Cc"
+  epi_url:  /cheat/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Cc
+  config:
+    <<: *config_braid
+    <<: *config_new
+    saycnt:
+      - weak
+      - juna
+      - vulcan
+      - infinity
+    enable:
+      <<: *enable_braid
+      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      BASEDIR_CGIERR: http://ciel.moo.jp//cheat
+      URL_SW:         http://ciel.moo.jp/cheat
+      TYPE:           CHEAT
+      RULE:           CIEL
+      MAX_VILLAGES:   2
+      NAME_HOME:      人狼議事 ciel<br>- Role Play Cheat -
+    path:
+      <<: *SIMPLE_PATH
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/ciel/config.pl
+    is_angular: show-fix
+
+PERJURY:
+  server: perjury.rulez.jp
+  oldlog:   /sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /sow.cgi?cmd=rss
+  folder: PERJURY
+  info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Cp"
+  epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Bp
+  config:
+    <<: *config_braid
+    saycnt:
+      - weak
+      - juna
+      - vulcan
+      - infinity
+    cfg:
+      <<: *cfg_braid
+      BASEDIR_CGIERR: http://perjury.rulez.jp//
+      URL_SW:         http://perjury.rulez.jp
+      TYPE:           CHEAT
+      RULE:           PERJURY
+      MAX_VILLAGES:   2
+      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play Cheat -
+    path:
+      <<: *SIMPLE_PATH
+    pl:  /www/giji_log/vage/config.pl
+    is_angular: show-fix
+
+XEBEC:
+  server: xebec.x0.to
+  oldlog:   /xebec/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /xebec/sow.cgi?cmd=rss
+  folder: XEBEC
+  info_url: /xebec/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Bx"
+  epi_url:  /xebec/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Bx
+  config:
+    <<: *config_braid
+    cfg:
+      <<: *cfg_braid
+      URL_SW:         http://xebec.x0.to/xebec
+      BASEDIR_CGIERR: http://xebec.x0.to//xebec
+      NAME_HOME:      人狼議事 xebec<br>- Role Play braid -
+      MAX_VILLAGES:   3
+    path:
+      <<: *SIMPLE_PATH
+    pl:  /www/giji_log/xebec/config.pl
+
+CRAZY:
+  server: crazy-crazy.sakura.ne.jp
+  oldlog:   /crazy/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /crazy/sow.cgi?cmd=rss
+  folder: CRAZY
+  info_url: /crazy/sow.cgi?\ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事RP:Bc"
+  epi_url:  /crazy/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: Bc
+  config:
+    <<: *config_braid
+    saycnt:
+      - infinity
+    enable:
+      <<: *enable_braid
+      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      URL_SW:         http://crazy-crazy.sakura.ne.jp/crazy
+      BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//crazy
+      NAME_HOME:      人狼議事 crazy<br>- Role Play braid -
+      MAX_VILLAGES:   2
+    path:
+      <<: *SIMPLE_PATH
+      DIR_LIB:  ./lib
+      DIR_HTML: ./html
+      DIR_RS:   ./rs
+      DIR_VIL:  ./data/vil
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/crazy/config.pl
+
+CABALA:
+  server: cabala.halfmoon.jp
+  oldlog:   /cafe/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /cafe/sow.cgi?cmd=rss
+  folder: CABALA
+  info_url: /cafe/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事CabalaCafe:"
+  epi_url:  /cafe/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: C
+  config:
+    <<: *config_game
+    <<: *config_new
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      RULE:           CABALA
+      URL_SW:         http://cabala.halfmoon.jp/cafe
+      BASEDIR_CGIERR: http://cabala.halfmoon.jp//cafe
+      NAME_HOME:      人狼議事 Cabala Cafe
+      MAX_VILLAGES:   4
+    path:
+      <<: *SIMPLE_PATH
+    pl:  /www/giji_log/cafe/config.pl
+    is_angular: show-fix
+
+
+ALLSTAR:
+  server: jinro.jksy.org
+  oldlog:   /~nanakorobi?cmd=oldlog&rowall=on
+  livelog:  /~nanakorobi?cmd=rss
+  folder: ALLSTAR
+  info_url: /~nanakorobi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事大乱闘:A"
+  epi_url:  /~nanakorobi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: A
+  config:
+    <<: *config_all
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      RULE:           ALLSTAR
+      URL_SW:         http://jinro.jksy.org/~nanakorobi
+      BASEDIR_CGIERR: http://jinro.jksy.org//~nanakorobi
+      NAME_HOME:      人狼議事 大乱闘All☆Star
+      MAX_VILLAGES:   4
+      TIMEOUT_ENTRY:  3
+      TIMEOUT_SCRAP: 10
+      ENABLED_VMAKE:  0
+    path:
+      <<: *SIMPLE_PATH
+    pl:  /www/giji_log/jksy/config.pl
+
+
+LOBBY_OLD:
+  folder: LOBBY_OLD
+  nation: "人狼議事旧ロビー"
+  vid_code: O
+LOBBY:
+  server: crazy-crazy.sakura.ne.jp
+  oldlog:   /giji_lobby/lobby/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /giji_lobby/lobby/sow.cgi?cmd=rss
+  folder: LOBBY
+  info_url: /giji_lobby/lobby/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事ロビー"
+  epi_url:  /giji_lobby/lobby/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: L
+  config:
+    <<: *config_all
+    <<: *config_new
+    saycnt:
+      - lobby
+    enable:
+      <<: *enable
+      ENABLED_BITTY:     [1, "少女や交霊者ののぞきみがひらがなのみ。"]
+      ENABLED_AIMING:    [1, "1:対象を指定した発言（内緒話）を含める"]
+      ENABLED_SEQ_EVENT: [0, "0:ランダムイベント 1:順序通りのイベント"]
+    cfg:
+      <<: *cfg_braid
+      RULE: LOBBY
+      USERID_NPC:   master
+      USERID_ADMIN: master
+      URL_SW:         http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby
+      BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby
+      NAME_HOME:      人狼議事 ロビー
+      ENABLED_VMAKE:    0
+      MAX_VILLAGES:    10
+      TIMEOUT_SCRAP:  365
+      TIMEOUT_ENTRY:    3
+      MAX_LOG:        750
+    path:
+      DIR_LIB:  ./lib
+      DIR_HTML: ./html
+      DIR_RS:   ./rs
+      DIR_VIL:  ./data/vil
+      DIR_USER: ../data/user
+    pl:  /www/giji_log/lobby/config.pl
+    is_angular: show-fix
+
+OFFPARTY:
+  server: party.ps.land.to
+  oldlog:   /kitchen/sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /kitchen/sow.cgi?cmd=rss
+  folder: OFFPARTY
+  info_url: /kitchen/sow.cgi?ua=mb&vid=%s&cmd=vinfo
+  nation: "人狼議事オフ相談所"
+  epi_url:  /kitchen/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  vid_code: P
