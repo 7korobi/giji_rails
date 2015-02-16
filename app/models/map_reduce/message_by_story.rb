@@ -28,7 +28,7 @@ class MapReduce::MessageByStory
   end
 
   def self.counter(talk, logs, field)
-    key = talk[field]
+    key = talk[field] || "undefined"
     base = logs[field] ||= {}
     res = base[key] ||= {
       date: {
@@ -63,7 +63,7 @@ class MapReduce::MessageByStory
         next if deny_sow_auth_ids.member? talk.sow_auth_id
         unless talk.logid && talk.date
           p talk
-          next 
+          next
         end
         logid_head = talk.logid[0..1]
         logs = o.value[logid_head] ||= {}
