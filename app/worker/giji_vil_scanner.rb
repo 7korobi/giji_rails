@@ -38,13 +38,6 @@ class GijiVilScanner < GijiScanner
         next if repair == :repair
         story = sow
 
-        face_name = Face.find(o.cid).name  rescue  '***'
-        name = if (0 < o.postfix.to_i  rescue  false)
-                 [%w[IR R O Y G B I V UV][o.clearance], face_name, o.postfix].join('-')
-               else
-                 face_name
-               end
-
         potof = SowUser.find_or_initialize_by(story_id: sow._id, sow_auth_id: o.uid)
         potof.attributes["_type"] = "SowUser"
         potof.update_attributes(
@@ -53,7 +46,6 @@ class GijiVilScanner < GijiScanner
           face_id:  o.cid,
           csid:     o.csid.split('_')[0],
           jobname:  o.jobname,
-          name:     name,
 
           history:  o.history,
 

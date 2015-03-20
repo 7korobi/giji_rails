@@ -11,7 +11,7 @@ html(lang="ja")
     meta charset="utf-8"
     = csrf_meta_tags
 
-    link(media="screen" rel="stylesheet" type="text/css" href="http://7korobi.gehirn.ne.jp/assets-master/application.css")
+    link(media="screen" rel="stylesheet" type="text/css" href="http://kanto.me/7korobi/assets-master/application.css")
 
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事"
@@ -78,9 +78,9 @@ html(lang="ja")
         #topviewer
         #sayfilter
         #buttons
-  script(type="text/javascript" src="http://7korobi.gehirn.ne.jp/assets-master/base.js")
-  script(type="text/javascript" src="http://7korobi.gehirn.ne.jp/assets-master/const.js")
+  script(type="text/javascript" src="http://giji-assets.herokuapp.com/assets-master/base.js")
+  script(type="text/javascript" src="http://giji-assets.herokuapp.com/assets-master/const.js")
   = include_gon
-  script(type="text/javascript" src="http://7korobi.gehirn.ne.jp/assets-master/rails.js")
+  script(type="text/javascript" src="http://giji-assets.herokuapp.com/assets-master/rails.js")
 
 
