@@ -59,6 +59,7 @@ gem 'rabl'
 gem 'gon'
 gem "cancan"
 gem "decent_exposure"
+gem "natto"
 
 # input support
 gem "formtastic"
