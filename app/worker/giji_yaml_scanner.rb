@@ -23,6 +23,7 @@ class GijiYamlScanner < GijiScanner
 
     requests = Hash.new
     messages = Message.by_event_id(event_id)
+    appends = []
     stored_ids = messages.map(&:logid)
     chk_doubles = []
 
@@ -76,12 +77,14 @@ class GijiYamlScanner < GijiScanner
       end
       begin
         message.instance_eval{ @attributes_before_type_cast = {} }
+        appends.push message
         messages.push message
       end
       key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true
     end
 
+    appends.each(&:save)
     yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
     File.open(yaml_path, "w:utf-8") do |f|
       f.write messages.to_yaml

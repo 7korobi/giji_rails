@@ -2,52 +2,80 @@
 
 
 - content_for :top do
-  h2 ログイン
-  .paragraph
+
+  h2 あなたの情報
+
+  h6
     -if login?
       = "#{current.auth.provider} アカウントを使っています。"
-      span.mark = link_to '  click to logout', destroy_user_session_path
-    -if user?
-      ul
-        li
-          = link_to current.user.name, user_path(current.user.id)
-          | さんのページ
+    -else
+      = "ログインするIDを選ぼう"
 
-  -unless user?
-    h2 ログインするIDを選ぼう
-    .choice
-      table.vindex
-        tr
-          td
-            = link_to image_tag('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
-            br
-            | Twitter
-          td
-            = link_to image_tag('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
-            br
-            | Facebook
-          td
-            ul
-              li
-                label.label= link_to 'mixi',   '/users/auth/mixi'
-              li
-                label.label= link_to 'google', '/users/auth/google'
-              li
-                label.label= link_to 'yahoo',  '/users/auth/yahoo'
-
-  h2 ようこそ！
   .paragraph
-    ul
-      li
-        | いままでの
-        a(href="https://github.com/7korobi/giji_rails/commits/show-fix") 更新履歴
-        | はこちら。
-      li
-        = link_to "集計ページ", map_reduce_faces_path
-        | に、人狼議事のキャラクターたちの活躍をまとめてある。
+  -if login?
+    .TSAY.action
+      p.text
+        span.btn.edge = link_to 'ログアウト', destroy_user_session_path
+
+  -if user?
+    .TSAY.action
+      p.text
+        span.btn.edge = link_to "#{current.user.name} さんのページ", user_path(current.user.id)
+
+  -else
+    .TSAY.action
+      p.text
+        table
+          tr
+            td
+              = link_to image_tag('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
+            td
+              = link_to image_tag('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
+            td
+              span.btn.edge = link_to 'mixi',   '/users/auth/mixi'
+              span.btn.edge = link_to 'google', '/users/auth/google'
+              span.btn.edge = link_to 'yahoo',  '/users/auth/yahoo'
+
+      p.mes_date
+        span.mark ByeByeList
+        span.mark 参加履歴
+        | を使う人は、ログインと、アカウント作成をしましょう。
+
+
+  h2 みんなの情報
+
+  h6 更新履歴
+  .QUE.action
+    dt
+      .btn.edge
+        a(href="https://github.com/7korobi/giji_rails/commits/show-fix") 総合トップ
+      .btn.edge
+        a(href="https://github.com/7korobi/giji_assets/commits/master") デザイン
+      .btn.edge
+        a(href="https://github.com/7korobi/sow-giji/commits/cabala") ゲーム
+      .btn.edge
+        a(href="https://github.com/7korobi/sow-giji/commits/show-fix") ゲーム（新）
+    dd
+      | 人狼議事を構成するプログラムの、更新履歴はこちら。
+
+
+  h6 キャラクター
+  .VSAY.action
+    dt
+      .btn.edge
+        = link_to "キャラクター一覧表", "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/character_tag.html"
+    dd
+      | 人狼議事で遊ぶことができるキャラクターはこちら。
+
+  .GSAY.action
+    dt
+      .btn.edge
+        = link_to "キャラクター活躍記録", map_reduce_faces_path
+    dd
+      | どこかの村で活躍したことのあるキャラクターはこちら。
 
   
-  h3 開始待ちの村／進行中の村
+  h6 開始待ちの村／進行中の村
   #villages
 
   - if admin?

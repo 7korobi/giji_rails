@@ -87,12 +87,7 @@ namespace :unicorn do
     end
 
     on roles(:resque), in: :parallel do |server|
-      execute fetch(:app_script), :resque_web
-      execute fetch(:app_script), :scheduler
-    end
-
-    on roles(:queue), in: :parallel do |server|
-      execute fetch(:app_script), :queue
+      execute fetch(:app_script), :backend
     end
     on roles(:app), in: :parallel do |server|
       execute fetch(:app_script), :unicorn

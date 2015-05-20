@@ -16,6 +16,7 @@ LANG=ja_JP.UTF-8
 PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
 BUNDLE_GEMFILE=<%= current_path %>/Gemfile
 RBENV_VERSION=<%= fetch :rbenv_ruby %>
+MECAB_PATH=/usr/lib64/libmecab.so.2
 REDIS_URL=redis://mongo.family.jp:6379/0
 MONGO_URL=mongodb://7korobi:kotatsu3@mongo.family.jp/giji
 
@@ -23,12 +24,12 @@ SSH_PORT=<%= server.port.to_i %>
 RESQUE_PORT=<%= server.port.to_i + 7 %>
 WEB_PORT=<%= server.port.to_i + 9 %>
 
-UNICORN_OLD_PID=<%= fetch :unicorn_pid %>.oldbin
+WEB_OLD_PID=<%= fetch :unicorn_pid %>.oldbin
+WEB_PID=<%= fetch :unicorn_pid %>
 SCHEDULER_PID=<%= fetch :scheduler_pid %>
-UNICORN_PID=<%= fetch :unicorn_pid %>
 RESQUE_PID=<%= fetch :resque_pid %>
-QUEUE_PID=<%= fetch :queue_pid %>
-PID=$UNICORN_PID
+WORKER_PID=<%= fetch :queue_pid %>
+PID=$WEB_PID
 
 export RACK_ENV=<%= server.properties.rails_env %>
 export RAILS_ENV=<%= server.properties.rails_env %>
@@ -36,6 +37,7 @@ export RAILS_ENV=<%= server.properties.rails_env %>
 export PATH
 export REDIS_URL
 export MONGO_URL
+export MECAB_PATH
 export RBENV_VERSION
 export BUNDLE_GEMFILE
 
@@ -66,6 +68,29 @@ signal () {
   fi
 }
 
+scheduler () {
+  cd $APP_ROOT
+  rbenv exec rake resque:scheduler BACKGROUND=yes
+  ps -ef | grep " resque\-scheduler\-" | cut -c 10-14 > $SCHEDULER_PID
+}
+
+resque_web () {
+  cd $APP_ROOT
+  rbenv exec resque-web -p $RESQUE_PORT $APP_ROOT/config/initializers/resque.rb
+  ps -ef | grep "/resque-web\ " | cut -c 10-14 > $RESQUE_PID
+}
+
+queue () {
+  cd $APP_ROOT
+  export QUEUE=giji_rsyncs,giji_schedules,giji_vils,giji_freeze,giji_errors
+  PIDFILE=$WORKER_PID rbenv exec rake environment resque:work 1> /dev/null &
+}
+
+unicorn () {
+  cd $APP_ROOT
+  rbenv exec unicorn_rails -E <%= server.properties.rails_env %> -D -c <%= fetch(:unicorn_config) %>
+}
+
 set_pid () {
   if [ -s "$1" ]
   then
@@ -74,83 +99,98 @@ set_pid () {
 }
 
 set_pids () {
-#  ps -ef | grep "unicorn_rails\ master" | cut -c 10-14 > $UNICORN_PID
-  set_pid $UNICORN_OLD_PID
+#  ps -ef | grep "unicorn_rails\ master" | cut -c 10-14 > $WEB_PID
+  set_pid $WEB_OLD_PID
   set_pid $SCHEDULER_PID
-  set_pid $UNICORN_PID
+  set_pid $WEB_PID
   set_pid $RESQUE_PID
-  set_pid $QUEUE_PID
+  set_pid $WORKER_PID
 }
 
 set_pids
 
 case "$1" in
-resque_web)
-  sig 0 "$RESQUE_PID" && echo >&2 "Already running." && exit 0
-  cd $APP_ROOT
-  rbenv exec resque-web -p $RESQUE_PORT $APP_ROOT/config/initializers/resque.rb
-  ps -ef | grep "/resque-web\ " | cut -c 10-14 > $RESQUE_PID
-  ;;
-
-scheduler)
-  sig 0 "$SCHEDULER_PID" && echo >&2 "Already running." && exit 0
-  cd $APP_ROOT
-  PIDFILE=$SCHEDULER_PID rbenv exec rake resque:scheduler 1> /dev/null &
-  ;;
-
-queue)
-  sig 0 "$QUEUE_PID" && echo >&2 "Already running." && exit 0
-  cd $APP_ROOT
-  export QUEUE=giji_rsyncs,giji_schedules,giji_vils,giji_freeze,giji_errors
-  PIDFILE=$QUEUE_PID rbenv exec rake environment resque:work 1> /dev/null &
-  ;;
-
-unicorn)
-  sig 0 "$UNICORN_OLD_PID" && echo >&2 "Already running." && exit 0
-  sig 0 "$UNICORN_PID" && echo >&2 "Already running." && exit 0
-  cd $APP_ROOT
-  rbenv exec unicorn_rails -E <%= server.properties.rails_env %> -D -c <%= fetch(:unicorn_config) %>
-  ;;
-
-stop)
-  signal QUIT $UNICORN_OLD_PID
-  signal QUIT $SCHEDULER_PID
-  signal QUIT $UNICORN_PID
+backend)
   signal QUIT $RESQUE_PID
-  signal QUIT $QUEUE_PID
+  signal QUIT $WORKER_PID
+  signal QUIT $SCHEDULER_PID  
+  sleep 3
+  resque_web
+  queue
+  scheduler
+  ;;
+resque_web)
+  sig 0 "$RESQUE_PID" && echo >&2 "RESQUE-WEB Already running." && exit 0
+  resque_web
+  ;;
+scheduler)
+  sig 0 "$SCHEDULER_PID" && echo >&2 "RESQUE-SCHEDULER Already running." && exit 0
+  scheduler
+  ;;
+queue)
+  sig 0 "$WORKER_PID" && echo >&2 "RESQUE-WORKER Already running." && exit 0
+  queue
+  ;;
+unicorn)
+  sig 0 "$WEB_OLD_PID" && echo >&2 "Already running." && exit 0
+  sig 0 "$WEB_PID" && echo >&2 "Already running." && exit 0
+  unicorn
+  ;;
+stop)
+  signal QUIT $WEB_OLD_PID
+  signal QUIT $WEB_PID
+  signal QUIT $RESQUE_PID
+  signal QUIT $WORKER_PID
+  signal QUIT $SCHEDULER_PID  
   ;;
 force-stop)
-  signal TERM $UNICORN_OLD_PID
-  signal TERM $SCHEDULER_PID
-  signal TERM $UNICORN_PID
+  signal TERM $WEB_OLD_PID
+  signal TERM $WEB_PID
   signal TERM $RESQUE_PID
-  signal TERM $QUEUE_PID
+  signal TERM $WORKER_PID
+  signal TERM $SCHEDULER_PID  
+  ;;
+stop_start)
+  signal QUIT $WEB_OLD_PID
+  signal QUIT $WEB_PID
+  signal QUIT $RESQUE_PID
+  signal QUIT $WORKER_PID
+  signal QUIT $SCHEDULER_PID  
+  sleep 3
+  unicorn
+  scheduler
+  resque_web
+  queue
   ;;
 restart)
-  signal HUP  $UNICORN_PID
+  signal HUP $WEB_OLD_PID
+  signal HUP $WEB_PID
+  echo reloaded OK
+  unicorn
   ;;
 reload)
-  signal USR2 $UNICORN_PID
+  signal USR2 $WEB_OLD_PID
+  signal USR2 $WEB_PID
   ;;
-
 bundle)
   cd $APP_ROOT
   bundle
   ;;
 reopen_logs)
-  signal USR1 $UNICORN_PID
+  signal USR1 $WEB_OLD_PID
+  signal USR1 $WEB_PID
   ;;
 pid_list)
   echo >&2  "  process : "`pid $SCHEDULER_PID`" $SCHEDULER_PID"
-  echo >&2  "          : "`pid $UNICORN_PID`" $UNICORN_PID"
+  echo >&2  "          : "`pid $WEB_PID`" $WEB_PID"
   echo >&2  "          : "`pid $RESQUE_PID`" $RESQUE_PID"
-  echo >&2  "          : "`pid $QUEUE_PID`" $QUEUE_PID"
+  echo >&2  "          : "`pid $WORKER_PID`" $WORKER_PID"
   ;;
 *)
   echo >&2
   echo >&2  "Usage: $0 command"
   echo >&2
-  echo >&2  "  command : resque_web scheduler queue unicorn"
+  echo >&2  "  command : resque_web scheduler queue backend unicorn"
   echo >&2  "          : stop force-stop restart reload"
   echo >&2  "          : bundle reopen_logs pid_list help"
   echo >&2  "          : "
