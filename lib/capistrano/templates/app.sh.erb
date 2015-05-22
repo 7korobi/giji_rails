@@ -69,26 +69,33 @@ signal () {
 }
 
 scheduler () {
+  echo "boot scheduler ..."
   cd $APP_ROOT
-  rbenv exec rake resque:scheduler BACKGROUND=yes
-  ps -ef | grep " resque\-scheduler\-" | cut -c 10-14 > $SCHEDULER_PID
+  DYNAMIC_SCHEDULE=true resque-scheduler -E production -P $SCHEDULER_PID -l /utage/log/resque-scheduler.log -q --background
+  echo "done."
 }
 
 resque_web () {
+  echo "boot resque_web ..."
   cd $APP_ROOT
   rbenv exec resque-web -p $RESQUE_PORT $APP_ROOT/config/initializers/resque.rb
   ps -ef | grep "/resque-web\ " | cut -c 10-14 > $RESQUE_PID
+  echo "done."
 }
 
 queue () {
+  echo "boot queue ..."
   cd $APP_ROOT
   export QUEUE=giji_rsyncs,giji_schedules,giji_vils,giji_freeze,giji_errors
   PIDFILE=$WORKER_PID rbenv exec rake environment resque:work 1> /dev/null &
+  echo "done."
 }
 
 unicorn () {
+  echo "boot unicorn ..."
   cd $APP_ROOT
   rbenv exec unicorn_rails -E <%= server.properties.rails_env %> -D -c <%= fetch(:unicorn_config) %>
+  echo "done."
 }
 
 set_pid () {
@@ -116,7 +123,7 @@ backend)
   signal QUIT $SCHEDULER_PID  
   sleep 3
   resque_web
-  queue
+  sleep 1
   scheduler
   ;;
 resque_web)

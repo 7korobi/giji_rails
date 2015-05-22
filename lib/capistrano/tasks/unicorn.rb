@@ -8,7 +8,7 @@ set :unicorn_socket, -> { "/utage/socket/#{fetch :application}.unicorn.sock" }
 set :unicorn_timeout, 30
 set :unicorn_workers, 2
 set :unicorn_config, -> { "/utage/conf/#{fetch :application}.unicorn.rb" }
-set :unicorn_err_log, "/tmp/err_log.txt"
+set :unicorn_err_log, "/utage/log/unicorn_err.log"
 set :app_script, -> { "/utage/#{fetch(:application)}.app.sh" }
 
 set :diff_exclude, %w[
@@ -79,19 +79,24 @@ namespace :unicorn do
   desc "Zero-downtime restart strategy."
   task :start do
     on roles(:app, :resque, :queue), in: :parallel do |server|
-      if previous_path(server)
-        next unless remote_diff?(server, "Gemfile.lock", ".ruby-version")
+      if previous_path(server) && remote_diff?(server, "Gemfile.lock", ".ruby-version")
+        execute fetch(:app_script), :bundle
+        execute fetch(:app_script), :stop
       end
-      execute fetch(:app_script), :bundle
-      execute fetch(:app_script), :stop
     end
 
     on roles(:resque), in: :parallel do |server|
       execute fetch(:app_script), :backend
     end
+
     on roles(:app), in: :parallel do |server|
-      execute fetch(:app_script), :unicorn
+      if previous_path(server) && remote_diff?(server, "Gemfile.lock", ".ruby-version")
+        execute fetch(:app_script), :unicorn
+      else
+        execute fetch(:app_script), :reload
+      end
     end
+
     on roles(:app, :resque, :queue), in: :parallel do
       execute fetch(:app_script), :pid_list
     end

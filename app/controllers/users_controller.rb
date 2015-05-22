@@ -41,11 +41,13 @@ class UsersController < ApplicationController
   end
 
   def show
-    favolite = MapReduce::Face.where("value.sow_auth_id.max_is" => user.id).order_by("value.sow_auth_id.max" => -1).first
-    if favolite
-      @favolite_face_id = favolite.id
-    else
-      @favolite_face_id = "undef"
+    if user
+      favolite = MapReduce::Face.where("value.sow_auth_id.max_is" => user.id).order_by("value.sow_auth_id.max" => -1).first
+      if favolite
+        @favolite_face_id = favolite.id
+      else
+        @favolite_face_id = "undef"
+      end
     end
   end
 

@@ -2,7 +2,7 @@ class User
   include Giji
 
   def self.find_by_id(id)
-    id = Moped::BSON::ObjectId.from_string(id) rescue id
+    id = BSON::ObjectId.from_string(id) rescue id
     find(id)
   end
 
