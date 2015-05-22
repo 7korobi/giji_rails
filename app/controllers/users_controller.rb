@@ -124,19 +124,20 @@ class UsersController < ApplicationController
     gon.history = list.map do |chr|
       story   = stories[chr.story_id].first
       nation  = GAME[story.folder][:nation] rescue ' - '
-      link    = "http://7korobi.gehirn.ne.jp/stories/#{chr.story_id}.html"
+      link    = "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{chr.story_id}.html"
       created = story.timer["updateddt"]
 
       chr.attributes.merge(
         _id: chr.story_id,
+        name: chr.name,
+        user_id: chr.sow_auth_id,
         template: "message/say",
         mestype: "SAY",
         anchor: "#{nation}#{story.vid}",
         style: 'head',
         date: created,
-        name: "<a href=\"#{link}\">#{story.name}</a>",
         log: <<_HTML_ ,
-<b style="display:inline-block; width:150px"> #{chr.name} </b> #{chr.sow_auth_id} <br>
+<a href="#{link}">#{story.name}</a> <br>
 _HTML_
       )
     end
