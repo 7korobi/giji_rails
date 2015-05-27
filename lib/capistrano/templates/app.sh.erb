@@ -87,7 +87,7 @@ queue () {
   echo "boot queue ..."
   cd $APP_ROOT
   export QUEUE=giji_rsyncs,giji_schedules,giji_vils,giji_freeze,giji_errors
-  PIDFILE=$WORKER_PID rbenv exec rake environment resque:work 1> /dev/null &
+  PIDFILE=$WORKER_PID BACKGROUND=yes rbenv exec rake environment resque:work 1> /utage/log/resque-worker-std.log 2> /utage/log/resque-worker-err.log
   echo "done."
 }
 
