@@ -69,7 +69,7 @@ class GijiVilWriter
     mecab_each do |src|
       mecab_countup src, types, src.values_at("logtype", "face_id", "sow_auth_id", "語彙").join(",")
     end
-    yaml_path = "/www/giji_yaml/mecab/#{@vid}.yml"
+    yaml_path = "/data/www/giji_yaml/mecab/#{@vid}.yml"
     File.open(yaml_path, "w:utf-8") do |f|
       f.write types.map{|key, o| o }.sort_by{|o| -o["count"] }.to_yaml
     end

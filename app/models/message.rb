@@ -15,9 +15,11 @@ class Message
   field :mestype
   field :sow_auth_id
 
-  belongs_to :potof, inverse_of: :messages
-  belongs_to :story, inverse_of: :chats
-  belongs_to :event, inverse_of: :chats
+  index date: 1
+
+  belongs_to :potof, inverse_of: :messages, index: true
+  belongs_to :story, inverse_of: :chats,    index: true
+  belongs_to :event, inverse_of: :chats,    index: true
 
   def self.by_event_id(event_id)
     yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
@@ -32,11 +34,10 @@ class Message
   end
 
   def self.in_story(story_id)
-    where(story_id: story_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
+    where(story_id: story_id).order_by(:date.asc)
   end
   def self.in_event(event_id)
-    story_id = event_id.split("-")[0..1].join("-")
-    where(event_id: event_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
+    where(event_id: event_id).order_by(:date.asc)
   end
 
   def self.copy_from_file(folders = nil)

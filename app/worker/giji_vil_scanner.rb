@@ -155,15 +155,14 @@ class GijiVilScanner < GijiScanner
         turn.times do |turn_no|
           event = SowTurn.find_or_initialize_by(story_id: sow.id, turn: turn_no)
           event.attributes["_type"] = "SowTurn"
-          event.update_attributes(
-            winner: SOW_RECORD[folder][:winners][o.winner.to_i],
-          )
+          event.winner = "WIN_NONE"
 
           case turn_no
           when 0
             event.name = "プロローグ"
           when o.epilogue.to_i
             event.name = "エピローグ"
+            event.winner = SOW_RECORD[folder][:winners][o.winner.to_i]
           end
           if turn - 1 == turn_no || o.epilogue.to_i == turn_no
             event.epilogue = o.epilogue.to_i,

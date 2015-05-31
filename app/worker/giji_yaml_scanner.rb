@@ -20,9 +20,10 @@ class GijiYamlScanner < GijiScanner
 
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
+    event = SowTurn.find(event_id)
 
     requests = Hash.new
-    messages = Message.by_event_id(event_id)
+    messages = event.messages
     appends = []
     stored_ids = messages.map(&:logid)
     chk_doubles = []
@@ -87,6 +88,10 @@ class GijiYamlScanner < GijiScanner
     appends.each(&:save)
     yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
     File.open(yaml_path, "w:utf-8") do |f|
+      messages = messages.sort_by(&:date)
+      event.created_at = messages.first.date
+      event.updated_at = messages.last.date
+      event.save
       f.write messages.to_yaml
     end
 
