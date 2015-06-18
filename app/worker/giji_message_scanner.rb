@@ -46,12 +46,22 @@ class GijiMessageScanner < GijiScanner
       next if stored_ids.member? logid
       stored_ids.push  logid
 
+      mestype = SOW_RECORD[folder][:mestypes][o.mestype.to_i]
+      case logid[1]
+      when "M"
+        logid_map = {"ADMIN" => "a", "MAKER" => "m", "SPSAY" => "P"}
+        logid_fix = "#{logid_map[mestype] || mestype[0]}#{logid[1..-1]}"
+      else
+        logid_fix = logid.dup
+      end
+      logid_fix[2] = 0 if logid[2] == "9"
+
       # message embedded in
       message = Message.new.tap do |t|
         t.id = [event_id, logid].join("-")
         t.story_id = story_id
         t.event_id = event_id
-        t.logid = logid
+        t.logid = logid_fix
         t.sow_auth_id = o.uid
         t.date = o.date
         t.log = o.log
@@ -59,7 +69,7 @@ class GijiMessageScanner < GijiScanner
         t.face_id = o.cid
         t.csid = o.csid
         t.style = SOW_RECORD[folder][:monospace][o.monospace.to_i]
-        t.mestype = SOW_RECORD[folder][:mestypes][o.mestype.to_i]
+        t.mestype = mestype
       end
       fix_dic = {
         'へクター' => 'ヘクター'

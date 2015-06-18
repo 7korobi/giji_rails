@@ -29,15 +29,20 @@ class GijiYamlScanner < GijiScanner
     chk_doubles = []
 
     source.each do |o|
+      mestype = SOW_RECORD[folder][:mestypes][o.mestype.to_i]
       logid, subid  = case fname
                       when /memo.cgi/
-                      ['MM' + o.logid, 'M']
+                        loghd_map = {"ADMIN" => "a", "MAKER" => "m", "SPSAY" => "P"}
+                        loghd = "#{loghd_map[mestype] || mestype[0]}M"
+                        [loghd + o.logid, 'M']
                       when /log.cgi/
-                      [o.logid, o.logsubid]
+                        [o.logid, o.logsubid]
                       end
       if chk_doubles.member? logid
         GijiErrorReport.enqueue "logid is double. #{logid} add 90000 number.", o  unless  stored_ids.member? logid
-        logid = logid[0..1] + (90000 + logid[2..-1].to_i).to_s
+        uniq_id = logid[0..1] + (90000 + logid[2..-1].to_i).to_s
+      else
+        uniq_id = logid
       end
       chk_doubles.push logid
 
@@ -46,10 +51,11 @@ class GijiYamlScanner < GijiScanner
 
       # message embedded in
       message = Message.new.tap do |t|
-        t.id = [event_id, logid].join("-")
+        t.id = [event_id, uniq_id].join("-")
         t.story_id = story_id
         t.event_id = event_id
         t.logid = logid
+        t.mestype = mestype
         t.sow_auth_id = o.uid
         t.date = o.date
         t.log = o.log
@@ -57,7 +63,6 @@ class GijiYamlScanner < GijiScanner
         t.face_id = o.cid
         t.csid = o.csid
         t.style = SOW_RECORD[folder][:monospace][o.monospace.to_i]
-        t.mestype = SOW_RECORD[folder][:mestypes][o.mestype.to_i]
       end
       fix_dic = {
         'へクター' => 'ヘクター'
@@ -86,14 +91,7 @@ class GijiYamlScanner < GijiScanner
     end
 
     appends.each(&:save)
-    yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
-    File.open(yaml_path, "w:utf-8") do |f|
-      messages = messages.sort_by(&:date)
-      event.created_at = messages.first.date
-      event.updated_at = messages.last.date
-      event.save
-      f.write messages.to_yaml
-    end
+    event.save_to_yaml
 
     requests.keys.each do |key| request_key, sow_auth_id = key
       account = SowAuth.where( sow_auth_id ).first || SowAuth.new( sow_auth_id )

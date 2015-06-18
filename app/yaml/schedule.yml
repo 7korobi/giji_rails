@@ -1,8 +1,8 @@
-giji_table_check:
-  class: GijiScheduler
-  args:  talk
+giji_backup:
+  class: GijiBackup
+  args:  daily
   queue: giji_schedules
-  description: 全テーブルチェック
+  description: 人狼議事 バックアップ
 
 giji_map_reduce_face:
   cron: '58  4  *  *  *'

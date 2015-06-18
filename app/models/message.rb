@@ -23,13 +23,13 @@ class Message
 
   def self.by_event_id(event_id)
     yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
-    YAML.load_file(yaml_path) rescue []
+    YAML.load_file(yaml_path).map{|attr| new(attr)} rescue []
   end
 
   def self.by_story_id(story_id)
     Event.where(story_id: story_id).map(&:id).map do |event_id|
       yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
-      YAML.load_file(yaml_path) rescue []
+      YAML.load_file(yaml_path).map{|attr| new(attr)} rescue []
     end.flatten
   end
 
