@@ -7,6 +7,7 @@ gem 'quiet_assets'
 gem 'sqlite3'
 
 # queue
+gem 'sinatra'
 gem 'sidekiq'
 gem 'sidekiq-cron'
 
@@ -71,7 +72,6 @@ gem "less-rails"
 gem "bootstrap-sass"
 
 # control support
-gem "kaminari"
 gem "moji"
 gem "jpmobile"
 
