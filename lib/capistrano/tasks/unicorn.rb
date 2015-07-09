@@ -1,8 +1,7 @@
 require 'erb'
+set :pty, false
 set :queue_pid,     -> { "/utage/run/#{fetch :application}.queue.pid" }
-set :sidekiq_pid,   -> { "/utage/run/#{fetch :application}.sidekiq-web.pid" }
 set :unicorn_pid,   -> { "/utage/run/#{fetch :application}.unicorn.pid" }
-set :scheduler_pid, -> { "/utage/run/#{fetch :application}.scheduler.pid" }
 
 set :unicorn_socket, -> { "/utage/socket/#{fetch :application}.unicorn.sock" }
 set :unicorn_timeout, 30
@@ -86,7 +85,7 @@ namespace :unicorn do
     end
 
     on roles(:sidekiq), in: :parallel do |server|
-      execute fetch(:app_script), :backend
+      execute fetch(:app_script), :queue
     end
 
     on roles(:app), in: :parallel do |server|

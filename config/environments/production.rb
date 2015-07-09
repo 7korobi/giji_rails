@@ -20,7 +20,7 @@ Giji::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_files = false
   config.assets.compress = false
   config.assets.css_compressor = :scss
   config.assets.js_compressor = nil # Uglifier.new(output:{ preserve_line: false, beautify: true, indent_level:2 }, mangle: false)

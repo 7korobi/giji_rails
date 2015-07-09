@@ -26,8 +26,6 @@ WEB_PORT=<%= server.port.to_i + 9 %>
 
 WEB_OLD_PID=<%= fetch :unicorn_pid %>.oldbin
 WEB_PID=<%= fetch :unicorn_pid %>
-SCHEDULER_PID=<%= fetch :scheduler_pid %>
-SIDEKIQ_PID=<%= fetch :sidekiq_pid %>
 WORKER_PID=<%= fetch :queue_pid %>
 PID=$WEB_PID
 
@@ -68,26 +66,10 @@ signal () {
   fi
 }
 
-scheduler () {
-  echo "boot scheduler ..."
-  cd $APP_ROOT
-  DYNAMIC_SCHEDULE=true sidekiq-scheduler -E production -P $SCHEDULER_PID -l /utage/log/sidekiq-scheduler.log -q --background
-  echo "done."
-}
-
-sidekiq_web () {
-  echo "boot sidekiq_web ..."
-  cd $APP_ROOT
-  rbenv exec sidekiq-web -p $SIDEKIQ_PORT $APP_ROOT/config/initializers/sidekiq.rb
-  ps -ef | grep "/sidekiq-web\ " | cut -c 10-14 > $SIDEKIQ_PID
-  echo "done."
-}
-
 queue () {
   echo "boot queue ..."
   cd $APP_ROOT
-  export QUEUE=giji_rsyncs,giji_schedules,giji_vils,giji_freeze,giji_errors
-  PIDFILE=$WORKER_PID BACKGROUND=yes rbenv exec rake environment sidekiq:work 1> /utage/log/sidekiq-worker-std.log 2> /utage/log/sidekiq-worker-err.log
+  rbenv exec bundle exec sidekiq -C config/sidekiq.yml -d
   echo "done."
 }
 
@@ -108,34 +90,16 @@ set_pid () {
 set_pids () {
 #  ps -ef | grep "unicorn_rails\ master" | cut -c 10-14 > $WEB_PID
   set_pid $WEB_OLD_PID
-  set_pid $SCHEDULER_PID
   set_pid $WEB_PID
-  set_pid $SIDEKIQ_PID
   set_pid $WORKER_PID
 }
 
 set_pids
 
 case "$1" in
-backend)
-  signal QUIT $SIDEKIQ_PID
-  signal QUIT $WORKER_PID
-  signal QUIT $SCHEDULER_PID
-  sleep 3
-  sidekiq_web
-  sleep 1
-  scheduler
-  ;;
-sidekiq_web)
-  sig 0 "$SIDEKIQ_PID" && echo >&2 "SIDEKIQ-WEB Already running." && exit 0
-  sidekiq_web
-  ;;
-scheduler)
-  sig 0 "$SCHEDULER_PID" && echo >&2 "SIDEKIQ-SCHEDULER Already running." && exit 0
-  scheduler
-  ;;
 queue)
-  sig 0 "$WORKER_PID" && echo >&2 "SIDEKIQ-WORKER Already running." && exit 0
+  signal QUIT $WORKER_PID
+  sleep 3
   queue
   ;;
 unicorn)
@@ -146,28 +110,18 @@ unicorn)
 stop)
   signal QUIT $WEB_OLD_PID
   signal QUIT $WEB_PID
-  signal QUIT $SIDEKIQ_PID
   signal QUIT $WORKER_PID
-  signal QUIT $SCHEDULER_PID
   ;;
 force-stop)
   signal TERM $WEB_OLD_PID
   signal TERM $WEB_PID
-  signal TERM $SIDEKIQ_PID
   signal TERM $WORKER_PID
-  signal TERM $SCHEDULER_PID
   ;;
 stop_start)
   signal QUIT $WEB_OLD_PID
   signal QUIT $WEB_PID
-  signal QUIT $SIDEKIQ_PID
-  signal QUIT $WORKER_PID
-  signal QUIT $SCHEDULER_PID
   sleep 3
   unicorn
-  scheduler
-  sidekiq_web
-  queue
   ;;
 restart)
   signal HUP $WEB_OLD_PID
@@ -188,9 +142,7 @@ reopen_logs)
   signal USR1 $WEB_PID
   ;;
 pid_list)
-  echo >&2  "  process : "`pid $SCHEDULER_PID`" $SCHEDULER_PID"
-  echo >&2  "          : "`pid $WEB_PID`" $WEB_PID"
-  echo >&2  "          : "`pid $SIDEKIQ_PID`" $SIDEKIQ_PID"
+  echo >&2  "  process : "`pid $WEB_PID`" $WEB_PID"
   echo >&2  "          : "`pid $WORKER_PID`" $WORKER_PID"
   ;;
 *)

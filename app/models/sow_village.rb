@@ -42,7 +42,7 @@ class SowVillage < Story
     rsync.each_villages do |folder, vid, _, path, fname|
       stop_vid_list[folder] ||= where(folder: folder, is_finish: true).pluck("vid")
       next if stop_vid_list[folder].member? vid
-      ScanVil.perform_later(path, fname, folder, vid, repair)
+      ScanVilJob.perform_later(path, fname, folder, vid, repair)
     end
   end
 
@@ -50,7 +50,7 @@ class SowVillage < Story
     rsync = Giji::RSync.new
     rsync.each_villages([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      ScanVil.perform_later(path, fname, folder, vid, :repair)
+      ScanVilJob.perform_later(path, fname, folder, vid, :repair)
     end
   end
 
@@ -59,7 +59,7 @@ class SowVillage < Story
       vid   = self.vid
       path  = set[:files][:ldata] + "/data/vil"
       fname = "%04d_vil.cgi"%[vid]
-      ScanVil.perform_later(path, fname, folder, vid, nil) if force
+      ScanVilJob.perform_later(path, fname, folder, vid, nil) if force
       yield(folder,vid,path) if block_given?
     end
   end

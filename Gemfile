@@ -7,7 +7,7 @@ gem 'quiet_assets'
 gem 'sqlite3'
 
 # queue
-gem 'sinatra'
+gem 'sinatra', require: false
 gem 'sidekiq'
 gem 'sidekiq-cron'
 

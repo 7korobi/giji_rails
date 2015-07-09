@@ -1,0 +1,10 @@
+:verbose: false
+:pidfile: /utage/run/giji_rails.queue.pid
+:logfile: ./log/sidekiq.log
+:concurrency: 1
+:queues:
+  - giji_rsyncs
+  - giji_schedules
+  - giji_vils
+  - giji_freeze
+  - giji_errors
