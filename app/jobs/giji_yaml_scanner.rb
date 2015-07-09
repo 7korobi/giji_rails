@@ -2,19 +2,10 @@
 
 require 'timeout'
 
-class GijiYamlScanner < GijiScanner
-  def save
-    case @fname
-    when /log.cgi/
-      Resque.enqueue(self.class, @path, @fname, :log, @folder, @vid, @turn)
-    when /memo.cgi/
-      Resque.enqueue(self.class, @path, @fname, :memo, @folder, @vid, @turn)
-    else
-    end
-  end
+class ScanYamlJob < ActiveJob::Base
+  queue_as :giji_vils
 
-  @queue = :giji_vils
-  def self.perform  path, fname, type, folder, vid, turn
+  def perform  path, fname, type, folder, vid, turn
     source = SowRecordFile.send(type, path, fname, folder, vid, turn )
     return unless source
 
@@ -39,7 +30,7 @@ class GijiYamlScanner < GijiScanner
                         [o.logid, o.logsubid]
                       end
       if chk_doubles.member? logid
-        GijiErrorReport.enqueue "logid is double. #{logid} add 90000 number.", o  unless  stored_ids.member? logid
+        ErrorJob.perform_now "logid is double. #{logid} add 90000 number.", o  unless  stored_ids.member? logid
         uniq_id = logid[0..1] + (90000 + logid[2..-1].to_i).to_s
       else
         uniq_id = logid
@@ -78,7 +69,7 @@ class GijiYamlScanner < GijiScanner
       end
 
       if message.mestype.blank?
-        GijiErrorReport.enqueue "mestype: null => BSAY", message.attributes
+        ErrorJob.perform_now "mestype: null => BSAY", message.attributes
         message.mestype = "BSAY"
       end
       begin

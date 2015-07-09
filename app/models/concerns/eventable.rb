@@ -12,7 +12,5 @@ module Eventable
     has_many :messages, inverse_of: :event
     has_many :potofs,   inverse_of: :event
     belongs_to :story,  inverse_of: :events
-
-    paginates_per 50
   end
 end

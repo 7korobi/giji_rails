@@ -1,6 +1,7 @@
-class GijiBackup
-  @queue = :giji_schedules
-  def self.perform(mode)
+class BackupJob < ActiveJob::Base
+  queue_as :giji_schedules
+
+  def perform(mode)
   	good_data = `/usr/bin/mongo --host mongo.family.jp < /utage/mongo/validate.js`["true"]
   	if good_data
       `/usr/bin/mongodump --forceTableScan --host mongo.family.jp -d giji  -o /data/mongo/`

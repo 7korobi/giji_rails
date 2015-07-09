@@ -1,10 +1,7 @@
-class GijiErrorReport
-  def self.enqueue *args
-    Resque.enqueue(self, args)
-  end
+class ErrorJob < ActiveJob::Base
+  queue_as :z_failed
 
-  @queue = :z_failed
-  def self.perform *args
+  def perform(*args)
     raise RuntimeError, args.inspect
   end
 end

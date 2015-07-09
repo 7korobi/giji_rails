@@ -29,7 +29,7 @@ class SowTurn
       self.messages = []
       %w[log memo].each do |type|
         fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-        scanner = GijiLogScanner.new(path, folder, fname)
+        scanner = ScanLogJob.perform_later(path, folder, fname)
         scanner.save
       end
     end

@@ -40,16 +40,26 @@ class Message
     where(event_id: event_id).order_by(:date.asc)
   end
 
-  def self.copy_from_file(folders = nil)
+  def self.job_drive(folder,vid,turn,path,fname)
+    story = SowVillage.where( folder: folder, vid: vid ).first
+    return unless story
+
+    case fname
+    when /log.cgi/
+      ScanYamlJob.perform_later path, fname, :log, folder, vid, turn
+    when /memo.cgi/
+      ScanYamlJob.perform_later path, fname, :memo, folder, vid, turn
+    else
+    end
+  end
+
+  def self.copy_from_file
     rsync = Giji::RSync.new
     rsync.each_logs([]) do |folder, vid, turn, path, fname|
-      next unless (!folders) || folders.member?(folder)
-      GijiYamlScanner.new(path, folder, fname).save
+      job_drive(folder, vid, turn, path, fname)
     end
     rsync.each_memos([]) do |folder, vid, turn, path, fname|
-      next unless (!folders) || folders.member?(folder)
-      GijiYamlScanner.new(path, folder, fname).save
+      job_drive(folder, vid, turn, path, fname)
     end
   end
 end
-

@@ -7,19 +7,10 @@
 
 require 'timeout'
 
-class GijiMessageScanner < GijiScanner
-  def save
-    case @fname
-    when /log.cgi/
-      Resque.enqueue(self.class, @path, @fname, :log, @folder, @vid, @turn)
-    when /memo.cgi/
-      Resque.enqueue(self.class, @path, @fname, :memo, @folder, @vid, @turn)
-    else
-    end
-  end
+class GijiMessageScanner < ActiveJob::Base
+  queue_as :giji_vils
 
-  @queue = :giji_vils
-  def self.perform  path, fname, type, folder, vid, turn
+  def perform  path, fname, type, folder, vid, turn
     source = SowRecordFile.send(type, path, fname, folder, vid, turn )
     return unless source
 
@@ -38,7 +29,7 @@ class GijiMessageScanner < GijiScanner
                       [o.logid, o.logsubid]
                       end
       if chk_doubles.member? logid
-        GijiErrorReport.enqueue "logid is double. #{logid} add 90000 number.", o  unless  stored_ids.member? logid
+        ErrorJob.perform_now "logid is double. #{logid} add 90000 number.", o  unless  stored_ids.member? logid
         logid = logid[0..1] + (90000 + logid[2..-1].to_i).to_s
       end
       chk_doubles.push logid
@@ -85,17 +76,27 @@ class GijiMessageScanner < GijiScanner
       end
 
       if message.mestype.blank?
-        GijiErrorReport.enqueue "mestype: null => BSAY", message.attributes
+        ErrorJob.perform_now  "mestype: null => BSAY", message.attributes
         message.mestype = "BSAY"
       end
       begin
         timeout(60) { message.with(collection:"msg-#{story_id}").save }
       rescue Moped::Errors::OperationFailure => e
-        GijiErrorReport.enqueue e.inspect, o, message.attributes
+        ErrorJob.perform_now  e.inspect, o, message.attributes
         sleep 10
       end
       key = [{ remote_ip: o.remoteaddr, fowardedfor: o.fowardedfor, user_agent: o.agent },{ sow_auth_id: o.uid }]
       requests[ key ] = true
     end
   end
+
+def save
+ case @fname
+ when /log.cgi/
+   Resque.enqueue(self.class, @path, @fname, :log, @folder, @vid, @turn)
+ when /memo.cgi/
+   Resque.enqueue(self.class, @path, @fname, :memo, @folder, @vid, @turn)
+ else
+ end
+end
 end

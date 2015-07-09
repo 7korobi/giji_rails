@@ -1,28 +1,9 @@
 # -*- coding: utf-8 -*-
 
-class GijiVilScanner < GijiScanner
-  def save(repair = nil)
-    @keys = nil
-    case @fname
-    when /vil.cgi/
-      Resque.enqueue(self.class, @path, @fname, @folder, @vid, repair)
-    else
-    end
-  end
+class ScanVilJob < ActiveJob::Base
+  queue_as :giji_rsyncs
 
-  def self.save
-    rsync = Giji::RSync.new
-
-    stop_vid_list = {}
-    rsync.each_villages do |folder, vid, _, path, fname|
-      stop_vid_list[folder] ||= SowVillage.where(folder: folder, is_finish: true).pluck("vid")
-      next if stop_vid_list[folder].member? vid
-      new(path, folder, fname).save
-    end
-  end
-
-  @queue = :giji_rsyncs
-  def self.perform  path, fname, folder, vid, repair
+  def perform  path, fname, folder, vid, repair
     source = SowRecordFile.village( path, fname, folder, vid )
     return unless source
 

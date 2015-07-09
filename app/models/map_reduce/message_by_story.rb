@@ -72,8 +72,7 @@ class MapReduce::MessageByStory
         counter(talk, logs, :sow_auth_id)
       end
       o.save
-
-      GijiVilWriter.new(story_id).save
+      WriteVilJob.perform_later(story_id)
     end
   end
 end

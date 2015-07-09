@@ -2,18 +2,10 @@
 
 require 'timeout'
 
-class GijiEventScanner < GijiScanner
-  def save(type)
-    @keys = nil
-    case @fname
-    when /vil.cgi/
-      Resque.enqueue(self.class, @path, @fname, type, @folder, @vid, @turn)
-    else
-    end
-  end
+class ReplaceEventJob < ActiveJob::Base
+  queue_as :giji_vils
 
-  @queue = :giji_vils
-  def self.perform  path, fname, type, folder, vid, turn
+  def perform  path, fname, type, folder, vid, turn
     story_id = [folder.downcase, vid].join '-'
     event_id = [folder.downcase, vid, turn].join '-'
 
@@ -28,7 +20,7 @@ class GijiEventScanner < GijiScanner
     begin
       timeout(60) { event.save }
     rescue
-      GijiErrorReport.enqueue e.inspect, o, event.attributes
+      ErrorJob.perform_now e.inspect, o, event.attributes
       sleep 10
     end
   end

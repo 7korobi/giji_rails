@@ -1,14 +1,16 @@
-class GijiScheduler
-  @queue = :giji_schedules
-  def self.perform type
+class ScanJob < ActiveJob::Base
+  queue_as :giji_schedules
+
+  def perform type
     case type.to_sym
     when :vil
-      GijiRsyncWorker.perform
-      GijiVilScanner.save
+      RsyncJob.perform_later()
+      SowVillage.update_from_file
 
     when :log
-      GijiLogScanner.save
-
+      SowTurn.messages_empty.each do |o|
+        o.update_from_file
+      end
     end
   end
 

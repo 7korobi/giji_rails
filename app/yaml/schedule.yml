@@ -1,34 +1,34 @@
 giji_backup:
-  class: GijiBackup
+  cron: '12 12 12  *  *'
+  class: BackupJob
   args:  daily
   queue: giji_schedules
   description: 人狼議事 バックアップ
 
 giji_map_reduce_face:
   cron: '58  4  *  *  *'
-  class: GijiMapReduce
+  class: MapReduceJob
   args:  Face
   queue: giji_schedules
   description: MapReduce::Face  を作成
 
 giji_map_reduce_message:
   cron: '57  4  *  *  *'
-  class: GijiMapReduce
+  class: MapReduceJob
   args:  Message
   queue: giji_schedules
   description: MapReduce::Message  を作成
 
 giji_vil_scanner:
   cron: '1,21,41  *  *  *  *'
-  class: GijiScheduler
+  class: ScanJob
   args:  vil
   queue: giji_schedules
   description: rsync <-> SowVillage  がまだ未登録のぶんを、ファイルから登録
 
 giji_log_scanner:
   cron: '59  0,12  *  *  *'
-  class: GijiScheduler
+  class: ScanJob
   args:  log
   queue: giji_schedules
   description: SowTurn.messages がまだ空のぶんを、ファイルから登録
-
