@@ -80,7 +80,7 @@ class SowVillage < Story
         %w[log memo].each do |type|
           turn = event.turn
           fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-          ScanYamlJob.perform_later path, fname, type.to_sym, folder, vid, turn
+          ScanLogJob.perform_later path, fname, type, folder, vid, turn
 
           if type == "log" && SowRecordFile.send(type, path, fname, folder, vid, turn )
             hash = event.attributes.except("_id", "_type", "messages")
@@ -106,7 +106,7 @@ class SowVillage < Story
         %w[log memo].each do |type|
           turn = event.turn
           fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-          ScanYamlJob.perform_later path, fname, type.to_sym, folder, vid, turn
+          ScanLogJob.perform_later path, fname, type, folder, vid, turn
         end
       end
     end

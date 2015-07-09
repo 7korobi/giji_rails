@@ -2,11 +2,11 @@
 
 require 'timeout'
 
-class ScanYamlJob < ActiveJob::Base
+class ScanLogJob < ActiveJob::Base
   queue_as :giji_vils
 
   def perform  path, fname, type, folder, vid, turn
-    source = SowRecordFile.send(type, path, fname, folder, vid, turn )
+    source = SowRecordFile.send(type.to_sym, path, fname, folder, vid, turn )
     return unless source
 
     story_id = [folder.downcase, vid].join '-'

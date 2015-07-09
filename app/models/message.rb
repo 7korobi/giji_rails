@@ -46,9 +46,9 @@ class Message
 
     case fname
     when /log.cgi/
-      ScanYamlJob.perform_later path, fname, :log, folder, vid, turn
+      ScanLogJob.perform_later path, fname, "log", folder, vid, turn
     when /memo.cgi/
-      ScanYamlJob.perform_later path, fname, :memo, folder, vid, turn
+      ScanLogJob.perform_later path, fname, "memo", folder, vid, turn
     else
     end
   end

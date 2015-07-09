@@ -29,8 +29,7 @@ class SowTurn
       self.messages = []
       %w[log memo].each do |type|
         fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-        scanner = ScanLogJob.perform_later(path, folder, fname)
-        scanner.save
+        ScanLogJob.perform_later path, fname, type, folder, vid, turn
       end
     end
   end
