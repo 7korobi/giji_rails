@@ -256,6 +256,8 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     moji (1.6)
+    mongo_session_store-rails4 (6.0.0)
+      actionpack (>= 3.1)
     mongoid (4.0.2)
       activemodel (~> 4.0)
       moped (~> 2.0.0)
@@ -471,6 +473,7 @@ DEPENDENCIES
   mechanize
   minitest
   moji
+  mongo_session_store-rails4
   mongoid (~> 4.0.0)
   natto
   net-sftp

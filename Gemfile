@@ -32,6 +32,7 @@ gem 'omniauth-openid'
 # yum install mongo-10gen mongo-10gen-server
 # yum install redis
 gem 'mongoid', '~> 4.0.0'
+gem 'mongo_session_store-rails4'
 gem "paperclip"
 
 # javascript
