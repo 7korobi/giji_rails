@@ -2,12 +2,13 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'unicorn'
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.3'
 gem 'quiet_assets'
+gem 'sqlite3'
 
 # queue
-gem 'resque'
-gem 'resque-scheduler'
+gem 'sidekiq'
+gem 'sidekiq-cron'
 
 # web_service
 gem "rdropbox"
@@ -30,13 +31,7 @@ gem 'omniauth-openid'
 # data_base
 # yum install mongo-10gen mongo-10gen-server
 # yum install redis
-# yum install mysql-server
-# yum install mysql-mroonga
-# yum install groonga-tokenizer-mecab
 gem 'mongoid', '~> 4.0.0'
-gem "redis-store"
-gem "redis-rails"
-gem 'sqlite3'
 gem "paperclip"
 
 # javascript
@@ -105,4 +100,3 @@ group :test do
   gem 'turn' #, :require => false
   gem "minitest"
 end
-

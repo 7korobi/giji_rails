@@ -6,10 +6,10 @@ db/*.sqlite3
 log/*.log
 tmp/
 .sass-cache/
+config/active_job.yml
 config/database.yml
 config/mongoid.yml
 config/yaml/
 config/initializers/secret.rb
-config/initializers/resque.rb
 test/
 vendor/cache

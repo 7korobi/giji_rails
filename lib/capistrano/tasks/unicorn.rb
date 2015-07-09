@@ -1,6 +1,6 @@
 require 'erb'
 set :queue_pid,     -> { "/utage/run/#{fetch :application}.queue.pid" }
-set :resque_pid,    -> { "/utage/run/#{fetch :application}.resque-web.pid" }
+set :sidekiq_pid,   -> { "/utage/run/#{fetch :application}.sidekiq-web.pid" }
 set :unicorn_pid,   -> { "/utage/run/#{fetch :application}.unicorn.pid" }
 set :scheduler_pid, -> { "/utage/run/#{fetch :application}.scheduler.pid" }
 
@@ -35,7 +35,7 @@ end
 namespace :unicorn do
   desc "Setup Unicorn initializer and app configuration(note: can not be rollback)"
   task :setup do
-    on roles(:app, :queue, :resque), in: :parallel do |server|
+    on roles(:app, :queue, :sidekiq), in: :parallel do |server|
       execute "mkdir -p /utage/run"
       execute "mkdir -p /utage/conf"
       execute "mkdir -p /utage/socket"
@@ -51,7 +51,7 @@ namespace :unicorn do
     on roles(:app), in: :parallel do
       execute fetch(:app_script), :stop
     end
-    on roles(:app, :resque, :queue), in: :parallel do
+    on roles(:app, :sidekiq, :queue), in: :parallel do
       execute fetch(:app_script), :pid_list
     end
   end
@@ -61,7 +61,7 @@ namespace :unicorn do
     on roles(:app), in: :parallel do
       execute fetch(:app_script), :reload
     end
-    on roles(:app, :resque, :queue), in: :parallel do
+    on roles(:app, :sidekiq, :queue), in: :parallel do
       execute fetch(:app_script), :pid_list
     end
   end
@@ -71,21 +71,21 @@ namespace :unicorn do
     on roles(:app), in: :parallel do
       execute fetch(:app_script), :restart
     end
-    on roles(:app, :resque, :queue), in: :parallel do
+    on roles(:app, :sidekiq, :queue), in: :parallel do
       execute fetch(:app_script), :pid_list
     end
   end
 
   desc "Zero-downtime restart strategy."
   task :start do
-    on roles(:app, :resque, :queue), in: :parallel do |server|
+    on roles(:app, :sidekiq, :queue), in: :parallel do |server|
       if previous_path(server) && remote_diff?(server, "Gemfile.lock", ".ruby-version")
         execute fetch(:app_script), :bundle
         execute fetch(:app_script), :stop
       end
     end
 
-    on roles(:resque), in: :parallel do |server|
+    on roles(:sidekiq), in: :parallel do |server|
       execute fetch(:app_script), :backend
     end
 
@@ -97,7 +97,7 @@ namespace :unicorn do
       end
     end
 
-    on roles(:app, :resque, :queue), in: :parallel do
+    on roles(:app, :sidekiq, :queue), in: :parallel do
       execute fetch(:app_script), :pid_list
     end
   end
