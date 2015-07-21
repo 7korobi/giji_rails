@@ -3,7 +3,7 @@ require 'yajl/json_gem'
 require 'yaml'
 require 'active_support/all'
 require 'ostruct'
-require 'current'
+require 'current_auth'
 require 'rsync'
 
 require 'serializer'

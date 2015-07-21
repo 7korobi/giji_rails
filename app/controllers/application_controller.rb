@@ -12,11 +12,11 @@ class ApplicationController < ActionController::Base
   end
 
   case Rails.env
-  when 'development'    
+  when 'development'
     before_filter :debug
     def debug
-      current.user ||= User.where(name:'ななころび').first
-      current.auth ||= Auth.where(nickname:'7korobi').first
+      current.user_id ||= User.where(name:'ななころび').first.id
+      current.auth_id ||= Auth.where(nickname:'7korobi').first.id
       p current
       current_save
     end

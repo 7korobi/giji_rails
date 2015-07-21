@@ -1,5 +1,5 @@
 require 'erb'
-set :pty, false
+set :pty, true
 set :queue_pid,     -> { "/utage/run/#{fetch :application}.queue.pid" }
 set :unicorn_pid,   -> { "/utage/run/#{fetch :application}.unicorn.pid" }
 

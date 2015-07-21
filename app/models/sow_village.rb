@@ -16,6 +16,9 @@ class SowVillage < Story
   field :upd,   type:Hash
   field :timer, type:Hash
 
+  def user_id
+    nil
+  end
 
   def freeze_to_html
     WriteVilJob.perform_later(story_id)

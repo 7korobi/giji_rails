@@ -44,25 +44,39 @@ AS_USER=<%= server.user %>
 
 set -u
 
+set_pid () {
+  test -s "$1" && (! kill -0 `cat "$1"`) && rm "$1" || return 0
+}
+set_pids () {
+#  ps -ef | grep "unicorn_rails\ master" | cut -c 10-14 > $WEB_PID
+  set_pid $WEB_OLD_PID
+  set_pid $WEB_PID
+  set_pid $WORKER_PID
+}
+
+set_pids
+
+
 pid () {
   test -s "$1" && cat "$1"
 }
 
+running () {
+  test -s "$1" && kill -0 `cat "$1"`
+}
+
 sig () {
-  test -s "$2" && kill -$1 `cat $2`
+  running $2 || return 0
+  kill -$1 `cat "$2"`
 }
 
-run () {
-  cd $APP_ROOT
-  eval $1
-}
-
-signal () {
-  if  sig $1 "$2"
+sig2 () {
+  if running $3
   then
-    echo $1 $2
+    sig QUIT $2
+    kill -$1 `cat $3`
   else
-    echo >&2 "Not running $2"
+    sig $1 $2
   fi
 }
 
@@ -80,66 +94,47 @@ unicorn () {
   echo "done."
 }
 
-set_pid () {
-  if [ -s "$1" ]
-  then
-    kill -0 `cat $1` || rm $1
-  fi
-}
-
-set_pids () {
-#  ps -ef | grep "unicorn_rails\ master" | cut -c 10-14 > $WEB_PID
-  set_pid $WEB_OLD_PID
-  set_pid $WEB_PID
-  set_pid $WORKER_PID
-}
-
-set_pids
 
 case "$1" in
 queue)
-  signal QUIT $WORKER_PID
+  sig QUIT $WORKER_PID
   sleep 3
   queue
   ;;
 unicorn)
-  sig 0 "$WEB_OLD_PID" && echo >&2 "Already running." && exit 0
-  sig 0 "$WEB_PID" && echo >&2 "Already running." && exit 0
+  running "$WEB_OLD_PID" && echo >&2 "Already running." && exit 0
+  running "$WEB_PID" && echo >&2 "Already running." && exit 0
   unicorn
   ;;
 stop)
-  signal QUIT $WEB_OLD_PID
-  signal QUIT $WEB_PID
-  signal QUIT $WORKER_PID
+  sig QUIT $WEB_OLD_PID
+  sig QUIT $WEB_PID
+  sig QUIT $WORKER_PID
   ;;
 force-stop)
-  signal TERM $WEB_OLD_PID
-  signal TERM $WEB_PID
-  signal TERM $WORKER_PID
+  sig2 TERM $WEB_OLD_PID $WEB_PID
+  sig TERM $WORKER_PID
   ;;
 stop_start)
-  signal QUIT $WEB_OLD_PID
-  signal QUIT $WEB_PID
+  sig QUIT $WEB_OLD_PID
+  sig QUIT $WEB_PID
   sleep 3
   unicorn
   ;;
 restart)
-  signal HUP $WEB_OLD_PID
-  signal HUP $WEB_PID
+  sig2 HUP $WEB_OLD_PID $WEB_PID
   echo reloaded OK
   unicorn
   ;;
 reload)
-  signal USR2 $WEB_OLD_PID
-  signal USR2 $WEB_PID
+  sig2 USR2 $WEB_OLD_PID $WEB_PID
   ;;
 bundle)
   cd $APP_ROOT
   bundle
   ;;
 reopen_logs)
-  signal USR1 $WEB_OLD_PID
-  signal USR1 $WEB_PID
+  sig USR1 $WEB_OLD_PID $WEB_PID
   ;;
 pid_list)
   echo >&2  "  process : "`pid $WEB_PID`" $WEB_PID"

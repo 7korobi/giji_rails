@@ -52,37 +52,51 @@ module CurrentAuthenticated
         redirect_to new_user_path
       end
     end
-    current.auth = auth.dup
-    current.user = auth.user
+    current.auth_id = auth.id
+    current.user_id = auth.user.id
   end
 
   def current_save
-    p
-    p
-
-    if current.auth
-      current.auth.with(safe: false).save(validate: false)
-    end
-    if current.user
-      current.user.rails_token = form_authenticity_token
-      current.user.with(safe: false).save(validate: false)
-      current.request.user_ids |= [current.user.id]
-    end
-    current.request.with(safe: false).save(validate: false)
-
-    p cookies
-    p
-    p
+    current.user && current.user.rails_token = form_authenticity_token
+    current.save
+    session[:current] = current.session
   end
 
-  Current = Struct.new(:auth,:user,:request)
   def logout
     session[:current] = nil
     redirect_to root_url
   end
 
   def current
-    session[:current] ||= Current.new(nil, nil, Request.find_or_initialize_by(request))
+    session[:current] ||= [nil, nil, Request.find_or_create_by(request).id]
+    @current ||= Current.new(* session[:current])
+  end
+
+  class Current
+    attr_accessor :auth_id, :user_id
+    attr_reader :auth, :user, :request
+    def initialize(auth_id, user_id, request_id)
+      @auth_id = auth_id
+      @user_id = user_id
+      @request_id = request_id
+      @auth = auth_id && Auth.find(auth_id)
+      @user = user_id && User.find(user_id)
+      @request = request_id && Request.find(request_id)
+    end
+
+    def session
+      [@auth_id, @user_id, @request_id]
+    end
+
+    def save
+      if @auth
+        @auth.with(safe: false).save(validate: false)
+      end
+      if @user
+        @user.with(safe: false).save(validate: false)
+        @request.user_ids |= [@user.id]
+      end
+      @request.with(safe: false).save(validate: false)
+    end
   end
 end
-
