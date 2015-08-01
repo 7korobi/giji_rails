@@ -50,6 +50,7 @@ class ScanLogJob < ActiveJob::Base
         t.sow_auth_id = o.uid
         t.date = o.date
         t.log = o.log
+        t.size = o.log.to_s.size
         t.subid = subid
         t.face_id = o.cid
         t.csid = o.csid

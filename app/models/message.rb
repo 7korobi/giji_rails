@@ -9,6 +9,7 @@ class Message
   field :style
   field :date, type: Time
 
+  field :size, type: Integer
   field :color
   field :style
   field :subid
