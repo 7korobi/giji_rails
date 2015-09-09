@@ -8,10 +8,14 @@ class Session
     end
   end
 
+  def self.all
+    MongoidStore::Session.all
+  end
+
   def self.grep regexp
-    map MongoidStore::Session.where(data: regexp)
+    map all.where(data: regexp)
   end
   def self.view
-    map MongoidStore::Session.all
+    map all
   end
 end

@@ -15,7 +15,7 @@
   -if login?
     .TSAY.action
       p.text
-        span.btn.edge = link_to 'ログアウト', destroy_user_session_path
+        span.btn.edge = link_to 'ログアウト', sign_out_path
 
   -if user?
     .TSAY.action

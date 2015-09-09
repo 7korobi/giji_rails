@@ -13,6 +13,10 @@ class UsersController < ApplicationController
   before_filter :auth_require, only:%w[new  create]
   before_filter :self_require, only:%w[edit update byebye_list]
 
+  def sign_out
+    super
+  end
+
   def index
     gon.villages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
       active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)

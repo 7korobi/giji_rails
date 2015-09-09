@@ -92,6 +92,8 @@ message_by_stories:
         $sum: 1
 
 
+
+
 xxx_aggregate_faces:
   - $project:
       folder:   1

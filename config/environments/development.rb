@@ -4,9 +4,8 @@ Giji::Application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.log_level = :info
-  config.log_tags = [ :subdomain, :uuid ]
-  config.logger = ActiveSupport::TaggedLogging.new(Logger.new("/utage/log/rails_development.log"))
+  config.logger = Logger.new("/utage/log/rails_development.log", "daily")
+  config.logger.level = Logger::INFO
 
   config.cache_classes = false
 

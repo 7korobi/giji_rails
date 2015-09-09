@@ -5,9 +5,7 @@ Giji::Application.routes.draw do
   mount Sidekiq::Web, at: "/users/7korobi/sidekiq"
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-  devise_scope :user do
-    get '/users/sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-  end
+  get "sign_out" => 'users#sign_out'
 
   resources :trpg_stories, except:%w[show]
 

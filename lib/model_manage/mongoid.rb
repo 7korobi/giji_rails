@@ -29,20 +29,18 @@ module ModelManage
         fields[name.to_s].form = OpenStruct.new(form_attributes)
       end
 
-      def relation_form_set(name, options = {})
-        relation_attributes = {
-          owner:    self,
-          name:     name.to_s,
-          options:  options
-        }.tap{|o| o[:data] = o.dup }
-        relation = relations[name.to_s]
-        relation.form = OpenStruct.new(relation_attributes)
-      end
-
       def characterize(name, relation, options, &block)
         type = relation.to_s.parameterize["mongoid_relations_".size .. -1]
-        puts "   #{name} relate for #{type} #{options.to_json}"
-        super
+        puts "   #{name} relate for #{type} #{options.to_json} "
+
+        meta = super
+        relation_attributes = {
+          owner:    meta.class_name,
+          name:     name.to_s,
+          options:  options
+        }
+        meta.form = OpenStruct.new(relation_attributes)
+        meta
       end
     end
   end

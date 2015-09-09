@@ -35,9 +35,8 @@ Giji::Application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :info
-  config.log_tags = [ :subdomain, :uuid ]
-  config.logger = ActiveSupport::TaggedLogging.new(Logger.new("/utage/log/rails_production.log"))
+  config.logger = Logger.new("/utage/log/rails_production.log", "daily")
+  config.logger.level = Logger::INFO
 
   # Prepend all log lines with the following tags.
   # Use a different logger for distributed setups.

@@ -15,10 +15,7 @@ class ApplicationController < ActionController::Base
   when 'development'
     before_filter :debug
     def debug
-      current.user_id ||= User.where(name:'ななころび').first.id
-      current.auth_id ||= Auth.where(nickname:'7korobi').first.id
       p current
-      current_save
     end
   end
 

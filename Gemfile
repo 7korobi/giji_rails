@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
+ruby "2.2.3"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'unicorn'
-gem 'rails', '4.2.3'
+gem 'rails', '4.2.4'
 gem 'quiet_assets'
 gem 'sqlite3'
 
@@ -32,7 +33,7 @@ gem 'omniauth-openid'
 # data_base
 # yum install mongo-10gen mongo-10gen-server
 # yum install redis
-gem 'mongoid', '~> 4.0.0'
+gem 'mongoid', '~> 5.0.0.rc'
 gem 'mongo_session_store-rails4'
 gem "paperclip"
 
@@ -46,9 +47,9 @@ gem 'yajl-ruby'
 # Use SCSS for stylesheets
 # Use Uglifier as compressor for JavaScript assets
 # Use CoffeeScript for .js.coffee assets and views
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails', '~> 4.1.0'
 gem 'hogan_assets'
 
 # DCI
@@ -84,9 +85,6 @@ end
 group :development do
   gem "capistrano"
   gem "fog"
-
-# documentation
-  gem 'rails-erd'
 
 # To use debugger
   gem 'pry'

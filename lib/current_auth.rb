@@ -38,7 +38,7 @@ module CurrentAuthenticated
     redirect_to root_url, error: "deny/#{role}"
   end
 
-  def login(auth)
+  def sign_in(auth)
     if auth.user.try(:login?)
         redirect_to user_path(auth.user)
     else
@@ -62,8 +62,9 @@ module CurrentAuthenticated
     session[:current] = current.session
   end
 
-  def logout
-    session[:current] = nil
+  def sign_out
+    @current.auth_id = nil
+    @current.user_id = nil
     redirect_to root_url
   end
 
@@ -86,6 +87,11 @@ module CurrentAuthenticated
 
     def session
       [@auth_id, @user_id, @request_id]
+    end
+
+    def inspect
+      data = [@auth, @user, @request].map{|o| o && o.attributes}
+      data.to_yaml
     end
 
     def save
