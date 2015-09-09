@@ -63,8 +63,8 @@ module CurrentAuthenticated
   end
 
   def sign_out
-    @current.auth_id = nil
-    @current.user_id = nil
+    session[:current] = nil
+    @current = nil
     redirect_to root_url
   end
 
