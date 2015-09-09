@@ -19,7 +19,20 @@ module ModelManage
 
         range = options[:in] || options[:within] || (1..options[:maximum])
         null_ok = options[:allow_nil] || options[:allow_blank] || false
+        type =
+          case fields[name.to_s].options[:type]
+          when Time
+            :datetime
+          when Integer
+            :integer
+          when Float
+            :float
+          else
+            :string
+          end
+
         form_attributes = {
+          type:    type,
           owner:   self,
           name:    name.to_s,
           limit:   range.max,

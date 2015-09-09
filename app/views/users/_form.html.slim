@@ -17,10 +17,10 @@
     table.memo.TSAY
       tbody
         tr
-          td.memoleft
+          th
             h5
               | アカウント設定
-          td.memoright
+          td
             =semantic_form_for user, html:{class: ""} do |f|
               = f.semantic_errors :sow_auths, :byebyes
               = f.inputs
@@ -28,4 +28,4 @@
               = f.input :byebyes, as: :text, input_html: { rows: 5, cols: 20 }, label: "Bye-Bye List"
               .form-group
                 = f.actions do
-                  = f.submit
+                  = f.submit class: "edge"
