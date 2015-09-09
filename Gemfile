@@ -24,8 +24,10 @@ gem "devise"
 gem "omniauth"
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'omniauth-mixi'
+gem 'omniauth-google'
+gem 'omniauth-yahoojp'
 # gem 'omniauth-github'
-# gem 'omniauth-google'
 # gem 'omniauth-ldap'
 gem 'omniauth-openid'
 
