@@ -128,7 +128,7 @@ class UsersController < ApplicationController
     gon.history = list.map do |chr|
       story   = stories[chr.story_id].first
       nation  = GAME[story.folder][:nation] rescue ' - '
-      link    = "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{chr.story_id}.html"
+      link    = "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{chr.story_id}"
       created = story.timer["updateddt"]
 
       chr.attributes.merge(

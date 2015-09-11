@@ -86,7 +86,7 @@ end
 
 group :development do
   gem "capistrano"
-  gem "fog"
+  gem "aws-sdk"
 
 # To use debugger
   gem 'pry'

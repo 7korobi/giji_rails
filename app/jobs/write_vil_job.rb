@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-require 'fog'
+require "aws-sdk"
+
+Aws.config.update({
+  region: FOG.storage.region,
+  credentials: Aws::Credentials.new(FOG.storage.aws_access_key_id, FOG.storage.aws_secret_access_key ),
+})
 
 class WriteVilJob < ActiveJob::Base
   queue_as :giji_freeze
@@ -11,13 +16,10 @@ class WriteVilJob < ActiveJob::Base
     system "(gzip -c #{dir}/#{vid}.html > #{dir}/#{vid}.html.gz)"
     system "(gzip -c #{dir}/all.html > #{dir}/all.html.gz)"
 
-    meta = {
-      content_type: 'text/html',
-      content_encoding: 'gzip',
-    }
-    remotes = Fog::Storage.new(FOG.storage).directories.find{|o|o.key == "giji-assets"}.files
-    remotes.create(key: "stories/#{vid}", body: File.open("#{dir}/#{vid}.html.gz"), public: true, metadata: meta)
-    remotes.create(key: "stories/all",    body: File.open("#{dir}/all.html.gz"),    public: true, metadata: meta)
+    s3 = Aws::S3::Resource.new
+    bucket = s3.bucket('giji-assets')
+    bucket.put_object key: "stories/#{vid}", body: File.open("#{dir}/#{vid}.html.gz"), acl: "public-read", content_type: "text/html", content_encoding: "gzip"
+    bucket.put_object key: "stories/all", body: File.open("#{dir}/all.html.gz"), acl: "public-read", content_type: "text/html", content_encoding: "gzip"
 
     target = "7korobi@s11.rs2.gehirn.jp:/home/7korobi/public_html/stories"
     system "scp #{dir}/#{vid}.html.gz #{target}/."
