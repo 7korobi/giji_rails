@@ -6,8 +6,8 @@ class BackupJob < ActiveJob::Base
   	if good_data
       `/usr/bin/mongodump --forceTableScan --host mongo.family.jp -d giji  -o /data/mongo/`
       `/usr/bin/mongodump --forceTableScan --host mongo.family.jp -d admin -o /data/mongo/`
-      `rsync -r /data/mongo vm-7korobi@backup:/c/backup/giji/.`
-      `rsync -r /data/www   vm-7korobi@backup:/c/backup/giji/.`
   	end
+    `rsync -r /data/mongo vm-7korobi@backup:/c/backup/giji/.`
+    `rsync -r /www        vm-7korobi@backup:/c/backup/giji/.`
   end
 end
