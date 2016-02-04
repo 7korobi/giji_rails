@@ -7,20 +7,20 @@ Giji::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   get "sign_out" => 'users#sign_out'
 
-  resources :trpg_stories, except:%w[show]
+  resources :trpg_stories, except: %w[show]
 
-  resources :stories, only:%w[index]
+  resources :stories, only: %w[index]
   scope ':folder' do
-    resources :stories, only:%w[index]
+    resources :stories, only: %w[index]
   end
 
   scope ':story_id' do
-    resources :trpg_events,  except:%w[show]
+    resources :trpg_events,  except: %w[show]
     get "events" => "messages#file"
     get "file"   => "messages#file", :as => :message_file
     scope ':turn' do
-      resources :messages, only:%w[index show]
-      resources :trpg_messages, except:%w[show]
+      resources :messages, only: %w[index show]
+      resources :trpg_messages, except: %w[show]
     end
   end
 
@@ -35,7 +35,7 @@ Giji::Application.routes.draw do
   end
 
   namespace :map_reduce do
-    resources :faces, only:%w[index show]
+    resources :faces, only: %w[index show]
   end
 
   root :to => 'users#index'
