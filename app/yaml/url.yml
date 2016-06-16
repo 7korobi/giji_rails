@@ -1,16 +1,16 @@
 development:
   application:
-    http://7korobi.gehirn.ne.jp/assets-show-fix
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-show-fix
   file:
 #    http://localhost
-    http://7korobi.gehirn.ne.jp
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
   rails:
     http://giji.check.jp
 production:
   application:
-    http://7korobi.gehirn.ne.jp/assets-show-fix
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-show-fix
   file:
 #    http://localhost
-    http://7korobi.gehirn.ne.jp
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
   rails:
     http://giji.check.jp

@@ -79,9 +79,12 @@ PERL_GAME:
       MAXSIZE_MEMOCNT:  1000
       MAXSIZE_MEMOLINE:   25
     saycnt: &saycnt_game
+    saycnt:
       - tiny
       - weak
       - juna
+      - vulcan
+      - say1
       - say5x200
       - say5x300
       - saving
@@ -148,7 +151,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
+      BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
 PERL_BRAID:
   config: &config_braid
@@ -198,7 +201,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
+      BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
 # 内部 人狼議事
 #
@@ -409,16 +412,6 @@ MORPHE:
   vid_code: M
   config:
     <<: *config_game
-    saycnt:
-      - tiny
-      - weak
-      - juna
-      - vulcan
-      - say5x200
-      - say5x300
-      - saving
-      - euro
-
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -596,7 +589,6 @@ CABALA:
   vid_code: C
   config:
     <<: *config_game
-    <<: *config_new
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -611,7 +603,6 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-    is_angular: show-fix
 
 
 ALLSTAR:
