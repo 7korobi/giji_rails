@@ -27,7 +27,7 @@ class Aggregate::Message
 
     module ClassMethods
       def frontier_story
-        done = only("_id.story_id").map{|o|o["_id.story_id"]}.uniq
+        done = only("_id.story_id").map{|o|o["_id"]["story_id"]}.uniq
         SowVillage.not.in(id: done).where(is_finish: true)
       end
 

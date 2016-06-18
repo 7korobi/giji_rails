@@ -11,10 +11,11 @@ class MapReduce::MessageByStory
   def self.face_says(id)
     key = "value.SS.face_id.#{id}"
     self.where(key.to_sym.exists => true).only(:_id, key).map do |o|
-      if o[key]
-        o[key]["logid_head"] = o.id
+      val = o["value"].dig "SS", "face_id", id
+      if val
+        val["logid_head"] = o.id
       end
-      o[key]
+      val
     end.compact.sort_by{|o| MapReduce::Message::SAYS_ORDER.index o["logid_head"]}
   end
 

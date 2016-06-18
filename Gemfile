@@ -1,9 +1,15 @@
 source 'https://rubygems.org'
-ruby "2.2.3"
+ruby "2.3.1"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem "nokogiri", ">= 1.6.7.2"
+
+# gem "natto"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'unicorn'
-gem 'rails', '4.2.4'
+# gem 'unicorn'
+gem 'rails', ">= 4.2.6"
 gem 'quiet_assets'
 gem 'sqlite3'
 
@@ -35,7 +41,7 @@ gem 'omniauth-openid'
 # data_base
 # yum install mongo-10gen mongo-10gen-server
 # yum install redis
-gem 'mongoid', '~> 5.0.0'
+gem 'mongoid', '>= 5.0.0'
 gem 'mongo_session_store-rails4'
 gem "paperclip"
 
@@ -52,14 +58,12 @@ gem 'yajl-ruby'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
-gem 'hogan_assets'
 
 # DCI
 gem 'rabl'
 gem 'gon'
 gem "cancan"
 gem "decent_exposure"
-gem "natto"
 
 # input support
 gem "formtastic"
@@ -71,14 +75,13 @@ gem "formtastic-bootstrap"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 gem "slim"
-gem "less-rails"
-gem "bootstrap-sass"
 
 # control support
 gem "moji"
 gem "jpmobile"
 
 gem "hashie"
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

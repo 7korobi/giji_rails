@@ -25,6 +25,7 @@ class WriteVilJob < ActiveJob::Base
     system "scp #{dir}/#{vid}.html.gz #{target}/."
     system "scp #{dir}/all.html.gz    #{target}/."
 
+    return
     mecab(vid)
   end
 
