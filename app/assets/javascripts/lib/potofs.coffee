@@ -17,6 +17,7 @@ POTOFS = ($scope)->
 
   # potofs support
   calc_potof = (hide)->
+    $scope.scroll = false
     $scope.hide_potofs.value = hide
 
   potof_toggle = (select_face)->

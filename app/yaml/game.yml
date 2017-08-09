@@ -79,9 +79,12 @@ PERL_GAME:
       MAXSIZE_MEMOCNT:  1000
       MAXSIZE_MEMOLINE:   25
     saycnt: &saycnt_game
+    saycnt:
       - tiny
       - weak
       - juna
+      - vulcan
+      - say1
       - say5x200
       - say5x300
       - saving
@@ -148,7 +151,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
+      BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
 PERL_BRAID:
   config: &config_braid
@@ -198,7 +201,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://7korobi.gehirn.ne.jp
+      BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
 # 内部 人狼議事
 #
@@ -396,7 +399,7 @@ PAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/pan/config.pl
-    is_angular: active-event
+    is_angular: show-fix
 
 MORPHE:
   server: morphe.sakura.ne.jp
@@ -409,16 +412,6 @@ MORPHE:
   vid_code: M
   config:
     <<: *config_game
-    saycnt:
-      - tiny
-      - weak
-      - juna
-      - vulcan
-      - say5x200
-      - say5x300
-      - saving
-      - euro
-
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -441,7 +434,7 @@ SOYBEAN:
   livelog:  /sow.cgi?cmd=rss
   folder: SOYBEAN
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bs"
+  nation: "人狼議事RP:Cs"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: Bs
   config:
@@ -468,7 +461,7 @@ SOYBEAN:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/soy-bean/config.pl
-    is_angular: angular
+    is_angular: show-fix
 
 CIEL:
   server: ciel.moo.jp
@@ -502,7 +495,7 @@ CIEL:
       <<: *SIMPLE_PATH
       DIR_USER: ./data/user
     pl:  /www/giji_log/ciel/config.pl
-    is_angular: angular
+    is_angular: show-fix
 
 PERJURY:
   server: perjury.rulez.jp
@@ -526,12 +519,12 @@ PERJURY:
       URL_SW:         http://perjury.rulez.jp
       TYPE:           CHEAT
       RULE:           PERJURY
-      MAX_VILLAGES:   3
+      MAX_VILLAGES:   2
       NAME_HOME:      人狼議事 perjury rulez<br>- Role Play Cheat -
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
-    is_angular: angular
+    is_angular: show-fix
 
 XEBEC:
   server: xebec.x0.to
@@ -596,7 +589,6 @@ CABALA:
   vid_code: C
   config:
     <<: *config_game
-    <<: *config_new
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -611,7 +603,7 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-    is_angular: angular
+
 
 ALLSTAR:
   server: jinro.jksy.org
@@ -686,7 +678,7 @@ LOBBY:
       DIR_VIL:  ./data/vil
       DIR_USER: ../data/user
     pl:  /www/giji_log/lobby/config.pl
-    is_angular: active-event
+    is_angular: show-fix
 
 OFFPARTY:
   server: party.ps.land.to
@@ -697,385 +689,3 @@ OFFPARTY:
   nation: "人狼議事オフ相談所"
   epi_url:  /kitchen/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: P
-
-# 他所様
-#
-MSHE:
-  server: mshe.skr.jp
-  oldlog:   /?cmd=log
-  livelog:  /index.cgi
-  folder: MSHE
-  info_url: /
-  nation: "人狼BBQ"
-  epi_url:  /
-APH:
-  server: www.waonwolf.net
-  oldlog:   /aph/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /aph/sow.cgi?cmd=rss
-  folder: APH
-  info_url: /aph/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: WorldWerewolfWar
-  epi_url:  /aph/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-AOZIRU:
-  server: wolfao.sakura.ne.jp
-  live_url: /wolf/index.cgi?vid=%s&date=1
-  oldlog:   /wolf/index.cgi?villist=all
-  livelog:  /wolf/index.cgi
-  folder: AOZIRU
-  info_url: /wolf/index.cgi?vid=%s&date=0
-  nation: "青汁天国"
-  epi_url:  /
-TIS:
-  server: www5.atpages.jp
-  oldlog:   /tis/sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /tis/sow/sow.cgi?cmd=rss
-  folder: TIS
-  info_url: /tis/sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語 静寂の国"
-  epi_url:  /tis/sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-O8O8O0O0:
-  server: o8o8.o0o0.jp
-  oldlog:   /wolf/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /wolf/sow.cgi?cmd=rss
-  folder: O8O8O0O0
-  info_url: /wolf/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語暗黒編"
-  epi_url:  /wolf/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-EUROREAL:
-  server: euros.sakura.ne.jp
-  oldlog:   /real/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /real/sow.cgi?cmd=rss
-  folder: EUROREAL
-  info_url: /real/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語@リア充"
-  epi_url:  /real/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-TENGOKU:
-  server: wolften.sakura.ne.jp
-  live_url: /?vid=%s&date=1
-  oldlog:   /?villist=all
-  livelog:  /
-  folder: TENGOKU
-  info_url: /?vid=%s&date=0
-  nation: "人狼天国"
-  epi_url:  /
-MELON:
-  server: melon-cirrus.sakura.ne.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: MELON
-  info_url: /sow/sow.cgi?ua=mb&v=%s&cmd=vinfo
-  nation: "人狼物語瓜科国"
-  epi_url:  /sow/sow.cgi?ua=mb&v=%s&t=%s&mv=p&n=1&r=30
-RINNE:
-  server: monooki.sakura.ne.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: RINNE
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼輪廻"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-EUROSOW:
-  server: euros.sakura.ne.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: EUROSOW
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語@欧州"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-BARA:
-  server: lup.lunare.org
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: BARA
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語*薔薇の下国"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-ENDLESSLOOP:
-  server: endlessloop.skr.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: ENDLESSLOOP
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "天空の回廊"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-MONSTERS:
-  server: marinonet.org
-  oldlog:   /webwerewolf/cgi_wwwolf.cgi?mode=log
-  livelog:  /webwerewolf/rss.cgi
-  folder: MONSTERS
-  info_url: /webwerewolf/cgi_wwwolf.cgi?VILLAGENO=%s&STORYTYPE=1&TXTLOGIN=1&COMMAND=LOGVIEW
-  nation: Monster's Village
-  epi_url:  /webwerewolf/cgi_wwwolf.cgi?VILLAGENO=%s&STORYTYPE=1&TXTLOGIN=1&COMMAND=LOGVIEW
-HIGURASHI:
-  server: tkido.com
-  oldlog:   /h_jinro/log_index.html
-  livelog:  /h_jinro/game.php
-  folder: HIGURASHI
-  info_url: /h_jinro/log/%05d00a.html
-  nation: "ひぐらし人狼"
-  epi_url:  /h_jinro/log/%05d%02da.html
-SEILEITOH:
-  server: seileitoh.sakura.ne.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: SEILEITOH
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼・青玲学園"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-GUTA:
-  server: www3.marimo.or.jp
-  oldlog:   /~fgmaster/sow/sow.cgi?cmd=oldlog&rowall=on
-  folder: GUTA
-  info_url: /~fgmaster/sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語ぐた国"
-  epi_url:  /~fgmaster/sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-TENKEY:
-  server: www5.atpages.jp
-  live_url: /~euro/ten/index.cgi?vid=%s&date=1
-  oldlog:   /~euro/ten/index.cgi?villist=all
-  livelog:  /~euro/ten/index.cgi
-  folder: TENKEY
-  info_url: /~euro/ten/index.cgi?vid=%s&date=0
-  nation: "錠前天国"
-  epi_url:  /
-PLUM:
-  server: w5.oroti.net
-  oldlog:   /~plum/sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /~plum/sow/sow.cgi?cmd=rss
-  folder: PLUM
-  info_url: /~plum/sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼梅暦"
-  epi_url:  /~plum/sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-SEBAS:
-  server: sebas.chips.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: SEBAS
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語執事国"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-MEBIUS:
-  server: tkido.com
-  oldlog:   /m_jinro/log/index.html
-  livelog:  /m_jinro/game.php
-  folder: MEBIUS
-  info_url: /m_jinro/log/%05d00a.html
-  nation: "メビウス人狼"
-  epi_url:  /m_jinro/log/%05d%02da.html
-HAMYORON:
-  server: hamyoron.s262.xrea.com
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: HAMYORON
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語狼と踊れ"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-GUTALUTIMATE:
-  server: www3.marimo.or.jp
-  oldlog:   /~fgmaster/ultimate/sow.cgi?cmd=oldlog&rowall=on
-  folder: GUTALUTIMATE
-  info_url: /~fgmaster/ultimate/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語ぐたるてぃめっと"
-  epi_url:  /~fgmaster/ultimate/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-YOA:
-  server: yoa.crywlf.com
-  live_url: /ten/index.cgi?vid=%s&date=1
-  oldlog:   /ten/index.cgi?villist=all
-  livelog:  /ten/index.cgi
-  folder: YOA
-  info_url: /ten/index.cgi?vid=%s&date=0
-  nation: "ヨア国"
-  epi_url:  /
-SCHICKSAL:
-  server: schicksal.sakura.ne.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: SCHICKSAL
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語-幻夢-"
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-THJINROU:
-  server: thjinrou.sakura.ne.jp
-  oldlog:   /gamelog.php
-  livelog:  /jinrou.php
-  folder: THJINROU
-  info_url: /gamelog.php
-  nation: "東方人狼裁"
-  epi_url:  /gamelog.php
-NACHT:
-  server: wolf.nacht.jp
-  oldlog:   /sw/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sw/sow.cgi?cmd=rss
-  folder: NACHT
-  info_url: /sw/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "Geschichte von Werwolf<br>《SchwarzWeiss》   "
-  epi_url:  /sw/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-GUTA_CABALA:
-  server: www3.marimo.or.jp
-  oldlog:   /~fgmaster/cabala/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /~fgmaster/cabala/sow.cgi?cmd=rss
-  folder: GUTA_CABALA
-  info_url: /~fgmaster/cabala/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語ぐたるてぃめっと"
-  epi_url:  /~fgmaster/cabala/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-JINROTTER:
-  server: jinrotter.ruawerewolf.net
-  live_url: /?vid=%s&date=1
-  oldlog:   /?villist=all
-  livelog:  /
-  folder: JINROTTER
-  info_url: /?vid=%s&date=0
-  nation: "人狼ったー"
-  epi_url:  /
-LOVESICK:
-  server: werewolf.lovesick.jp
-  oldlog:   /sow/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /sow/sow.cgi?cmd=rss
-  folder: LOVESICK
-  info_url: /sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "汝は人狼なりや？<br>LOVE SICK "
-  epi_url:  /sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-BBS:
-  folder: BBS
-  nation: "人狼BBS:"
-  server: ninjinix.x0.com
-  oldlog:   /wolf/index.rb?cmd=log
-  info_url: /wolf/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolf/index.rb?vid=%s&meslog=%s_party_%s
-BBS_A:
-  folder: BBS_A
-  nation: "人狼BBS:A"
-  server: ninjinix.x0.com
-  oldlog:   /wolfa/index.rb?cmd=log
-  info_url: /wolfa/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolfa/index.rb?vid=%s&meslog=%s_party_%s
-BBS_B:
-  folder: BBS_B
-  nation: "人狼BBS:B"
-  server: ninjinix.x0.com
-  oldlog:   /wolfb/index.rb?cmd=log
-  info_url: /wolfb/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolfb/index.rb?vid=%s&meslog=%s_party_%s
-BBS_C:
-  folder: BBS_C
-  nation: "人狼BBS:C"
-  server: ninjinix.x0.com
-  oldlog:   /wolfc/index.rb?cmd=log
-  info_url: /wolfc/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolfc/index.rb?vid=%s&meslog=%s_party_%s
-BBS_D:
-  folder: BBS_D
-  nation: "人狼BBS:D"
-  server: ninjinix.x0.com
-  oldlog:   /wolfd/index.rb?cmd=log
-  info_url: /wolfd/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolfd/index.rb?vid=%s&meslog=%s_party_%s
-BBS_E:
-  folder: BBS_E
-  nation: "人狼BBS:E"
-  server: ninjinix.x0.com
-  oldlog:   /wolfe/index.rb?cmd=log
-  info_url: /wolfe/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolfe/index.rb?vid=%s&meslog=%s_party_%s
-BBS_F:
-  folder: BBS_F
-  nation: "人狼BBS:F"
-  server: ninjin002.x0.com
-  oldlog:   /wolff/index.rb?cmd=log
-  info_url: /wolff/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolff/index.rb?vid=%s&meslog=%s_party_%s
-BBS_G:
-  folder: BBS_G
-  nation: "人狼BBS:G"
-  server: www.wolfg.x0.com
-  livelog:  /
-  live_url: /index.rb?vid=%s&#bottom
-  oldlog:   /index.rb?cmd=log
-  info_url: /index.rb?vid=%s&meslog=000_progress
-  epi_url:  /index.rb?vid=%s&meslog=%s_party
-BBS_Z:
-  folder: BBS_Z
-  nation: "人狼BBS:Z"
-  server: ninjinix.x0.com
-  oldlog:   /wolfz/index.rb?cmd=log
-  info_url: /wolfz/index.rb?vid=%s&meslog=%s_progress_0
-  epi_url:  /wolfz/index.rb?vid=%s&meslog=%s_party_%s
-SUI_A:
-  folder: SUI_A
-  nation: "推理と説得:A"
-  server: sui.sib.jp
-  livelog:  /
-  live_url: /pc/view/%s
-  oldlog:   /pc/index_kako/
-  info_url: /pc/view_kako/%s/1/all/WRBG
-  epi_url:  /pc/view_kako/%s/%s/all/WRBG
-
-
-
----
-# 消えた？
-ASBNTBY:
-  server: asbntby.sakura.ne.jp
-  oldlog:   /sow/?cmd=oldlog&rowall=on
-  folder: ASBNTBY
-  info_url: /sow/?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語あず国"
-  epi_url:  /sow/?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-VENICO:
-  server: cgi.geocities.jp
-  oldlog:   /venico23/sow_monogatari/sow.cgi?cmd=oldlog&rowall=on
-  livelog:  /venico23/sow_monogatari/sow.cgi?cmd=rss
-  folder: VENICO
-  info_url: /venico23/sow_monogatari/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語-ゴールドソーサー"
-  epi_url:  /venico23/sow_monogatari/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-KUNITORI:
-  server: test-kunitori.ddo.jp
-  oldlog:   /jinro/sow/sow.cgi?cmd=oldlog&rowall=on
-  folder: KUNITORI
-  info_url: /jinro/sow/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼物語ぽわわサーバ"
-  epi_url:  /jinro/sow/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-GEGEGE:
-  server: wolf.xn--s9j8a1b.jp
-  oldlog:   /wos/sow.cgi?cmd=oldlog&rowall=on
-  folder: GEGEGE
-  info_url: /wos/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼ぬるぽノ国"
-  epi_url:  /wos/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-EURO:
-  server: ""
-  oldlog:   ""
-  folder: EURO
-  info_url: ""
-  nation: "欧州長期"
-  epi_url:  ""
-
-JUNA_A1:
-  nation: "人狼審問α1:"
-  folder: JUNA_A1
-  server: www.juna.net
-  oldlog:   /game/wolf/archive_index.html
-  info_url: /game/wolf/room/%s/index.html
-  epi_url:  /game/wolf/room/%s/%s_1.html
-JUNA_A2:
-  nation: "人狼審問α2.5:"
-  folder: JUNA_A2
-  server: www.juna.net
-  oldlog:   /game/wolf/archive_index.html
-  info_url: /game/wolf/room/%s/index.html
-  epi_url:  /game/wolf/room/%s/%s_1.html
-JUNA_A3:
-  nation: "人狼審問α3:"
-  folder: JUNA_A3
-  server: www.juna.net
-  oldlog:   /game/wolf/archive_index.html
-  info_url: /game/wolf/room/%s/index.html
-  epi_url:  /game/wolf/room/%s/%s_1.html
-JUNA:
-  nation: "人狼審問"
-  folder: JUNA
-  server: www.juna.net
-  oldlog:   /game/wolf/archive_index.html
-  info_url: /game/wolf/room/%s/index.html
-  epi_url:  /game/wolf/room/%s/%s_1.html

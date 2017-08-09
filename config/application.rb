@@ -42,22 +42,24 @@ end
 
 module Giji
   class Application < Rails::Application
+    config.middleware.use Rack::Deflater
+
     # Compress JavaScripts and CSS.
-    config.assets.precompile += %w( 
-      data.js 
-      base.js 
+    config.assets.precompile += %w(
+      data.js
+      base.js
       boot.js
-      sow.js 
+      sow.js
     )
 
     %w(
       spec.js
-      dic.js 
-      data_pan.js 
+      dic.js
+      data_pan.js
 
-      color_white.css 
-      color_black.css 
-      color_white_box.css 
+      color_white.css
+      color_black.css
+      color_white_box.css
       color_black_box.css
     )
 

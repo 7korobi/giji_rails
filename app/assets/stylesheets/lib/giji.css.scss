@@ -138,6 +138,11 @@ dt, dd {
 .say { width:100%; }
 img { border-style: none; }
 
+.btn.click {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
 .multicolumn_label {
   display: block;
   float: left;

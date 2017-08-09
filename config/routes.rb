@@ -1,23 +1,26 @@
+require 'sidekiq/web'
+require 'sidekiq/cron/web'
+
 Giji::Application.routes.draw do
+  mount Sidekiq::Web, at: "/users/7korobi/sidekiq"
+
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-  devise_scope :user do
-    get '/users/sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-  end
+  get "sign_out" => 'users#sign_out'
 
-  resources :trpg_stories, except:%w[show]
+  resources :trpg_stories, except: %w[show]
 
-  resources :stories, only:%w[index]
+  resources :stories, only: %w[index]
   scope ':folder' do
-    resources :stories, only:%w[index]
+    resources :stories, only: %w[index]
   end
 
   scope ':story_id' do
-    resources :trpg_events,  except:%w[show]
+    resources :trpg_events,  except: %w[show]
     get "events" => "messages#file"
     get "file"   => "messages#file", :as => :message_file
     scope ':turn' do
-      resources :messages, only:%w[index show]
-      resources :trpg_messages, except:%w[show]
+      resources :messages, only: %w[index show]
+      resources :trpg_messages, except: %w[show]
     end
   end
 
@@ -32,7 +35,7 @@ Giji::Application.routes.draw do
   end
 
   namespace :map_reduce do
-    resources :faces, only:%w[index show]
+    resources :faces, only: %w[index show]
   end
 
   root :to => 'users#index'
@@ -77,7 +80,7 @@ Giji::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
@@ -92,5 +95,3 @@ Giji::Application.routes.draw do
   #     resources :products
   #   end
 end
-
-

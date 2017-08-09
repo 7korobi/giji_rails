@@ -19,6 +19,12 @@ angular.module("giji").directive "title", ()->
     fix_title = ->
       elm.text title $scope
 
+    if history?.pushState?
+      window.onpopstate = (event)->
+        $scope.$apply ->
+          for key, navi of Browser.real.list
+            navi.popstate()
+
     $scope.$watch 'modes.face', fix_title
     $scope.$watch "story.name", fix_title
     $scope.$watch 'event.turn', fix_title

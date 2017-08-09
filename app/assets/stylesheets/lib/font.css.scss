@@ -25,6 +25,9 @@
   .drag_head {
     margin-top: - $size-base * 0.80;
   }
+  .drag_foot {
+    margin-bottom: - $size-base * 0.80;
+  }
 
   .mesname {
     margin: 0 0 4px 0;
@@ -74,8 +77,8 @@ address {
 .sayfilter_heading,
 .insayfilter .small,
 .insayfilter .note,
-.chrblank, 
-.chrM, 
+.chrblank,
+.chrM,
 .chrF {
   font-size: $font-size-base * 0.80;
   line-height: $font-size-base * 1.10;
@@ -89,6 +92,7 @@ code {
 }
 
 .choice,
+.pagenavi,
 .board td a,
 .board td,
 .board th {

@@ -10,11 +10,11 @@ class Talk < ActiveRecord::Base
     rsync = Giji::RSync.new
     rsync.each_logs([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      GijiTalkScanner.new(path, folder, fname).enqueue :log
+      GijiTalkScanner.new(path, folder, fname).save :log
     end
     rsync.each_memos([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      GijiTalkScanner.new(path, folder, fname).enqueue :memo
+      GijiTalkScanner.new(path, folder, fname).save :memo
     end
   end
 end

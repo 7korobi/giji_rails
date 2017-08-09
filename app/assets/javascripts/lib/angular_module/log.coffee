@@ -1,20 +1,54 @@
-scrollTo = (newVal, oldVal, $scope)->
-  $scope.anchors = []
+draw_templates = ($compile, $scope, elm, attr)->
+  logs = []
+  oldDOM = elm[0]
 
-  if $scope.event?
-    if $scope.event.is_news
-      for mode, is_show of $scope.form_show
-        for form_text in $scope.form.texts
-          if is_show and mode == form_text.jst
-            return
-  $scope.go.messages()
+  if oldDOM.insertAdjacentHTML
+    addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
+    closeHtml = (dom)->
+  else
+    html_cache = ""
+    addHtml = (dom, html)-> html_cache += html
+    closeHtml = (dom)-> dom.replaceHTML = html_cache
 
-filters_common = ($scope)->
-  PageNavi.push $scope, 'page',  OPTION.page.page
+  (newVal, oldVal)->
+    logs = newVal || []
+    now = new Date
+    data = {}
+    if attr.data?
+      for key,val of attr.data
+        data[key] = val
+
+    newDOM = oldDOM.cloneNode(false)
+    for log in logs
+      template = attr.template(log, now)
+
+      unless template
+        console.log "can't show log!"
+        console.log log
+        continue
+
+      data[attr.target] = log
+      addHtml newDOM, template.render data
+    closeHtml newDOM
+
+    oldDOM.parentNode.replaceChild newDOM, oldDOM
+    oldDOM = newDOM
+
+    elm = $(oldDOM)
+    for angular_elm in elm.find("[template]")
+      $compile(angular_elm)($scope)
+    attr.last() if attr.last?
+
 
 filters_common_last = ($scope, $filter)->
   page = $scope.page
   filter_filter = $filter 'filter'
+
+  Navi.push $scope, 'search',
+    options:
+      current: ""
+      location: 'hash'
+      is_cookie: false
 
   page.filter 'search.value', (search, list)->
     $scope.search_input = search
@@ -23,6 +57,7 @@ filters_common_last = ($scope, $filter)->
   page.paginate 'msg_styles.row', (row, list)->
     page_per = Number(row)
     if $scope.event?.is_news
+      page_per = 50
       $scope.page.visible = false
       to   = list.length
       from = to - page_per
@@ -39,11 +74,6 @@ filters_common_last = ($scope, $filter)->
 
     list.slice from, to
 
-  $scope.$watch "page.value",      scrollTo
-  $scope.$watch "search.value",    scrollTo
-  $scope.$watch "msg_style.value", scrollTo
-
-
 filters_if_event = ($scope, target, from)->
   page = $scope.page
 
@@ -59,50 +89,7 @@ filters_if_event = ($scope, target, from)->
 
   page.filter 'mode.value', (key, list)->
     is_mob_open = $scope.story?.is_mob_open()
-
-    # bdefghjklnoprstuvwxyzBCDEFHJKLNORUYZ
-    mode_filters =
-      info_open_last: /^([aAm].\d+)|(vilinfo)/
-      info_all_open: /^(..\d+)|(vilinfo)|(potofs)|(status)/
-      info_all: /^(..\d+)|(potofs)|(status)/
-      memo_all:  /^.M\d+/
-      memo_open: /^[qcaAmIMS][MX]\d+/
-      talk_all:   /^[^S][^M]\d+/
-      talk_think: /^[qcaAmIi][^M]\d+/
-      talk_clan:  /^[qcaAmIi\-WPX][^M]\d+/
-      talk_all_open:   /^.[^M]\d+/
-      talk_think_open: /^[qcaAmIiS][^M]\d+/
-      talk_clan_open:  /^[qcaAmIi\-WPXS][^M]\d+/
-      talk_all_last:   /^[^S][SX]\d+/
-      talk_think_last: /^[qcaAmIi][SX]\d+/
-      talk_clan_last:  /^[qcaAmIi\-WPX][SX]\d+/
-      talk_all_open_last:   /^.[SX]\d+/
-      talk_think_open_last: /^[qcaAmIiS][SX]\d+/
-      talk_clan_open_last:  /^[qcaAmIi\-WPXS][SX]\d+/
-      talk_open:      /^[qcaAmIS][^M]\d+/
-      talk_open_last: /^[qcaAmIS][SX]\d+/
-
-    if is_mob_open
-      open_filters =
-        talk_think_open_last: /^[qcaAmIiVS][SX]\d+/
-        talk_think_open: /^[qcaAmIiVS][^M]\d+/
-        memo_open:      /^[qcaAmIMVS][MX]\d+/
-        talk_open:      /^[qcaAmIVS][^M]\d+/
-        talk_open_last: /^[qcaAmIVS][SX]\d+/
-    else
-      open_filters = {}
-
-    add_filters =
-      clan:  (o)-> "" != o.to && o.to?
-      think: (o)-> "" == o.to && o.logid.match(/^T[^M]/)
-
-    mode_filter   = open_filters[$scope.modes.regexp]
-    mode_filter ||= mode_filters[$scope.modes.regexp]
-    add_filter   = add_filters[$scope.modes.view]
-    add_filter ||= -> false
-
-    list = _.filter list, (o)->
-      o.logid.match(mode_filter) || add_filter(o)
+    list = _.filter list, Lib.message_filter is_mob_open, $scope.modes.regexp, $scope.modes.view
 
     if $scope.modes.last
       result = []
@@ -134,19 +121,16 @@ filters_if_event = ($scope, target, from)->
         if now < o.updated_at
           ++$scope.event.unread_count unless o.logid == "IX99999"
           return true
-        return o.logid.match(/vilinfo|potofs|status/)
+        return o.updated_at < 9999
     else
       list
 
   $scope.$watch 'event.is_news', $scope.deploy_mode_common
-  $scope.$watch "event.turn",    scrollTo
-  $scope.$watch "event.is_news", scrollTo
-  $scope.$watch "mode.value",    scrollTo
 
 
 angular.module("giji").directive "stories", ($parse, $compile, $filter)->
   initialize = ($scope, $filter, target, from)->
-    filters_common $scope
+    PageNavi.push $scope, 'page',  OPTION.page.page
     $scope.page.filter_by from
     $scope.page.filter_to target
     StorySummary.navi $scope
@@ -159,50 +143,27 @@ angular.module("giji").directive "stories", ($parse, $compile, $filter)->
     initialize = ->
 
     logs = []
-    oldDOM = elm[0]
-
-    if oldDOM.insertAdjacentHTML
-      addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
-      closeHtml = (dom)->
-    else
-      html_cache = ""
-      addHtml = (dom, html)-> html_cache += html
-      closeHtml = (dom)-> dom.replaceHTML = html_cache
-
-    $scope.$watch "stories_is_small", ()-> draw logs
-    $scope.$watchCollection attr.stories, (_, newVal)-> draw newVal
-    draw = (newVal)->
-      logs = newVal || []
-      now = new Date
-      data = {}
-
-      newDOM = oldDOM.cloneNode(false)
-      for log in logs
-        log.__proto__ = StorySummary.prototype
-        if $scope.stories_is_small
-          template = HOGAN["hogan/sow/story_summary_small"]
-        else
-          template = HOGAN["hogan/sow/story_summary"]
-
-        unless template
-          console.log "can't show log!"
-          console.log log
-          continue
-        data.story = log
-        addHtml newDOM, template.render data
-      closeHtml newDOM
-
-      oldDOM.parentNode.replaceChild newDOM, oldDOM
-      oldDOM = newDOM
-
-      elm = $(oldDOM)
-      for angular_elm in elm.find("[template]")
-        $compile(angular_elm)($scope)
+    draw =
+      draw_templates $compile, $scope, elm,
+        target: "story"
+        template: (log)->
+          log.__proto__ = StorySummary.prototype
+          if $scope.stories_is_small
+            HOGAN["hogan/sow/story_summary_small"]
+          else
+            HOGAN["hogan/sow/story_summary"]
+        last: ->
+          $scope.go.top() if attr.scroll
+    $scope.$watch "stories_is_small", ()->
+      draw logs
+    $scope.$watchCollection attr.stories, (newVal)->
+      logs = newVal
+      draw logs
 
 
 angular.module("giji").directive "logs", ($parse, $compile, $filter)->
   initialize = ($scope, $filter, target, from)->
-    filters_common $scope
+    PageNavi.push $scope, 'page',  OPTION.page.page
     if from
       Message.navi $scope
       filters_if_event $scope, target, from
@@ -234,63 +195,43 @@ angular.module("giji").directive "logs", ($parse, $compile, $filter)->
     initialize $scope, $filter, attr.logs, attr.from
     initialize = ->
 
-    logs = []
-    oldDOM = elm[0]
+    scrollTo = ->
+      if $scope.event?
+        if $scope.event.is_news && $scope.event.is_progress
+          for mode, is_show of $scope.form_show
+            for form_text in $scope.form.texts
+              if is_show and mode == form_text.jst
+                $scope.go.form()
+                return
+      $scope.go.top()
 
-    if oldDOM.insertAdjacentHTML
-      addHtml = (dom, html)-> dom.insertAdjacentHTML('beforeEnd', html)
-      closeHtml = (dom)->
-    else
-      html_cache = ""
-      addHtml = (dom, html)-> html_cache += html
-      closeHtml = (dom)-> dom.replaceHTML = html_cache
+    draw =
+      draw_templates $compile, $scope, elm,
+        data:
+          story: $scope.story
+          event: $scope.event
+        target: "message"
+        template: (log, now)->
+          log.__proto__ = Message.prototype
+          log.init_timer($scope, now)
+          log.init_view($scope, now)
+          HOGAN["hogan/" + log.template]
+        last: ->
+          $scope.timer.start()
+          $scope.floats = []
+          scrollTo() if attr.scroll && $scope.scroll
+          $scope.scroll = true
 
-    $scope.$watchCollection attr.logs, (oldVal, newVal)->
-      logs = newVal || []
-      now = new Date
-      data =
-        story: $scope.story
-        event: $scope.event
-
-      newDOM = oldDOM.cloneNode(false)
-      for log in logs
-        log.__proto__ = Message.prototype
-        log.init_timer($scope, now)
-        log.init_view($scope, now)
-
-        template = HOGAN["hogan/" + log.template]
-        unless template
-          console.log "can't show log!"
-          console.log log
-          continue
-        data.message = log
-        addHtml newDOM, template.render data
-      closeHtml newDOM
-
-      oldDOM.parentNode.replaceChild newDOM, oldDOM
-      oldDOM = newDOM
-
-      elm = $(oldDOM)
-      for angular_elm in elm.find("[template]")
-        $compile(angular_elm)($scope)
-
-      $scope.timer.start()
-
-angular.module("giji").directive "log", ($parse, $compile, $sce)->
-  restrict: "A"
-  link: ($scope, elm, attr, ctrl)->
-    log = $scope.$eval attr.log
-    log.__proto__ = Message.prototype
-    log.init_view $scope
-
-    GIJI.template $scope, elm, log.template
+    $scope.$watchCollection attr.logs, draw
 
 angular.module("giji").directive "drag", ->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    $scope.$watch attr.drag, (log) ->
-      elm.css
-        "z-index": log.z
-        "top":     log.top
-
+    $scope.$watch "#{attr.drag}.z",   (z)->   elm.css "z-index": z
+    $scope.$watch "#{attr.drag}.top", (top)-> elm.css "top":     top
+    $scope.$watch "attr.drag", (event) ->
+      if event?
+        elm.css
+          "z-index": event.z
+          "top":     event.top
 

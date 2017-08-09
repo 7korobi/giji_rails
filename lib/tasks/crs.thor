@@ -30,7 +30,7 @@ class Crs < Thor
     rejects = %w[r12 gc61].map{|o|ChrJob.new(face_id:o)}
     CS_ALL.chr_jobs = (chr_jobs_hash["ririnra"] | chr_jobs_hash.values.flatten | append) - rejects
 
-    (CS_ALL + chr_sets).map do |set|
+    ([CS_ALL] + chr_sets).map do |set|
       faces = set.faces.to_a
       set.chr_npcs.map do |npc|
         {:csid => npc.csid, :set => set, :npc => npc, :faces => faces }
@@ -88,8 +88,8 @@ class Crs < Thor
 
       @rhtml_content      = "./app/views/sow/crs.pl.erb"
 
-      @rhtml_src_testbed_out  = "/www/sow-giji/testbed/rs/crs_"  + @csid +".pl"
-      @rhtml_src_angular_out  = "/www/sow-giji/angular/rs/crs_"  + @csid +".pl"
+      @rhtml_src_testbed_out  = "/www/sow-giji/show-fix/rs/crs_"  + @csid +".pl"
+      @rhtml_src_angular_out  = "/www/sow-giji/show-fix/rs/crs_"  + @csid +".pl"
       @rhtml_src_cabala_out   = "/www/sow-giji/cabala/rs/crs_"   + @csid +".pl"
 
       @rhtml_testbed_out  = "/www/giji_log/testbed/rs/crs_"  + @csid +".pl"

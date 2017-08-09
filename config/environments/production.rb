@@ -20,7 +20,7 @@ Giji::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_files = false
   config.assets.compress = false
   config.assets.css_compressor = :scss
   config.assets.js_compressor = nil # Uglifier.new(output:{ preserve_line: false, beautify: true, indent_level:2 }, mangle: false)
@@ -35,13 +35,11 @@ Giji::Application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :info
+  config.logger = Logger.new("/utage/log/rails_production.log", "daily")
+  config.logger.level = Logger::INFO
 
   # Prepend all log lines with the following tags.
-  # config.log_tags = [ :subdomain, :uuid ]
-
   # Use a different logger for distributed setups.
-  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store

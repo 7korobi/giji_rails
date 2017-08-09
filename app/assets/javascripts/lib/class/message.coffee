@@ -14,11 +14,10 @@ class Message
       when "B"
         @mestype = "TSAY"
       when "M"
-        key = "#{@mestype}:#{@csid}/#{@face_id}"
-        if (! new_base.last_memo[key]) || new_base.last_memo[key].updated_at < @updated_at
-          new_base.last_memo[key] =
-            log:        @log
-            updated_at: @updated_at
+        type = @mestype
+        type = "SAY" if "MSAY" == type
+        key = "#{type}:#{@csid}/#{@face_id}"
+        new_base.set_last_memo key, @
 
   init_view: ($scope, now)->
     if @updated_at
@@ -50,7 +49,6 @@ class Message
 
   init_timer: ($scope, now)->
     return unless @updated_at
-    return unless "M" == @subid || "S" == @subid
 
     $scope.timer.cache @
     @cancel_btn =

@@ -8,7 +8,7 @@
           label.label = link_to current.user.name, user_path(current.user.id)
       -if login?
         li
-          label.label = link_to '  click to logout', destroy_user_session_path
+          label.label = link_to '  click to logout', sign_out_path
 
       .sayfilter_caption_enable
         | Choice open id

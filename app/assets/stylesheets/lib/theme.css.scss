@@ -7,7 +7,7 @@
 }
 
 .black {
-  body, a:not(.btn) {
+  body {
     color: #ccf;
   }
 
@@ -78,10 +78,10 @@
   }
 
   .toppage,
-  .choice, 
-  .vindex, 
+  .choice,
+  .vindex,
   .table,
-  .turnnavi, 
+  .turnnavi,
   .MAKER,
   .ADMIN,
   .mes_maker,
@@ -92,21 +92,30 @@
     }
   }
 
-//-----------------
-  body,
-  .toppage, 
-  .choice, 
-  .vindex, 
-  .table,
-  .turnnavi, 
-  .pagenavi {
-    .text a {
+  .toolbox,
+  .insayfilter .paragraph {
+    a {
       @include anker(#afa, #cea, #ace, #eca, #8bf);
     }
   }
 
-  #sayfilter {
-    padding-right: 15px;
+  a:not(.btn) {
+    @include anker(#afa, #cea, #ace, #eca, #8bf);
+  }
+
+  body,
+  .toolbox,
+  .insayfilter .paragraph,
+  .toppage,
+  .choice,
+  .vindex,
+  .table,
+  .turnnavi,
+  .pagenavi {
+    .mes_date a,
+    .text a {
+      @include anker(#afa, #cea, #ace, #eca, #8bf);
+    }
   }
 
   .sayfilter_button_lump,
@@ -175,18 +184,20 @@
     thead,
     tbody,
     tr {
-      border-top: 1px solid rgba(128, 96, 48, 0.3);    
+      border-top: 1px solid rgba(128, 96, 48, 0.3);
     }
   }
 
+
+  a:not(.btn) {
+    @include anker(#afa, #cea, #ace, #eca, #8bf);
+  }
   .toppage,
-  .choice, 
-  .vindex, 
+  .choice,
+  .vindex,
   .table,
-  .turnnavi, 
+  .turnnavi,
   .pagenavi,
-  .MAKER,
-  .ADMIN,
   .formpl_gm,
   .mes_maker,
   .mes_admin {
@@ -194,15 +205,34 @@
       @include anker(#afa, #cea, #ace, #eca, #8bf);
     }
   }
+  .MAKER,
+  .ADMIN {
+    .mes_date a,
+    .text a {
+      @include anker(#afa, #cea, #ace, #eca, #8bf);
+    }
+  }
 
-//-----------------
+  .toolbox,
+  .insayfilter .paragraph {
+    a {
+      @include anker(#333, #043, #030, #333, #033);
+    }
+  }
+
   body,
-  .toppage, 
-  .choice, 
-  .vindex, 
+  .msg,
+  .memoleft,
+  .memoright,
+  .action,
+  .toppage,
+  .choice,
+  .vindex,
   .table,
-  .turnnavi, 
+  .turnnavi,
   .pagenavi {
+    .mes_date a,
+    .mesname a,
     .text a {
       @include anker(#333, #043, #030, #333, #033);
     }

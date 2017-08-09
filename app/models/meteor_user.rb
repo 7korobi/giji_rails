@@ -35,5 +35,5 @@ class MeteorUser
   field :"services.email",  as: :email,  type: Hash
   field :"services.resume.loginTokens", as: :resume, type: Array
 
-  default_scope all.not.in(services: nil)
+  default_scope -> { all.not.in(services: nil) }
 end

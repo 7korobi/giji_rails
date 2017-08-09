@@ -1,4 +1,4 @@
-HOGAN_EVENT = ($scope)->
+HOGAN_EVENT = ($scope, $filter)->
   hogan_click_event = null
 
   navi = (link)->
@@ -26,62 +26,120 @@ HOGAN_EVENT = ($scope)->
     else
       item.html("#{val}")
 
-  external = (id, uri, protocol, host, path)->
-    item = _.find $scope.anchors, (log)->
-      log.logid == id
-    idx = $scope.anchors.indexOf item
-    if idx < 0
-      item =
-        template:"message/external"
-        mestype: "XSAY"
-        turn: -1
-        logid: id
-        protocol: protocol
-        host: host
-        path: path
-        uri: uri
-        top: $scope.pageY + 24
-        z: Date.now()
-      $scope.anchors.push item
-    else
-      $scope.anchors.splice idx, 1
-
-  attention = (key)->
-    base = location.href.replace(location.hash,"")
-    url = Navi.to_url
-      hash:
-        search: key
-        hide_potofs: ""
-        mode: "talk_all_open"
-        page: 1
-
-    wo = window.open()
-    wo.opener = null
-    wo.location.href = "#{base}#{url.hash}"
-
   add_diary = (anchor, turn, name)->
     $scope.diary.add.anchor anchor, turn, name
 
   pool_hand = ->
     $scope.pool_hand()
 
+  close = (event_id)->
+    item = _.remove $scope.floats, (event)->
+      event.event_id == event_id
+
+  potof = (key)->
+    drop = _.remove $scope.floats, (float)->
+      float.event_id == key
+
+    float = new EventFloat $scope.pageY
+    float.event_id = key
+    float.set_url = ->
+      $scope.potof_only _.filter $scope.potofs, ((o)-> o.key == key)
+      $scope.mode.value = "talk_all_open"
+      $scope.page.value = 1
+      $scope.floats = []
+
+    order =
+      if "desc" == $scope.msg_styles.order
+        (o)-> - o.updated_at
+      else
+        (o)-> + o.updated_at
+    is_mob_open = $scope.story?.is_mob_open()
+    modes =
+      if "info" == $scope.modes.face
+        $scope.mode.of[$scope.mode_cache.talk]
+      else
+        $scope.modes
+
+    list = $scope.event.messages
+    list = _.filter list, Lib.message_filter is_mob_open, modes.regexp, modes.view
+    list = _.filter list, (o)-> "#{o.csid}-#{o.face_id}" == key
+    list = _.sortBy list, order
+    float.messages = list
+    $scope.floats.push float
+
+  external = (id, uri, protocol, host, path)->
+    drop = _.remove $scope.floats, (float)->
+      float.event_id == uri
+
+    float = new EventFloat $scope.pageY
+    float.event_id = uri
+    float.messages.push
+      template:"message/external"
+      mestype: "XSAY"
+      turn: -1
+      logid: id
+      protocol: protocol
+      host: host
+      path: path
+      uri: uri
+      top: $scope.pageY + 24
+      z: Date.now()
+    $scope.floats.push float
+
+  attention = (key, turn)->
+    [float] = _.remove $scope.floats, (float)->
+      float.event_id == "anker"
+
+    float ||= new EventFloat $scope.pageY
+    float.event_id = "anker"
+    float.set_url = ->
+      $scope.hide_potofs.value = []
+      $scope.search.value = key
+      $scope.mode.value = "talk_all_open"
+      $scope.page.value = 1
+      $scope.set_turn turn
+      $scope.floats = []
+
+    list = $scope.events[turn].messages
+    list = $filter('filter')(list, key)
+
+    order =
+      if "desc" == $scope.msg_styles.order
+        (o)-> - o.updated_at
+      else
+        (o)-> + o.updated_at
+    float.messages = _.union float.messages, list
+    float.messages = _.sortBy float.messages, order
+    $scope.floats.push float
+
   popup_apply = (item, turn)->
-    idx = $scope.anchors.indexOf item
-    if idx < 0
-      $scope.anchors.push item
-      item.turn = turn
-      item.z = Date.now()
-      item.top = $scope.pageY + 24
-    else
-      $scope.anchors.splice idx, 1
-    idx
+    [float] = _.remove $scope.floats, (float)->
+      float.event_id == "anker"
+
+    float ||= new EventFloat $scope.pageY
+    float.event_id = "anker"
+    float.set_url = ->
+      $scope.hide_potofs.value = []
+      $scope.search.value = item.key
+      $scope.mode.value = "talk_all_open"
+      $scope.page.value = 1
+      $scope.set_turn turn
+      $scope.floats = []
+
+    order =
+      if "desc" == $scope.msg_styles.order
+        (o)-> - o.updated_at
+      else
+        (o)-> + o.updated_at
+    float.messages = _.union float.messages, [item]
+    float.messages = _.sortBy float.messages, order
+
+    $scope.floats.push float
 
   popup = (turn, ank)->
-    href = location.href.replace location.hash, ""
-
     popup_find = (turn)->
       if turn < 0
-        list = $scope.anchors
+        list = []
       else
         event = $scope.events[turn]
         return null unless event?.messages?
@@ -97,15 +155,9 @@ HOGAN_EVENT = ($scope)->
       event = $scope.events[turn]
       return unless event?
 
-      if event.has_all_messages
+      $scope.scroll = false
+      event.search_with_refresh ->
         seek()
-      else
-        $scope.get_all event, ->
-          if  turn == gon.event.turn
-            is_news = $scope.event.is_news
-            $scope.merge $scope, gon, "events"
-            $scope.event.is_news = is_news
-          seek()
 
     if ! popup_find turn
       popup_ajax turn, ->

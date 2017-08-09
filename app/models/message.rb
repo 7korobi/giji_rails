@@ -9,39 +9,58 @@ class Message
   field :style
   field :date, type: Time
 
+  field :size, type: Integer
   field :color
   field :style
   field :subid
   field :mestype
   field :sow_auth_id
 
-  belongs_to :potof, inverse_of: :messages
-  belongs_to :story, inverse_of: :chats
-  belongs_to :event, inverse_of: :chats
+  index date: 1
+
+  belongs_to :potof, inverse_of: :messages, index: true
+  belongs_to :story, inverse_of: :chats,    index: true
+  belongs_to :event, inverse_of: :chats,    index: true
 
   def self.by_event_id(event_id)
     yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
-    YAML.load_file(yaml_path) rescue []
+    YAML.load_file(yaml_path).map{|attr| new(attr)} rescue []
+  end
+
+  def self.by_story_id(story_id)
+    Event.where(story_id: story_id).map(&:id).map do |event_id|
+      yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
+      YAML.load_file(yaml_path).map{|attr| new(attr)} rescue []
+    end.flatten
   end
 
   def self.in_story(story_id)
-    where(story_id: story_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
+    where(story_id: story_id).order_by(:date.asc)
   end
   def self.in_event(event_id)
-    story_id = event_id.split("-")[0..1].join("-")
-    where(event_id: event_id).order_by(:date.asc).with(collection: "msg-#{story_id}")
+    where(event_id: event_id).order_by(:date.asc)
   end
 
-  def self.copy_from_file(folders = nil)
+  def self.job_drive(folder,vid,turn,path,fname)
+    story = SowVillage.where( folder: folder, vid: vid ).first
+    return unless story
+
+    case fname
+    when /log.cgi/
+      ScanLogJob.perform_later path, fname, "log", folder, vid, turn
+    when /memo.cgi/
+      ScanLogJob.perform_later path, fname, "memo", folder, vid, turn
+    else
+    end
+  end
+
+  def self.copy_from_file
     rsync = Giji::RSync.new
     rsync.each_logs([]) do |folder, vid, turn, path, fname|
-      next unless (!folders) || folders.member?(folder)
-      GijiYamlScanner.new(path, folder, fname).enqueue :log
+      job_drive(folder, vid, turn, path, fname)
     end
     rsync.each_memos([]) do |folder, vid, turn, path, fname|
-      next unless (!folders) || folders.member?(folder)
-      GijiYamlScanner.new(path, folder, fname).enqueue :memo
+      job_drive(folder, vid, turn, path, fname)
     end
   end
 end
-

@@ -1,15 +1,16 @@
 development:
   application:
-    http://localhost:3000/assets-active-event
-  file:
-    http://localhost:3000
-  rails:
-    http://localhost:3000
-production:
-  application:
-    http://7korobi.gehirn.ne.jp/assets-active-event
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-show-fix
   file:
 #    http://localhost
-    http://7korobi.gehirn.ne.jp
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
+  rails:
+    http://giji.check.jp
+production:
+  application:
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-show-fix
+  file:
+#    http://localhost
+    http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
   rails:
     http://giji.check.jp

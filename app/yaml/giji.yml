@@ -29,6 +29,9 @@ folders:
   CRAZY:
     evil: WOLF
     role_play: true
+  SOYBEAN:
+    evil: WOLF
+    role_play: true
   BRAID:
     evil: WOLF
     role_play: true
@@ -110,7 +113,7 @@ modes:
     open: true
 
   - val: info_all
-    name: 進行状況
+    name: 未読発言
     group: 情報
     form: [action]
     regexp: info_all

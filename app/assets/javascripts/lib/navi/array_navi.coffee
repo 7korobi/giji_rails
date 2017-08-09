@@ -1,12 +1,15 @@
 class ArrayNavi extends Navi
-  constructor: ($scope, key, def)->
+  constructor: (@scope, @key, def, @browser)->
     super
 
+  browser_value: ()->
+    l = @browser.location_val @params.location, @key
+    c = @browser.cookies[@key] if @params.is_cookie?
+    (l or c or "").split(",")
+
   popstate: ()->
-    l = @location_val(@key)
-    c = win.cookies[@key] if @params.is_cookie?
     value = []
-    for o in  (l or c or "").split(",")
+    for o in  @browser_value()
       break if @select? && _.every @select, (s)-> o != s.val
       value.push @params.current_type o
     @value = value
@@ -54,5 +57,5 @@ class ArrayNavi extends Navi
 
 
 ArrayNavi.push = ($scope, key, def)->
-  navi = Navi.list[key] = new ArrayNavi $scope, key, def
+  navi = new ArrayNavi $scope, key, def, Browser.real
   eval "$scope.#{key} = navi"

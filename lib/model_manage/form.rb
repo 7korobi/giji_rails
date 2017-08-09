@@ -8,10 +8,6 @@ module ModelManage
       def content_columns
         forms.values
       end
-
-      def reflections
-        relations
-      end
     end
   end
 end

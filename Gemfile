@@ -1,14 +1,22 @@
 source 'https://rubygems.org'
+ruby "2.3.1"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem "nokogiri", ">= 1.6.7.2"
+
+# gem "natto"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'unicorn'
-gem 'rails', '4.0.1'
-gem 'activesupport', '4.0.1'
+# gem 'unicorn'
+gem 'rails', ">= 4.2.6"
 gem 'quiet_assets'
+gem 'sqlite3'
 
 # queue
-gem 'resque'
-gem 'resque-scheduler'
+gem 'sinatra', require: false
+gem 'sidekiq'
+gem 'sidekiq-cron'
 
 # web_service
 gem "rdropbox"
@@ -22,8 +30,10 @@ gem "devise"
 gem "omniauth"
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'omniauth-mixi'
+gem 'omniauth-google'
+gem 'omniauth-yahoojp'
 # gem 'omniauth-github'
-# gem 'omniauth-google'
 # gem 'omniauth-ldap'
 gem 'omniauth-openid'
 
@@ -31,16 +41,9 @@ gem 'omniauth-openid'
 # data_base
 # yum install mongo-10gen mongo-10gen-server
 # yum install redis
-# yum install mysql-server
-# yum install mysql-mroonga
-# yum install groonga-tokenizer-mecab
-gem 'mongoid_rails4', :require => 'mongoid'
-#gem 'mongoid', github: 'mongoid/mongoid'
-gem "redis-store"
-gem "redis-rails"
-gem 'sqlite3'
+gem 'mongoid', '>= 5.0.0'
+gem 'mongo_session_store-rails4'
 gem "paperclip"
-gem "composite_primary_keys"
 
 # javascript
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -52,10 +55,9 @@ gem 'yajl-ruby'
 # Use SCSS for stylesheets
 # Use Uglifier as compressor for JavaScript assets
 # Use CoffeeScript for .js.coffee assets and views
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'hogan_assets'
+gem 'coffee-rails', '~> 4.1.0'
 
 # DCI
 gem 'rabl'
@@ -73,13 +75,12 @@ gem "formtastic-bootstrap"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 gem "slim"
-gem "less-rails"
-gem "bootstrap-sass"
 
 # control support
-gem "kaminari"
 gem "moji"
 gem "jpmobile"
+
+gem "hashie"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -87,8 +88,8 @@ group :doc do
 end
 
 group :development do
-# documentation
-  gem 'rails-erd'
+  gem "capistrano"
+  gem "aws-sdk"
 
 # To use debugger
   gem 'pry'
@@ -101,4 +102,5 @@ end
 group :test do
   # Pretty printed test output
   gem 'turn' #, :require => false
+  gem "minitest"
 end

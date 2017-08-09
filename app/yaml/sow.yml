@@ -684,6 +684,13 @@ saycnt:
     MAX_MESCNT:  1000 # 一発言の最大文字数
     MAX_MESLINE:   20 # 一発言の最大行数
 
+  say1:
+    <<: *SAY5
+    CAPTION: 静寂への挑戦
+    HELP:    （24h回復） 300字x1回/1act'
+    MAX_SAY:        1 # 発言/憑依回数
+    MAX_MESCNT:   300 # 一発言の最大文字数
+
   say5x200:
     <<: *SAY5
     CAPTION: 寡黙への挑戦

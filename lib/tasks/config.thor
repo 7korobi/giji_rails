@@ -25,7 +25,7 @@ class Config < Thor
 #    require '/www/giji_rails/lib/rsync'
 
     ConfigCreate.new.activate do |files|
-      files && ! files['skip'] && files['lapp'] && files['lapp'][/testbed$/]
+      files && ! files['skip'] && files['lapp'] && files['lapp'][/show-fix$/]
     end
   end
 
@@ -94,6 +94,28 @@ _PERL_
       ADD_SAY     =>   0, # 促しで増える発言回数
       MAX_ADDSAY  =>   0, # 促しの回数
       MAX_MESCNT  => 200, # 一発言の最大文字数
+      MAX_MESLINE =>  10, # 一発言の最大行数
+    );
+
+    # 発言制限
+    my %saycnt_say1 = (
+      CAPTION     => '静寂への挑戦',
+      HELP        => ' （24h回復） 300字x1回/15act',
+      COST_SAY    => 'count', # 回数勘定
+      COST_MEMO   => 'none',  # 無制限
+      COST_ACT    => 'count', # 回数勘定
+      RECOVERY    =>   1, # 発言復活
+      MAX_SAY     =>   1, # 発言/憑依回数
+      MAX_TSAY    =>   5, # 独り言発言回数
+      MAX_SPSAY   =>   5, # 共鳴発言回数
+      MAX_WSAY    =>  10, # 囁き/念話発言回数
+      MAX_GSAY    =>  10, # うめき発言回数
+      MAX_PSAY    =>  10, # プロローグ発言回数
+      MAX_ESAY    => 999, # エピローグ発言回数
+      MAX_SAY_ACT =>  15, # アクション回数
+      ADD_SAY     =>   0, # 促しで増える発言回数
+      MAX_ADDSAY  =>   0, # 促しの回数
+      MAX_MESCNT  => 300, # 一発言の最大文字数
       MAX_MESLINE =>  10, # 一発言の最大行数
     );
 

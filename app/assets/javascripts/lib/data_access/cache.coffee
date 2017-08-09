@@ -38,7 +38,8 @@ CACHE = ($scope)->
 
       # events section
       for new_event in new_base.events
-        INIT_MESSAGES new_event
+        new_event.__proto__ = Event.prototype
+        new_event.init($scope)
       merge_by.simple old_base, new_base, "events", guard, filter
 
       # event section
@@ -50,6 +51,9 @@ CACHE = ($scope)->
         old_event[key] = o unless guard(key)
 
       old_event.has_all_messages ||= new_event.has_all_messages
+
+      new_event.__proto__ = Event.prototype
+      new_event.init($scope)
 
       # messages section
       merge._messages old_event, new_event
@@ -66,12 +70,11 @@ CACHE = ($scope)->
       guard = null
       filter = (o)-> o.logid
 
-      INIT_MESSAGES new_base
       if new_base.has_all_messages
         old_base.messages = []
 
       merge_by.news old_base, new_base, 'messages', guard, filter
-      merge_by.copy old_base, new_base, 'last_memo'
+      merge_by.copy old_base, new_base, 'cache'
 
       order  = (o)-> o.order || o.updated_at
       old_base.messages = _.sortBy old_base.messages, order

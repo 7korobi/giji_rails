@@ -15,4 +15,4 @@ form(ng-if="logined()" ng-submit="logout(form.login)")
       a(ng-href="{{form.login.admin_uri}}") 管理画面
       | ]
     span.mes_date ログイン情報は{{form.login.expired.relative('ja')}}まで有効です。
-    input(type="submit" value="{{form.login.uidtext}} がログアウト")
+    input.form-control(type="submit" value="{{form.login.uidtext}} がログアウト")

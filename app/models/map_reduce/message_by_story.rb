@@ -8,6 +8,17 @@ class MapReduce::MessageByStory
     field :"value.#{key}.sow_auth_id", as: :"#{key}_sow_auth_ids", type: Hash
   end
 
+  def self.face_says(id)
+    key = "value.SS.face_id.#{id}"
+    self.where(key.to_sym.exists => true).only(:_id, key).map do |o|
+      val = o["value"].dig "SS", "face_id", id
+      if val
+        val["logid_head"] = o.id
+      end
+      val
+    end.compact.sort_by{|o| MapReduce::Message::SAYS_ORDER.index o["logid_head"]}
+  end
+
   def self.frontier_story
     done = MapReduce::MessageByStory.pluck("id")
     SowVillage.not.in(id: done).where(is_finish: true)
@@ -18,7 +29,7 @@ class MapReduce::MessageByStory
   end
 
   def self.counter(talk, logs, field)
-    key = talk[field]
+    key = talk[field] || "undefined"
     base = logs[field] ||= {}
     res = base[key] ||= {
       date: {
@@ -49,8 +60,12 @@ class MapReduce::MessageByStory
       o = self.new(value: {})
       o.id = story_id
 
-      Message.in_story(story_id).each do |talk|
+      ::Message.by_story_id(story_id).each do |talk|
         next if deny_sow_auth_ids.member? talk.sow_auth_id
+        unless talk.logid && talk.date
+          p talk
+          next
+        end
         logid_head = talk.logid[0..1]
         logs = o.value[logid_head] ||= {}
         counter(talk, logs, :all)
@@ -58,6 +73,7 @@ class MapReduce::MessageByStory
         counter(talk, logs, :sow_auth_id)
       end
       o.save
+      WriteVilJob.perform_later(story_id)
     end
   end
 end

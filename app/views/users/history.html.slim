@@ -1,17 +1,6 @@
 =render 'login'
 
-- content_for :navi_head do
-  | history user
-
-- content_for :navi do
-  .insayfilter(navi="link" name="移動")
-    .paragraph
-      .sayfilter_caption_enable
-        | 他のことを知りたい
-      .sayfilter_content
-        li=link_to 'あなたのトップページ', user_path(user.id)
-
 - content_for :log do
-  - if user.sow_auth_ids && gon.messages_raw
-    h2= "#{user.name} さんの情報"
-    #messages(template="navi/messages")
+  h2= "#{user.name} さんの情報"
+  #history
+

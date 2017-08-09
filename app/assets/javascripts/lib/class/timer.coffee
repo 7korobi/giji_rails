@@ -30,8 +30,9 @@ class Timer
 
 Timer.hh = (hh)->
   tt = ["午前","午後"][ Math.floor hh / 12 ]
+  hh = hh % 12
   hh = "0" + hh if hh < 10
-  "#{tt}#{hh % 12}時"
+  "#{tt}#{hh}時"
 
 Timer.hhmm = (hh, mi)->
   mi = "0" + mi if mi < 10
@@ -50,15 +51,14 @@ Timer.time_stamp = (date)->
   "(#{dow}) #{Timer.hhmm(hh,mi)}"
 
 Timer.date_time_stamp = (date)->
-  now = new Date(date)
-  now.addMinutes(15)
+  now = new Date(date - -15*60000)
   yyyy = now.getFullYear();
   mm = now.getMonth() + 1;
   dd = now.getDate();
   dow = Timer.dow now.getDay()
   hh = now.getHours();
   mi = now.getMinutes();
-  postfix = ["頃","半頃"][(mi/30).floor()]
+  postfix = ["頃","半頃"][Math.floor mi/30]
 
   mm = "0" + mm if mm < 10
   dd = "0" + dd if dd < 10

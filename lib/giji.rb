@@ -3,7 +3,7 @@ require 'yajl/json_gem'
 require 'yaml'
 require 'active_support/all'
 require 'ostruct'
-require 'current'
+require 'current_auth'
 require 'rsync'
 
 require 'serializer'
@@ -11,7 +11,6 @@ require 'serializer'
 require 'omniauth-openid'
 require 'openid/fetchers'
 require 'openid/store/filesystem'
-require "redis-store"
 require "model_manage"
 
 I18n.default_locale = :ja
@@ -20,29 +19,6 @@ module Giji
   def self.included(base)
     base.class_eval do
       include Mongoid::Document
-    end
-  end
-end
-
-module Mongoid::Fields::ClassMethods
-  def attribute_names
-    fields.keys.select{|k| fields[k].instance_eval{@options[:klass]} >= self }
-  end
-end
-
-module RedisStore
-  module Rack
-    module Session
-      module Rails
-        private
-        def destroy_session(env, sid, options)
-          raise RuntimeError.new rescue ::Rails.logger.debug($!.backtrace.join(', '))
-          ::Rails.logger.debug "- deny destroy_session -------------"
-          ::Rails.logger.debug [:env, sid, options].inspect
-          ::Rails.logger.debug "------------------------------------"
-          # destroy(env)
-        end
-      end
     end
   end
 end

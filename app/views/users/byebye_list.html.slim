@@ -1,15 +1,4 @@
-- content_for :navi_head do
-  | byebye user
-
-- content_for :navi do
-  .insayfilter(navi="link" name="移動")
-    .paragraph
-      .sayfilter_caption_enable
-        | 他のことを知りたい
-      .sayfilter_content
-        li=link_to 'あなたのトップページ', user_path(user.id)
-
 - content_for :log do
   h2 あなたが参加中の村について
-  .message_filter(ng-repeat="byebye in byebyes" log="byebye")
+  #byebyes
 

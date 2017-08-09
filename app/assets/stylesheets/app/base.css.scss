@@ -12,8 +12,8 @@ $border-radius-small:  6px;
 $border-radius-base:   9px;
 $border-radius-large: 12px;
 
-$screen-xs: 360px;
-$screen-sm: 458px;
+$screen-xs: 200px;
+$screen-sm: 300px;
 $screen-md: 580px;
 $screen-lg: 770px;
 
@@ -99,7 +99,7 @@ $screen-lg: 770px;
   color: $text-color;
 }
 
-.action p {
+.action .text {
   overflow: hidden;
   overflow-x: auto;
   word-wrap: break-word;
@@ -156,7 +156,6 @@ a {
 
 code a,
 .btn a {
-  color: $gray;
   background-color: rgba(255,255,255,0.5);
 }
 
@@ -164,4 +163,3 @@ ul.unstyled, ol.unstyled {
     margin-left: 0;
     list-style: none
 }
-

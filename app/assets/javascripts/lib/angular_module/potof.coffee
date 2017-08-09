@@ -1,7 +1,7 @@
 angular.module("giji").directive "potofs", ($parse, $compile)->
   restrict: "A"
   link: ($scope, elm, attr, ctrl)->
-    $scope.$watchCollection attr.potofs, (oldVal, potofs)->
+    $scope.$watchCollection attr.potofs, (potofs, oldVal)->
       elm.html("")
       return unless logs
       data =

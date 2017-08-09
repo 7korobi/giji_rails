@@ -5,7 +5,7 @@ div.guide(class="{{message.mestype}} {{message._id}}")
   p.text(class="{{message.style}}")
     | {{{message.text}}}
   p.mes_date
-    a.mark(hogan-click="attention('{{message.key}}')") 注目
+    a.mark(hogan-click="attention('{{message.key}}', {{message.turn}})") 注目
     | &nbsp;
     a.mark(hogan-click="add_diary('{{message.anchor}}', {{message.turn}}, '{{message.name}}')") {{message.anchor}}
     span &nbsp;

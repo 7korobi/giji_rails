@@ -3,7 +3,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   protect_from_forgery :except => PROVIDERS
 
   def callback
-    login Auth.authenticate( request.env["omniauth.auth"] )
+    sign_in Auth.authenticate( request.env["omniauth.auth"] )
   end
 
   PROVIDERS.each do |provider|

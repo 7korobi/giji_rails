@@ -11,7 +11,7 @@ class ChrSet
   accepts_nested_attributes_for :chr_jobs
   accepts_nested_attributes_for :chr_npcs
 
-  default_scope order_by(:chr_set_id.asc)
+#  default_scope order_by(:chr_set_id.asc)
 
   validates_length_of :maker,    in: 1..20
   validates_length_of :admin,    in: 1..20

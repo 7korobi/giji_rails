@@ -1,33 +1,39 @@
+
+giji =
+  gon: -> _.merge {}, OPTION.gon
+  log:
+    mesicon: (mestype)-> SOW_RECORD.CABALA.mestypeicons[mestype]
+    mestype: (mestype)-> SOW_RECORD.CABALA.mestypes[mestype]
+  form:
+    gon: (title, uri)->
+      _.merge {}, OPTION.gon.form,
+        title: title
+        uri:   uri
+    mestype: (sayswitch)-> SOW.switch[sayswitch].mestype
+  potof:
+    roles: (role, gift)->
+      _.compact [
+        SOW_RECORD.CABALA.roles[role]
+        SOW_RECORD.CABALA.gifts[gift]
+      ]
+    select: (selrole)->
+      switch selrole
+        when -1
+          "ランダム"
+        when 999
+          "見物人"
+        else
+          SOW_RECORD.CABALA.roles[selrole]
+  story:
+    card:
+      event:   (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.events[id]
+      discard: (list)-> _.compact _.map list.split('/'), (id)-> SOW_RECORD.CABALA.events[id]
+  event:
+    event:  (id)-> SOW_RECORD.CABALA.events[id]
+    winner: (id)-> SOW_RECORD.CABALA.winners[id]
+
+
 CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
-  win.cookies = $cookies
-  $scope.mode_cache =
-    info: 'info_open_last'
-    memo: 'memo_all_open_last'
-    talk: 'talk_all_open'
-  $scope.deploy_mode_common = ->
-    $scope.mode_common = [
-      {name: '情報', value: $scope.mode_cache.info }
-      {name: 'メモ', value: $scope.mode_cache.memo }
-      {name: '議事', value: $scope.mode_cache.talk }
-    ]
-
-  get = (href, cb)->
-    $scope.get href + "&ua=javascript", cb
-
-  $scope.event_url = (event)->
-    return null unless event
-    (event.is_news && event.news) || event.link
-
-  $scope.get_news = (event,cb)->
-    href = $scope.event_url(event)
-    get href, cb if href
-
-  $scope.get_all = (event,cb)->
-    return null unless event
-    href = event.link
-    get href, cb if href
-
-
   submit = (param, cb)->
     switch param.cmd
       when 'login'
@@ -48,7 +54,7 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
   $scope.submit = _.throttle submit, DELAY.lento
 
   $scope.logined = ->
-    win.cookies.uid && win.cookies.pwd
+    Browser.real.cookies.uid && Browser.real.cookies.pwd
 
   $scope.login = (f)->
     param =
@@ -66,7 +72,7 @@ CGI = ($scope, $filter, $sce, $cookies, $http, $timeout)->
       cmdfrom: f.cmdfrom
     $scope.submit param, ->
 
-  MODULE $scope, $filter, $sce, $http, $timeout
+  MODULE $scope, $filter, $sce, $cookies, $http, $timeout
   FORM   $scope, $sce
 
   $scope.story_has_option = (option)->

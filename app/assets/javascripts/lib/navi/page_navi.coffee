@@ -1,6 +1,6 @@
 
 class PageNavi extends Navi
-  constructor: ($scope, key, def)->
+  constructor: (@scope, @key, def, @browser)->
     def.options.current_type = Number
     def.options.per or= 1
 
@@ -11,7 +11,7 @@ class PageNavi extends Navi
     @pagers  = []
 
     do_filter_action = =>
-      $scope.$apply =>
+      @scope.$apply =>
         if @by_key?
           @list_by_filter = @do_filters @scope.$eval(@by_key), @filters
         @pager_action()
@@ -21,7 +21,7 @@ class PageNavi extends Navi
 
 
     do_pager_action = =>
-      $scope.$apply =>
+      @scope.$apply =>
         if @list_by_filter?
           list = @do_filters @list_by_filter, @pagers
           if @to_key? && list
@@ -59,7 +59,7 @@ class PageNavi extends Navi
 
   paginate: (page_per_key, func)->
     @pager page_per_key, (page_per, list)=>
-      @length = (list.length / page_per).ceil()
+      @length = Math.ceil list.length / page_per
       list
 
     @pager page_per_key, func
@@ -119,6 +119,6 @@ class PageNavi extends Navi
 
 
 PageNavi.push = ($scope, key, def)->
-  navi = Navi.list[key] or= new PageNavi $scope, key, def
+  navi = new PageNavi $scope, key, def, Browser.real
   eval "$scope.#{key} = navi"
 

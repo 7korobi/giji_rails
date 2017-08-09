@@ -106,6 +106,7 @@ page:
       ALLSTAR:   "人狼議事大乱闘:Allstar"
       CABALA:    "人狼議事CabalaCafe"
       MORPHE:    "人狼議事モルペウス"
+      SOYBEAN:   "人狼議事鯖の味噌煮"
       LOBBY:     "人狼議事ロビー"
       OFFPARTY:  "人狼議事オフ相談所"
 
@@ -182,6 +183,11 @@ page:
     options:
       current: 1
       location: search
+      is_cookie: false
+
+  turn:
+    options:
+      location: hash
       is_cookie: false
 
   css:

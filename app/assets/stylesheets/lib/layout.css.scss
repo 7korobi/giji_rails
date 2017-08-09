@@ -1,3 +1,15 @@
+
+#sayfilter {
+  padding-right: 6px;
+}
+.win #sayfilter {
+  padding-right: 20px;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
 .formpl_gm,
 .img img {
   margin-bottom: 4px;
@@ -13,6 +25,7 @@ div.mark,
 .form_vmake,
 .toolbox,
 .drag_head,
+.drag_foot,
 .paragraph,
 .footnote,
 .config_item,
@@ -20,6 +33,7 @@ div.mark,
 .ADMIN, .mes_maker,
 .mesname,
 .action,
+.events,
 li,
 p
  {
@@ -27,6 +41,7 @@ p
 }
 
 .drag_head .badge,
+.drag_foot .badge,
 .board .link,
 .commitbutton,
 .token-input,
@@ -74,6 +89,7 @@ th.mark {
 .btn,
 .calc,
 .rolebox,
+.events,
 .chrM,
 .chrF,
 .chrblank {
@@ -89,7 +105,8 @@ hr,
 .clearboth {
   clear: both;
 }
-hr.invisible_hr { display: none; }
+
+.invisible_hr { display: none; }
 
 .drag,
 .ajax {
@@ -172,4 +189,3 @@ body {
   background-position: center;
   overflow-x: hidden;
 }
-

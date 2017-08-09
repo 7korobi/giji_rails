@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 class UsersController < ApplicationController
+  layout "mithril"
+
   expose(:users_for_admin){ users.order_by(:name.asc) }
   expose(:users){ User }
-  expose(:user, attributes: :user_params)
+  expose(:user, attributes: :user_params, finder: :find_by_id)
 
   respond_to :html, :json
 
@@ -11,8 +13,12 @@ class UsersController < ApplicationController
   before_filter :auth_require, only:%w[new  create]
   before_filter :self_require, only:%w[edit update byebye_list]
 
+  def sign_out
+    super
+  end
+
   def index
-    gon.messages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
+    gon.villages = Rails.cache.fetch("active_stories_view", expires_in: 5.minutes) do
       active_story_ids = SowVillage.where(is_finish:false).pluck(:_id)
       prologue_story_ids = active_story_ids - SowTurn.all.in(story_id: active_story_ids).pluck(:story_id)
       progless_story_ids = active_story_ids - prologue_story_ids
@@ -20,6 +26,7 @@ class UsersController < ApplicationController
 
       prologue_story_ids.map do |story_id|
         to_message(
+          _id: story_id,
           story: stories[story_id].first,
           link:  message_file_path(story_id),
           mestype: "VSAY",
@@ -27,6 +34,7 @@ class UsersController < ApplicationController
         )
       end + progless_story_ids.map do |story_id|
         to_message(
+          _id: story_id,
           story: stories[story_id].first,
           link:  message_file_path(story_id),
           mestype: "XSAY",
@@ -37,11 +45,13 @@ class UsersController < ApplicationController
   end
 
   def show
-    favolite = MapReduce::Face.where("value.sow_auth_id.max_is" => user.id).order_by("value.sow_auth_id.max" => -1).first
-    if favolite
-      @favolite_face_id = favolite.id
-    else
-      @favolite_face_id = "undef"
+    if user
+      favolite = MapReduce::Face.where("value.sow_auth_id.max_is" => user.id).order_by("value.sow_auth_id.max" => -1).first
+      if favolite
+        @favolite_face_id = favolite.id
+      else
+        @favolite_face_id = "undef"
+      end
     end
   end
 
@@ -84,11 +94,12 @@ class UsersController < ApplicationController
       text = "村を抜けておいたほうがいい。" if byebye_story_ids.member? story_id
       if kick_ids[story_id].present?
         mestype = "WSAY"
-        kick_names = SowUser.where(story_id:story_id).in(sow_auth_id:kick_ids[story_id]).only(:name).map(&:name)
+        kick_names = SowUser.where(story_id:story_id).in(sow_auth_id:kick_ids[story_id]).pluck(:name)
         text = kick_names.join('、') + "に退去願おう。"
       end
 
       to_message(
+        _id: story_id,
         story: stories[story_id].first,
         link:  message_file_path(story_id),
         mestype: mestype,
@@ -114,21 +125,23 @@ class UsersController < ApplicationController
       0 - story.timer["updateddt"].to_i
     end
 
-    gon.messages_raw = list.map do |chr|
+    gon.history = list.map do |chr|
       story   = stories[chr.story_id].first
       nation  = GAME[story.folder][:nation] rescue ' - '
-      link    = message_file_path(chr.story_id)
+      link    = "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{chr.story_id}"
       created = story.timer["updateddt"]
 
       chr.attributes.merge(
+        _id: chr.story_id,
+        name: chr.name,
+        user_id: chr.sow_auth_id,
         template: "message/say",
         mestype: "SAY",
         anchor: "#{nation}#{story.vid}",
         style: 'head',
         date: created,
-        name: "<a href=\"#{link}\">#{story.name}</a>",
         log: <<_HTML_ ,
-<b style="display:inline-block; width:150px"> #{chr.name} </b> #{chr.sow_auth_id} <br>
+<a href="#{link}">#{story.name}</a> <br>
 _HTML_
       )
     end
@@ -166,9 +179,9 @@ _HTML_
     params.require(:user).permit(:user_id, :name, :email, :sow_auths, :byebyes)
   end
 
-  def to_message(story: SowVillage.new, link: message_file_path(story.id), mestype: "SAY", log: "")
+  def to_message(_id: , story: SowVillage.new, link: message_file_path(story.id), mestype: "SAY", log: "")
     nation  = GAME[story.folder][:nation] rescue ' - '
-    created = story["timer.updateddt"]
+    created = story["timer"]["updateddt"]
 
     { template: "message/action",
       mestype:  mestype,
@@ -176,12 +189,13 @@ _HTML_
       style: '',
       updated_at:  created,
       log: log,
+      _id: _id
     }
   end
 
   def story_in(story_ids)
     @stories ||= {}
-    @stories[story_ids] ||= SowVillage.only(:folder, :vid, :name, :timer, :sow_auth_id, :turn, :is_finish).in(_id:story_ids).group_by(&:_id)
+    @stories[story_ids] ||= SowVillage.only(:_id, :folder, :vid, :name, :timer, :sow_auth_id, :turn, :is_finish).in(_id:story_ids).group_by(&:_id)
   end
 
 

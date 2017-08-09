@@ -16,29 +16,53 @@ class SowVillage < Story
   field :upd,   type:Hash
   field :timer, type:Hash
 
+  def user_id
+    nil
+  end
+
+  def freeze_to_html
+    WriteVilJob.perform_later(story_id)
+  end
 
   def self.empty_ids
-    has_messages_ids = collection.database.collection_names.grep(/msg-/).map do |o|
-      o["msg-"] = ""
-      o
+    has_messages_ids = Dir.glob("/www/giji_yaml/events/*.yml").map do |path|
+      fname, name = path.match(%r|/([^/]+)\-\d+.yml|).to_a
+      name
     end
     pluck("id") - has_messages_ids
+  end
+
+  def self.freeze_to_html_all
+    all.each do |story|
+      story.freeze_to_html
+    end
+  end
+
+  def self.update_from_file(repair = nil)
+    rsync = Giji::RSync.new
+
+    stop_vid_list = {}
+    rsync.each_villages do |folder, vid, _, path, fname|
+      stop_vid_list[folder] ||= where(folder: folder, is_finish: true).pluck("vid")
+      next if stop_vid_list[folder].member? vid
+      ScanVilJob.perform_later(path, fname, folder, vid, repair)
+    end
   end
 
   def self.repair_from_file(folders = nil)
     rsync = Giji::RSync.new
     rsync.each_villages([]) do |folder, vid, turn, path, fname|
       next unless (!folders) || folders.member?(folder)
-      GijiVilScanner.new(path, folder, fname).enqueue :repair
+      ScanVilJob.perform_later(path, fname, folder, vid, :repair)
     end
   end
-  
+
   def update_from_file_only_game force = true
     Giji::RSync.new.in_folder(self.folder) do |folder, protocol, set|
       vid   = self.vid
       path  = set[:files][:ldata] + "/data/vil"
       fname = "%04d_vil.cgi"%[vid]
-      GijiVilScanner.new(path, folder, fname).save if force
+      ScanVilJob.perform_later(path, fname, folder, vid, nil) if force
       yield(folder,vid,path) if block_given?
     end
   end
@@ -59,7 +83,7 @@ class SowVillage < Story
         %w[log memo].each do |type|
           turn = event.turn
           fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-          GijiLogScanner.new(path, folder, fname).save
+          ScanLogJob.perform_later path, fname, type, folder, vid, turn
 
           if type == "log" && SowRecordFile.send(type, path, fname, folder, vid, turn )
             hash = event.attributes.except("_id", "_type", "messages")
@@ -85,7 +109,7 @@ class SowVillage < Story
         %w[log memo].each do |type|
           turn = event.turn
           fname = "%04d_%02d%s.cgi"%[vid, turn, type]
-          GijiLogScanner.new(path, folder, fname).save
+          ScanLogJob.perform_later path, fname, type, folder, vid, turn
         end
       end
     end

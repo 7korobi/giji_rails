@@ -9,18 +9,18 @@ table.potofs
         span
           code(ng-click="secret_toggle()") ネタバレ
         | &nbsp;
-      th(style="width:1ex")
-        a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only(potofs)")
+      th(style="width:3ex" ng-click="potof_only(potofs)")
+        a.glyphicon.glyphicon-pushpin.note
 
 table.potofs
   tbody(ng-repeat="key in potofs_keys")
-    tr.head(ng-if="potofs_groups[key].has_head")
+    tr.head(ng-if="potofs_groups[key].has_head" ng-click="potof_only(potofs_groups[key])")
       th(colspan="3")
         span(ng-bind-html="potofs_groups[key].head")
         span.note
           | ({{potofs_groups[key].length}}人)
-      th(style="width:1ex")
-        a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only(potofs_groups[key])")
+      th(style="width:2ex")
+        a.glyphicon.glyphicon-pushpin.note
 
     tr(ng-repeat="potof in potofs_groups[key]" ng-class="hide_potofs.of[potof.key].class")
       td(ng-click="potof_toggle(potof)" colspan="2")
@@ -28,8 +28,8 @@ table.potofs
           | {{potof.name}}
       td(ng-click="potof_toggle(potof)" style="text-align: right;")
         span.nowrap.note(ng-bind-html="potof.summary(potofs_order.value)")
-      td(style="width:1ex")
-        a.glyphicon.glyphicon-pushpin.note(ng-click="potof_only([potof])")
+      td(style="width:2ex")
+        a.glyphicon.glyphicon-paperclip.note(hogan-click="potof('{{potof.key}}')")
 
 table.potofs
   tbody

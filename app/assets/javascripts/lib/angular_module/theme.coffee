@@ -11,7 +11,7 @@ angular.module("giji").directive "theme", ($compile, $cookies)->
       size = OPTION.css.h1.widths[$scope.styles.width]
       day_or_night = ((date + 3*hour) / (12*hour)) % 2
       $scope.h1 =
-         type:  OPTION.head_img[size][$scope.styles.theme][day_or_night.floor()]
+         type:  OPTION.head_img[size][$scope.styles.theme][Math.floor day_or_night]
         width: size
       $scope.h1.path = "#{URL.file}/images/banner/title#{size}#{$scope.h1.type}"
 
@@ -33,6 +33,8 @@ angular.module("giji").directive "theme", ($compile, $cookies)->
         $scope.msg_styles.power
       ]
       $scope.html_class.push 'no-player' unless $scope.msg_styles.pl
+      $scope.html_class.push 'win' if head.browser.win
+      $scope.html_class.push 'mac' if head.browser.mac
 
     css_apply = ->
       $scope.styles = $scope.css.choice()

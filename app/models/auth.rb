@@ -1,7 +1,7 @@
 class Auth
   include Giji
   include Mongoid::Timestamps
-  
+
   field :provider
   field :uid
 
@@ -37,8 +37,8 @@ class Auth
 
     o.nickname = o.nickname.presence || "#{o.first_name} #{o.last_name}".presence
     o.name     = o.name.presence     || o.nickname
-    o.nickname.force_encoding('utf-8')
-    o.name    .force_encoding('utf-8')
+    o.nickname.force_encoding('utf-8') if o.nickname
+    o.name    .force_encoding('utf-8') if o.name
     o.save
     o
   end

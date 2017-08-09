@@ -1,0 +1,116 @@
+
+test1:
+  - $group:
+      _id: $remote_ip
+      count:
+        $sum: sow_auth_ids
+  - $group:
+      _id: $sow_auth_ids
+      count:
+        $sum: $remote_ip
+  - $out: tests
+
+request_by_user:
+  - $unwind: $sow_auth_ids
+  - $group:
+      _id: $sow_auth_ids
+      access_log:
+        $push:
+          created_at: $created_at
+          remote_ip: $remote_ip
+  - $out: tests
+
+aggregate_messages:
+  - $group:
+      date_min:
+        $min: $date_min
+      date_max:
+        $max: $date_max
+
+      max:
+        $max: $max
+      all:
+        $sum: $all
+      vil:
+        $sum: 1
+      count:
+        $sum: $count
+
+      _id: &VAR_AM_GROUP_ID
+        sow_auth_id: $_id.sow_auth_id
+        face_id: $_id.face_id
+        mestype: $_id.mestype
+  - $out:
+
+aggregate_message_by_faces:
+  - $group:
+      _id:
+        face_id: $_id.face_id
+  - $out: aggregate_message_by_faces
+
+aggregate_message_by_sow_auths:
+  - $group:
+      _id:
+        sow_auth_id: $_id.sow_auth_id
+  - $out: aggregate_message_by_sow_auths
+
+message_by_stories:
+  - $match:
+      story_id:
+        $exists: 1
+        $ne:
+      size:
+        $exists: 1
+        $ne:
+      sow_auth_id:
+        $exists: 1
+        $ne:
+      face_id:
+        $exists: 1
+        $ne:
+      logid:
+        $exists: 1
+        $ne:
+  - $project:
+      date: 1
+      size: 1
+      _id:
+        story_id: $story_id
+        mestype:
+          $substr: [$logid, 0, 2]
+  - $group:
+      _id: $_id
+      date_min:
+        $min: $date
+      date_max:
+        $max: $date
+      max:
+        $max: $size
+      all:
+        $sum: $size
+      count:
+        $sum: 1
+
+
+
+
+xxx_aggregate_faces:
+  - $project:
+      folder:   1
+      role: 1
+      face_id: 1
+      story_id: 1
+      sow_auth_id: 1
+  - $group:
+      folder:
+        $addToSet: $folder
+      story_id:
+        $addToSet: $story_id
+      win:
+        $addToSet: $win
+      role:
+        $addToSet: $role
+      sow_auth_id:
+        $addToSet: $sow_auth_id
+      face_id:
+        $addToSet: $face_id

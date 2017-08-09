@@ -1,3 +1,4 @@
+h6(style="text-align:left;") 見る村を探す
 .form-inline.radio
   label
     select.form-control.input-small( ng-model="folder.value"  ng-options="o.val as o.name for o in folder.select")
@@ -31,3 +32,9 @@
   label(ng-if="card_event")
     select.form-control.input-mini( ng-model="card_event.value"  ng-options="o.val as o.name for o in card_event.select")
 
+h6(ng-if="page") ページ移動
+.form-inline(ng-if="page" style="text-align:right;")
+  .form-group(ng-if="page" template="navi/paginate")
+  | &thinsp;
+  .form-group
+    input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")

@@ -1,0 +1,84 @@
+doctype html
+html(lang="ja" manifest="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/giji.appcache")
+  head
+    link href="mailto:7korobi@gmail.com" rev="Made"
+    meta name="apple-mobile-web-app-capable" content="yes"
+    meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"
+    meta name="format-detection" content="telephone=no"
+    meta name="viewport" content="initial-scale=1.0"
+    meta http-equiv='Content-Type' content='text/html; charset=utf-8'
+    meta content="7korobi@gmail.com" name="Author"
+    meta charset="utf-8"
+    = csrf_meta_tags
+
+    link(media="screen" rel="stylesheet" type="text/css" href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/application.css")
+
+    title#flashes
+      = if flash[:error]  then flash[:error]  else "人狼議事"
+      = if flash[:notice] then flash[:notice]
+  body
+    #outframe.outframe
+      #contentframe.contentframe
+        h1#to_root
+        .inframe
+          .login#headline
+          #css_changer
+        .inframe.toppage = yield :top
+        .inframe = yield :log
+
+        .inframe
+          br
+          address
+            | 人狼議事キャラセット by りりんら
+            br
+            | 管理
+            code  sol・la
+            code
+              a(href="mailto:7korobi@gmail.com" taborder="-1") ななころび
+
+            br
+            br
+            code(style="display:inline-block;")
+              | 下記の場所以外では、人狼議事内キャラチップ
+              br
+              | の利用を許諾しておりません。ご了承ください。
+            br
+            code(style="display:inline-block;text-align:left;")
+              | 議事総合トップ
+              br
+              | 人狼議事lobby
+              br
+              | 人狼議事morphe
+              br
+              | 人狼議事cafe
+              br
+              | 人狼議事perjury
+              br
+              | 人狼議事xebec
+              br
+              | 人狼議事crazy
+              br
+              | 人狼議事ciel
+              br
+              |
+              br
+              | SoyBean
+              br
+              | Sangria
+              br
+              | @7korobi
+            br
+            br
+          br
+          br
+
+      #footer
+
+      #tab
+        #topviewer
+        #sayfilter
+        #buttons
+  script(type="text/javascript" src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/base.js")
+  script(type="text/javascript" src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/const.js")
+  = include_gon
+  script(type="text/javascript" src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rails.js")

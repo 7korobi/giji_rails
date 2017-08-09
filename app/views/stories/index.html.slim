@@ -2,36 +2,7 @@
   | ページをめくる
 
 - content_for :tool do
-  .toolbox(adjust="full" navi="page" name="頁番")
-    .form-inline
-      .form-group
-        label
-          a.mark.click.glyphicon.glyphicon-search(ng-click="go.search()")
-      .form-group
-        label(template="navi/paginate")
+  .toolbox(navi="page" ng-if="page" template="navi/toolbox" style="white-space: nowrap;")
 
 - content_for :log do
-
-  hr.invisible_hr
-
-  .pagenavi.form-inline(template="navi/story_navi")
-
-  table.table(border="1" summary="物語の一覧")
-    thead
-      tr
-        th(scope="col")
-          code(ng-click="stories_toggle()")
-            i.glyphicon.glyphicon-resize-full(ng-show="stories_is_small")
-            i.glyphicon.glyphicon-resize-small(ng-hide="stories_is_small")
-        th(scope="col" ng-hide="stories_is_small") 人数
-        th(scope="col" ng-hide="stories_is_small") ルール
-    tbody(stories="stories_find" from="stories")
-    thead
-      tr
-        th(scope="col")
-          code(ng-click="stories_toggle()")
-            i.glyphicon.glyphicon-resize-full(ng-show="stories_is_small")
-            i.glyphicon.glyphicon-resize-small(ng-hide="stories_is_small")
-        th(scope="col" ng-hide="stories_is_small") 人数
-        th(scope="col" ng-hide="stories_is_small") ルール
-
+  .inframe#stories

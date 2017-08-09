@@ -26,12 +26,13 @@ table(class="say {{f.mestype}}" ng-show="form_show.entry")
                   a
                     | {{option(f.csid_cids, f.csid_cid).name}}
                 p(class="{{f.style}} text" ng-bind-html="f.preview")
+                h6 参加する時のセリフ
 
               div(ng-hide="f.is_preview")
-                p  参加する時のセリフ
                 textarea.form-control(cols="30" rows="{{f.lines}}" ng-model="f.text" ng-trim="false" ng-init="text_valid(f)" ng-change="text_valid(f)")
+                h6 参加する時のセリフ
                 .mark(ng-bind-html="error(f)")
-  
+
               p
                 a.btn.btn-default(ng-click="f.is_preview = false" ng-show="f.is_preview") 戻る
                 a.btn.btn-default(ng-click="entry(f)") {{f.title}}

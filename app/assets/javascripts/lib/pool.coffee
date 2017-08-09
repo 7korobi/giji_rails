@@ -6,7 +6,7 @@ POOL = ($scope, $filter, $timeout)->
     INIT $scope, $filter, $timeout
     if $scope.event?
       $scope.do_sort_potofs()
-      $scope.set_turn($scope.event.turn)
+      $scope.set_turn $scope.event.turn
 
     $timeout apply, DELAY.msg_delete
 
@@ -18,8 +18,8 @@ POOL = ($scope, $filter, $timeout)->
     $timeout refresh, DELAY.msg_minute
 
   pool_button = ()->
-    $scope.get_news $scope.event, =>
-      $scope.init()
+    $scope.event.show_refresh()
+
   $scope.pool_nolimit = pool_button
   $scope.pool_hand = _.debounce pool_button, DELAY.msg_delete,
     leading: true
