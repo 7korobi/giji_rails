@@ -1,5 +1,5 @@
 doctype html
-html(lang="ja" manifest="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/giji.appcache")
+html(lang="ja" manifest="http://s3-ap-northeast-1.amazonaws.com/giji-assets/giji.appcache")
   head
     link href="mailto:7korobi@gmail.com" rev="Made"
     meta name="apple-mobile-web-app-capable" content="yes"
@@ -11,18 +11,15 @@ html(lang="ja" manifest="http://giji-assets.s3-website-ap-northeast-1.amazonaws.
     meta charset="utf-8"
     = csrf_meta_tags
 
-    link(media="screen" rel="stylesheet" type="text/css" href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/application.css")
+    link(media="screen" rel="stylesheet" type="text/css" href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/application.css")
 
     title#flashes
       = if flash[:error]  then flash[:error]  else "人狼議事"
       = if flash[:notice] then flash[:notice]
   body
+    #top
     #outframe.outframe
       #contentframe.contentframe
-        h1#to_root
-        .inframe
-          .login#headline
-          #css_changer
         .inframe.toppage = yield :top
         .inframe = yield :log
 
@@ -78,7 +75,11 @@ html(lang="ja" manifest="http://giji-assets.s3-website-ap-northeast-1.amazonaws.
         #topviewer
         #sayfilter
         #buttons
-  script(type="text/javascript" src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/base.js")
-  script(type="text/javascript" src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/const.js")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/base.js")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/const.js")
   = include_gon
-  script(type="text/javascript" src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rails.js")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rails.js")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/js/base.js"   charset="UTF-8")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/js/common.js" charset="UTF-8")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/js/chr.js"    charset="UTF-8")
+  script(src="http://s3-ap-northeast-1.amazonaws.com/giji-assets/js/rails.js"  charset="UTF-8")

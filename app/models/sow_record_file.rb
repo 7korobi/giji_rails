@@ -71,7 +71,7 @@ class SowRecordFile
         line.chomp!
         yield line
       rescue ArgumentError, Encoding::UndefinedConversionError, Encoding::InvalidByteSequenceError => e
-        open('/utage/log/sow_record_file_error.txt','a:ascii-8bit').puts [e.inspect, path, line, "\n"].map{|s| s.force_encoding('ascii-8bit') }
+        open('log/sow_record_file_error.txt','a:ascii-8bit').puts [e.inspect, path, line, "\n"].map{|s| s.force_encoding('ascii-8bit') }
       end
     end
   end

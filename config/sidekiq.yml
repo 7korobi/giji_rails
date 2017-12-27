@@ -1,6 +1,6 @@
 :verbose: false
-:pidfile: /utage/run/giji_rails.queue.pid
-:logfile: ./log/sidekiq.log
+:pidfile: /www/giji-rails/pids/queue.pid
+:logfile: /www/giji-rails/log/sidekiq.log
 :concurrency: 1
 :queues:
   - giji_rsyncs

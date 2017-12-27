@@ -7,9 +7,9 @@ class ApplicationController < ActionController::Base
   helper_method :theme
   include CurrentAuthenticated
 
-  decent_configuration do
-    strategy DecentExposure::StrongParametersStrategy
-  end
+#  decent_configuration do
+#    strategy DecentExposure::StrongParametersStrategy
+#  end
 
   case Rails.env
   when 'development'

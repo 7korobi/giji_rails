@@ -151,7 +151,7 @@ PERL_UNION:
       TOPPAGE_INFO:  ../sow/_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
+      BASEDIR_DOC:   http://s3-ap-northeast-1.amazonaws.com/giji-assets
 
 PERL_BRAID:
   config: &config_braid
@@ -201,7 +201,7 @@ PERL_BRAID:
       TOPPAGE_INFO:  ./_info.pl
       BASEDIR_CGI:   .
       BASEDIR_DAT:   ./data
-      BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
+      BASEDIR_DOC:   http://s3-ap-northeast-1.amazonaws.com/giji-assets
 
 # 内部 人狼議事
 #

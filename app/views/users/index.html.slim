@@ -3,6 +3,8 @@
 
 - content_for :top do
 
+  br
+  br
   h2 あなたの情報
 
   h6
@@ -28,9 +30,9 @@
         table
           tr
             td
-              = link_to image_tag('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
+              = link_to image_tag('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/auth/twitter.png',  class: 'twitter'),  '/users/auth/twitter'
             td
-              = link_to image_tag('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
+              = link_to image_tag('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/auth/facebook.png', class: 'facebook'), '/users/auth/facebook'
             td
               span.btn.edge = link_to 'mixi',   '/users/auth/mixi'
               span.btn.edge = link_to 'google', '/users/auth/google'
@@ -62,7 +64,7 @@
   .SAY.action
     dt
       .btn.edge
-        = link_to "人狼議事のルール", "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html"
+        = link_to "人狼議事のルール", "http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html"
     dd
       | 人狼議事を遊ぶとき、従うべきルールはこちら。
 
@@ -70,7 +72,7 @@
   .VSAY.action
     dt
       .btn.edge
-        = link_to "キャラクター一覧表", "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/character_tag.html"
+        = link_to "キャラクター一覧表", "http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/character_tag.html"
     dd
       | 人狼議事で遊ぶことができるキャラクターはこちら。
 
@@ -101,3 +103,6 @@
         - else
           = link_to user.name, user
           = ' / '
+
+  script
+    | window.welcome_navi = "full";

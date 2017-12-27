@@ -1,6 +1,6 @@
 Giji::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.logger = Logger.new("/utage/log/rails_test.log", "daily")
+  config.logger = Logger.new("log/rails_test.log", "daily")
   config.logger.level = Logger::INFO
 
   # The test environment is used exclusively to run your application's

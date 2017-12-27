@@ -13,24 +13,19 @@ set -e
 # Feel free to change any of the following variables for your app:
 TIMEOUT=${TIMEOUT-60}
 LANG=ja_JP.UTF-8
-PATH=/utage:/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
-BUNDLE_GEMFILE=<%= current_path %>/Gemfile
-RBENV_VERSION=<%= fetch :rbenv_ruby %>
-MECAB_PATH=/usr/lib64/libmecab.so.2
-REDIS_URL=redis://mongo.family.jp:6379/0
-MONGO_URL=mongodb://7korobi:kotatsu3@mongo.family.jp/giji
+PATH=/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+BUNDLE_GEMFILE=/www/giji-rails/Gemfile
+RBENV_VERSION=2.5.0
+REDIS_URL=redis://localhost:6379/0
+MONGO_URL=mongodb://7korobi:kotatsu3@192.168.0.200/giji
 
-SSH_PORT=<%= server.port.to_i %>
-SIDEKIQ_PORT=<%= server.port.to_i + 7 %>
-WEB_PORT=<%= server.port.to_i + 9 %>
-
-WEB_OLD_PID=<%= fetch :unicorn_pid %>.oldbin
-WEB_PID=<%= fetch :unicorn_pid %>
-WORKER_PID=<%= fetch :queue_pid %>
+WEB_OLD_PID=/www/giji-rails/pids/unicorn.pid.oldbin
+WEB_PID=/www/giji-rails/pids/unicorn.pid
+WORKER_PID=/www/giji-rails/pids/queue.pid
 PID=$WEB_PID
 
-export RACK_ENV=<%= server.properties.rails_env %>
-export RAILS_ENV=<%= server.properties.rails_env %>
+export RACK_ENV=production
+export RAILS_ENV=production
 
 export PATH
 export REDIS_URL
@@ -39,8 +34,8 @@ export MECAB_PATH
 export RBENV_VERSION
 export BUNDLE_GEMFILE
 
-APP_ROOT=<%= current_path %>
-AS_USER=<%= server.user %>
+APP_ROOT=/www/giji-rails
+AS_USER=7korobi
 
 set -u
 
@@ -90,7 +85,7 @@ queue () {
 unicorn () {
   echo "boot unicorn ..."
   cd $APP_ROOT
-  rbenv exec unicorn_rails -E <%= server.properties.rails_env %> -D -c <%= fetch(:unicorn_config) %>
+  rbenv exec bundle exec unicorn_rails -E production -D -c config/unicorn.rb
   echo "done."
 }
 

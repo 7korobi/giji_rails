@@ -4,8 +4,6 @@ require 'sidekiq/cron/web'
 Giji::Application.routes.draw do
   mount Sidekiq::Web, at: "/users/7korobi/sidekiq"
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-  get "sign_out" => 'users#sign_out'
 
   resources :trpg_stories, except: %w[show]
 

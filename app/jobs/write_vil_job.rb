@@ -21,10 +21,6 @@ class WriteVilJob < ActiveJob::Base
     bucket.put_object key: "stories/#{vid}", body: File.open("#{dir}/#{vid}.html.gz"), acl: "public-read", content_type: "text/html", content_encoding: "gzip"
     bucket.put_object key: "stories/all", body: File.open("#{dir}/all.html.gz"), acl: "public-read", content_type: "text/html", content_encoding: "gzip"
 
-    target = "7korobi@s11.rs2.gehirn.jp:/home/7korobi/public_html/stories"
-    system "scp #{dir}/#{vid}.html.gz #{target}/."
-    system "scp #{dir}/all.html.gz    #{target}/."
-
     return
     mecab(vid)
   end

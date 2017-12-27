@@ -5,27 +5,6 @@ giji_backup:
   queue: giji_schedules
   description: 人狼議事 バックアップ
 
-giji_map_reduce_face:
-  cron: '58  4  *  *  *'
-  class: MapReduceJob
-  args:  Face
-  queue: giji_schedules
-  description: MapReduce::Face  を作成
-
-giji_map_reduce_message:
-  cron: '57  4  *  *  *'
-  class: MapReduceJob
-  args:  Message
-  queue: giji_schedules
-  description: MapReduce::Message  を作成
-
-giji_aggregate_message:
-  cron: '57  4  *  *  *'
-  class: AggregateJob
-  args:  Message
-  queue: giji_schedules
-  description: Aggregate::Message  を作成
-
 giji_vil_scanner:
   cron: '1,21,41  *  *  *  *'
   class: ScanJob

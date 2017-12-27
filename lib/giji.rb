@@ -13,7 +13,7 @@ require 'openid/fetchers'
 require 'openid/store/filesystem'
 require "model_manage"
 
-I18n.default_locale = :ja
+# I18n.default_locale = :ja
 
 module Giji
   def self.included(base)

@@ -1,26 +1,26 @@
 env = ENV["RAILS_ENV"] || "production"
-app_root = "<%= current_path %>"
+app_root = "/www/giji-rails"
 working_directory app_root
 
 # Unicorn pid
-pid "<%= fetch :unicorn_pid %>"
+pid "/www/giji-rails/pids/unicorn.pid"
 
-stderr_path "<%= fetch :unicorn_err_log %>"
-stdout_path "<%= fetch :unicorn_err_log %>"
+stderr_path "log/stderr.log"
+stdout_path "log/stdout.log"
 
 # Unicorn socket listener
-listen <%= server.port.to_i + 9 %>, :backlog => 64, :tcp_nopush => true
+listen 4009, :backlog => 64, :tcp_nopush => true
 
 # Unicorn worker processes
-worker_processes <%= server.properties.unicorn_workers || fetch(:unicorn_workers) %>
+worker_processes 2
 
 # Timeout at 30 seconds
-timeout <%= fetch :unicorn_timeout %>
+timeout 30
 
 preload_app true
 
 before_fork do |server, worker|
-  old_pid = "<%= fetch :unicorn_pid %>.oldbin"
+  old_pid = "/www/giji-rails/pids/unicorn.pid.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("WINCH", File.read(old_pid).to_i)
