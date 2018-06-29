@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
-api = 'https://us-central1-api-project-54633717694.cloudfunctions.net/book_external?mode=init'
+$api = 'https://us-central1-api-project-54633717694.cloudfunctions.net/book_external?mode=init'
 
 class ScanVilJob < ActiveJob::Base
   queue_as :giji_rsyncs
@@ -10,7 +10,7 @@ class ScanVilJob < ActiveJob::Base
     return unless source
 
     sow = SowVillage.find_or_initialize_by( folder: folder, vid: vid ) do
-      "201" == open("#{api}&book_id=#{folder}-#{vid}").status[0]
+      "201" == open("#{$api}&book_id=#{folder}-#{vid}").status[0]
     end
     sow.attributes["_type"] = "SowVillage"
 
@@ -24,7 +24,7 @@ class ScanVilJob < ActiveJob::Base
         story = sow
 
         potof = SowUser.find_or_initialize_by(story_id: sow._id, sow_auth_id: o.uid) do
-          "201" == open("#{api}&book_id=#{sow._id}&face_id=#{o.cid}").status[0]
+          "201" == open("#{$api}&book_id=#{sow._id}&face_id=#{o.cid}").status[0]
         end
         potof.attributes["_type"] = "SowUser"
         potof.update_attributes(
@@ -141,7 +141,7 @@ class ScanVilJob < ActiveJob::Base
 
         turn.times do |turn_no|
           event = SowTurn.find_or_initialize_by(story_id: sow.id, turn: turn_no) do
-            "201" == open("#{api}&book_id=#{sow._id}&part_id=#{sow._id}-#{turn_no}").status[0]
+            "201" == open("#{$api}&book_id=#{sow._id}&part_id=#{sow._id}-#{turn_no}").status[0]
           end
           event.attributes["_type"] = "SowTurn"
           event.winner = "WIN_NONE"
