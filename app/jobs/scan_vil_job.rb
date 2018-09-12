@@ -139,6 +139,10 @@ class ScanVilJob < ActiveJob::Base
         sow.is_finish   = (o.epilogue.to_i <  turn)
         sow.save
 
+        if (dt["nextupdatedt"].localtime - Time.now) < 3600
+          "201" == open("#{$api}&book_id=#{sow._id}&part_id=#{sow._id}-#{turn}&is_notice=1").status[0]
+        end
+
         turn.times do |turn_no|
           event = SowTurn.find_or_initialize_by(story_id: sow.id, turn: turn_no) do
             "201" == open("#{$api}&book_id=#{sow._id}&part_id=#{sow._id}-#{turn_no}").status[0]
