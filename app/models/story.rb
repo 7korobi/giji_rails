@@ -7,8 +7,9 @@ class Story
   field :name
   field :comment
   field :rating
-  field :is_finish,   type:Boolean
-  field :is_epilogue, type:Boolean
+  field :is_finish,      type: Boolean
+  field :is_epilogue,    type: Boolean
+  field :is_full_commit, type: Boolean
 
   has_many :messages, inverse_of: :story
   has_many :events,   inverse_of: :story
