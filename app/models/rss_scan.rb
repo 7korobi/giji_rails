@@ -13,7 +13,7 @@ def to_options(tags, mode, *keys)
     if tags[key]
       case mode
       when "full"
-        "#{key}#{tags[key]}"
+        "#{key} #{tags[key]}"
       when "value"
         "#{tags[key]}"
       end
@@ -110,7 +110,7 @@ class RssScan
             名前変更
           ]),
         }
-        tag_keys = (tags.keys - %w[
+        %w[
           村名
           開催国  開催場所
           キャラセット 登場人物 使用チップ チップ
@@ -157,7 +157,8 @@ class RssScan
           役職希望 
           表情差分
           名前変更
-        ])
+        ].each {|key| tags.delete( key ) }
+        item[:tags] = tags
         if o.title&.match(%r<企画村ページ/|村企画/>)
           p item
           yield item

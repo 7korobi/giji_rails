@@ -11,12 +11,13 @@ class SowVillagePlan
   field :chip
   field :sign
 
-  field :upd,    type:Hash
-
   field :card,    type:Array
   field :lock,    type:Array
   field :flavor,  type:Array
   field :options, type:Array
+
+  field :upd,    type:Hash
+  field :tags,   type:Hash
 end
 
 
