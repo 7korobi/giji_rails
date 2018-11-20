@@ -42,7 +42,9 @@ class RssScan
             k, v = tr.css("td").map {|td|
               td.children.inner_text.gsub(/ \n/,"")
             }
-            tags[k] = v
+            if k && v
+              tags[k] = v
+            end 
           }
         }
 
@@ -158,7 +160,7 @@ class RssScan
           表情差分
           名前変更
         ].each {|key| tags.delete( key ) }
-        item[:tags] = tags
+        item[:tags] = tags.to_a
         if o.title&.match(%r<企画村ページ/|村企画/>)
           yield item
         end
