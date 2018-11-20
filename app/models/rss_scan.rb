@@ -160,7 +160,6 @@ class RssScan
         ].each {|key| tags.delete( key ) }
         item[:tags] = tags
         if o.title&.match(%r<企画村ページ/|村企画/>)
-          p item
           yield item
         end
       end
