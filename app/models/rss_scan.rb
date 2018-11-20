@@ -37,24 +37,33 @@ class RssScan
       RSS::Parser.parse(url)&.items&.each do | o |
         html = Nokogiri::HTML open o.link
         tags = {}
-        html.css("#body table > tbody").reverse.map {|table|
-          table.css("tr").reverse.map {|tr|
-            k, v = tr.css("td").map {|td|
+	html.css("#body ul > li").reverse.map do | li |
+          li.children.inner_text.split(/\n/).map do |line|
+            k, v = line.split(/：/).map(&:strip)
+            if k && v
+              tags[k] = v
+            end
+          end
+        end
+        p tags
+        html.css("#body table > tbody").reverse.map do | table |
+          table.css("tr").reverse.map do | tr |
+            k, v = tr.css("td").map do | td |
               td.children.inner_text.gsub(/ \n/,"")
-            }
+            end
             if k && v
               tags[k] = v
             end 
-          }
-        }
+          end
+        end
 
         item = {
           link:  o.link,
           title: o.title,
           write_at: Time.parse( o.description ),
-          name:     tags["村名"],
+          name:  to_options( tags, "value", *%w[村名  村の名前])[0],
           state: to_options( tags, "value", *%w[開催国 　開催場所])[0],
-          chip:  to_options( tags, "value", *%w[キャラセット  登場人物  使用チップ  チップ])[0],
+          chip:  to_options( tags, "value", *%w[キャラセット  登場人物  使用チップ  チップ  チップ指定])[0],
           sign:  to_options( tags, "value", *%w[主催者  企画人  企画人（代表）  村建て  村建人  村建て人  司会])[0],
           card: [
             to_options( tags, "value", *%w[編成  役職  役職配分])[0],
@@ -62,10 +71,20 @@ class RssScan
           ].compact,
           upd: {
             description: to_options( tags, "value", *%w[更新  更新間隔＆時刻])[0],
+            time:        to_options( tags, "value", *%w[更新時刻 更新時間])[0],
             interval: tags["更新間隔"],
-            time:     tags["更新時刻"],
             prologue: tags["初日相談時間"],
-            start:    to_options( tags, "value", *%w[開催時期  開催日程  開催日  開始日時 　開始日  村開始日  村建て日  村建て日時  村建日時])[0],
+            start:    to_options( tags, "value", *%w[
+              開催時期
+              開催日程
+              開催日
+              開始日時
+           　 開始日
+              村開始日
+              村建て日
+              村建て日時
+              村建日時
+            ])[0],
           },
           lock: to_options( tags, "full", *%w[
             参加PW
@@ -110,16 +129,22 @@ class RssScan
             役職希望 
             表情差分
             名前変更
+            長期戦績
           ]),
         }
         %w[
           村名
           開催国  開催場所
-          キャラセット 登場人物 使用チップ チップ
+          キャラセット 登場人物 使用チップ チップ チップ指定
           主催者 企画人 企画人（代表） 村建て 村建人 村建て人 司会
           編成 役職 役職配分
           募集人数 定員
-          更新 更新間隔＆時刻 更新間隔 更新時刻 初日相談時間 開催時期 開催日程 開催日 開始日時 開始日 村開始日 村建て日 村建て日時 村建日時
+          更新 更新間隔＆時刻
+          更新間隔
+          更新時刻
+          更新時間
+          初日相談時間
+          開催時期 開催日程 開催日 開始日時 開始日 村開始日 村建て日 村建て日時 村建日時
 
           募集条件  参加制限
           参加PW
@@ -159,9 +184,10 @@ class RssScan
           役職希望 
           表情差分
           名前変更
+          長期戦績
         ].each {|key| tags.delete( key ) }
         item[:tags] = tags.to_a
-        if o.title&.match(%r<企画村ページ/|村企画/>)
+        if item[:name]
           yield item
         end
       end
