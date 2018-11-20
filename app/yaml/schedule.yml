@@ -18,3 +18,11 @@ giji_log_scanner:
   args:  log
   queue: giji_schedules
   description: SowTurn.messages がまだ空のぶんを、ファイルから登録
+
+rss_scanner:
+  cron: '59  0,12  *  *  *'
+  class: ScanJob
+  args:  rss
+  queue: giji_schedules
+  description: 企画村などのRSSをクロールして登録
+

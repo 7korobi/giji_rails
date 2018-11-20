@@ -11,6 +11,11 @@ class ScanJob < ActiveJob::Base
       SowTurn.messages_empty.each do |o|
         o.update_from_file
       end
+    
+    when :rss
+      RssScan.each_plans do |o|
+        SowVillagePlan.find_or_create_by(o)
+      end
     end
   end
 
