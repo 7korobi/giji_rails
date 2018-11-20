@@ -47,7 +47,7 @@ class RssScan
         }
 
         item = {
-          _id:   o.link,
+          link:  o.link,
           title: o.title,
           write_at: Time.parse( o.description ),
           name:     tags["村名"],

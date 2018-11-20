@@ -1,10 +1,12 @@
 class SowVillagePlan
   include Mongoid::Document
 
+  field :_id, default: ->{ link }
   field :title
   field :write_at, type: Time
 
   field :name
+  field :link
   field :state
   field :chip
   field :sign
