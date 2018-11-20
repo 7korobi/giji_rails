@@ -34,6 +34,8 @@ class ScanVilJob < ActiveJob::Base
           csid:     o.csid.split('_')[0],
           jobname:  o.jobname,
 
+          commit:   ( 0 != o.commit ),
+
           history:  o.history,
 
           select:   SOW_RECORD[folder][:roles][ o.selrole.to_i ],
@@ -109,12 +111,12 @@ class ScanVilJob < ActiveJob::Base
         sow.type[:game] = o.game  rescue  nil
 
         sow.options = []
-        sow.options.push "select-role"   if  (o.noselrole.to_i    != 1  rescue  false)
-        sow.options.push "random-target" if  (o.randomtarget.to_i == 1  rescue  false)
-        sow.options.push "undead-talk"   if  (o.undead.to_i       == 1  rescue  false)
-        sow.options.push "aiming-talk"   if  (o.aiming.to_i       == 1  rescue  false)
-        sow.options.push "entrust"       if  (o.entrust.to_i      == 1  rescue  false)
-        sow.options.push "seq-event"     if  (o.seqevent.to_i     == 1  rescue  false)
+        sow.options.push "select-role"   if  ( o.noselrole.to_i    != 1  rescue  false )
+        sow.options.push "random-target" if  ( o.randomtarget.to_i == 1  rescue  false )
+        sow.options.push "undead-talk"   if  ( o.undead.to_i       == 1  rescue  false )
+        sow.options.push "aiming-talk"   if  ( o.aiming.to_i       == 1  rescue  false )
+        sow.options.push "entrust"       if  ( o.entrust.to_i      == 1  rescue  false )
+        sow.options.push "seq-event"     if  ( o.seqevent.to_i     == 1  rescue  false )
 
         cnt = []
         say = Hash.new
@@ -135,12 +137,22 @@ class ScanVilJob < ActiveJob::Base
         sow.card["event"]   = o.eventcard.split('/').map{|c|   if c.to_i == 0 then c else SOW_RECORD[folder][:events][c.to_i] end } || [] rescue []
         sow.card["config"]  = cnt
         sow.timer  = dt
-        sow.is_epilogue = (o.epilogue.to_i <= turn)
-        sow.is_finish   = (o.epilogue.to_i <  turn)
+        sow.is_epilogue = ( o.epilogue.to_i <= turn )
+        sow.is_finish   = ( o.epilogue.to_i <  turn )
+        sow.is_full_commit = ( 0 == SowUser.where(event_id: "#{sow.id}-#{turn}", commit: false).count )
         sow.save
 
-        if (dt[:nextupdatedt].localtime - Time.now) < 3600
-          "201" == open("#{$api}&book_id=#{sow._id}&part_id=#{sow._id}-#{turn}&is_notice=1").status[0]
+	dt_key = if 0 == turn
+                   :scraplimitdt
+                 else
+                   if sow.is_full_commit
+                     :nextcommitdt
+                   else
+                     :nextupdatedt
+                   end
+                 end
+        if (dt[dt_key].localtime - Time.now) < 3600
+          "201" == open("#{$api}&book_id=#{sow._id}&part_id=#{sow._id}-#{turn}&is_notice=#{dt_key.to_s}").status[0]
         end
 
         turn.times do |turn_no|

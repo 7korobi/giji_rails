@@ -9,6 +9,8 @@ class SowUser < Potof
   field :zapcount,  type: Integer
   field :clearance
 
+  field :commit,    type: Boolean
+
   field :role,      type: Array
   field :rolestate
   field :select
@@ -16,7 +18,6 @@ class SowUser < Potof
   field :deathday,  type: Integer
 
   field :history
-
 
   field :overhear,    type: Array
 
