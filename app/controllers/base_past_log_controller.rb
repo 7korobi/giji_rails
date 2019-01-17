@@ -1,5 +1,5 @@
 class BasePastLogController < BaseLogController
-  before_filter :finish_require
+  before_action :finish_require
 
   protected
   def finish_require

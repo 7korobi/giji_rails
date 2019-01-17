@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   case Rails.env
   when 'development'
-    before_filter :debug
+    before_action :debug
     def debug
       p current
     end

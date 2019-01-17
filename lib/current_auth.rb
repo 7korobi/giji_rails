@@ -25,7 +25,7 @@ module CurrentAuthenticated
   def self.included(controller)
     controller.helper_method ROLES.map{|role| :"#{role}?"}
     controller.helper_method :current
-    controller.after_filter  :current_save
+    controller.after_action  :current_save
   end
 
   ROLES.each do |role|

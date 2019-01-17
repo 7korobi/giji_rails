@@ -1,7 +1,0 @@
-.caution.text(style="padding-left: 0;" ng-if="event.is_progress")
-  table
-    td(style="height: 6ex;")
-      a.mark.glyphicon.glyphicon-refresh(style="font-size: 4ex;" hogan-click="pool_hand()")
-    td(style="padding-left: 11px;")
-      | ⇚ {{ message.timestamp }} より先を見る。
-      br

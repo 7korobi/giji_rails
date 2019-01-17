@@ -7,8 +7,8 @@ class TrpgStoriesController < ApplicationController
 
   respond_to :html, :json
 
-  before_filter :login_require
-  before_filter :sign, only:%w[create, update]
+  before_action :login_require
+  before_action :sign, only:%w[create, update]
 
   def index
     gon.page = { length: stories.num_pages }

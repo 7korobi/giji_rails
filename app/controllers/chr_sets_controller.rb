@@ -4,7 +4,7 @@ class ChrSetsController < ApplicationController
 
   respond_to :html, :json
 
-  before_filter :admin_require, only:%w[new create edit update destroy]
+  before_action :admin_require, only:%w[new create edit update destroy]
 
   def index
   end

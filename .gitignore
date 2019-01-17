@@ -4,7 +4,7 @@ REVISION
 .DS_Store
 .bundle
 db/*.sqlite3
-log/*.log
+log/*
 tmp/
 pids/
 .sass-cache/

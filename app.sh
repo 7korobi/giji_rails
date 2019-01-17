@@ -15,7 +15,7 @@ TIMEOUT=${TIMEOUT-60}
 LANG=ja_JP.UTF-8
 PATH=/home/7korobi/.rbenv/shims:/home/7korobi/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
 BUNDLE_GEMFILE=/www/giji-rails/Gemfile
-RBENV_VERSION=2.5.0
+RBENV_VERSION=2.6.0
 REDIS_URL=redis://localhost:6379/0
 MONGO_URL=mongodb://7korobi:kotatsu3@192.168.0.200/giji
 

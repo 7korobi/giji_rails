@@ -1,7 +1,0 @@
-ul.nav.nav-list.unstyled
-  li(ng-repeat="e in events" ng-click="e.show_talk()")
-    a
-      i.glyphicon.glyphicon-film( ng-if="e.turn == event.turn")
-      i.glyphicon.glyphicon-minus(ng-if="e.turn != event.turn")
-      | {{e.name}}
-br

@@ -1,7 +1,0 @@
-.form-inline
-  .form-group
-    label
-      a.mark.click(ng-repeat="a in mode_common" ng-click="mode.value = a.value") {{a.name}}
-  | &thinsp;
-  .form-group(ng-if="! event.is_news")
-    select.form-control.input-mini( ng-model="page.value"  ng-options="o.val as o.name for o in page.select")

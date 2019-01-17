@@ -1,7 +1,6 @@
 require 'giji'
 require 'const'
 
-Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
 
 # Be sure to restart your server when you modify this file.
 

@@ -5,7 +5,7 @@ class ChrVotesController < ApplicationController
 
   respond_to :json
 
-  before_filter :login_require, only:%w[new create update destroy]
+  before_action :login_require, only:%w[new create update destroy]
 
   def show
 
