@@ -12,7 +12,7 @@ module Chatable
     field :style
     field :date, type: Time
     belongs_to :event
-    belongs_to :potof
+    belongs_to :potof, optional: true
 
     index({logid: 1, event_id: 1}, {unique: 1})
     index(event_id: 1)

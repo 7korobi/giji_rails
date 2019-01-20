@@ -82,7 +82,9 @@ class ScanLogJob < ActiveJob::Base
       requests[ key ] = true
     end
 
-    appends.each(&:save)
+    appends.each do |o|
+      raise o.errors unless o.save
+    end
     event.save_to_yaml
 
     requests.keys.each do |key| request_key, sow_auth_id = key

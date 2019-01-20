@@ -4,7 +4,7 @@ module Faceable
   included do
     field :csid
     field :name
-    belongs_to :face,  inverse_of: :messages
+    belongs_to :face,  inverse_of: :messages, optional: true
   end
 
   def img

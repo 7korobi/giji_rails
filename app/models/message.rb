@@ -18,9 +18,9 @@ class Message
 
   index date: 1
 
-  belongs_to :potof, inverse_of: :messages, index: true
-  belongs_to :story, inverse_of: :chats,    index: true
-  belongs_to :event, inverse_of: :chats,    index: true
+  belongs_to :potof, inverse_of: :messages, index: true, optional: true
+  belongs_to :story, inverse_of: :chats,    index: true, optional: true
+  belongs_to :event, inverse_of: :chats,    index: true, optional: true
 
   def self.by_event_id(event_id)
     yaml_path = "/www/giji_yaml/events/#{event_id}.yml"
