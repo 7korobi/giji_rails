@@ -18,8 +18,8 @@ module Giji
     end
 
     def exec
-      puts @sh
-      return
+      # puts @sh
+      # return
       @sh.map do |cmd|
         Thread.start(cmd){|command| system command }
       end.each do |th|
