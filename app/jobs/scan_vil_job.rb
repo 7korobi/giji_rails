@@ -81,7 +81,7 @@ class ScanVilJob < ActiveJob::Base
 
         potof.story_id = story.id
         potof.event_id = event_id
-        potof.save
+        potof.save!
       when 'Struct::SowRecordFileVil'
         turn = o.turn.to_i
         sow.update_attributes(
@@ -140,7 +140,7 @@ class ScanVilJob < ActiveJob::Base
         sow.is_epilogue = ( o.epilogue.to_i <= turn )
         sow.is_finish   = ( o.epilogue.to_i <  turn )
         sow.is_full_commit = ( 0 == SowUser.where(event_id: "#{sow.id}-#{turn}", commit: false).count )
-        sow.save
+        sow.save!
 
 	dt_key = if 0 == turn
                    :scraplimitdt
@@ -179,7 +179,7 @@ class ScanVilJob < ActiveJob::Base
             event.seance = o.seance.split('/') || []  rescue  []
             event.say = say
           end
-          event.save
+          event.save!
         end
         event_id = "#{sow.id}-#{turn}"
       end
