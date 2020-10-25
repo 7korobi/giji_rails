@@ -142,7 +142,7 @@ class ScanVilJob < ActiveJob::Base
         sow.is_full_commit = ( 0 == SowUser.where(event_id: "#{sow.id}-#{turn}", commit: false).count )
         sow.save!
 
-	dt_key = if 0 == turn
+        dt_key = if 0 == turn
                    :scraplimitdt
                  else
                    if sow.is_full_commit
