@@ -2,8 +2,8 @@
 require "aws-sdk"
 
 Aws.config.update({
-  region: FOG.storage.region,
-  credentials: Aws::Credentials.new(FOG.storage.aws_access_key_id, FOG.storage.aws_secret_access_key ),
+  region: GIJI_S3.region,
+  credentials: Aws::Credentials.new(GIJI_S3.accessKeyId, GIJI_S3.secretAccessKey ),
 })
 
 class WriteVilJob < ActiveJob::Base
