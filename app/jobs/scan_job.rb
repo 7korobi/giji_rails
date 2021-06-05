@@ -19,9 +19,9 @@ class ScanJob < ActiveJob::Base
     when :rss
       RssScan.each_plans do |o|
         m = SowVillagePlan.find_or_initialize_by(link: o[:link]) do
-          "201" == open("#{$api}&book_id=#{URI.encode(o[:title])}").status[0]
+          # "201" == open("#{$api}&book_id=#{URI.encode(o[:title])}").status[0]
         end
-	m.update_attributes(o)
+        m.update_attributes(o)
         m.save
       end
     end
